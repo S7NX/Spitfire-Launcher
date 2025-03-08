@@ -1,0 +1,82 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capability for the main window",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "core:window:default",
+    "core:window:allow-start-dragging",
+    "core:window:allow-minimize",
+    "core:window:allow-close",
+    "opener:default",
+    "fs:default",
+    {
+      "identifier": "fs:allow-app-read-recursive",
+      "allow": [
+        {
+          "path": "C:/ProgramData/Epic/EpicGamesLauncher/Data/Manifests/**"
+        },
+        {
+          "path": "C:/ProgramData/Epic/EpicGamesLauncher/Data/Manifests"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-app-write-recursive",
+      "allow": [
+        {
+          "path": "$DATA/**"
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-exists",
+      "allow": [
+        {
+          "path": "**/Fortnite/FortniteGame/Binaries/Win64/FortniteLauncher.exe"
+        }
+      ]
+    },
+    "http:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "https://*.epicgames.com"
+        },
+        {
+          "url": "https://*.rookie-spitfire.xyz"
+        }
+      ]
+    },
+    "shell:default",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "start-fortnite",
+          "cmd": "cmd",
+          "args": [
+            "/c",
+            "start",
+            "FortniteLauncher.exe",
+            "-AUTH_LOGIN=unused",
+            {
+              "validator": "-AUTH_PASSWORD=[a-z0-9]{32}"
+            },
+            "-AUTH_TYPE=exchangecode",
+            "-epicapp=Fortnite",
+            "-epicenv=Prod",
+            "-EpicPortal",
+            {
+              "validator": "-epicuserid=[a-z0-9]{32}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
