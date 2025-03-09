@@ -55,9 +55,9 @@
   >
     {#if isFetching}
       <LoaderCircleIcon class="size-6 animate-spin"/>
-      Fetching V-Bucks
+      Loading V-Bucks information
     {:else}
-      Fetch V-Bucks
+      Get V-Bucks Information
     {/if}
   </Button>
 
