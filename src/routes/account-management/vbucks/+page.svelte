@@ -43,8 +43,8 @@
 </script>
 
 <div class="flex flex-col items-center justify-center h-full">
-  <div class="flex flex-col gap-5 w-96 p-5 border rounded-md">
-    <h2 class="text-lg font-medium -mb-2.5">V-Bucks Information</h2>
+  <div class="flex flex-col gap-4 w-96 p-5 border rounded-md">
+    <h2 class="text-lg font-medium">V-Bucks Information</h2>
     <AccountSelect type="multiple" bind:selected={selectedAccounts}/>
 
     <Button
