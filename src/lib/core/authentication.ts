@@ -114,12 +114,12 @@ export default class Authentication {
     }).json();
   }
 
-  static getAccessTokenUsingExchangeCode(exchange_code: string, clientCredentials: ClientCredentials = defaultClient) {
+  static getAccessTokenUsingExchangeCode(exchange_code: string, clientCredentials: ClientCredentials = defaultClient, tokenType: 'eg1' | 'bearer' = 'eg1') {
     return oauthService.post<EpicExchangeCodeLoginData>('token', {
       body: new URLSearchParams({
         grant_type: 'exchange_code',
         exchange_code,
-        token_type: 'eg1'
+        token_type: tokenType
       }).toString(),
       headers: {
         Authorization: `Basic ${clientCredentials.base64}`

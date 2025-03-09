@@ -7,7 +7,7 @@
   type Props = WithoutChildren<Select.RootProps> & {
     items: { value: string; label: string; disabled?: boolean }[];
     contentProps?: WithoutChildren<Select.ContentProps>;
-    trigger: Snippet;
+    trigger: Snippet<[label?: string]>;
     triggerClass?: string;
   };
 
@@ -21,6 +21,8 @@
     ...restProps
   }: Props = $props();
 
+  const label = $derived(items.find((item) => item.value === value)?.label);
+
   $effect(() => {
     if (items.length === 1 && value) open = false;
   });
@@ -32,7 +34,7 @@
       'border p-2 rounded-lg flex items-center min-w-64 whitespace-nowrap overflow-hidden',
       triggerClass
     )}>
-    {@render trigger()}
+    {@render trigger(label)}
   </Select.Trigger>
   <Select.Portal>
     <Select.Content

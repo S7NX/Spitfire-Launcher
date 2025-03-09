@@ -32,9 +32,13 @@
 </script>
 
 <CenteredPageContent>
-  <span class="text-sm font-medium text-muted-foreground">
-    Click the button below to generate an exchange code.
-  </span>
+  <div class="flex flex-col gap-y-2">
+    <h2 class="text-lg font-medium">Exchange Code</h2>
+
+    <span class="text-sm font-medium text-muted-foreground">
+      Click the button below to generate an exchange code.
+    </span>
+  </div>
 
   <Button
     disabled={generateButtonDisabled}

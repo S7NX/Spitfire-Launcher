@@ -54,8 +54,8 @@
 
 <Select {items} {type} bind:value={selected as never}>
   {#snippet trigger()}
-    <UserIcon class="text-muted-foreground size-6 mr-2"/>
+    <UserIcon class="text-muted-foreground size-5 mr-2"/>
     <span class="text-muted-foreground">{selectedAccounts}</span>
-    <ChevronsUpAndDownIcon class="text-muted-foreground size-6 ml-auto"/>
+    <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
   {/snippet}
 </Select>

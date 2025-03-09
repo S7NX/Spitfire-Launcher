@@ -33,9 +33,13 @@
 </script>
 
 <CenteredPageContent>
-  <span class="text-sm font-medium text-muted-foreground">
-    Click the button below to login to Epic Games.
-  </span>
+  <div class="flex flex-col gap-y-2">
+    <h2 class="text-lg font-medium">Epic Games Settings</h2>
+
+    <span class="text-sm font-medium text-muted-foreground">
+      Click the button below to login to Epic Games.
+    </span>
+  </div>
 
   <Button
     disabled={loginButtonDisabled}
