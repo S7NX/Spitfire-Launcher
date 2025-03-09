@@ -70,7 +70,7 @@
         <li>
           <button
             class={cn(
-              'w-full px-3 py-2 text-sm font-medium rounded-md',
+              'w-full px-2 py-1 text-sm font-medium rounded-md',
               'flex justify-between items-center',
               'hover:bg-accent hover:text-accent-foreground transition-colors'
             )}
