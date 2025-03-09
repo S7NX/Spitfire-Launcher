@@ -8,12 +8,20 @@ export const prerender = true;
 export const ssr = false;
 
 export async function load() {
-  const allAccounts = await DataStorage.getAccountsFile();
+  const accountsFile = await DataStorage.getAccountsFile();
 
-  activeAccountId.set(allAccounts.activeAccountId || null);
+  let accountId: string | null | undefined = accountsFile.activeAccountId
+  let activeAccount = accountsFile.accounts.find((account) => account.accountId === accountId) || null;
 
+  if (accountId && !activeAccount) {
+    accountId = accountsFile.accounts?.[0]?.accountId || null;
+    activeAccount = accountsFile.accounts?.[0] || null;
+  }
+  
   accountsStore.set({
-    activeAccount: allAccounts.activeAccountId ? allAccounts.accounts.find((account) => account.accountId === allAccounts.activeAccountId) || null : null,
-    allAccounts: allAccounts.accounts
+    activeAccount: activeAccount,
+    allAccounts: accountsFile.accounts
   });
+
+  activeAccountId.set(accountId || null);
 }

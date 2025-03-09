@@ -45,6 +45,7 @@
 
 <CenteredPageContent>
   <h2 class="text-lg font-medium">V-Bucks Information</h2>
+
   <AccountSelect type="multiple" bind:selected={selectedAccounts}/>
 
   <Button

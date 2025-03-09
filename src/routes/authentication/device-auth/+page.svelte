@@ -1,8 +1,9 @@
 <script lang="ts">
   import Button from '$components/ui/Button.svelte';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
+  import PlusIcon from 'lucide-svelte/icons/plus';
   import Trash2Icon from 'lucide-svelte/icons/trash-2';
-  import PencilLineIcon from 'lucide-svelte/icons/pencil-line';
+  import PencilIcon from 'lucide-svelte/icons/pencil';
   import { toast } from 'svelte-sonner';
   import DeviceAuthManager from '$lib/core/managers/deviceAuth';
   import type { EpicDeviceAuthData } from '$types/game/authorizations';
@@ -11,6 +12,9 @@
   import DataStorage, { DEVICE_AUTHS_FILE_PATH } from '$lib/core/dataStorage';
   import { accountsStore } from '$lib/stores';
   import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
+  import Account from '$lib/core/account';
+  import Tooltip from '$components/ui/Tooltip.svelte';
+  import { goto } from '$app/navigation';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
@@ -72,6 +76,8 @@
   }
 
   async function fetchDeviceAuths() {
+    if (isFetching) return;
+
     isFetching = true;
 
     try {
@@ -98,6 +104,8 @@
   }
 
   async function generateDeviceAuth() {
+    if (isGenerating) return;
+
     isGenerating = true;
 
     toast.promise(DeviceAuthManager.create(activeAccount), {
@@ -119,20 +127,28 @@
   async function deleteDeviceAuth(deviceId: string) {
     isDeleting = true;
 
-    toast.promise(DeviceAuthManager.delete(activeAccount, deviceId), {
-      loading: 'Deleting device auth...',
-      success: () => {
-        deviceAuths = deviceAuths.filter((auth) => auth.deviceId !== deviceId);
-        return 'Device auth deleted';
-      },
-      error: (error) => {
-        console.error(error);
-        return 'Failed to delete device auth';
-      },
-      finally: () => {
-        isDeleting = false;
+    const toastId = toast.loading('Deleting device auth...');
+    const isCurrentDevice = deviceId === activeAccount.deviceId;
+
+    try {
+      await DeviceAuthManager.delete(activeAccount, deviceId);
+      deviceAuths = deviceAuths.filter((auth) => auth.deviceId !== deviceId);
+      toast.success(`Device auth deleted ${isCurrentDevice ? 'and logged out' : ''}`, { id: toastId });
+
+      if (isCurrentDevice) {
+        await Account.logout();
+        deviceAuths = [];
+        await goto('/');
       }
-    });
+
+    } catch (error) {
+      if (shouldErrorBeIgnored(error)) return;
+
+      console.error(error);
+      toast.error('Failed to delete device auth', { id: toastId });
+    } finally {
+      isDeleting = false;
+    }
   }
 
   function formatDate(date: string) {
@@ -164,23 +180,20 @@
 
 <div class="flex flex-col p-6 gap-8 max-w-2xl mx-auto bg-background rounded-lg">
   <div class="border rounded-md p-6">
-    <div class="flex flex-col mb-6">
+    <div class="flex flex-col">
       <h2 class="text-2xl font-bold mb-4 flex items-center gap-x-3">
         Device Auth List
+
+        <PlusIcon
+          class="size-8 cursor-pointer pr-2 border-r-2 {isGenerating ? 'opacity-50 !cursor-not-allowed' : ''}"
+          onclick={generateDeviceAuth}
+        />
+
         <RefreshCwIcon
-          class="size-6 cursor-pointer {isFetching ? 'animate-spin opacity-50 cursor-not-allowed' : ''}"
+          class="size-6 cursor-pointer {isFetching ? 'animate-spin opacity-50 !cursor-not-allowed' : ''}"
           onclick={fetchDeviceAuths}
         />
       </h2>
-
-      <Button
-        class="w-fit"
-        disabled={isGenerating}
-        onclick={generateDeviceAuth}
-        variant="epic"
-      >
-        Generate Device Auth
-      </Button>
     </div>
 
     {#if !isFetching}
@@ -189,20 +202,28 @@
           <div class="border border-input rounded-md p-4">
             <div class="flex justify-between items-start">
               <div class="flex flex-col gap-y-1">
-                <div class="flex items-center gap-2 group w-fit mb-1">
-                  <PencilLineIcon class="hidden group-hover:block size-5 cursor-pointer"/>
-                  <span
-                    class="font-semibold outline-none hover:underline"
-                    contenteditable
-                    onblur={(event) => handleBlur(event, auth.deviceId)}
-                    oninput={(event) => handleDeviceNameInput(auth.deviceId, event)}
-                    onkeydown={(event) => event.key === 'Enter' && event.preventDefault()}
-                    role="textbox"
-                    spellcheck="false"
-                    tabindex="0"
-                  >
-                    {deviceAuthsSettings?.find(x => x.deviceId === auth.deviceId)?.customName || 'No Name'}
-                  </span>
+                <div class="flex items-center gap-2 w-fit mb-1">
+                  <div class="flex items-center gap-2 group">
+                    <PencilIcon class="hidden group-hover:block size-4 cursor-pointer"/>
+                    <span
+                      class="font-semibold outline-none hover:underline underline-offset-2"
+                      contenteditable
+                      onblur={(event) => handleBlur(event, auth.deviceId)}
+                      oninput={(event) => handleDeviceNameInput(auth.deviceId, event)}
+                      onkeydown={(event) => event.key === 'Enter' && event.preventDefault()}
+                      role="textbox"
+                      spellcheck="false"
+                      tabindex="0"
+                    >
+                      {deviceAuthsSettings?.find(x => x.deviceId === auth.deviceId)?.customName || 'No Name'}
+                    </span>
+                  </div>
+
+                  {#if auth.deviceId === activeAccount.deviceId}
+                    <Tooltip tooltip="The launcher uses this device auth">
+                      <div class="size-2 bg-green-500 rounded-full shrink-0"></div>
+                    </Tooltip>
+                  {/if}
                 </div>
 
                 <span class="text-sm flex flex-col">
@@ -215,45 +236,30 @@
                   <span class="text-muted-foreground">{auth.userAgent}</span>
                 </span>
 
-                {#if auth.created}
-                  <div>
-                    <span class="font-semibold">Created:</span>
-                    <ul class="list-disc pl-5">
-                      <li>
-                        <span class="text-sm font-semibold">Date:</span>
-                        <span class="text-sm text-muted-foreground">{auth.created.location}</span>
-                      </li>
-                      <li>
-                        <span class="text-sm font-semibold">IP:</span>
-                        <span class="text-sm text-muted-foreground">{auth.created.ipAddress}</span>
-                      </li>
-                      <li>
-                        <span class="text-sm font-semibold">Date:</span>
-                        <span class="text-sm text-muted-foreground">{formatDate(auth.created.dateTime)}</span>
-                      </li>
-                    </ul>
-                  </div>
-                {/if}
-
-                {#if auth.lastAccess}
-                  <div>
-                    <span class="font-semibold">Last Access:</span>
-                    <ul class="list-disc pl-5">
-                      <li>
-                        <span class="text-sm font-semibold">Date:</span>
-                        <span class="text-sm text-muted-foreground">{auth.lastAccess.location}</span>
-                      </li>
-                      <li>
-                        <span class="text-sm font-semibold">IP:</span>
-                        <span class="text-sm text-muted-foreground">{auth.lastAccess.ipAddress}</span>
-                      </li>
-                      <li>
-                        <span class="text-sm font-semibold">Date:</span>
-                        <span class="text-sm text-muted-foreground">{formatDate(auth.lastAccess.dateTime)}</span>
-                      </li>
-                    </ul>
-                  </div>
-                {/if}
+                {#each [
+                  { title: 'Created', data: auth.created },
+                  { title: 'Last Access', data: auth.lastAccess }
+                ] as { title, data } (title)}
+                  {#if data}
+                    <div>
+                      <span class="font-semibold">{title}:</span>
+                      <ul class="list-disc pl-5">
+                        <li>
+                          <span class="text-sm font-semibold">Location:</span>
+                          <span class="text-sm text-muted-foreground">{data.location}</span>
+                        </li>
+                        <li>
+                          <span class="text-sm font-semibold">IP:</span>
+                          <span class="text-sm text-muted-foreground">{data.ipAddress}</span>
+                        </li>
+                        <li>
+                          <span class="text-sm font-semibold">Date:</span>
+                          <span class="text-sm text-muted-foreground">{formatDate(data.dateTime)}</span>
+                        </li>
+                      </ul>
+                    </div>
+                  {/if}
+                {/each}
               </div>
 
               <Button

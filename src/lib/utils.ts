@@ -47,7 +47,7 @@ export function calculateVbucks(queryProfile: FullQueryProfile<'common_core'>) {
   return vbucksItems.reduce((acc, x) => acc + x.quantity, 0);
 }
 
-// Temporary solution to avoid showing multiple toasts when the system logs the user out
+// TODO: Temporary solution to avoid showing multiple toasts when the system logs the user out
 export function shouldErrorBeIgnored(error: unknown) {
   if (error instanceof EpicAPIError) {
     if (error.errorCode === 'errors.com.epicgames.account.invalid_account_credentials') return true;

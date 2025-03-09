@@ -82,6 +82,7 @@
 
 <CenteredPageContent>
   <h2 class="text-lg font-medium">Redeem Codes</h2>
+
   <AccountSelect type="multiple" bind:selected={selectedAccounts}/>
 
   <TagInput
