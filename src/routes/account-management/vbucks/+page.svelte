@@ -1,4 +1,5 @@
 <script lang="ts">
+  import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
   import Button from '$components/ui/Button.svelte';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
@@ -42,48 +43,46 @@
   }
 </script>
 
-<div class="flex flex-col items-center justify-center h-full">
-  <div class="flex flex-col gap-4 w-96 p-5 border rounded-md">
-    <h2 class="text-lg font-medium">V-Bucks Information</h2>
-    <AccountSelect type="multiple" bind:selected={selectedAccounts}/>
+<CenteredPageContent>
+  <h2 class="text-lg font-medium">V-Bucks Information</h2>
+  <AccountSelect type="multiple" bind:selected={selectedAccounts}/>
 
-    <Button
-      class="flex justify-center items-center gap-x-2 mt-2"
-      disabled={!selectedAccounts?.length || isFetching}
-      onclick={handleSubmit}
-      variant="epic"
-    >
-      {#if isFetching}
-        <LoaderCircleIcon class="size-6 animate-spin"/>
-        Fetching V-Bucks
-      {:else}
-        Fetch V-Bucks
-      {/if}
-    </Button>
-
-    {#if !isFetching && vbucksStatuses.length}
-      <div class="mt-2 w-full max-w-2xl">
-        <h3 class="text-base font-medium mb-3">Result</h3>
-
-        <div class="flex flex-col p-2 border rounded-md">
-          {#each vbucksStatuses as { accountId, displayName, vbucksAmount, error } (accountId)}
-            <div class="flex gap-x-2">
-              <p class="font-medium">{displayName}:</p>
-
-              {#if vbucksAmount != null}
-                <div class="flex items-center gap-x-1">
-                  <p>{vbucksAmount.toLocaleString()}</p>
-                  <img class="size-5" alt="V-Bucks" src="/assets/vbuck.png"/>
-                </div>
-              {/if}
-
-              {#if error}
-                <p class="text-red-500">{error}</p>
-              {/if}
-            </div>
-          {/each}
-        </div>
-      </div>
+  <Button
+    class="flex justify-center items-center gap-x-2 mt-2"
+    disabled={!selectedAccounts?.length || isFetching}
+    onclick={handleSubmit}
+    variant="epic"
+  >
+    {#if isFetching}
+      <LoaderCircleIcon class="size-6 animate-spin"/>
+      Fetching V-Bucks
+    {:else}
+      Fetch V-Bucks
     {/if}
-  </div>
-</div>
+  </Button>
+
+  {#if !isFetching && vbucksStatuses.length}
+    <div class="mt-2 w-full max-w-2xl">
+      <h3 class="text-base font-medium mb-3">Result</h3>
+
+      <div class="flex flex-col p-2 border rounded-md">
+        {#each vbucksStatuses as { accountId, displayName, vbucksAmount, error } (accountId)}
+          <div class="flex gap-x-2">
+            <p class="font-medium">{displayName}:</p>
+
+            {#if vbucksAmount != null}
+              <div class="flex items-center gap-x-1">
+                <p>{vbucksAmount.toLocaleString()}</p>
+                <img class="size-5" alt="V-Bucks" src="/assets/vbuck.png"/>
+              </div>
+            {/if}
+
+            {#if error}
+              <p class="text-red-500">{error}</p>
+            {/if}
+          </div>
+        {/each}
+      </div>
+    </div>
+  {/if}
+</CenteredPageContent>

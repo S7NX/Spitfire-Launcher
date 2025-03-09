@@ -1,4 +1,5 @@
 <script lang="ts">
+  import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
@@ -30,18 +31,16 @@
   }
 </script>
 
-<div class="flex flex-col items-center justify-center h-full">
-  <div class="flex flex-col gap-4 w-96 p-5 border rounded-md">
-    <span class="text-sm font-medium text-muted-foreground">
-      Click the button below to generate an exchange code.
-    </span>
+<CenteredPageContent>
+  <span class="text-sm font-medium text-muted-foreground">
+    Click the button below to generate an exchange code.
+  </span>
 
-    <Button
-      disabled={generateButtonDisabled}
-      onclick={openEpicGamesWebsite}
-      variant="epic"
-    >
-      Generate Exchange Code
-    </Button>
-  </div>
-</div>
+  <Button
+    disabled={generateButtonDisabled}
+    onclick={openEpicGamesWebsite}
+    variant="epic"
+  >
+    Generate Exchange Code
+  </Button>
+</CenteredPageContent>

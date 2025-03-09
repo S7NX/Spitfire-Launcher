@@ -1,4 +1,5 @@
 <script lang="ts">
+  import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
   import Button from '$components/ui/Button.svelte';
   import TagInput from '$lib/components/ui/TagInput.svelte';
@@ -79,65 +80,63 @@
   }
 </script>
 
-<div class="flex flex-col items-center justify-center h-full">
-  <div class="flex flex-col gap-4 w-96 p-5 border rounded-md">
-    <h2 class="text-lg font-medium">Redeem Codes</h2>
-    <AccountSelect type="multiple" bind:selected={selectedAccounts}/>
+<CenteredPageContent>
+  <h2 class="text-lg font-medium">Redeem Codes</h2>
+  <AccountSelect type="multiple" bind:selected={selectedAccounts}/>
 
-    <TagInput
-      placeholder="Enter codes to redeem and press Enter"
-      bind:items={codesToRedeem}
-    />
+  <TagInput
+    placeholder="Enter codes to redeem and press Enter"
+    bind:items={codesToRedeem}
+  />
 
-    <Button
-      class="flex justify-center items-center gap-x-2 mt-2"
-      disabled={!selectedAccounts?.length || !codesToRedeem.length || isRedeeming}
-      onclick={redeemCodes}
-      variant="epic"
-    >
-      {#if isRedeeming}
-        <LoaderCircleIcon class="size-6 animate-spin"/>
-        Redeeming
-      {:else}
-        Redeem Codes
-      {/if}
-    </Button>
-
-    {#if !isRedeeming && codeStatuses.length}
-      <div class="mt-2 w-full max-w-2xl">
-        <h3 class="text-base font-medium mb-3">Redemption Results</h3>
-
-        <Accordion items={codeStatuses} type="multiple">
-          {#snippet trigger(status)}
-            <div class="flex items-center justify-between px-2 h-10 w-full bg-muted-foreground/5 rounded-sm">
-              <div class="flex items-center gap-2 overflow-hidden">
-                <span class="font-medium truncate min-w-fit shrink-0">{status.displayName}</span>
-
-                <div class="flex items-center ml-1 gap-1 overflow-hidden flex-wrap">
-                  {#each status.codes as { code, error } (code)}
-                    <div class="size-2.5 rounded-full shrink-0 {error ? 'bg-red-500' : 'bg-green-500'}" title="{error ? 'Has errors' : 'All successful'}"></div>
-                  {/each}
-                </div>
-              </div>
-
-              <span class="hover:bg-muted-foreground/10 inline-flex size-8 items-center justify-center bg-transparent shrink-0 ml-1">
-                <ChevronDownIcon class="size-5 transition-transform duration-200"/>
-              </span>
-            </div>
-          {/snippet}
-
-          {#snippet content(status)}
-            <div class="overflow-hidden text-sm mt-1 bg-muted-foreground/5 p-2">
-              {#each status.codes as { code, error } (code)}
-                <div class="flex items-center gap-1.5 py-1 truncate">
-                  <span class="font-medium">{code}:</span>
-                  <span class="truncate {error ? 'text-red-500' : 'text-green-500'}">{error || 'Redeemed'}</span>
-                </div>
-              {/each}
-            </div>
-          {/snippet}
-        </Accordion>
-      </div>
+  <Button
+    class="flex justify-center items-center gap-x-2 mt-2"
+    disabled={!selectedAccounts?.length || !codesToRedeem.length || isRedeeming}
+    onclick={redeemCodes}
+    variant="epic"
+  >
+    {#if isRedeeming}
+      <LoaderCircleIcon class="size-6 animate-spin"/>
+      Redeeming
+    {:else}
+      Redeem Codes
     {/if}
-  </div>
-</div>
+  </Button>
+
+  {#if !isRedeeming && codeStatuses.length}
+    <div class="mt-2 w-full max-w-2xl">
+      <h3 class="text-base font-medium mb-3">Redemption Results</h3>
+
+      <Accordion items={codeStatuses} type="multiple">
+        {#snippet trigger(status)}
+          <div class="flex items-center justify-between px-2 h-10 w-full bg-muted-foreground/5 rounded-sm">
+            <div class="flex items-center gap-2 overflow-hidden">
+              <span class="font-medium truncate min-w-fit shrink-0">{status.displayName}</span>
+
+              <div class="flex items-center ml-1 gap-1 overflow-hidden flex-wrap">
+                {#each status.codes as { code, error } (code)}
+                  <div class="size-2.5 rounded-full shrink-0 {error ? 'bg-red-500' : 'bg-green-500'}" title="{error ? 'Has errors' : 'All successful'}"></div>
+                {/each}
+              </div>
+            </div>
+
+            <span class="hover:bg-muted-foreground/10 inline-flex size-8 items-center justify-center bg-transparent shrink-0 ml-1">
+              <ChevronDownIcon class="size-5 transition-transform duration-200"/>
+            </span>
+          </div>
+        {/snippet}
+
+        {#snippet content(status)}
+          <div class="overflow-hidden text-sm mt-1 bg-muted-foreground/5 p-2">
+            {#each status.codes as { code, error } (code)}
+              <div class="flex items-center gap-1.5 py-1 truncate">
+                <span class="font-medium">{code}:</span>
+                <span class="truncate {error ? 'text-red-500' : 'text-green-500'}">{error || 'Redeemed'}</span>
+              </div>
+            {/each}
+          </div>
+        {/snippet}
+      </Accordion>
+    </div>
+  {/if}
+</CenteredPageContent>

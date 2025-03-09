@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { accountsStore } from '$lib/stores';
+  import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
+  import { accountsStore } from '$lib/stores';
   import { openUrl } from '@tauri-apps/plugin-opener';
   import { toast } from 'svelte-sonner';
   import { nonNull } from '$lib/utils';
@@ -31,17 +32,16 @@
   }
 </script>
 
-<div class="flex flex-col items-center justify-center h-full">
-  <div class="flex flex-col gap-4 w-96 p-5 border rounded-md">
-    <span class="text-sm font-medium text-muted-foreground">
-      Click the button below to login to Epic Games.
-    </span>
-    <Button
-      disabled={loginButtonDisabled}
-      onclick={openEpicGamesWebsite}
-      variant="epic"
-    >
-      Login to Epic Games website
-    </Button>
-  </div>
-</div>
+<CenteredPageContent>
+  <span class="text-sm font-medium text-muted-foreground">
+    Click the button below to login to Epic Games.
+  </span>
+
+  <Button
+    disabled={loginButtonDisabled}
+    onclick={openEpicGamesWebsite}
+    variant="epic"
+  >
+    Login to Epic Games website
+  </Button>
+</CenteredPageContent>
