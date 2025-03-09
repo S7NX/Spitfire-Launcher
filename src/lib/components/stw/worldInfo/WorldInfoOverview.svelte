@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { WorldParsedMission } from '$types/game/stw/worldInfo';
-  import WorldInfoSectionAcccordion from '$components/stw/worldInfo/WorldInfoSectionAcccordion.svelte';
+  import WorldInfoSectionAcccordion from '$components/stw/worldInfo/WorldInfoSectionAccordion.svelte';
   import { worldInfoCache } from '$lib/stores';
   import { WorldPowerLevels, Worlds } from '$lib/constants/stw/worldInfo';
 

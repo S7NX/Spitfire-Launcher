@@ -108,8 +108,8 @@
     try {
       const accessTokenData = await Authentication.getAccessTokenUsingExchangeCode(exchangeCode);
       await handleLogin(accessTokenData);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
       toast.error('Failed to login');
     } finally {
       isLoading = false;
@@ -154,8 +154,8 @@
       const androidAccessTokenData = await Authentication.getAccessTokenUsingExchangeCode(newSwitchExchangeCode.code);
 
       await handleLogin(androidAccessTokenData);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
       toast.error('Please confirm the login on the Epic Games website');
     } finally {
       isLoading = false;

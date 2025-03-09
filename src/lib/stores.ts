@@ -1,7 +1,8 @@
 import { writable } from 'svelte/store';
-import type { AccessTokenCache, AccountData } from '$types/accounts';
+import type { AccountData } from '$types/accounts';
 import { browser } from '$app/environment';
 import type { ParsedWorldInfo } from '$types/game/stw/worldInfo';
+import type { EpicOAuthData } from '$types/game/authorizations';
 
 type Theme = 'light' | 'dark';
 
@@ -53,6 +54,9 @@ activeAccountId.subscribe((activeAccountId) => {
   });
 });
 
-export const accessTokenCache = writable<AccessTokenCache>();
+export const accessTokenCache = writable<Record<string, EpicOAuthData>>();
 
 export const worldInfoCache = writable<ParsedWorldInfo>();
+
+// To avoid redirecting the user to the home page in bulk operations if there is a credential error
+export const doingBulkOperations = writable<boolean>(false);

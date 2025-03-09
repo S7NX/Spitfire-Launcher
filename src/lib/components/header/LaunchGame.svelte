@@ -57,8 +57,8 @@
       }).execute();
 
       toast.success('Fortnite launched successfully', { id: toastId });
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
       toast.error('Failed to launch Fortnite', { id: toastId });
     } finally {
       launchButtonDisabled = false;

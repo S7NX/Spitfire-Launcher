@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { WorldParsedMission } from '$types/game/stw/worldInfo';
-  import WorldInfoSectionAcccordion from '$components/stw/worldInfo/WorldInfoSectionAcccordion.svelte';
+  import WorldInfoSectionAccordion from '$components/stw/worldInfo/WorldInfoSectionAccordion.svelte';
   import FullScreenLoading from '$components/ui/FullScreenLoading.svelte';
   import { worldInfoCache } from '$lib/stores';
   import { WorldPowerLevels, Worlds } from '$lib/constants/stw/worldInfo';
@@ -58,7 +58,7 @@
           {title}
         </h1>
 
-        <WorldInfoSectionAcccordion {missions}/>
+        <WorldInfoSectionAccordion {missions}/>
       </div>
     {/each}
   </div>

@@ -1,6 +1,8 @@
 import ky from 'ky';
 import { fetch } from '@tauri-apps/plugin-http';
 import Manifest from '$lib/core/manifest';
+import { isEpicApiError } from '$lib/utils';
+import EpicAPIError from '$lib/exceptions/EpicAPIError';
 
 // Used to avoid any CORS issues
 const tauriKy = ky.create({
@@ -24,6 +26,8 @@ const tauriKy = ky.create({
     } catch {
       data = await response.text();
     }
+
+    if (isEpicApiError(data)) throw new EpicAPIError(data, request, response.status);
 
     return new Response(data ? JSON.stringify(data) : null, response);
   },

@@ -61,8 +61,8 @@ export default class Manifest {
 
       gameFileCache = fortniteFile;
       return fortniteFile;
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
       return null;
     }
   }

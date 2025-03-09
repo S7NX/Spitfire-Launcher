@@ -99,7 +99,7 @@
 <div class="flex flex-col items-center justify-center h-full">
   <div class="flex flex-col gap-2 w-96 p-5 border rounded-md">
     <form class="flex items-center gap-2 w-full" onsubmit={lookupPlayer}>
-      <div class="flex-grow">
+      <div class="grow">
         <Input
           disabled={isLoading}
           placeholder="Search by name or account ID"

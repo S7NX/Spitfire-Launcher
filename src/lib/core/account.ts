@@ -5,56 +5,53 @@ import type { AccountData, AccountDataFile } from '$types/accounts';
 import DeviceAuthManager from '$lib/core/managers/deviceAuth';
 
 export default class Account {
-  static async getAllAccounts() {
-    const accountsFile = await DataStorage.getAccountsFile();
-    return accountsFile.accounts;
-  }
-
   static async changeActiveAccount(id: string | null) {
     activeAccountId.set(id);
     await DataStorage.writeConfigFile<AccountDataFile>(ACCOUNTS_FILE_PATH, { activeAccountId: id || undefined });
   }
 
   static async addAccount(account: AccountData, setActive = true) {
-    const accounts = await Account.getAllAccounts();
-    accounts.push(account);
+    const { allAccounts } = get(accountsStore);
+    allAccounts.push(account);
 
     if (setActive) {
       activeAccountId.set(account.accountId);
       accountsStore.set({
         activeAccount: account,
-        allAccounts: accounts
+        allAccounts
       });
     }
 
     await DataStorage.writeConfigFile<AccountDataFile>(ACCOUNTS_FILE_PATH, {
       activeAccountId: setActive ? account.accountId : get(activeAccountId) || undefined,
-      accounts
+      accounts: allAccounts
     });
   }
 
-  static async logout() {
-    const oldActiveActiveAccount = get(accountsStore).activeAccount;
-    const oldAccountId = get(activeAccountId);
-    const oldAccounts = await Account.getAllAccounts();
+  static async logout(accountId?: string) {
+    const targetAccountId = accountId || get(activeAccountId);
+    const oldAccounts = get(accountsStore).allAccounts;
+    const oldActiveAccount = oldAccounts.find(account => account.accountId === targetAccountId);
 
-    const newAccounts = oldAccounts.filter((account) => account.accountId !== oldAccountId);
-    const newAccountId = newAccounts[0]?.accountId || null;
+    const newAccounts = oldAccounts.filter(account => account.accountId !== targetAccountId);
 
-    await Account.changeActiveAccount(newAccountId || null);
+    let newAccountId = get(activeAccountId);
+    if (targetAccountId === newAccountId) {
+      newAccountId = newAccounts[0]?.accountId || null;
+      await Account.changeActiveAccount(newAccountId);
+    }
+
     await DataStorage.writeConfigFile<AccountDataFile>(ACCOUNTS_FILE_PATH, {
       activeAccountId: newAccountId || undefined,
       accounts: newAccounts
     });
 
-    const newActiveAccountData = get(accountsStore).activeAccount;
-
     accountsStore.set({
-      activeAccount: newActiveAccountData,
+      activeAccount: newAccounts.find(account => account.accountId === newAccountId) || null,
       allAccounts: newAccounts
     });
 
-    if (oldActiveActiveAccount?.deviceId)
-      DeviceAuthManager.delete(oldActiveActiveAccount, oldActiveActiveAccount.deviceId).catch(console.error);
+    if (oldActiveAccount?.deviceId)
+      DeviceAuthManager.delete(oldActiveAccount, oldActiveAccount.deviceId).catch(console.error);
   }
 }
