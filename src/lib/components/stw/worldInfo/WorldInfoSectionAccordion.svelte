@@ -57,7 +57,6 @@
           <img
             class="size-5"
             alt="Zone icon"
-            loading="eager"
             src={mission.zone.iconUrl}
           />
         {:else}
@@ -72,7 +71,6 @@
         <img
           class="size-6"
           alt="Zone icon"
-          loading="eager"
           src={mission.zone.type.imageUrl}
         />
         <span class="border shrink-0 pl-0.5 pr-2 py-1 rounded text-xs">⚡{mission.powerLevel}</span>
@@ -84,7 +82,6 @@
                 <img
                   class="size-6"
                   alt="Reward icon"
-                  loading="eager"
                   src={reward.imageUrl}
                 />
 
@@ -111,7 +108,6 @@
                 <img
                   class="size-6"
                   alt="Modifier icon"
-                  loading="eager"
                   src={modifier.imageUrl}
                 />
               {/each}
@@ -139,14 +135,12 @@
                   <img
                     class="size-4"
                     alt="Alert timer"
-                    loading="eager"
                     src="/assets/world/alert.png"
                   />
 
                   <img
                     class="size-6"
                     alt="Reward icon"
-                    loading="eager"
                     src={reward.imageUrl}
                   />
 
