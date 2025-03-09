@@ -4,7 +4,7 @@
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
   import { toast } from 'svelte-sonner';
-  import { nonNull } from '$lib/utils';
+  import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
   import Select from '$components/ui/Select.svelte';
   import KeyRound from 'lucide-svelte/icons/key-round';
   import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
@@ -42,6 +42,11 @@
       await navigator.clipboard.writeText(accessTokenData.access_token);
       toast.success('Generated and copied to clipboard', { id: toastId });
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) {
+        toast.dismiss(toastId);
+        return;
+      }
+
       console.error(error);
       toast.error('Failed to generate an access token', { id: toastId });
     } finally {

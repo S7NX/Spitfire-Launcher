@@ -7,7 +7,7 @@
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import LookupManager from '$lib/core/managers/lookup';
   import { toast } from 'svelte-sonner';
-  import { nonNull } from '$lib/utils';
+  import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
   import type { ProfileItem } from '$types/game/mcp';
   import MCPManager from '$lib/core/managers/mcp';
   import { FounderEditions } from '$lib/constants/stw/resources';
@@ -71,6 +71,8 @@
         toast.error('Couldn\'t fetch STW data of the player. Their game stats are private.');
       }
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) return;
+
       console.error(error);
       toast.error('Player not found');
     } finally {

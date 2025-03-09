@@ -5,7 +5,7 @@
   import { accountsStore } from '$lib/stores';
   import { openUrl } from '@tauri-apps/plugin-opener';
   import { toast } from 'svelte-sonner';
-  import { nonNull } from '$lib/utils';
+  import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
@@ -24,6 +24,11 @@
       await openUrl(`https://www.epicgames.com/id/exchange?exchangeCode=${exchangeCode}`);
       toast.success('Opened Epic Games website', { id: toastId });
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) {
+        toast.dismiss(toastId);
+        return;
+      }
+
       console.error(error);
       toast.error('Failed to open Epic Games website', { id: toastId });
     } finally {

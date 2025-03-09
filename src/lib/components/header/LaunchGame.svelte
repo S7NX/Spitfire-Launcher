@@ -10,6 +10,7 @@
   import { exists } from '@tauri-apps/plugin-fs';
   import { path } from '@tauri-apps/api';
   import { launcherAppClient2 } from '$lib/constants/clients';
+  import { shouldErrorBeIgnored } from '$lib/utils';
 
   const activeAccount = $derived($accountsStore.activeAccount);
 
@@ -58,6 +59,11 @@
 
       toast.success('Fortnite launched successfully', { id: toastId });
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) {
+        toast.dismiss(toastId);
+        return;
+      }
+
       console.error(error);
       toast.error('Failed to launch Fortnite', { id: toastId });
     } finally {

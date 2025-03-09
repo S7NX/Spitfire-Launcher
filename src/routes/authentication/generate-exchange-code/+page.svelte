@@ -4,7 +4,7 @@
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
   import { toast } from 'svelte-sonner';
-  import { nonNull } from '$lib/utils';
+  import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
@@ -23,6 +23,11 @@
       await navigator.clipboard.writeText(code);
       toast.success('Generated and copied to clipboard', { id: toastId });
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) {
+        toast.dismiss(toastId);
+        return;
+      }
+
       console.error(error);
       toast.error('Failed to generate an exchange code', { id: toastId });
     } finally {

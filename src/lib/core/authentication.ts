@@ -66,14 +66,12 @@ export default class Authentication {
             }
           });
 
-          await Account.logout(deviceAuthData.accountId);
-
           const { allAccounts } = get(accountsStore);
           const accountName = allAccounts.find(account => account.accountId === deviceAuthData.accountId)?.displayName;
 
-          if (accountName) toast.error(isDoingBulkOperations
-            ? `${accountName}'s login session has expired, please log in again.`
-            : 'Your login session has expired, please log in again.');
+          await Account.logout(deviceAuthData.accountId);
+
+          if (accountName) toast.error(`${accountName}'s login session has expired, please log in again.`);
         }
       }
 

@@ -10,7 +10,7 @@
   import { onMount } from 'svelte';
   import DataStorage, { DEVICE_AUTHS_FILE_PATH } from '$lib/core/dataStorage';
   import { accountsStore } from '$lib/stores';
-  import { nonNull } from '$lib/utils';
+  import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
@@ -88,6 +88,8 @@
         return hasCustomName || dateDifference || 0;
       });
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) return;
+
       console.error(error);
       toast.error('Failed to fetch device auths');
     } finally {

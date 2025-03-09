@@ -4,6 +4,7 @@ import { accountsStore } from '$lib/stores';
 import { get } from 'svelte/store';
 import { toast } from 'svelte-sonner';
 import { goto } from '$app/navigation';
+import EpicAPIError from '$lib/exceptions/EpicAPIError';
 import type { EpicAPIErrorData } from '$types/game/authorizations';
 import type { FullQueryProfile } from '$types/game/mcp';
 
@@ -44,4 +45,11 @@ export function calculateVbucks(queryProfile: FullQueryProfile<'common_core'>) {
   );
 
   return vbucksItems.reduce((acc, x) => acc + x.quantity, 0);
+}
+
+// Temporary solution to avoid showing multiple toasts when the system logs the user out
+export function shouldErrorBeIgnored(error: unknown) {
+  if (error instanceof EpicAPIError) {
+    if (error.errorCode === 'errors.com.epicgames.account.invalid_account_credentials') return true;
+  }
 }
