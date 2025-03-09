@@ -31,7 +31,8 @@ const tauriKy = ky.create({
 
     return new Response(data ? JSON.stringify(data) : null, response);
   },
-  retry: 0
+  retry: 0,
+  timeout: 20000
 });
 
 export default tauriKy;
