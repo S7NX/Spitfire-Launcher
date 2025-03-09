@@ -26,6 +26,10 @@ export default class MCPManager {
     ).json();
   }
 
+  static async queryProfile<T extends MCPProfileId>(account: AccountData, profile: T) {
+    return this.compose<FullQueryProfile<T>>(account, 'QueryProfile', profile, {});
+  }
+
   static async queryPublicProfile<T extends Extract<MCPProfileId, 'campaign' | 'common_public'>>(account: AccountData, targetAccountId: string, profile: T) {
     // todo: temporary solution
     return this.compose<FullQueryProfile<T>>(account, 'QueryPublicProfile', profile, { _targetAccountId: targetAccountId });
