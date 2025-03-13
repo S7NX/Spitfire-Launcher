@@ -3,22 +3,26 @@
   import UserIcon from 'lucide-svelte/icons/user';
   import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
   import { accountsStore } from '$lib/stores';
+  import type { AccountData } from '$types/accounts';
 
   type Props = {
+    customList?: AccountData[];
+  } & ({
     type: 'single';
     selected?: string;
   } | {
     type: 'multiple';
     selected?: string[];
-  };
+  });
 
   let {
+    customList,
     type = 'multiple',
     selected = $bindable()
   }: Props = $props();
 
-  const { allAccounts } = $derived($accountsStore);
-  const items = $derived(allAccounts.map((account) => ({
+  const accountList = $derived(customList || $accountsStore.allAccounts);
+  const items = $derived(accountList.map((account) => ({
     value: account.accountId,
     label: account.displayName
   })));
@@ -27,13 +31,13 @@
     if (!selected?.length) return;
 
     if (typeof selected === 'string') {
-      const isValid = allAccounts.some(account => account.accountId === selected);
+      const isValid = accountList.some(account => account.accountId === selected);
       if (!isValid) selected = undefined;
     }
 
     if (Array.isArray(selected)) {
       const filtered = selected.filter(accountId =>
-        allAccounts.some(account => account.accountId === accountId)
+        accountList.some(account => account.accountId === accountId)
       );
 
       if (filtered.length !== selected.length) {
@@ -48,11 +52,11 @@
   );
 
   function getAccountName(accountId: string) {
-    return allAccounts.find((account) => account.accountId === accountId)?.displayName;
+    return accountList.find((account) => account.accountId === accountId)?.displayName;
   }
 </script>
 
-<Select {items} {type} bind:value={selected as never}>
+<Select disabled={!accountList.length} {items} {type} bind:value={selected as never}>
   {#snippet trigger()}
     <UserIcon class="text-muted-foreground size-5 mr-2"/>
     <span class="text-muted-foreground">{selectedAccounts}</span>

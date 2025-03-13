@@ -23,6 +23,7 @@
       name: 'BR & STW',
       expanded: true,
       items: [
+        { name: 'Auto-Kick', href: '/br-stw/auto-kick' },
         { name: 'Item Shop', href: '/br-stw/item-shop' },
         { name: 'Earned XP', href: '/br-stw/earned-xp' },
         { name: 'STW Shop', href: '/br-stw/stw-shop' },

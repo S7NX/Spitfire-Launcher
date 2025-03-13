@@ -1,5 +1,6 @@
 <script lang="ts">
   import '../app.css';
+  import 'webrtc-adapter';
   import Sidebar from '$components/Sidebar.svelte';
   import Header from '$components/header/Header.svelte';
   import { Toaster } from 'svelte-sonner';
@@ -16,13 +17,28 @@
   import { getWorldInfoData, parseWorldInfo } from '$lib/core/stw/worldInfo';
   import { worldInfoCache } from '$lib/stores';
   import { dev } from '$app/environment';
+  import Automation from '$lib/core/managers/automation/base';
 
   const { children } = $props();
 
   let newVersionTag = $state<string>();
   let downloadUrl = $state<string>();
 
+  function disableF5(e: KeyboardEvent) {
+    // TODO: F5 prevents page data functions from being called, disabled until I find a better solution
+    if (e.key === 'F5' && !dev) e.preventDefault();
+  }
+
+  async function handleWorldInfo() {
+    const worldInfoData = await getWorldInfoData();
+    const parsedWorldInfo = parseWorldInfo(worldInfoData);
+    worldInfoCache.set(parsedWorldInfo);
+  }
+
   async function checkForUpdates() {
+    const settings = await DataStorage.getSettingsFile();
+    if (!settings.app?.checkForUpdates) return;
+
     const { owner, name } = config.repository;
     const url = `https://api.github.com/repos/${owner}/${name}/releases/latest`;
 
@@ -35,22 +51,14 @@
     }
   }
 
-  function disableF5(e: KeyboardEvent) {
-    // TODO: F5 prevents page data functions from being called, disabled until I find a better solution
-    if (e.key === 'F5' && !dev) e.preventDefault();
-  }
-
-  onMount(async () => {
-    const settings = await DataStorage.getSettingsFile();
-    if (settings.app?.checkForUpdates) {
-      await checkForUpdates();
-    }
-
-    const worldInfoData = await getWorldInfoData();
-    const parsedWorldInfo = parseWorldInfo(worldInfoData);
-    worldInfoCache.set(parsedWorldInfo);
-
+  onMount(() => {
     document.addEventListener('keydown', disableF5);
+
+    Promise.allSettled([
+      Automation.loadAccounts(),
+      handleWorldInfo(),
+      checkForUpdates()
+    ]);
   });
 </script>
 

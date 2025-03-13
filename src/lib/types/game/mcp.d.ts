@@ -16,6 +16,7 @@ export type MCPOperation =
   | 'ClaimCollectedResources'
   | 'ClaimCollectionBookPageRewards'
   | 'ClaimCollectionBookRewards'
+  | 'ClaimDifficultyIncreaseRewards'
   | 'ClaimImportFriendsReward'
   | 'ClaimLoginReward'
   | 'ClaimMfaEnabled'
@@ -239,7 +240,26 @@ export type CampaignProfileAttributes = {
       redemptionDateUtc: string;
       evictClaimDataAfterUtc: string;
     }[];
+    pendingMissionAlertRewards: {
+      tierGroupName: 'MissionAlert_Storm:4';
+      items: {
+        itemType: string;
+        quantity: number;
+      }[];
+    }
   }>;
+  difficulty_increase_rewards_record?: {
+    pendingRewards: {
+      difficultyIncreaseMissionRewards: {
+        tierGroupName: 'BluGloDifficultyTG:4';
+        items: {
+          itemType: string;
+          quantity: number;
+        }[];
+      };
+      difficultyIncreaseTier: number;
+    }[];
+  };
   rewards_claimed_post_max_level: number;
   selected_hero_loadout: string;
   loadouts: string[];

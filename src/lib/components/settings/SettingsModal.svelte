@@ -48,7 +48,7 @@
         {#each categories as category (category.id)}
           {@const CategoryComponent = category.component}
 
-          <div class="space-y-6 h-72 {activeTab === category.id ? 'block' : 'hidden'}">
+          <div class="space-y-6 {activeTab === category.id ? 'block' : 'hidden'}">
             <CategoryComponent/>
           </div>
         {/each}

@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
+import path from 'node:path'
 
-// @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
@@ -31,6 +31,11 @@ export default defineConfig(async () => ({
     },
     fs: {
       allow: ['./package.json']
+    }
+  },
+  resolve: {
+    alias: {
+      events: path.resolve(__dirname, 'node_modules/eventemitter3')
     }
   }
 }));

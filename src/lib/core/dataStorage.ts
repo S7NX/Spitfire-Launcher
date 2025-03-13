@@ -5,8 +5,8 @@ import { dev } from '$app/environment';
 import config from '$lib/config';
 import { accountDataFileSchema } from '$lib/validations/accounts';
 import type { AccountDataFile } from '$types/accounts';
-import { allSettingsSchema } from '$lib/validations/settings';
-import type { AllSettings, DeviceAuthsSettings } from '$types/settings';
+import { allSettingsSchema, automationSettingsSchema } from '$lib/validations/settings';
+import type { AllSettings, AutomationSettings, DeviceAuthsSettings } from '$types/settings';
 
 export const ACCOUNTS_FILE_PATH = dev ? 'accounts-dev.json' : 'accounts.json';
 export const ACCOUNTS_INITIAL_DATA: AccountDataFile = {
@@ -16,6 +16,7 @@ export const ACCOUNTS_INITIAL_DATA: AccountDataFile = {
 export const SETTINGS_FILE_PATH = dev ? 'settings-dev.json' : 'settings.json';
 export const SETTINGS_INITIAL_DATA: AllSettings = {
   app: {
+    missionCheckInterval: 5,
     hideToTray: false,
     checkForUpdates: true
   },
@@ -25,9 +26,13 @@ export const SETTINGS_INITIAL_DATA: AllSettings = {
 export const DEVICE_AUTHS_FILE_PATH = dev ? 'device-auths-dev.json' : 'device-auths.json';
 export const DEVICE_AUTHS_INITIAL_DATA: DeviceAuthsSettings = [];
 
+export const AUTOMATION_FILE_PATH = dev ? 'automation-dev.json' : 'automation.json';
+export const AUTOMATION_INITIAL_DATA: AutomationSettings = [];
+
 let dataDirectoryCache: string;
 let accountsFileCache: AccountDataFile;
 let settingsFileCache: AllSettings;
+let automationFileCache: AutomationSettings;
 
 export default class DataStorage {
   static async getAccountsFile(bypassCache = false) {
@@ -52,24 +57,33 @@ export default class DataStorage {
     return parseResult.success ? parseResult.data : SETTINGS_INITIAL_DATA;
   }
 
-  static async getDeviceAuthsFile() {
-    return await DataStorage.getConfigFile<DeviceAuthsSettings>(DEVICE_AUTHS_FILE_PATH, DEVICE_AUTHS_INITIAL_DATA);
+  static getDeviceAuthsFile() {
+    return DataStorage.getConfigFile<DeviceAuthsSettings>(DEVICE_AUTHS_FILE_PATH, DEVICE_AUTHS_INITIAL_DATA);
+  }
+
+  static async getAutomationFile() {
+    if (automationFileCache) return automationFileCache;
+
+    const file = await DataStorage.getConfigFile<AutomationSettings>(AUTOMATION_FILE_PATH, AUTOMATION_INITIAL_DATA);
+
+    const parseResult = automationSettingsSchema.safeParse(file);
+    if (parseResult.success) automationFileCache = parseResult.data;
+
+    return parseResult.success ? parseResult.data : AUTOMATION_INITIAL_DATA;
   }
 
   static async writeConfigFile<T = any>(pathString: string, data: Partial<T>) {
-    const cleanData = Object.fromEntries(
-      Object.entries(data)
-    ) as Partial<T>;
-
     const configFilePath = await path.join(await DataStorage.getDataDirectory(), pathString);
     const currentData: any = await DataStorage.getConfigFile(pathString);
 
-    const newData = Object.assign(currentData, cleanData);
+    const newData = !Array.isArray(data) ? Object.assign(currentData, data) : data;
 
     if (pathString === ACCOUNTS_FILE_PATH) {
       accountsFileCache = newData;
     } else if (pathString === SETTINGS_FILE_PATH) {
       settingsFileCache = newData;
+    } else if (pathString === AUTOMATION_FILE_PATH) {
+      automationFileCache = newData;
     }
 
     await writeTextFile(configFilePath, JSON.stringify(newData, null, 4));

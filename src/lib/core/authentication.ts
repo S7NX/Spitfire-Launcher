@@ -11,10 +11,16 @@ import { goto } from '$app/navigation';
 export default class Authentication {
   static async verifyOrRefreshAccessToken(
     deviceAuthData: DeviceAuthData,
-    accessToken?: string
+    accessToken?: string,
+    bypassCache = false
   ): Promise<ReturnType<typeof Authentication.verifyAccessToken>> {
-    accessToken ??= getAccessTokenFromCache(deviceAuthData.accountId)?.access_token;
+    const cache = getAccessTokenFromCache(deviceAuthData.accountId);
+    accessToken ??= cache?.access_token;
+
     if (!accessToken) return await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false);
+
+    if (!bypassCache && cache)
+      return cache;
 
     try {
       return await this.verifyAccessToken(accessToken);

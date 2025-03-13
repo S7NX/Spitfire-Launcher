@@ -41,6 +41,9 @@
 
     isLoading = true;
 
+    lookupData = undefined;
+    stwData = undefined;
+
     const isAccountId = searchQuery.length === 32;
 
     try {
@@ -49,6 +52,8 @@
         : await LookupManager.fetchByName(activeAccount, searchQuery);
 
       try {
+        if (!internalLookupData.id) return;
+
         const queryPublicProfile = await MCPManager.queryPublicProfile(activeAccount, internalLookupData.id, 'campaign');
         const profile = queryPublicProfile.profileChanges[0].profile;
         const attributes = profile.stats.attributes;

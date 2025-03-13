@@ -43,7 +43,7 @@
 
     const newName = (event.target as HTMLSpanElement).textContent?.trim() || null;
 
-    const timeoutId = setTimeout(() => {
+    const timeoutId = window.setTimeout(() => {
       saveDeviceName(deviceId, newName);
     }, 1000);
 

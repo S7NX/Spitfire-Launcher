@@ -5,7 +5,7 @@
 
   const inputVariants = tv({
     base:
-      'w-full px-4 py-2 text-sm rounded-md transition-all border border-input disabled:opacity-50 focus:ring-offset-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-foreground',
+      'w-full px-4 py-2 text-sm rounded-md transition-all border border-input appearance-none disabled:opacity-50 focus:ring-offset-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-foreground',
     variants: {
       variant: {
         primary: 'bg-background text-background-foreground',

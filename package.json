@@ -32,8 +32,10 @@
     "bits-ui": "^1.3.6",
     "clsx": "^2.1.1",
     "eslint-plugin-svelte": "^3.0.3",
+    "eventemitter3": "^5.0.1",
     "ky": "^1.7.5",
     "lucide-svelte": "^0.479.0",
+    "stanza": "^12.21.0",
     "svelte": "5.20.5",
     "svelte-check": "^4.1.5",
     "svelte-sonner": "^0.3.28",
@@ -45,11 +47,15 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.0",
     "vite": "^6.2.1",
+    "webrtc-adapter": "^9.0.1",
     "zod": "^3.24.2"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
     ]
+  },
+  "patchedDependencies": {
+    "stanza@12.21.0": "patches/stanza@12.21.0.patch"
   }
 }

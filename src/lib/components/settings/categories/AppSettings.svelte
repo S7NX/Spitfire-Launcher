@@ -98,6 +98,19 @@
     />
   </SettingTextInputItem>
 
+  <SettingTextInputItem
+    description="Checks every {allSettings?.app?.missionCheckInterval} seconds if you are in a STW mission. Used with the auto-kick feature."
+    title="Mission Check Interval"
+  >
+    <Input
+      max={10}
+      min={1}
+      oninput={(e) => handleSettingChange(e, 'app', 'missionCheckInterval')}
+      type="number"
+      value={allSettings?.app?.missionCheckInterval}
+    />
+  </SettingTextInputItem>
+
   <SettingItem title="Hide to system tray">
     <Switch
       checked={allSettings?.app?.hideToTray}

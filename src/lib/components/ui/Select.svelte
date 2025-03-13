@@ -3,12 +3,13 @@
   import CheckIcon from 'lucide-svelte/icons/check';
   import type { Snippet } from 'svelte';
   import { cn } from '$lib/utils';
+  import type { ClassValue } from 'svelte/elements';
 
   type Props = WithoutChildren<Select.RootProps> & {
     items: { value: string; label: string; disabled?: boolean }[];
     contentProps?: WithoutChildren<Select.ContentProps>;
     trigger: Snippet<[label?: string]>;
-    triggerClass?: string;
+    triggerClass?: ClassValue;
   };
 
   let {
@@ -31,7 +32,7 @@
 <Select.Root bind:open bind:value {...restProps}>
   <Select.Trigger
     class={cn(
-      'border p-2 rounded-lg flex items-center min-w-64 whitespace-nowrap overflow-hidden',
+      'border p-2 rounded-lg flex items-center min-w-64 whitespace-nowrap overflow-hidden disabled:cursor-not-allowed disabled:opacity-50',
       triggerClass
     )}>
     {@render trigger(label)}

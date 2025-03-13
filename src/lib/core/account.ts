@@ -3,6 +3,7 @@ import { get } from 'svelte/store';
 import { accountsStore, activeAccountId } from '$lib/stores';
 import type { AccountData, AccountDataFile } from '$types/accounts';
 import DeviceAuthManager from '$lib/core/managers/deviceAuth';
+import AutomationBase from '$lib/core/managers/automation/base';
 
 export default class Account {
   static async changeActiveAccount(id: string | null) {
@@ -50,6 +51,8 @@ export default class Account {
       activeAccount: newAccounts.find(account => account.accountId === newAccountId) || null,
       allAccounts: newAccounts
     });
+
+    if (targetAccountId) AutomationBase.removeAccount(targetAccountId);
 
     if (oldActiveAccount?.deviceId)
       DeviceAuthManager.delete(oldActiveAccount, oldActiveAccount.deviceId).catch(console.error);

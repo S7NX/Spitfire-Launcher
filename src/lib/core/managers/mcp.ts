@@ -1,5 +1,5 @@
 import type { AccountData } from '$types/accounts';
-import tauriKy from '$lib/core/services/tauriKy';
+import baseGameService from '$lib/core/services/baseGame';
 import Authentication from '$lib/core/authentication';
 import type { FullQueryProfile, MCPOperation, MCPProfileId } from '$types/game/mcp';
 
@@ -15,8 +15,8 @@ export default class MCPManager {
       delete data._targetAccountId;
     }
 
-    return tauriKy.post<T>(
-      `https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/game/v2/profile/${accountId}/${route}/${operation}?profileId=${profile}&rvn=-1`,
+    return baseGameService.post<T>(
+      `profile/${accountId}/${route}/${operation}?profileId=${profile}&rvn=-1`,
       {
         headers: {
           Authorization: `Bearer ${access_token}`
@@ -31,7 +31,16 @@ export default class MCPManager {
   }
 
   static async queryPublicProfile<T extends Extract<MCPProfileId, 'campaign' | 'common_public'>>(account: AccountData, targetAccountId: string, profile: T) {
-    // todo: temporary solution
-    return this.compose<FullQueryProfile<T>>(account, 'QueryPublicProfile', profile, { _targetAccountId: targetAccountId });
+    const { access_token } = await Authentication.verifyOrRefreshAccessToken(account);
+
+    return baseGameService.post<FullQueryProfile<T>>(
+      `profile/${targetAccountId}/public/QueryPublicProfile?profileId=${profile}&rvn=-1`,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        },
+        json: {}
+      }
+    ).json();
   }
 }
