@@ -5,6 +5,7 @@
   import Authentication from '$lib/core/authentication';
   import { toast } from 'svelte-sonner';
   import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
+  import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
@@ -20,7 +21,7 @@
 
       const { code } = await Authentication.getExchangeCodeUsingAccessToken(access_token);
 
-      await navigator.clipboard.writeText(code);
+      await writeText(code);
       toast.success('Generated and copied to clipboard', { id: toastId });
     } catch (error) {
       if (shouldErrorBeIgnored(error)) {

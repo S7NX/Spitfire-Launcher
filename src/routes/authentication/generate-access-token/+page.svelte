@@ -5,6 +5,7 @@
   import Authentication from '$lib/core/authentication';
   import { toast } from 'svelte-sonner';
   import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
+  import { writeText } from '@tauri-apps/plugin-clipboard-manager';
   import Select from '$components/ui/Select.svelte';
   import KeyRound from 'lucide-svelte/icons/key-round';
   import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
@@ -39,7 +40,7 @@
         accessTokenData = await Authentication.getAccessTokenUsingExchangeCode(code, client, selectedTokenType);
       }
 
-      await navigator.clipboard.writeText(accessTokenData.access_token);
+      await writeText(accessTokenData.access_token);
       toast.success('Generated and copied to clipboard', { id: toastId });
     } catch (error) {
       if (shouldErrorBeIgnored(error)) {
