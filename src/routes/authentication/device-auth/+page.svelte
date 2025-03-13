@@ -18,7 +18,7 @@
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
-  let deviceAuths = $state<Omit<EpicDeviceAuthData, 'secret'>[]>([]);
+  let deviceAuths = $state<EpicDeviceAuthData[]>([]);
   let isFetching = $state(false);
   let isGenerating = $state(false);
   let isDeleting = $state(false);
@@ -226,15 +226,18 @@
                   {/if}
                 </div>
 
-                <span class="text-sm flex flex-col">
-                  <span class="font-semibold">ID:</span>
-                  <span class="text-muted-foreground">{auth.deviceId}</span>
-                </span>
-
-                <span class="text-sm flex flex-col">
-                  <span class="font-semibold">User-Agent:</span>
-                  <span class="text-muted-foreground">{auth.userAgent}</span>
-                </span>
+                {#each [
+                  { title: 'ID', value: auth.deviceId },
+                  { title: 'User-Agent', value: auth.userAgent },
+                  { title: 'Secret', value: auth.secret }
+                ] as { title, value } (title)}
+                  {#if value}
+                    <span class="text-sm flex flex-col">
+                      <span class="font-semibold">{title}:</span>
+                      <span class="text-muted-foreground">{value}</span>
+                    </span>
+                  {/if}
+                {/each}
 
                 {#each [
                   { title: 'Created', data: auth.created },
