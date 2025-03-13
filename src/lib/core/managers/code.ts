@@ -5,7 +5,7 @@ import Authentication from '$lib/core/authentication';
 
 export default class CodeManager {
   static async redeem(account: AccountData, code: string) {
-    const { access_token } = await Authentication.verifyOrRefreshAccessToken(account);
+    const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
 
     code = encodeURIComponent(code.toUpperCase().replaceAll('-', '').replaceAll('_', '').trim());
 
@@ -13,7 +13,7 @@ export default class CodeManager {
       `accounts/${account.accountId}/codes/${code}`,
       {
         headers: {
-          Authorization: `Bearer ${access_token}`
+          Authorization: `Bearer ${accessToken}`
         },
         json: {}
       }

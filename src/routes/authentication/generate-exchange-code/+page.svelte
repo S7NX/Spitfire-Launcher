@@ -17,9 +17,8 @@
     const toastId = toast.loading('Generating an exchange code...');
 
     try {
-      const { access_token } = await Authentication.verifyOrRefreshAccessToken(activeAccount);
-
-      const { code } = await Authentication.getExchangeCodeUsingAccessToken(access_token);
+      const accessToken = await Authentication.verifyOrRefreshAccessToken(activeAccount);
+      const { code } = await Authentication.getExchangeCodeUsingAccessToken(accessToken);
 
       await writeText(code);
       toast.success('Generated and copied to clipboard', { id: toastId });

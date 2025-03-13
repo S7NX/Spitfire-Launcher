@@ -13,19 +13,19 @@ export default class Authentication {
     deviceAuthData: DeviceAuthData,
     accessToken?: string,
     bypassCache = false
-  ): Promise<ReturnType<typeof Authentication.verifyAccessToken>> {
+  ) {
     const cache = getAccessTokenFromCache(deviceAuthData.accountId);
     accessToken ??= cache?.access_token;
 
-    if (!accessToken) return await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false);
+    if (!accessToken) return (await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false)).access_token;
 
     if (!bypassCache && cache)
-      return cache;
+      return cache.access_token;
 
     try {
-      return await this.verifyAccessToken(accessToken);
+      return (await this.verifyAccessToken(accessToken)).access_token;
     } catch (error) {
-      return await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false);
+      return (await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false)).access_token;
     }
   }
 

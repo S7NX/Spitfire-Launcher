@@ -5,7 +5,7 @@ import type { FullQueryProfile, MCPOperation, MCPProfileId } from '$types/game/m
 
 export default class MCPManager {
   static async compose<T>(account: AccountData, operation: MCPOperation, profile: MCPProfileId, data: Record<string, any>) {
-    const { access_token } = await Authentication.verifyOrRefreshAccessToken(account);
+    const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
 
     const route = operation === 'QueryPublicProfile' ? 'public' : 'client';
     let accountId = account.accountId;
@@ -19,7 +19,7 @@ export default class MCPManager {
       `profile/${accountId}/${route}/${operation}?profileId=${profile}&rvn=-1`,
       {
         headers: {
-          Authorization: `Bearer ${access_token}`
+          Authorization: `Bearer ${accessToken}`
         },
         json: data
       }
@@ -31,13 +31,13 @@ export default class MCPManager {
   }
 
   static async queryPublicProfile<T extends Extract<MCPProfileId, 'campaign' | 'common_public'>>(account: AccountData, targetAccountId: string, profile: T) {
-    const { access_token } = await Authentication.verifyOrRefreshAccessToken(account);
+    const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
 
     return baseGameService.post<FullQueryProfile<T>>(
       `profile/${targetAccountId}/public/QueryPublicProfile?profileId=${profile}&rvn=-1`,
       {
         headers: {
-          Authorization: `Bearer ${access_token}`
+          Authorization: `Bearer ${accessToken}`
         },
         json: {}
       }

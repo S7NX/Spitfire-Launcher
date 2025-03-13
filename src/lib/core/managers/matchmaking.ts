@@ -5,13 +5,13 @@ import type { AccountData } from '$types/accounts';
 
 export default class MatchmakingManager {
   static async findPlayer(account: AccountData, accountToFind: string) {
-    const { access_token } = await Authentication.verifyOrRefreshAccessToken(account);
+    const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
 
     return matchmakingService.get<MatchmakingTrackResponse>(
       `findPlayer/${accountToFind}`,
       {
         headers: {
-          Authorization: `Bearer ${access_token}`
+          Authorization: `Bearer ${accessToken}`
         }
       }
     ).json();

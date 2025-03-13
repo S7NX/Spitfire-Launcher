@@ -17,9 +17,8 @@
     const toastId = toast.loading('Opening Epic Games website...');
 
     try {
-      const { access_token } = await Authentication.verifyOrRefreshAccessToken(activeAccount);
-
-      const { code: exchangeCode } = await Authentication.getExchangeCodeUsingAccessToken(access_token);
+      const accessToken = await Authentication.verifyOrRefreshAccessToken(activeAccount);
+      const { code: exchangeCode } = await Authentication.getExchangeCodeUsingAccessToken(accessToken);
 
       await openUrl(`https://www.epicgames.com/id/exchange?exchangeCode=${exchangeCode}`);
       toast.success('Opened Epic Games website', { id: toastId });
