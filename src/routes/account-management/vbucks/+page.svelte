@@ -38,6 +38,7 @@
       }
     }));
 
+    selectedAccounts = [];
     doingBulkOperations.set(false);
     isFetching = false;
   }
@@ -46,7 +47,7 @@
 <CenteredPageContent>
   <h2 class="text-lg font-medium">V-Bucks Information</h2>
 
-  <AccountSelect type="multiple" bind:selected={selectedAccounts}/>
+  <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 
   <Button
     class="flex justify-center items-center gap-x-2 mt-2"

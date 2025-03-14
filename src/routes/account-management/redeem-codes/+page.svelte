@@ -75,6 +75,7 @@
     }));
 
     codesToRedeem = [];
+    selectedAccounts = [];
     doingBulkOperations.set(false);
     isRedeeming = false;
   }
@@ -83,7 +84,7 @@
 <CenteredPageContent>
   <h2 class="text-lg font-medium">Redeem Codes</h2>
 
-  <AccountSelect type="multiple" bind:selected={selectedAccounts}/>
+  <AccountSelect disabled={isRedeeming} type="multiple" bind:selected={selectedAccounts}/>
 
   <TagInput
     placeholder="Enter codes to redeem and press Enter"
@@ -130,7 +131,7 @@
         {#snippet content(status)}
           <div class="overflow-hidden text-sm mt-1 bg-muted-foreground/5 p-2">
             {#each status.codes as { code, error } (code)}
-              <div class="flex items-center gap-1.5 py-1 truncate">
+              <div class="flex items-center gap-1 py-1 truncate">
                 <span class="font-medium">{code}:</span>
                 <span class="truncate {error ? 'text-red-500' : 'text-green-500'}">{error || 'Redeemed'}</span>
               </div>

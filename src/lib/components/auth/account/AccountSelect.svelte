@@ -7,6 +7,7 @@
 
   type Props = {
     customList?: AccountData[];
+    disabled?: boolean;
   } & ({
     type: 'single';
     selected?: string;
@@ -18,7 +19,8 @@
   let {
     customList,
     type = 'multiple',
-    selected = $bindable()
+    selected = $bindable(),
+    disabled
   }: Props = $props();
 
   const accountList = $derived(customList || $accountsStore.allAccounts);
@@ -56,7 +58,7 @@
   }
 </script>
 
-<Select disabled={!accountList.length} {items} {type} bind:value={selected as never}>
+<Select disabled={disabled || !accountList.length} {items} {type} bind:value={selected as never}>
   {#snippet trigger()}
     <UserIcon class="text-muted-foreground size-5 mr-2"/>
     <span class="text-muted-foreground">{selectedAccounts}</span>

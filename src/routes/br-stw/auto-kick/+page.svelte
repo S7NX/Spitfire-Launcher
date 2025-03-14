@@ -96,8 +96,7 @@
                   automationAccount.status === 'ACTIVE' && 'bg-green-500',
                   automationAccount.status === 'INVALID_CREDENTIALS' && 'bg-red-500'
                 )}></div>
-              <span class="font-medium">{allAccounts.find((a) => a.accountId === automationAccount.accountId)?.displayName || automationAccount.accountId}
-              </span>
+              <span class="font-medium">{allAccounts.find((a) => a.accountId === automationAccount.accountId)?.displayName || automationAccount.accountId}</span>
             </div>
 
             <Button
