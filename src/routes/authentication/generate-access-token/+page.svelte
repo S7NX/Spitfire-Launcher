@@ -25,7 +25,9 @@
   const allClients = [fortniteAndroidGameClient, fortnitePCGameClient, launcherAppClient2];
   const clientOptions = allClients.map(client => ({ value: client.clientId, label: client.name }));
 
-  async function generateAccessToken() {
+  async function generateAccessToken(event: SubmitEvent) {
+    event.preventDefault();
+
     generateButtonDisabled = true;
 
     const toastId = toast.loading('Generating an access token...');
@@ -59,27 +61,28 @@
 <CenteredPageContent>
   <h2 class="text-lg font-medium">Access Token</h2>
 
-  <Select items={tokenTypeOptions} type="single" bind:value={selectedTokenType}>
-    {#snippet trigger(label)}
-      <KeyRound class="text-muted-foreground size-5 mr-2"/>
-      <span class="text-muted-foreground">{label || 'Select token type'}</span>
-      <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
-    {/snippet}
-  </Select>
+  <form class="flex flex-col gap-y-4" onsubmit={generateAccessToken}>
+    <Select items={tokenTypeOptions} type="single" bind:value={selectedTokenType}>
+      {#snippet trigger(label)}
+        <KeyRound class="text-muted-foreground size-5 mr-2"/>
+        <span class="text-muted-foreground">{label || 'Select token type'}</span>
+        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
+      {/snippet}
+    </Select>
 
-  <Select items={clientOptions} type="single" bind:value={selectedClient}>
-    {#snippet trigger(label)}
-      <KeyRound class="text-muted-foreground size-5 mr-2"/>
-      <span class="text-muted-foreground">{label || 'Select client'}</span>
-      <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
-    {/snippet}
-  </Select>
+    <Select items={clientOptions} type="single" bind:value={selectedClient}>
+      {#snippet trigger(label)}
+        <KeyRound class="text-muted-foreground size-5 mr-2"/>
+        <span class="text-muted-foreground">{label || 'Select client'}</span>
+        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
+      {/snippet}
+    </Select>
 
-  <Button
-    disabled={generateButtonDisabled || !selectedTokenType || !selectedClient}
-    onclick={generateAccessToken}
-    variant="epic"
-  >
-    Generate Access Token
-  </Button>
+    <Button
+      disabled={generateButtonDisabled || !selectedTokenType || !selectedClient}
+      variant="epic"
+    >
+      Generate Access Token
+    </Button>
+  </form>
 </CenteredPageContent>

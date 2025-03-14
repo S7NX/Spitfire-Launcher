@@ -37,8 +37,10 @@
   async function lookupPlayer(event: SubmitEvent) {
     event.preventDefault();
 
-    if (!searchQuery?.trim())
-      return toast.error('Please enter a name or ID to search');
+    if (!searchQuery?.trim()) {
+      toast.error('Please enter a name or ID to search');
+      return;
+    }
 
     isLoading = true;
 

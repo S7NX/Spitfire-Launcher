@@ -13,7 +13,9 @@
   let customStatus = $state<string>();
   let setStatusButtonDisabled = $state(false);
 
-  async function setCustomStatus() {
+  async function setCustomStatus(event: SubmitEvent) {
+    event.preventDefault();
+
     if (!customStatus?.trim()) {
       toast.error('Please enter a custom status');
       return;
@@ -53,18 +55,20 @@
       <br> Restart the launcher to reset the status.
     </p>
 
-    <Input
-      placeholder="Enter your custom status"
-      bind:value={customStatus}
-    />
+    <form class="flex flex-col gap-y-2" onsubmit={setCustomStatus}>
+      <Input
+        placeholder="Enter your custom status"
+        bind:value={customStatus}
+      />
 
-    <Button
-      class="mt-2"
-      disabled={setStatusButtonDisabled || !customStatus?.trim()}
-      onclick={setCustomStatus}
-      variant="epic"
-    >
-      Set Status
-    </Button>
+      <Button
+        class="mt-2"
+        disabled={setStatusButtonDisabled || !customStatus?.trim()}
+        type="submit"
+        variant="epic"
+      >
+        Set Status
+      </Button>
+    </form>
   </div>
 </CenteredPageContent>

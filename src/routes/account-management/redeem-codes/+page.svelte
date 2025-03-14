@@ -31,7 +31,9 @@
     'errors.com.epicgames.coderedemption.code_used': 'Code already used'
   };
 
-  async function redeemCodes() {
+  async function redeemCodes(event: SubmitEvent) {
+    event.preventDefault();
+
     isRedeeming = true;
     doingBulkOperations.set(true);
 
@@ -86,24 +88,25 @@
 
   <AccountSelect disabled={isRedeeming} type="multiple" bind:selected={selectedAccounts}/>
 
-  <TagInput
-    placeholder="Enter codes to redeem and press Enter"
-    bind:items={codesToRedeem}
-  />
+  <form class="flex flex-col gap-2 w-full" onsubmit={redeemCodes}>
+    <TagInput
+      placeholder="Enter codes to redeem and press Enter"
+      bind:items={codesToRedeem}
+    />
 
-  <Button
-    class="flex justify-center items-center gap-x-2 mt-2"
-    disabled={!selectedAccounts?.length || !codesToRedeem.length || isRedeeming}
-    onclick={redeemCodes}
-    variant="epic"
-  >
-    {#if isRedeeming}
-      <LoaderCircleIcon class="size-6 animate-spin"/>
-      Redeeming
-    {:else}
-      Redeem Codes
-    {/if}
-  </Button>
+    <Button
+      class="flex justify-center items-center gap-x-2 mt-2"
+      disabled={!selectedAccounts?.length || !codesToRedeem.length || isRedeeming}
+      variant="epic"
+    >
+      {#if isRedeeming}
+        <LoaderCircleIcon class="size-6 animate-spin"/>
+        Redeeming
+      {:else}
+        Redeem Codes
+      {/if}
+    </Button>
+  </form>
 
   {#if !isRedeeming && codeStatuses.length}
     <div class="mt-2 w-full max-w-2xl">

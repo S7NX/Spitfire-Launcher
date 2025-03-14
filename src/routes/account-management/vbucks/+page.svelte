@@ -19,7 +19,9 @@
   let isFetching = $state(false);
   let vbucksStatuses = $state<VbucksStatuses>([]);
 
-  async function handleSubmit() {
+  async function fetchVbucksData(event: SubmitEvent) {
+    event.preventDefault();
+
     isFetching = true;
     doingBulkOperations.set(true);
 
@@ -47,21 +49,22 @@
 <CenteredPageContent>
   <h2 class="text-lg font-medium">V-Bucks Information</h2>
 
-  <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
+  <form class="flex flex-col gap-y-2" onsubmit={fetchVbucksData}>
+    <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 
-  <Button
-    class="flex justify-center items-center gap-x-2 mt-2"
-    disabled={!selectedAccounts?.length || isFetching}
-    onclick={handleSubmit}
-    variant="epic"
-  >
-    {#if isFetching}
-      <LoaderCircleIcon class="size-6 animate-spin"/>
-      Loading V-Bucks information
-    {:else}
-      Get V-Bucks Information
-    {/if}
-  </Button>
+    <Button
+      class="flex justify-center items-center gap-x-2 mt-2"
+      disabled={!selectedAccounts?.length || isFetching}
+      variant="epic"
+    >
+      {#if isFetching}
+        <LoaderCircleIcon class="size-6 animate-spin"/>
+        Loading V-Bucks information
+      {:else}
+        Get V-Bucks Information
+      {/if}
+    </Button>
+  </form>
 
   {#if !isFetching && vbucksStatuses.length}
     <div class="mt-2 w-full max-w-2xl">
