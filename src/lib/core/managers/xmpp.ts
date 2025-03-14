@@ -29,16 +29,14 @@ export default class XMPPManager {
   private connection?: XMPP.Agent;
   private listeners: { [K in keyof EventMap]?: Array<(data: EventMap[K]) => void> } = {};
 
-  constructor(private account: AccountOptions) {
-    if (existingConnections[this.account.accountId]) {
-      existingConnections[this.account.accountId].disconnect();
-    }
-
-    existingConnections[this.account.accountId] = this;
-  }
+  constructor(private account: AccountOptions) {}
 
   async connect() {
-    if (this.connection) this.disconnect();
+    const existingConnection = existingConnections[this.account.accountId];
+    if (existingConnection) {
+      this.connection = existingConnection.connection;
+      return;
+    }
 
     const server = 'prod.ol.epicgames.com';
 
@@ -138,6 +136,19 @@ export default class XMPPManager {
       if (events.includes(type)) {
         this.dispatchEvent(body.type, body);
       }
+    });
+  }
+
+  setStatus(status: string, onlineType: 'online' | 'away' | 'chat' | 'dnd' | 'xa' = 'online') {
+    if (!this.connection) throw new Error('Connection not established');
+
+    return this.connection.sendPresence({
+      status: JSON.stringify({
+        Status: status,
+        bIsPlaying: false,
+        bIsJoinable: false
+      }),
+      show: onlineType === 'online' ? undefined : onlineType
     });
   }
 
