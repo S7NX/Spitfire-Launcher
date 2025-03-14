@@ -54,21 +54,21 @@
       Set a custom status that will be displayed to your friends.
       <br> Restart the launcher to reset the status.
     </p>
-
-    <form class="flex flex-col gap-y-2" onsubmit={setCustomStatus}>
-      <Input
-        placeholder="Enter your custom status"
-        bind:value={customStatus}
-      />
-
-      <Button
-        class="mt-2"
-        disabled={setStatusButtonDisabled || !customStatus?.trim()}
-        type="submit"
-        variant="epic"
-      >
-        Set Status
-      </Button>
-    </form>
   </div>
+
+  <form class="flex flex-col gap-y-2" onsubmit={setCustomStatus}>
+    <Input
+      placeholder="Enter your custom status"
+      bind:value={customStatus}
+    />
+
+    <Button
+      class="mt-2"
+      disabled={setStatusButtonDisabled || !customStatus?.trim()}
+      type="submit"
+      variant="epic"
+    >
+      Set Status
+    </Button>
+  </form>
 </CenteredPageContent>

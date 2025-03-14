@@ -1,0 +1,344 @@
+{
+    "daily_destroyarcademachines": {
+        "name": "Daily Destroy (Arcade Machines)",
+        "limit": 3,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_destroybears": {
+        "name": "Daily Destroy (Teddy Bears)",
+        "limit": 8,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_destroyfiretrucks": {
+        "name": "Daily Destroy (Fire Trucks)",
+        "limit": 3,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_destroygnomes": {
+        "name": "Daily Destroy (Garden Gnomes)",
+        "limit": 3,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_destroypropanetanks": {
+        "name": "Daily Destroy (Propane Tanks)",
+        "limit": 10,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_destroyseesaws": {
+        "name": "Daily Destroy (Park Seesaws)",
+        "limit": 6,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_destroyserverracks": {
+        "name": "Daily Destroy (Server Racks)",
+        "limit": 4,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_destroytransformers": {
+        "name": "Daily Destroy (Transformers)",
+        "limit": 2,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_destroytvs": {
+        "name": "Daily Destroy (TVs)",
+        "limit": 20,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_discovery_industriallocations": {
+        "name": "Daily Scouting Industrial Construction",
+        "limit": 3,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_discovery_rurallocations": {
+        "name": "Daily Scouting Rural",
+        "limit": 3,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_discovery_shelters": {
+        "name": "Daily Scouting Shelters",
+        "limit": 4,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_discovery_suburbanlocations": {
+        "name": "Daily Scouting Suburbia",
+        "limit": 10,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_discovery_urbanlocations": {
+        "name": "Daily Scouting Cities",
+        "limit": 8,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_explorezones": {
+        "name": "Exploration Party",
+        "limit": 3,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_high_priority": {
+        "name": "All Together Now",
+        "limit": 50,
+        "rewards": {
+            "gold": 250,
+            "mtx": 130,
+            "xp": 14000
+        }
+    },
+    "daily_huskextermination_anyhero": {
+        "name": "Husk Extermination (Any Hero)",
+        "limit": 500,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_huskextermination_constructor": {
+        "name": "Husk Extermination (Constructor)",
+        "limit": 300,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_huskextermination_melee": {
+        "name": "Husk Extermination (Melee)",
+        "limit": 300,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_huskextermination_ninja": {
+        "name": "Husk Extermination (Ninja)",
+        "limit": 300,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_huskextermination_outlander": {
+        "name": "Husk Extermination (Outlander)",
+        "limit": 300,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_huskextermination_ranged_assault": {
+        "name": "Husk Extermination (Assault Rifle)",
+        "limit": 300,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_huskextermination_ranged_pistol": {
+        "name": "Husk Extermination (Pistol)",
+        "limit": 300,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_huskextermination_ranged_shotgun": {
+        "name": "Husk Extermination (Shotgun)",
+        "limit": 300,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_huskextermination_ranged_smg": {
+        "name": "Husk Extermination (SMG)",
+        "limit": 300,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_huskextermination_ranged_sniper": {
+        "name": "Husk Extermination (Sniper Rifle)",
+        "limit": 300,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_huskextermination_soldier": {
+        "name": "Husk Extermination (Soldier)",
+        "limit": 300,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_huskextermination_trap": {
+        "name": "Husk Extermination (Trap)",
+        "limit": 150,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_mission_buildradar": {
+        "name": "Build the Radar Tower",
+        "limit": 4,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_mission_specialist_anyhero_1": {
+        "name": "Mission Specialist (Any Hero)",
+        "limit": 3,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_mission_specialist_anyhero_2": {
+        "name": "Mission Veteran (Any Hero)",
+        "limit": 5,
+        "rewards": {
+            "gold": 410,
+            "mtx": 130,
+            "xp": 14000
+        }
+    },
+    "daily_mission_specialist_constructor": {
+        "name": "Mission Specialist (Constructor)",
+        "limit": 3,
+        "rewards": {
+            "gold": 250,
+            "mtx": 90,
+            "xp": 14000
+        }
+    },
+    "daily_mission_specialist_ninja": {
+        "name": "Mission Specialist (Ninja)",
+        "limit": 3,
+        "rewards": {
+            "gold": 250,
+            "mtx": 90,
+            "xp": 14000
+        }
+    },
+    "daily_mission_specialist_outlander": {
+        "name": "Mission Specialist (Outlander)",
+        "limit": 3,
+        "rewards": {
+            "gold": 250,
+            "mtx": 90,
+            "xp": 14000
+        }
+    },
+    "daily_mission_specialist_soldier": {
+        "name": "Mission Specialist (Soldier)",
+        "limit": 3,
+        "rewards": {
+            "gold": 250,
+            "mtx": 90,
+            "xp": 14000
+        }
+    },
+    "daily_partyof50": {
+        "name": "Party of 25",
+        "limit": 25,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_safes": {
+        "name": "Playing It Safe",
+        "limit": 1,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    },
+    "daily_treasurechests": {
+        "name": "Lost Treasures",
+        "limit": 5,
+        "rewards": {
+            "gold": 250,
+            "mtx": 80,
+            "xp": 14000
+        }
+    }
+}

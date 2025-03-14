@@ -1,10 +1,11 @@
-import type { IngredientData, RarityType, ResourceData, SurvivorData, SurvivorUniqueLeadData, TrapData } from '$types/game/stw/resources';
+import type { IngredientData, RarityType, ResourceData, SurvivorData, SurvivorUniqueLeadData, TrapData, DailyQuestData } from '$types/game/stw/resources';
 
 import resourcesJson from '$lib/data/resources.json';
 import survivorsJson from '$lib/data/survivors.json';
-import survivorsMythicLeadsJson from '$lib/data/survivors-mythic-leads.json';
+import survivorsMythicLeadsJson from '$lib/data/survivorsMythicLeads.json';
 import ingredientsJson from '$lib/data/ingredients.json';
 import trapsJson from '$lib/data/traps.json';
+import dailyQuestsJson from '$lib/data/dailyQuests.json';
 
 export const RarityTypes = Object.freeze({
   Common: 'c',
@@ -46,3 +47,4 @@ export const survivors = survivorsJson as Record<string, SurvivorData>;
 export const survivorsMythicLeads = survivorsMythicLeadsJson as Record<string, SurvivorUniqueLeadData>;
 export const ingredients = ingredientsJson as Record<string, IngredientData>;
 export const traps = trapsJson as Record<string, TrapData>;
+export const dailyQuests = dailyQuestsJson as Record<string, DailyQuestData>;

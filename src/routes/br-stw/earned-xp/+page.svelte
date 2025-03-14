@@ -63,11 +63,13 @@
 </script>
 
 <CenteredPageContent>
-  <h2 class="text-lg font-medium">Earned XP</h2>
+  <div class="flex flex-col gap-y-2">
+    <h2 class="text-lg font-medium">Earned XP</h2>
 
-  <p class="text-sm text-muted-foreground">
-    Check your XP progress from Battle Royale, Creative and Save the World
-  </p>
+    <p class="text-sm text-muted-foreground">
+      Check your XP progress from Battle Royale, Creative and Save the World
+    </p>
+  </div>
 
   <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 

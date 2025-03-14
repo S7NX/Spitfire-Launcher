@@ -78,7 +78,7 @@
             {#if vbucksAmount != null}
               <div class="flex items-center gap-x-1">
                 <p>{vbucksAmount.toLocaleString()}</p>
-                <img class="size-5" alt="V-Bucks" src="/assets/vbuck.png"/>
+                <img class="size-5" alt="V-Bucks" src="/assets/resources/currency_mtxswap.png"/>
               </div>
             {/if}
 

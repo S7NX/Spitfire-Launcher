@@ -59,6 +59,7 @@ export type ParsedResourceData = {
     | null
   quantity: number
 }
+
 export type RewardsSummary = Record<
   string,
   {
@@ -66,3 +67,13 @@ export type RewardsSummary = Record<
     quantity: number
   }
 >
+
+export type DailyQuestData = {
+  name: string
+  limit: number
+  rewards: {
+    gold: number
+    mtx: number
+    xp: number
+  }
+}
