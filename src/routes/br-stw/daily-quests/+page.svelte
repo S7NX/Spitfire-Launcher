@@ -10,7 +10,6 @@
   import MCPManager from '$lib/core/managers/mcp';
   import { dailyQuests } from '$lib/constants/stw/resources';
   import type { FullQueryProfile } from '$types/game/mcp';
-  import InfoIcon from 'lucide-svelte/icons/info';
 
   type DailyQuest = {
     id: string;
@@ -62,7 +61,7 @@
           questStatuses = [...questStatuses, status];
         }
       } catch (error) {
-        console.error(`Failed to fetch quests for ${account.displayName}:`, error);
+        console.error(error);
       }
     }));
 
@@ -116,14 +115,14 @@
         handleQueryProfile(rerollResponse, status);
       }
     } catch (error) {
-      console.error('Failed to reroll quest:', error);
+      console.error(error);
     } finally {
       rerollingQuestId = null;
     }
   }
 </script>
 
-<CenteredPageContent>
+<CenteredPageContent class="w-112">
   <h2 class="text-lg font-medium">Daily Quests</h2>
 
   <AccountSelect
@@ -148,80 +147,75 @@
   </Button>
 
   {#if !isFetching && questStatuses.length}
-    <div class="space-y-4">
-      <Accordion class="border rounded-lg " items={questStatuses} type="multiple">
-        {#snippet trigger(account)}
-          <div class="flex items-center justify-between px-4 py-3 bg-muted">
-            <div class="flex items-center gap-3">
-              <span class="font-semibold truncate">{account.displayName}</span>
-              <div class="text-xs bg-muted-foreground/20 px-2 py-0.5 rounded-full">
-                {account.quests.length} {account.quests.length === 1 ? 'quest' : 'quests'}
+    <Accordion class="border rounded-lg mt-4" items={questStatuses} type="multiple">
+      {#snippet trigger(account)}
+        <div class="flex items-center justify-between px-4 py-3 bg-muted">
+          <div class="flex items-center gap-3">
+            <span class="font-semibold truncate">{account.displayName}</span>
+          </div>
+
+          <span class="hover:bg-muted-foreground/10 flex size-8 items-center justify-center rounded-full">
+            <ChevronDownIcon class="size-5 transition-transform duration-200"/>
+          </span>
+        </div>
+      {/snippet}
+
+      {#snippet content(account)}
+        <div class="p-4 bg-muted/30 space-y-3">
+          {#each account.quests as quest (quest.id)}
+            {@const rewards = [
+              {
+                name: 'Gold',
+                icon: '/assets/resources/eventcurrency_scaling.png',
+                amount: quest.rewards.gold
+              },
+              {
+                name: account.hasFounder ? 'V-Bucks' : 'X-Ray Tickets',
+                icon: '/assets/resources/currency_mtxswap.png',
+                amount: quest.rewards.mtx
+              },
+              {
+                name: 'XP',
+                icon: '/assets/brxp.png',
+                amount: quest.rewards.xp
+              }
+            ]}
+
+            <div class="bg-background border rounded-md p-4">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <h3 class="font-medium">{quest.name}</h3>
+
+                <div class="flex items-center gap-2">
+                  <span class="font-medium">{quest.completionProgress}/{quest.limit}</span>
+
+                  {#if canReroll}
+                    <Button
+                      class="flex items-center justify-center h-8 w-8"
+                      disabled={!!rerollingQuestId}
+                      onclick={() => rerollQuest(account.accountId, quest.id)}
+                      size="sm"
+                      variant="outline"
+                    >
+                      <RefreshCwIcon class="size-4 {rerollingQuestId === quest.id ? 'animate-spin' : ''}"/>
+                    </Button>
+                  {/if}
+                </div>
+              </div>
+
+              <div class="flex justify-around">
+                {#each rewards as reward (reward.name)}
+                  {#if reward.amount > 0}
+                    <div class="flex items-center gap-2 bg-muted/50 p-2 rounded">
+                      <img class="size-5" alt={reward.name} src={reward.icon}/>
+                      <span class=" font-medium">{reward.amount.toLocaleString()}</span>
+                    </div>
+                  {/if}
+                {/each}
               </div>
             </div>
-
-            <span class="hover:bg-muted-foreground/10 flex size-8 items-center justify-center rounded-full">
-              <ChevronDownIcon class="size-5 transition-transform duration-200"/>
-            </span>
-          </div>
-        {/snippet}
-
-        {#snippet content(account)}
-          <div class="p-4 bg-muted/30 space-y-3">
-            {#each account.quests as quest (quest.id)}
-              {@const rewards = [
-                {
-                  name: 'Gold',
-                  icon: '/assets/resources/eventcurrency_scaling.png',
-                  amount: quest.rewards.gold
-                },
-                {
-                  name: account.hasFounder ? 'V-Bucks' : 'X-Ray Tickets',
-                  icon: '/assets/resources/currency_mtxswap.png',
-                  amount: quest.rewards.mtx
-                },
-                {
-                  name: 'XP',
-                  icon: '/assets/brxp.png',
-                  amount: quest.rewards.xp
-                }
-              ]}
-
-              <div class="bg-background border rounded-md p-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-                  <h3 class="text-sm font-medium">{quest.name}</h3>
-
-                  <div class="flex items-center gap-2">
-                    <span class="text-sm font-medium">{quest.completionProgress}/{quest.limit}</span>
-
-                    {#if canReroll}
-                      <Button
-                        class="flex items-center justify-center h-8 w-8"
-                        disabled={!!rerollingQuestId}
-                        onclick={() => rerollQuest(account.accountId, quest.id)}
-                        size="sm"
-                        variant="outline"
-                      >
-                        <RefreshCwIcon class="size-4 {rerollingQuestId === quest.id ? 'animate-spin' : ''}"/>
-                      </Button>
-                    {/if}
-                  </div>
-                </div>
-
-                <div class="flex justify-around">
-                  {#each rewards as reward (reward.name)}
-                    {#if reward.amount > 0}
-                      <div class="flex items-center gap-2 bg-muted/50 p-2 rounded">
-                        <img class="size-5" alt={reward.name} src={reward.icon}/>
-                        <span class="text-sm font-medium">{reward.amount.toLocaleString()}</span>
-                      </div>
-                    {/if}
-                  {/each}
-                </div>
-              </div>
-            {/each}
-          </div>
-        {/snippet}
-      </Accordion>
-    </div>
+          {/each}
+        </div>
+      {/snippet}
+    </Accordion>
   {/if}
 </CenteredPageContent>
