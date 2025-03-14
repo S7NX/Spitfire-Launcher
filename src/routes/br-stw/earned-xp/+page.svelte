@@ -65,9 +65,9 @@
 <CenteredPageContent>
   <h2 class="text-lg font-medium">Earned XP</h2>
 
-  <span class="text-sm font-medium text-muted-foreground">
+  <p class="text-sm text-muted-foreground">
     Check your XP progress from Battle Royale, Creative and Save the World
-  </span>
+  </p>
 
   <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 

@@ -48,10 +48,10 @@
   <div class="flex flex-col gap-y-2">
     <h2 class="text-lg font-medium">Custom Status</h2>
 
-    <span class="text-sm font-medium text-muted-foreground">
+    <p class="text-sm text-muted-foreground">
       Set a custom status that will be displayed to your friends.
       <br> Restart the launcher to reset the status.
-    </span>
+    </p>
 
     <Input
       placeholder="Enter your custom status"

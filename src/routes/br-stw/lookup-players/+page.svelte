@@ -1,4 +1,5 @@
 <script lang="ts">
+  import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
@@ -103,72 +104,70 @@
   }
 </script>
 
-<div class="flex flex-col items-center justify-center h-full">
-  <div class="flex flex-col gap-2 w-96 p-5 border rounded-md">
-    <form class="flex items-center gap-2 w-full" onsubmit={lookupPlayer}>
-      <div class="grow">
-        <Input
-          disabled={isLoading}
-          placeholder="Search by name or account ID"
-          bind:value={searchQuery}
-        />
-      </div>
+<CenteredPageContent>
+  <form class="flex items-center gap-2 w-full" onsubmit={lookupPlayer}>
+    <div class="grow">
+      <Input
+        disabled={isLoading}
+        placeholder="Search by name or account ID"
+        bind:value={searchQuery}
+      />
+    </div>
+
+    <Button
+      class="flex items-center justify-center size-9"
+      disabled={isLoading || !searchQuery || searchQuery.length < 3}
+      size="sm"
+      type="submit"
+      variant="epic"
+    >
+      {#if isLoading}
+        <LoaderCircleIcon class="size-5 animate-spin"/>
+      {:else}
+        <SearchIcon class="size-5"/>
+      {/if}
+    </Button>
+  </form>
+
+  {#if lookupData}
+    {@const kv = [
+      { name: 'ID', value: lookupData.id },
+      { name: 'Name', value: lookupData.displayName },
+      {
+        name: 'Commander level',
+        value: stwData && `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}`
+      },
+      {
+        name: 'Boosted XP',
+        value: stwData && `${stwData.xpBoosts.boostedXp.toLocaleString()} (${stwData.xpBoosts.boostAmount} boost${stwData?.xpBoosts.boostAmount === 1 ? '' : 's'})`
+      },
+      { name: 'Days logged in', value: stwData?.daysLoggedIn },
+      { name: 'Collection book level', value: stwData?.collectionBookLevel.toLocaleString() },
+      { name: 'Completed zones', value: stwData?.completedZones.toLocaleString() },
+      { name: 'Founder edition', value: stwData?.founderEdition }
+    ]}
+
+    <div class="mt-4 text-sm relative">
+      {#each kv as { name, value } (name)}
+        {#if value != null}
+          <div class="flex items-center gap-2">
+            <span class="text-muted-foreground">{name}:</span>
+            <span>{value}</span>
+          </div>
+        {/if}
+      {/each}
 
       <Button
-        class="flex items-center justify-center size-9"
-        disabled={isLoading || !searchQuery || searchQuery.length < 3}
-        size="sm"
-        type="submit"
-        variant="epic"
+        class="absolute bottom-0 right-0 p-0"
+        href="https://fortnitedb.com/profile/{lookupData.id}"
+        variant="ghost"
       >
-        {#if isLoading}
-          <LoaderCircleIcon class="size-5 animate-spin"/>
-        {:else}
-          <SearchIcon class="size-5"/>
-        {/if}
+        <img
+          class="size-12"
+          alt="FortniteDB"
+          src="/assets/fndb.png"
+        />
       </Button>
-    </form>
-
-    {#if lookupData}
-      {@const kv = [
-        { name: 'ID', value: lookupData.id },
-        { name: 'Name', value: lookupData.displayName },
-        {
-          name: 'Commander level',
-          value: stwData && `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}`
-        },
-        {
-          name: 'Boosted XP',
-          value: stwData && `${stwData.xpBoosts.boostedXp.toLocaleString()} (${stwData.xpBoosts.boostAmount} boost${stwData?.xpBoosts.boostAmount === 1 ? '' : 's'})`
-        },
-        { name: 'Days logged in', value: stwData?.daysLoggedIn },
-        { name: 'Collection book level', value: stwData?.collectionBookLevel.toLocaleString() },
-        { name: 'Completed zones', value: stwData?.completedZones.toLocaleString() },
-        { name: 'Founder edition', value: stwData?.founderEdition }
-      ]}
-
-      <div class="mt-4 text-sm relative">
-        {#each kv as { name, value } (name)}
-          {#if value != null}
-            <div class="flex items-center gap-2">
-              <span class="text-muted-foreground">{name}:</span>
-              <span>{value}</span>
-            </div>
-          {/if}
-        {/each}
-
-        <Button
-          class="absolute bottom-0 right-0 p-0"
-          href="https://fortnitedb.com/profile/{lookupData.id}"
-          variant="ghost"
-        >
-          <img
-            class="size-12"
-            alt="FortniteDB"
-            src="/assets/fndb.png"
-          />
-        </Button>
-      </div>
-    {/if}
-  </div>
-</div>
+    </div>
+  {/if}
+</CenteredPageContent>
