@@ -28,10 +28,17 @@ const existingConnections: Record<string, XMPPManager> = {};
 export default class XMPPManager {
   private connection?: XMPP.Agent;
   private listeners: { [K in keyof EventMap]?: Array<(data: EventMap[K]) => void> } = {};
+  private reconnectInterval?: number;
+  private intentionalDisconnect = false;
+  private reconnectAttempts = 0;
+  private maxReconnectAttempts = 50;
 
   constructor(private account: AccountOptions) {}
 
   async connect() {
+    this.intentionalDisconnect = false;
+    this.reconnectAttempts = 0;
+
     const existingConnection = existingConnections[this.account.accountId];
     if (existingConnection) {
       this.connection = existingConnection.connection;
@@ -72,6 +79,7 @@ export default class XMPPManager {
 
       this.connection!.once('session:started', () => {
         clearTimeout(timeout);
+        existingConnections[this.account.accountId] = this;
         resolve();
       });
 
@@ -85,12 +93,38 @@ export default class XMPPManager {
   }
 
   disconnect() {
-    this.dispatchEvent('disconnected', undefined);
+    this.intentionalDisconnect = true;
+    if (this.reconnectInterval) {
+      clearInterval(this.reconnectInterval);
+      this.reconnectInterval = undefined;
+    }
+
+    this.dispatchEvent(ServiceEvents.Disconnected, undefined);
     this.connection?.removeAllListeners();
     this.connection?.disconnect();
     this.connection = undefined;
     this.listeners = {};
+
+    delete existingConnections[this.account.accountId];
     this.account = undefined!;
+  }
+
+  private tryReconnect() {
+    if (this.intentionalDisconnect || this.reconnectAttempts >= this.maxReconnectAttempts) return;
+
+    this.connect()
+      .then(() => {
+        if (this.reconnectInterval) {
+          clearInterval(this.reconnectInterval);
+          this.reconnectInterval = undefined;
+        }
+
+        this.reconnectAttempts = 0;
+      })
+      .catch(error => {
+        console.error(error);
+        this.reconnectAttempts++;
+      });
   }
 
   get accountId() {
@@ -106,10 +140,23 @@ export default class XMPPManager {
 
     this.connection.on('connected', () => {
       this.dispatchEvent(ServiceEvents.Connected, undefined);
+
+      this.reconnectAttempts = 0;
+      if (this.reconnectInterval) {
+        clearInterval(this.reconnectInterval);
+        this.reconnectInterval = undefined;
+      }
     });
 
     this.connection.on('disconnected', () => {
       this.dispatchEvent(ServiceEvents.Disconnected, undefined);
+
+      if (!this.intentionalDisconnect) {
+        if (!this.reconnectInterval) {
+          this.reconnectInterval = window.setInterval(() => this.tryReconnect(), 5000);
+          this.tryReconnect();
+        }
+      }
     });
 
     this.connection!.on('message', (message) => {
