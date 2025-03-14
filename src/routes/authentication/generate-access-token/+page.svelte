@@ -31,7 +31,7 @@
     const toastId = toast.loading('Generating an access token...');
 
     try {
-      let accessTokenData = await Authentication.getAccessTokenUsingDeviceAuth(activeAccount);
+      let accessTokenData = await Authentication.getAccessTokenUsingDeviceAuth(activeAccount, false);
 
       if (selectedClient !== defaultClient.clientId) {
         const { code } = await Authentication.getExchangeCodeUsingAccessToken(accessTokenData.access_token);
