@@ -117,6 +117,8 @@ export default class DataStorage {
   }
 
   private static mergeWithDefaults<T>(defaults: T, data: T): T {
+    if (Array.isArray(data)) return data;
+
     const merged = Object.assign({}, defaults);
 
     for (const key in data) {
