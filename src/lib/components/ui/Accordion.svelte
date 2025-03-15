@@ -15,7 +15,7 @@
 <Accordion.Root {type}>
   {#each items as item, index (index.toString())}
     <Accordion.Item
-      class="mt-1.5 w-full"
+      class="w-full"
       {...restProps}
     >
       <Accordion.Header>
@@ -24,8 +24,7 @@
         </Accordion.Trigger>
       </Accordion.Header>
 
-      <!-- todo: animations doesn't work -->
-      <Accordion.Content class="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+      <Accordion.Content class="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden">
         {@render content(item)}
       </Accordion.Content>
     </Accordion.Item>
