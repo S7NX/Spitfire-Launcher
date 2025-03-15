@@ -2,15 +2,12 @@
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
-  import { nonNull } from '$lib/utils';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import Accordion from '$components/ui/Accordion.svelte';
   import { doingBulkOperations } from '$lib/stores.js';
   import MCPManager from '$lib/core/managers/mcp';
-
-  const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
   type XPStatuses = Array<{
     accountId: string;
@@ -88,52 +85,61 @@
   </Button>
 
   {#if !isFetching && xpStatuses.length}
-    <div class="mt-2 w-full max-w-2xl">
-      <h3 class="text-base font-medium mb-3">XP Information</h3>
+    <Accordion class="border rounded-lg mt-4" items={xpStatuses} type="multiple">
+      {#snippet trigger(account)}
+        <div class="flex items-center justify-between px-3 py-2 bg-muted">
+          <span class="font-semibold truncate">{account.displayName}</span>
 
-      <Accordion items={xpStatuses} type="multiple">
-        {#snippet trigger(status)}
-          <div class="flex items-center justify-between px-2 h-10 w-full bg-muted-foreground/5 rounded-sm">
-            <div class="flex items-center gap-2 overflow-hidden">
-              <span class="font-medium truncate min-w-fit shrink-0">{status.displayName}</span>
-            </div>
+          <span class="hover:bg-muted-foreground/10 flex size-8 items-center justify-center rounded-md transition-colors">
+            <ChevronDownIcon class="size-5 transition-transform duration-200"/>
+          </span>
+        </div>
+      {/snippet}
 
-            <span class="hover:bg-muted-foreground/10 inline-flex size-8 items-center justify-center bg-transparent shrink-0 ml-1">
-              <ChevronDownIcon class="size-5 transition-transform duration-200"/>
-            </span>
-          </div>
-        {/snippet}
+      {#snippet content(account)}
+        {@const gamemodes = [
+          {
+            name: 'Battle Royale',
+            value: account.xp?.battleRoyale || 0,
+            limit: 4_000_000
+          },
+          {
+            name: 'Creative',
+            value: account.xp?.creative || 0,
+            limit: 4_000_000
+          },
+          {
+            name: 'Save the World',
+            value: account.xp?.saveTheWorld || 0,
+            limit: 4_000_000
+          }
+        ]}
 
-        {#snippet content(status)}
-          {@const gamemodes = [
-            {
-              name: 'Battle Royale',
-              value: status.xp?.battleRoyale || 0,
-              limit: 4_000_000
-            },
-            {
-              name: 'Creative',
-              value: status.xp?.creative || 0,
-              limit: 4_000_000
-            },
-            {
-              name: 'Save the World',
-              value: status.xp?.saveTheWorld || 0,
-              limit: 4_000_000
-            }
-          ]}
+        <div class="bg-muted/30 p-3 space-y-6">
+          {#each gamemodes as gamemode (gamemode.name)}
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <img class="size-4" alt="XP Icon" src="/assets/brxp.png"/>
+                  <span class="font-medium">{gamemode.name}</span>
+                </div>
 
-          <div class="overflow-hidden text-sm mt-1 bg-muted-foreground/5 p-2">
-            {#each gamemodes as gamemode (gamemode.name)}
-              <div class="flex items-center gap-1 py-1 truncate">
-                <span class="font-medium">{gamemode.name}:</span>
-                <span>{gamemode.value.toLocaleString()}/{gamemode.limit.toLocaleString()}</span>
-                <img class="size-4" alt="XP Icon" src="/assets/brxp.png"/>
+                <div class="text-sm">
+                  <span class="font-medium">{gamemode.value.toLocaleString()}</span>
+                  <span class="text-muted-foreground">/ {gamemode.limit.toLocaleString()}</span>
+                </div>
               </div>
-            {/each}
-          </div>
-        {/snippet}
-      </Accordion>
-    </div>
+
+              <div class="h-2 w-full bg-muted rounded-full overflow-hidden">
+                <div
+                  style="width: {Math.min(100, (gamemode.value / gamemode.limit) * 100)}%"
+                  class="h-full bg-epic"
+                ></div>
+              </div>
+            </div>
+          {/each}
+        </div>
+      {/snippet}
+    </Accordion>
   {/if}
 </CenteredPageContent>

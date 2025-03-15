@@ -149,19 +149,17 @@
   {#if !isFetching && questStatuses.length}
     <Accordion class="border rounded-lg mt-4" items={questStatuses} type="multiple">
       {#snippet trigger(account)}
-        <div class="flex items-center justify-between px-4 py-3 bg-muted">
-          <div class="flex items-center gap-3">
-            <span class="font-semibold truncate">{account.displayName}</span>
-          </div>
+        <div class="flex items-center justify-between px-3 py-2 bg-muted">
+          <span class="font-semibold truncate">{account.displayName}</span>
 
-          <span class="hover:bg-muted-foreground/10 flex size-8 items-center justify-center rounded-full">
+          <span class="hover:bg-muted-foreground/10 flex size-8 items-center justify-center rounded-md transition-colors">
             <ChevronDownIcon class="size-5 transition-transform duration-200"/>
           </span>
         </div>
       {/snippet}
 
       {#snippet content(account)}
-        <div class="p-4 bg-muted/30 space-y-3">
+        <div class="bg-muted/30 p-3 space-y-3">
           {#each account.quests as quest (quest.id)}
             {@const rewards = [
               {

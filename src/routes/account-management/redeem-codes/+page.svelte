@@ -109,39 +109,27 @@
   </form>
 
   {#if !isRedeeming && codeStatuses.length}
-    <div class="mt-2 w-full max-w-2xl">
-      <h3 class="text-base font-medium mb-3">Redemption Results</h3>
+    <Accordion class="border rounded-lg mt-4" items={codeStatuses} type="multiple">
+      {#snippet trigger(account)}
+        <div class="flex items-center justify-between px-3 py-2 bg-muted">
+          <span class="font-semibold truncate">{account.displayName} - {account.codes.filter(({ error }) => !error).length}/{account.codes.length}</span>
 
-      <Accordion items={codeStatuses} type="multiple">
-        {#snippet trigger(status)}
-          <div class="flex items-center justify-between px-2 h-10 w-full bg-muted-foreground/5 rounded-sm">
-            <div class="flex items-center gap-2 overflow-hidden">
-              <span class="font-medium truncate min-w-fit shrink-0">{status.displayName}</span>
+          <span class="hover:bg-muted-foreground/10 flex size-8 items-center justify-center rounded-md transition-colors">
+            <ChevronDownIcon class="size-5 transition-transform duration-200"/>
+          </span>
+        </div>
+      {/snippet}
 
-              <div class="flex items-center ml-1 gap-1 overflow-hidden flex-wrap">
-                {#each status.codes as { code, error } (code)}
-                  <div class="size-2.5 rounded-full shrink-0 {error ? 'bg-red-500' : 'bg-green-500'}" title="{error ? 'Has errors' : 'All successful'}"></div>
-                {/each}
-              </div>
+      {#snippet content(account)}
+        <div class="bg-muted/30 p-3 space-y-2 text-sm">
+          {#each account.codes as { code, error } (code)}
+            <div class="flex items-center gap-1 truncate">
+              <span class="font-medium">{code}:</span>
+              <span class="truncate {error ? 'text-red-500' : 'text-green-500'}">{error || 'Redeemed'}</span>
             </div>
-
-            <span class="hover:bg-muted-foreground/10 inline-flex size-8 items-center justify-center bg-transparent shrink-0 ml-1">
-              <ChevronDownIcon class="size-5 transition-transform duration-200"/>
-            </span>
-          </div>
-        {/snippet}
-
-        {#snippet content(status)}
-          <div class="overflow-hidden text-sm mt-1 bg-muted-foreground/5 p-2">
-            {#each status.codes as { code, error } (code)}
-              <div class="flex items-center gap-1 py-1 truncate">
-                <span class="font-medium">{code}:</span>
-                <span class="truncate {error ? 'text-red-500' : 'text-green-500'}">{error || 'Redeemed'}</span>
-              </div>
-            {/each}
-          </div>
-        {/snippet}
-      </Accordion>
-    </div>
+          {/each}
+        </div>
+      {/snippet}
+    </Accordion>
   {/if}
 </CenteredPageContent>
