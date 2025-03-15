@@ -102,8 +102,8 @@ export default class DataStorage {
     return dataDirectory;
   }
 
-  private static async getConfigFile<T>(pathString: string, initialValue: unknown = {}): Promise<T> {
-    const initialStringValue = typeof initialValue === 'string' ? initialValue : JSON.stringify(initialValue);
+  private static async getConfigFile<T>(pathString: string, initialValue: Record<string, any> = {}): Promise<T> {
+    const initialStringValue = JSON.stringify(initialValue);
     const configFilePath = await path.join(await DataStorage.getDataDirectory(), pathString);
     let configFileContent: string | null = null;
 
@@ -113,6 +113,20 @@ export default class DataStorage {
       await writeTextFile(configFilePath, initialStringValue);
     }
 
-    return JSON.parse(configFileContent || initialStringValue);
+    return DataStorage.mergeWithDefaults(initialValue, JSON.parse(configFileContent || initialStringValue));
+  }
+
+  private static mergeWithDefaults<T>(defaults: T, data: T): T {
+    const merged = Object.assign({}, defaults);
+
+    for (const key in data) {
+      if (data[key] instanceof Object && defaults[key] instanceof Object && !Array.isArray(defaults[key])) {
+        merged[key] = DataStorage.mergeWithDefaults(defaults[key], data[key]) as any;
+      } else {
+        merged[key] = data[key] as any;
+      }
+    }
+
+    return merged;
   }
 }
