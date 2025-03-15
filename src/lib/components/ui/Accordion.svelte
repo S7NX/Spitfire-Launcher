@@ -14,12 +14,10 @@
 
 <Accordion.Root {type}>
   {#each items as item, index (index.toString())}
-    <Accordion.Item
-      class="w-full"
-      {...restProps}
+    <Accordion.Item {...restProps}
     >
       <Accordion.Header>
-        <Accordion.Trigger class="w-full transition-all [&[data-state=open]>span>svg]:rotate-180">
+        <Accordion.Trigger class="w-full transition-all [&[data-state=open]_.lucide-chevron-down]:rotate-180">
           {@render trigger(item)}
         </Accordion.Trigger>
       </Accordion.Header>

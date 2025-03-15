@@ -4,25 +4,20 @@
   import Button from '$components/ui/Button.svelte';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
-  import Accordion from '$components/ui/Accordion.svelte';
   import { doingBulkOperations } from '$lib/stores.js';
   import MCPManager from '$lib/core/managers/mcp';
+  import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
+  import type { BulkActionStatus } from '$types/accounts';
 
-  type XPStatuses = Array<{
-    accountId: string;
-    displayName: string;
-    xp?: {
-      battleRoyale: number;
-      creative: number;
-      saveTheWorld: number;
-    };
-    error?: string;
+  type XPStatus = BulkActionStatus<{
+    battleRoyale: number;
+    creative: number;
+    saveTheWorld: number;
   }>;
 
   let selectedAccounts = $state<string[]>([]);
   let isFetching = $state(false);
-  let xpStatuses = $state<XPStatuses>([]);
+  let xpStatuses = $state<XPStatus[]>([]);
 
   async function fetchXPData() {
     isFetching = true;
@@ -30,7 +25,9 @@
 
     const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
     await Promise.all(accounts.map(async (account) => {
-      const status = xpStatuses.find((status) => status.accountId === account.accountId) || { accountId: account.accountId, displayName: account.displayName, xp: {} as any };
+      const status = xpStatuses.find((status) => status.accountId === account.accountId) ||
+        { accountId: account.accountId, displayName: account.displayName, data: {} as XPStatus['data'] } satisfies XPStatus;
+
       if (!xpStatuses.includes(status)) xpStatuses = [...xpStatuses, status];
 
       const [athenaProfile, campaignProfile] = await Promise.all([
@@ -40,15 +37,15 @@
 
       if (athenaProfile) {
         const attributes = athenaProfile.profileChanges[0].profile.stats.attributes;
-        status.xp.creative = attributes.creative_dynamic_xp?.currentWeekXp || 0;
-        status.xp.battleRoyale = attributes.playtime_xp?.currentWeekXp || 0;
+        status.data.creative = attributes.creative_dynamic_xp?.currentWeekXp || 0;
+        status.data.battleRoyale = attributes.playtime_xp?.currentWeekXp || 0;
       }
 
       if (campaignProfile) {
         const items = Object.values(campaignProfile.profileChanges[0].profile.items);
         const xpItem = items.find((item) => item.templateId === 'Token:stw_accolade_tracker');
         if (xpItem) {
-          status.xp.saveTheWorld = xpItem.attributes?.weekly_xp || 0;
+          status.data.saveTheWorld = xpItem.attributes?.weekly_xp || 0;
         }
       }
     }));
@@ -68,49 +65,41 @@
     </p>
   </div>
 
-  <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
+  <form class="flex flex-col gap-y-2" onsubmit={fetchXPData}>
+    <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 
-  <Button
-    class="flex justify-center items-center gap-x-2 mt-2"
-    disabled={!selectedAccounts?.length || isFetching}
-    onclick={fetchXPData}
-    variant="epic"
-  >
-    {#if isFetching}
-      <LoaderCircleIcon class="size-6 animate-spin"/>
-      Loading XP information
-    {:else}
-      Check XP Progress
-    {/if}
-  </Button>
+    <Button
+      class="flex justify-center items-center gap-x-2 mt-2"
+      disabled={!selectedAccounts?.length || isFetching}
+      onclick={fetchXPData}
+      variant="epic"
+    >
+      {#if isFetching}
+        <LoaderCircleIcon class="size-6 animate-spin"/>
+        Loading XP information
+      {:else}
+        Check XP Progress
+      {/if}
+    </Button>
+  </form>
 
   {#if !isFetching && xpStatuses.length}
-    <Accordion class="border rounded-lg mt-4" items={xpStatuses} type="multiple">
-      {#snippet trigger(account)}
-        <div class="flex items-center justify-between px-3 py-2 bg-muted">
-          <span class="font-semibold truncate">{account.displayName}</span>
-
-          <span class="hover:bg-muted-foreground/10 flex size-8 items-center justify-center rounded-md transition-colors">
-            <ChevronDownIcon class="size-5 transition-transform duration-200"/>
-          </span>
-        </div>
-      {/snippet}
-
-      {#snippet content(account)}
+    <BulkResultAccordion statuses={xpStatuses}>
+      {#snippet content(status)}
         {@const gamemodes = [
           {
             name: 'Battle Royale',
-            value: account.xp?.battleRoyale || 0,
+            value: status.data.battleRoyale || 0,
             limit: 4_000_000
           },
           {
             name: 'Creative',
-            value: account.xp?.creative || 0,
+            value: status.data.creative || 0,
             limit: 4_000_000
           },
           {
             name: 'Save the World',
-            value: account.xp?.saveTheWorld || 0,
+            value: status.data.saveTheWorld || 0,
             limit: 4_000_000
           }
         ]}
@@ -140,6 +129,6 @@
           {/each}
         </div>
       {/snippet}
-    </Accordion>
+    </BulkResultAccordion>
   {/if}
 </CenteredPageContent>

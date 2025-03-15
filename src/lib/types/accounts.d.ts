@@ -5,3 +5,9 @@ import { accountDataFileSchema, accountDataListSchema, accountDataSchema } from 
 export type AccountData = z.infer<typeof accountDataSchema>
 export type AccountDataList = z.infer<typeof accountDataListSchema>
 export type AccountDataFile = z.infer<typeof accountDataFileSchema>
+
+type BulkActionStatus<T> = {
+  accountId: string;
+  displayName: string;
+  data: T;
+};

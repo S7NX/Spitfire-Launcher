@@ -6,23 +6,19 @@
   import { accountsStore, doingBulkOperations } from '$lib/stores';
   import CodeManager from '$lib/core/managers/code';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
-  import Accordion from '$components/ui/Accordion.svelte';
-  import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
+  import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
+  import type { BulkActionStatus } from '$types/accounts';
 
-  type CodeStatuses = Array<{
-    accountId: string;
-    displayName: string;
-    codes: Array<{
-      code: string;
-      error?: string
-    }>
-  }>;
+  type CodeStatus = BulkActionStatus<Array<{
+    code: string;
+    error?: string
+  }>>;
 
   let selectedAccounts = $state<string[]>([]);
   let codesToRedeem = $state<string[]>([]);
   let isRedeeming = $state(false);
-  let codeStatuses = $state<CodeStatuses>([]);
+  let codeStatuses = $state<CodeStatus[]>([]);
 
   const humanizedErrors: Record<string, string> = {
     'errors.com.epicgames.coderedemption.code_not_found': 'Code not found',
@@ -43,22 +39,24 @@
     const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
     await Promise.all(accounts.map(async (account) => {
       await Promise.all(codesToRedeem.map(async (code) => {
-        const status = codeStatuses.find((status) => status.accountId === account.accountId) || { accountId: account.accountId, displayName: account.displayName, codes: [] };
+        const status = codeStatuses.find((status) => status.accountId === account.accountId)
+          || { accountId: account.accountId, displayName: account.displayName, data: [] } satisfies CodeStatus;
+
         if (!codeStatuses.includes(status)) codeStatuses = [...codeStatuses, status];
 
         if (nonExistentCodes.includes(code)) {
-          status.codes.push({ code, error: 'Code not found' });
+          status.data.push({ code, error: 'Code not found' });
           return;
         }
 
         if (invalidCredentialsAccounts.includes(account.accountId)) {
-          status.codes.push({ code, error: 'Your login session has expired. Please log in again.' });
+          status.data.push({ code, error: 'Your login session has expired. Please log in again.' });
           return;
         }
 
         try {
           await CodeManager.redeem(account, code);
-          status.codes.push({ code });
+          status.data.push({ code });
         } catch (error) {
           let errorString = 'Unknown error';
 
@@ -71,10 +69,15 @@
             }
           }
 
-          status.codes.push({ code, error: errorString });
+          status.data.push({ code, error: errorString });
         }
       }));
     }));
+
+    codeStatuses = codeStatuses.map((status) => {
+      const successCount = status.data.filter(({ error }) => !error).length;
+      return { ...status, displayName: `${status.displayName} - ${successCount}/${status.data.length}` };
+    });
 
     codesToRedeem = [];
     selectedAccounts = [];
@@ -86,9 +89,9 @@
 <CenteredPageContent>
   <h2 class="text-lg font-medium">Redeem Codes</h2>
 
-  <AccountSelect disabled={isRedeeming} type="multiple" bind:selected={selectedAccounts}/>
-
   <form class="flex flex-col gap-2 w-full" onsubmit={redeemCodes}>
+    <AccountSelect disabled={isRedeeming} type="multiple" bind:selected={selectedAccounts}/>
+
     <TagInput
       placeholder="Enter codes to redeem and press Enter"
       bind:items={codesToRedeem}
@@ -109,20 +112,10 @@
   </form>
 
   {#if !isRedeeming && codeStatuses.length}
-    <Accordion class="border rounded-lg mt-4" items={codeStatuses} type="multiple">
-      {#snippet trigger(account)}
-        <div class="flex items-center justify-between px-3 py-2 bg-muted">
-          <span class="font-semibold truncate">{account.displayName} - {account.codes.filter(({ error }) => !error).length}/{account.codes.length}</span>
-
-          <span class="hover:bg-muted-foreground/10 flex size-8 items-center justify-center rounded-md transition-colors">
-            <ChevronDownIcon class="size-5 transition-transform duration-200"/>
-          </span>
-        </div>
-      {/snippet}
-
-      {#snippet content(account)}
-        <div class="bg-muted/30 p-3 space-y-2 text-sm">
-          {#each account.codes as { code, error } (code)}
+    <BulkResultAccordion statuses={codeStatuses}>
+      {#snippet content(status)}
+        <div class="p-3 space-y-2 text-sm">
+          {#each status.data as { code, error } (code)}
             <div class="flex items-center gap-1 truncate">
               <span class="font-medium">{code}:</span>
               <span class="truncate {error ? 'text-red-500' : 'text-green-500'}">{error || 'Redeemed'}</span>
@@ -130,6 +123,6 @@
           {/each}
         </div>
       {/snippet}
-    </Accordion>
+    </BulkResultAccordion>
   {/if}
 </CenteredPageContent>

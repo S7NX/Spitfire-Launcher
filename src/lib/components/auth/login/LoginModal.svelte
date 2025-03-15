@@ -100,7 +100,9 @@
     }
   }
 
-  async function handleExchangeCodeSubmit() {
+  async function handleExchangeCodeSubmit(event: SubmitEvent) {
+    event.preventDefault();
+
     if (!exchangeCode?.trim()) return;
 
     isLoading = true;
@@ -255,10 +257,7 @@
 
             <form
               class="space-y-4"
-              onsubmit={(e) => {
-                e.preventDefault();
-                handleExchangeCodeSubmit();
-              }}
+              onsubmit={handleExchangeCodeSubmit}
             >
               <Input
                 class="mb-4"

@@ -4,12 +4,12 @@
   import { accountsStore, doingBulkOperations } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import Accordion from '$components/ui/Accordion.svelte';
-  import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
   import MCPManager from '$lib/core/managers/mcp';
   import { dailyQuests } from '$lib/constants/stw/resources';
   import type { FullQueryProfile } from '$types/game/mcp';
+  import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
+  import type { BulkActionStatus } from '$types/accounts';
 
   type DailyQuest = {
     id: string;
@@ -23,9 +23,7 @@
     }
   };
 
-  type QuestStatuses = Array<{
-    accountId: string;
-    displayName: string;
+  type QuestStatus = BulkActionStatus<{
     hasFounder: boolean;
     quests: DailyQuest[];
   }>;
@@ -33,7 +31,7 @@
   let selectedAccounts = $state<string[]>([]);
   let isFetching = $state(false);
   let canReroll = $state(false);
-  let questStatuses = $state<QuestStatuses>([]);
+  let questStatuses = $state<QuestStatus[]>([]);
   let rerollingQuestId = $state<string | null>(null);
 
   async function fetchDailyQuests() {
@@ -46,18 +44,20 @@
       .filter(x => !!x);
 
     await Promise.all(accounts.map(async (account) => {
-      const status = {
+      const status: QuestStatus = {
         accountId: account.accountId,
         displayName: account.displayName,
-        hasFounder: false,
-        quests: []
+        data: {
+          hasFounder: false,
+          quests: []
+        }
       };
 
       try {
         const campaignProfile = await MCPManager.queryProfile(account, 'campaign');
         handleQueryProfile(campaignProfile, status);
 
-        if (status.quests.length > 0) {
+        if (status.data.quests.length > 0) {
           questStatuses = [...questStatuses, status];
         }
       } catch (error) {
@@ -70,13 +70,13 @@
     isFetching = false;
   }
 
-  function handleQueryProfile(queryProfile: FullQueryProfile<'campaign'>, status: QuestStatuses[number]) {
+  function handleQueryProfile(queryProfile: FullQueryProfile<'campaign'>, status: QuestStatus) {
     const profile = queryProfile.profileChanges[0].profile;
     const items = profile.items;
 
     canReroll = (profile.stats.attributes.quest_manager?.dailyQuestRerolls || 0) > 0;
-    status.quests = [];
-    status.hasFounder = Object.values(items).some((item) => item.templateId === 'Token:receivemtxcurrency');
+    status.data.quests = [];
+    status.data.hasFounder = Object.values(items).some((item) => item.templateId === 'Token:receivemtxcurrency');
 
     const dailyQuestsItems = Object.entries(items)
       .filter(([, item]) => item.templateId.startsWith('Quest:') && item.attributes.quest_state === 'Active')
@@ -89,7 +89,7 @@
       const completionKey = Object.keys(item.attributes).find((attr) => attr.includes('completion'))!;
       const completion = item.attributes[completionKey] || 0;
 
-      status.quests.push({
+      status.data.quests.push({
         id: item.id,
         name: quest.name,
         completionProgress: completion,
@@ -147,20 +147,10 @@
   </Button>
 
   {#if !isFetching && questStatuses.length}
-    <Accordion class="border rounded-lg mt-4" items={questStatuses} type="multiple">
-      {#snippet trigger(account)}
-        <div class="flex items-center justify-between px-3 py-2 bg-muted">
-          <span class="font-semibold truncate">{account.displayName}</span>
-
-          <span class="hover:bg-muted-foreground/10 flex size-8 items-center justify-center rounded-md transition-colors">
-            <ChevronDownIcon class="size-5 transition-transform duration-200"/>
-          </span>
-        </div>
-      {/snippet}
-
-      {#snippet content(account)}
-        <div class="bg-muted/30 p-3 space-y-3">
-          {#each account.quests as quest (quest.id)}
+    <BulkResultAccordion statuses={questStatuses}>
+      {#snippet content(status)}
+        <div class="p-3 space-y-3">
+          {#each status.data.quests as quest (quest.id)}
             {@const rewards = [
               {
                 name: 'Gold',
@@ -168,7 +158,7 @@
                 amount: quest.rewards.gold
               },
               {
-                name: account.hasFounder ? 'V-Bucks' : 'X-Ray Tickets',
+                name: status.data.hasFounder ? 'V-Bucks' : 'X-Ray Tickets',
                 icon: '/assets/resources/currency_mtxswap.png',
                 amount: quest.rewards.mtx
               },
@@ -190,7 +180,7 @@
                     <Button
                       class="flex items-center justify-center h-8 w-8"
                       disabled={!!rerollingQuestId}
-                      onclick={() => rerollQuest(account.accountId, quest.id)}
+                      onclick={() => rerollQuest(status.accountId, quest.id)}
                       size="sm"
                       variant="outline"
                     >
@@ -214,6 +204,6 @@
           {/each}
         </div>
       {/snippet}
-    </Accordion>
+    </BulkResultAccordion>
   {/if}
 </CenteredPageContent>
