@@ -9,7 +9,7 @@
 
   const { missions }: Props = $props();
 
-  const missionsParsed = missions.map(mission => {
+  const parsedMissions = missions.map(mission => {
     const vbucksReward = getVbucksReward(mission);
     const survivorsReward = getSurvivorsReward(mission);
     const upgradeLlamaTokens = getUpgradeLlamaTokens(mission);
@@ -49,7 +49,7 @@
   }
 </script>
 
-<Accordion items={missionsParsed} type="multiple">
+<Accordion class="mt-1" items={parsedMissions} type="multiple">
   {#snippet trigger(mission)}
     <div class="flex items-center justify-between px-2 h-10 bg-muted-foreground/5 rounded-sm">
       <span class="flex gap-1 items-center py-0.5">
