@@ -157,6 +157,8 @@ export default class AccountAutomation {
         .map((id) => allAccounts.find(x => x.accountId === id))
         .filter(x => !!x);
 
+      accountsWithNoAutoKick.push(this.account);
+
       await Promise.allSettled(accountsWithNoAutoKick.map(async (account) => {
         await PartyManager.kick(account, party.id, account.accountId);
         await RewardClaimer.claimRewards(account);
