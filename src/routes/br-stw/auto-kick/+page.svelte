@@ -25,7 +25,9 @@
     }
 
     const account = allAccounts.find((a) => a.accountId === selectedAccountId)!;
-    Automation.addAccount(account);
+    Automation.addAccount(account, {
+      autoKick: true
+    });
 
     selectedAccountId = undefined;
   });
