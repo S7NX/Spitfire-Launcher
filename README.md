@@ -1,7 +1,72 @@
-# Tauri + SvelteKit + TypeScript
+# Spitfire Launcher
 
-This template should help get you started developing with Tauri, SvelteKit and TypeScript in Vite.
+A cross-platform launcher for Fortnite Battle Royale and Save the World
 
-## Recommended IDE Setup
+<!-- todo: badges -->
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
+## Table of Contents
+
+- [📥 Installation](#installation)
+- [ℹ️ Good to Know](#good-to-know)
+- [⚙️ Features](#features)
+- [🔄 Updating](#updating)
+- [🤝 Contributing](#contributing)
+
+## Built With
+
+- [Svelte](https://svelte.dev) - Cybernetically enhanced web apps
+- [Tailwind CSS](https://tailwindcss.com) - Rapidly build modern websites without ever leaving your HTML
+- [Tauri](https://tauri.app) - Build smaller, faster, and more secure desktop applications
+
+## Installation
+
+Download the latest release from the [releases](https://github.com/BurakYs/Spitfire-Launcher/releases) page.
+
+## Good to Know
+
+On first install, a blue SmartScreen warning may appear. This is because the app is unsigned, as code signing is expensive. You can click on "Run Anyway" and continue the
+installation.
+
+Settings are stored in:
+
+- **Windows:** `C:\Users\USERNAME_HERE\AppData\Roaming\spitfire-launcher`
+- **Other platforms:** `{dataDir}\spitfire-launcher`
+
+## Features
+
+- **Customization:**
+    - Configure game path, user agent, starting page, starting account
+- **Bulk Actions:**
+    - Redeem codes, view V-Bucks information, daily quests and more across multiple accounts
+- **Account and Game Management:**
+    - Easy web confirmation or exchange code login
+    - Launch game, auto-kick for STW, custom game status
+    - Manage party, view item shop, earned XP, daily quests, STW shop, and world info
+    - Lookup players, manage device authentications
+- **Planned Features:**
+    - Ghost equip, fake level, fake crown wins, fake rank
+    - Hero and survivor loadout, expedition management
+
+## Updating
+
+No need to uninstall. Run the setup file again to update. The app notifies when a new version is available.
+
+## Notes
+
+I built this launcher as a learning project, so the code may have some bad practices. If you want to make any improvements, I'd appreciate it.
+
+## Contributing
+
+Contributions are welcome. If you want to help improve Spitfire Launcher, follow these steps:
+
+1. Go to the GitHub repo and create a fork.
+2. Run `git clone https://github.com/YourUsername/Spitfire-Launcher.git`.
+3. Use `git checkout -b your-feature-name`.
+4. Implement your changes and commit them with clear messages.
+5. Run `git push origin your-feature-name`.
+6. Submit a pull request on GitHub.
+
+## Credits
+
+- [Ciensprog](https://github.com/Ciensprog) - The resources and some ideas from his [Aerial Launcher](https://github.com/Ciensprog/Aerial-Launcher) project helped me a lot.
+- [LeleDerGrasshalmi](https://github.com/LeleDerGrasshalmi) - His [Endpoints Documentation](https://github.com/LeleDerGrasshalmi/FortniteEndpointsDocumentation) was really helpful.
