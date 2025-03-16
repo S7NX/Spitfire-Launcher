@@ -92,9 +92,9 @@
 <div class="flex flex-col">
   <h2 class="font-bold text-2xl">World Info</h2>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-lg bg-muted/5">
+  <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-muted/5">
     {#each overview as { name, icon, amount } (name)}
-      <div class="flex items-center border rounded">
+      <div class="flex items-center border rounded-md">
         <div class="flex items-center justify-center size-10 bg-muted-foreground/10 shrink-0">
           <img class="size-7" alt={name} src={icon}/>
         </div>

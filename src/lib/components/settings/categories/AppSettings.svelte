@@ -20,6 +20,24 @@
   let customUserAgent = $state<string>();
   let allSettings = $state<AllSettings>(SETTINGS_INITIAL_DATA);
 
+  type SelectOption<T extends string> = {
+    label: string;
+    value: T;
+  };
+
+  const startingPageOptions: SelectOption<NonNullable<NonNullable<AllSettings['app']>['startingPage']>>[] = [
+    { label: 'Auto-Kick', value: 'AUTO_KICK' },
+    { label: 'BR Item Shop', value: 'BR_ITEM_SHOP' },
+    { label: 'STW Item Shop', value: 'STW_SHOP' },
+    { label: 'STW World Info', value: 'STW_WORLD_INFO' },
+    { label: 'Daily Quests', value: 'DAILY_QUESTS' }
+  ];
+
+  const startingAccountOptions: SelectOption<NonNullable<NonNullable<AllSettings['app']>['startingAccount']>>[] = [
+    { label: 'First in the list', value: 'FIRST_IN_LIST' },
+    { label: 'Last used', value: 'LAST_USED' }
+  ];
+
   onMount(async function () {
     const userAgent = await Manifest.getUserAgent();
     initialUserAgent = userAgent;
@@ -113,11 +131,27 @@
   </SettingTextInputItem>
 
   <SettingTextInputItem
+    description="Select which page to show when launching the app."
+    title="Starting Page"
+  >
+    <Select
+      items={startingPageOptions}
+      triggerClass="w-full"
+      type="single"
+      bind:value={() => allSettings?.app?.startingPage, (value) => handleSettingChange(value || 'home', 'app', 'startingPage')}
+    >
+      {#snippet trigger(label)}
+        {label}
+      {/snippet}
+    </Select>
+  </SettingTextInputItem>
+  
+  <SettingTextInputItem
     description="Select which account to use when launching the app."
     title="Starting Account"
   >
     <Select
-      items={[{ label: 'First in the list', value: 'FIRST_IN_LIST'}, { label: 'Last used', value: 'LAST_USED'}]}
+      items={startingAccountOptions}
       triggerClass="w-full"
       type="single"
       bind:value={() => allSettings?.app?.startingAccount, (value) => handleSettingChange(value || '', 'app', 'startingAccount')}

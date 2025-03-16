@@ -1,8 +1,11 @@
 // Tauri doesn't have a Node.js server to do proper SSR
 // so we will use adapter-static to prerender the app (SSG)
 // See: https://v2.tauri.app/start/frontend/sveltekit/ for more info
+import { redirect } from '@sveltejs/kit';
 import DataStorage from '$lib/core/dataStorage';
 import { accountsStore, activeAccountId } from '$lib/stores';
+import { page } from '$app/state';
+import { getStartingPage } from '$lib/utils';
 
 export const prerender = true;
 export const ssr = false;
@@ -10,6 +13,7 @@ export const ssr = false;
 export async function load() {
   const accountsFile = await DataStorage.getAccountsFile();
   const settings = await DataStorage.getSettingsFile();
+
   const startingAccount = settings.app?.startingAccount;
 
   let accountId: string | null | undefined = startingAccount === 'LAST_USED'
@@ -29,4 +33,12 @@ export async function load() {
   });
 
   activeAccountId.set(accountId || null);
+
+  if (page.url.pathname === '/') {
+    const pagePath = await getStartingPage();
+    if (pagePath) {
+      page.url.pathname = pagePath;
+      redirect(307, pagePath);
+    }
+  }
 }

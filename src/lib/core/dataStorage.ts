@@ -17,6 +17,7 @@ export const SETTINGS_FILE_PATH = dev ? 'settings-dev.json' : 'settings.json';
 export const SETTINGS_INITIAL_DATA: AllSettings = {
   app: {
     missionCheckInterval: 5,
+    startingPage: 'STW_WORLD_INFO',
     startingAccount: 'FIRST_IN_LIST',
     hideToTray: false,
     checkForUpdates: true

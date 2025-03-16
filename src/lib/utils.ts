@@ -7,6 +7,9 @@ import { goto } from '$app/navigation';
 import EpicAPIError from '$lib/exceptions/EpicAPIError';
 import type { EpicAPIErrorData } from '$types/game/authorizations';
 import type { FullQueryProfile } from '$types/game/mcp';
+import type { AllSettings } from '$types/settings';
+import DataStorage from '$lib/core/dataStorage';
+import { Pages } from '$lib/constants/pages';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -16,7 +19,7 @@ export function checkLogin() {
   const hasAccount = !!get(accountsStore).activeAccount;
 
   if (!hasAccount) {
-    goto('/', {
+    goto('/br-stw/stw-world-info', {
       state: {
         showLoginModal: true
       }
@@ -56,4 +59,11 @@ export function shouldErrorBeIgnored(error: unknown) {
 
 export function isLegendaryOrMythicSurvivor(itemId: string) {
   return itemId.includes('workerbasic_sr') || (itemId.startsWith('Worker:manager') && itemId.includes('_sr_'));
+}
+
+export async function getStartingPage(settingsData?: AllSettings) {
+  const settings = settingsData || await DataStorage.getSettingsFile();
+  const startingPage = settings.app?.startingPage!;
+
+  return Pages[startingPage];
 }

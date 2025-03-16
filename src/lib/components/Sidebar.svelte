@@ -9,10 +9,13 @@
   import { cubicInOut } from 'svelte/easing';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import config from '$lib/config';
-  import { cn } from '$lib/utils';
+  import { cn, getStartingPage } from '$lib/utils';
   import Button from '$components/ui/Button.svelte';
   import packageJson from '../../../package.json';
   import { page } from '$app/state';
+  import { onMount } from 'svelte';
+
+  let startingPage = $state('/');
 
   const categories = $state([
     {
@@ -66,6 +69,10 @@
   function toggleCategory(index: number) {
     categories[index].expanded = !categories[index].expanded;
   }
+
+  onMount(async () => {
+    startingPage = await getStartingPage();
+  });
 </script>
 
 <div
@@ -85,7 +92,7 @@
   )}
 >
   <div class="flex align-center justify-center p-4 border-b border-border h-16" data-tauri-drag-region>
-    <a class="text-xl font-bold" href="/">{config.name}</a>
+    <a class="text-xl font-bold" href={startingPage}>{config.name}</a>
   </div>
 
   <nav class="flex-1 overflow-y-auto py-4">
