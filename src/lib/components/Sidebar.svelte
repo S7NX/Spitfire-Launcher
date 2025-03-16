@@ -1,3 +1,9 @@
+<script lang="ts" module>
+  import { writable } from 'svelte/store';
+
+  export const sidebarOpen = writable(false);
+</script>
+
 <script lang="ts">
   import { slide } from 'svelte/transition';
   import { cubicInOut } from 'svelte/easing';
@@ -62,7 +68,22 @@
   }
 </script>
 
-<aside class="h-screen w-54 bg-surface-alt border-r border-border flex flex-col overflow-hidden select-none sticky top-0">
+<div
+  class="fixed inset-0 bg-black/50 z-40 md:hidden {$sidebarOpen ? 'block' : 'hidden'}"
+  onclick={() => sidebarOpen.set(false)}
+  onkeydown={(e) => e.key === 'Escape' && sidebarOpen.set(false)}
+  role="button"
+  tabindex="0"
+></div>
+
+<aside
+  class={cn(
+    'h-screen bg-surface-alt border-r border-border flex flex-col overflow-hidden select-none',
+    'fixed inset-y-0 left-0 z-50 transition-transform duration-300 ease-in-out',
+    'w-54 md:sticky md:top-0 md:translate-x-0',
+    $sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+  )}
+>
   <div class="flex align-center justify-center p-4 border-b border-border h-16" data-tauri-drag-region>
     <a class="text-xl font-bold" href="/">{config.name}</a>
   </div>
@@ -102,6 +123,7 @@
                       page.url.pathname === item.href && 'bg-accent text-accent-foreground'
                     )}
                     href={item.href}
+                    onclick={() => sidebarOpen.set(false)}
                   >
                     {item.name}
                   </a>

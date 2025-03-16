@@ -81,6 +81,7 @@
     "clipboard-manager:default",
     {
       "identifier": "clipboard-manager:allow-write-text"
-    }
+    },
+    "os:default"
   ]
 }
