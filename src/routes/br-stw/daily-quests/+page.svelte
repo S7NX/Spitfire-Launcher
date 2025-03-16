@@ -54,7 +54,7 @@
       };
 
       try {
-        const campaignProfile = await MCPManager.queryProfile(account, 'campaign');
+        const campaignProfile = await MCPManager.clientQuestLogin(account, 'campaign');
         handleQueryProfile(campaignProfile, status);
 
         if (status.data.quests.length > 0) {

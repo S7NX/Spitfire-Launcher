@@ -7,17 +7,10 @@ import EpicAPIError from '$lib/exceptions/EpicAPIError';
 export default class MCPManager {
   static async compose<T>(account: AccountData, operation: MCPOperation, profile: MCPProfileId, data: Record<string, any>) {
     const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
-
     const route = operation === 'QueryPublicProfile' ? 'public' : 'client';
-    let accountId = account.accountId;
-
-    if (operation === 'QueryPublicProfile') {
-      accountId = data._targetAccountId;
-      delete data._targetAccountId;
-    }
 
     return baseGameService.post<T>(
-      `profile/${accountId}/${route}/${operation}?profileId=${profile}&rvn=-1`,
+      `profile/${account.accountId}/${route}/${operation}?profileId=${profile}&rvn=-1`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`
@@ -27,7 +20,7 @@ export default class MCPManager {
     ).json();
   }
 
-  static async queryProfile<T extends MCPProfileId>(account: AccountData, profile: T) {
+  static queryProfile<T extends MCPProfileId>(account: AccountData, profile: T) {
     return this.compose<FullQueryProfile<T>>(account, 'QueryProfile', profile, {});
   }
 
@@ -43,6 +36,10 @@ export default class MCPManager {
         json: {}
       }
     ).json();
+  }
+
+  static clientQuestLogin<T extends Extract<MCPProfileId, 'athena' | 'campaign'>>(account: AccountData, profile: T) {
+    return this.compose<FullQueryProfile<T>>(account, 'ClientQuestLogin', profile, { streamingAppKey: '' });
   }
 
   static async purchaseCatalogEntry(account: AccountData, offerId: string, price: number, isPriceRetry?: boolean): Promise<{ vbucksSpent: number; data: any }> {
