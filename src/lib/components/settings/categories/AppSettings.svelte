@@ -9,6 +9,7 @@
   import Switch from '$components/ui/Switch.svelte';
   import DataStorage, { SETTINGS_FILE_PATH, SETTINGS_INITIAL_DATA } from '$lib/core/dataStorage';
   import type { AllSettings } from '$types/settings';
+  import Select from '$components/ui/Select.svelte';
 
   const activeAccount = $derived($accountsStore.activeAccount);
 
@@ -51,8 +52,8 @@
     hasChanges = false;
   }
 
-  function handleSettingChange<C extends keyof AllSettings>(
-    eventOrValue: Event | string | boolean,
+  function handleSettingChange<C extends keyof AllSettings, V extends string | boolean = string | boolean>(
+    eventOrValue: Event | V,
     section: C,
     key: string
   ) {
@@ -109,6 +110,22 @@
       type="number"
       value={allSettings?.app?.missionCheckInterval}
     />
+  </SettingTextInputItem>
+
+  <SettingTextInputItem
+    description="Select which account to use when launching the app."
+    title="Starting Account"
+  >
+    <Select
+      items={[{ label: 'First in the list', value: 'FIRST_IN_LIST'}, { label: 'Last used', value: 'LAST_USED'}]}
+      triggerClass="w-full"
+      type="single"
+      bind:value={() => allSettings?.app?.startingAccount, (value) => handleSettingChange(value || '', 'app', 'startingAccount')}
+    >
+      {#snippet trigger(label)}
+        {label}
+      {/snippet}
+    </Select>
   </SettingTextInputItem>
 
   <SettingItem title="Hide to system tray">

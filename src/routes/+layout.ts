@@ -9,15 +9,20 @@ export const ssr = false;
 
 export async function load() {
   const accountsFile = await DataStorage.getAccountsFile();
+  const settings = await DataStorage.getSettingsFile();
+  const startingAccount = settings.app?.startingAccount;
 
-  let accountId: string | null | undefined = accountsFile.activeAccountId
+  let accountId: string | null | undefined = startingAccount === 'LAST_USED'
+    ? accountsFile.activeAccountId
+    : accountsFile.accounts[0]?.accountId;
+
   let activeAccount = accountsFile.accounts.find((account) => account.accountId === accountId) || null;
 
   if (accountId && !activeAccount) {
     accountId = accountsFile.accounts?.[0]?.accountId || null;
     activeAccount = accountsFile.accounts?.[0] || null;
   }
-  
+
   accountsStore.set({
     activeAccount: activeAccount,
     allAccounts: accountsFile.accounts

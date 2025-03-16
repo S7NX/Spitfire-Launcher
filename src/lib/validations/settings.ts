@@ -4,6 +4,7 @@ export const appSettingsSchema = z.object({
   userAgent: z.string().optional(),
   gamePath: z.string().optional(),
   missionCheckInterval: z.number().positive().optional(),
+  startingAccount: z.enum(['FIRST_IN_LIST', 'LAST_USED']).default('FIRST_IN_LIST').optional(),
   hideToTray: z.boolean().optional(),
   checkForUpdates: z.boolean().optional()
 });
