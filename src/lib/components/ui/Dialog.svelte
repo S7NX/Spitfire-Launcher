@@ -8,8 +8,8 @@
   type Props = Dialog.RootProps & {
     trigger?: Snippet;
     triggerClass?: ClassValue;
-    title?: Snippet;
-    description?: Snippet;
+    title?: string | Snippet;
+    description?: string | Snippet;
     contentProps?: WithoutChild<Dialog.ContentProps>;
   };
 
@@ -61,13 +61,21 @@
         {#if title}
           <Dialog.Title class="text-lg font-semibold tracking-tight"
           >
-            {@render title()}
+            {#if typeof title === 'string'}
+              {title}
+            {:else}
+              {@render title()}
+            {/if}
           </Dialog.Title>
         {/if}
 
         {#if description}
           <Dialog.Description class="text-muted-foreground text-sm">
-            {@render description()}
+            {#if typeof description === 'string'}
+              {description}
+            {:else}
+              {@render description()}
+            {/if}
           </Dialog.Description>
         {/if}
       </div>

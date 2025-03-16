@@ -12,7 +12,7 @@ export async function getWorldInfoData(accessToken?: string) {
 
   return baseGameService.get<WorldInfoData>('world/info', {
     headers: {
-      Authorization: `bearer ${token}`
+      Authorization: `Bearer ${token}`
     }
   }).json();
 }

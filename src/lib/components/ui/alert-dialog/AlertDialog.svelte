@@ -7,8 +7,8 @@
   type Props = AlertDialog.RootProps & {
     trigger?: Snippet;
     triggerClass?: ClassValue;
-    title?: Snippet;
-    description?: Snippet;
+    title?: string | Snippet;
+    description?: string | Snippet;
     contentProps?: WithoutChild<AlertDialog.ContentProps>;
   };
 
@@ -49,23 +49,31 @@
       <AlertDialog.Content
         {...contentProps}
         class={cn(
-          'rounded-xl bg-background shadow-popover',
+          'bg-background border rounded-xl p-6 shadow-popover z-50 max-w-[calc(100%-2rem)] sm:max-w-lg w-full',
           'data-[state=open]:animate-in data-[state=closed]:animate-out',
           'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
           'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
-          'outline-hidden fixed left-[50%] top-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] border p-6 sm:max-w-lg md:w-full'
+          'outline-hidden fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]'
         )}
       >
         <div class="flex flex-col gap-2 mb-3">
           {#if title}
             <AlertDialog.Title class="text-lg font-semibold tracking-tight">
-              {@render title()}
+              {#if typeof title === 'string'}
+                {title}
+              {:else}
+                {@render title()}
+              {/if}
             </AlertDialog.Title>
           {/if}
 
           {#if description}
             <AlertDialog.Description class="text-muted-foreground text-sm">
-              {@render description()}
+              {#if typeof description === 'string'}
+                {description}
+              {:else}
+                {@render description()}
+              {/if}
             </AlertDialog.Description>
           {/if}
         </div>

@@ -17,6 +17,32 @@ export default class LookupManager {
     ).json();
   }
 
+  static async fetchByIds(account: AccountData, accountIds: string[]) {
+    const MAX_IDS_PER_REQUEST = 100;
+
+    const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
+    const accounts: EpicAccountById[] = [];
+
+    for (let i = 0; i < accountIds.length; i += MAX_IDS_PER_REQUEST) {
+      const ids = accountIds.slice(i, i + MAX_IDS_PER_REQUEST);
+
+      const list = await publicAccountService.get<EpicAccountById[]>(
+        `?${ids.map((x) => `accountId=${x}`).join('&')}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        }
+      ).json().catch(() => null);
+
+      if (list) {
+        accounts.push(...list);
+      }
+    }
+
+    return accounts;
+  }
+
   static async fetchByName(account: AccountData, displayName: string) {
     const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
 

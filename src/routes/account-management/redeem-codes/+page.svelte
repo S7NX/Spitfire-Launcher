@@ -2,7 +2,7 @@
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
   import Button from '$components/ui/Button.svelte';
-  import TagInput from '$lib/components/ui/TagInput.svelte';
+  import TagInput from '$components/ui/TagInput.svelte';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
   import CodeManager from '$lib/core/managers/code';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';

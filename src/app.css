@@ -21,8 +21,8 @@
 }
 
 @theme {
-    --breakpoint-xxs: 30rem;
-    --breakpoint-xs: 48rem;
+    --breakpoint-xxs: 20rem;
+    --breakpoint-xs: 32rem;
     --breakpoint-2xl: 90rem;
 
     --animate-accordion-down: accordion-down 0.2s ease-out;
@@ -142,5 +142,9 @@
 
     button {
         @apply cursor-pointer;
+    }
+
+    .skeleton-loader {
+        @apply bg-gradient-to-r from-muted via-secondary to-surface-alt bg-[length:200%_100%] animate-pulse;
     }
 }

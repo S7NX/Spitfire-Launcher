@@ -6,7 +6,8 @@
   import type { ClassValue } from 'svelte/elements';
 
   type Props = WithoutChildren<Select.RootProps> & {
-    items: { value: string; label: string; disabled?: boolean }[];
+    items: { label: string; value: string; disabled?: boolean }[];
+    maxSelections?: number;
     contentProps?: WithoutChildren<Select.ContentProps>;
     trigger: Snippet<[label?: string]>;
     triggerClass?: ClassValue;
@@ -16,20 +17,30 @@
     open = $bindable(false),
     value = $bindable(),
     items,
+    maxSelections,
     contentProps,
     trigger,
     triggerClass,
     ...restProps
   }: Props = $props();
 
-  const label = $derived(items.find((item) => item.value === value)?.label);
+  const label = $derived.by(() => {
+    const isSingleValue = typeof value === 'string' || (Array.isArray(value) && value.length === 1);
+
+    if (isSingleValue) {
+      const singleValue = Array.isArray(value) ? value[0] : value;
+      return items.find((item) => item.value === singleValue)?.label;
+    }
+  });
+
+  const reachedMaxSelections = $derived(maxSelections ? Array.isArray(value) && value.length >= maxSelections : false);
 
   $effect(() => {
     if (items.length === 1 && value) open = false;
   });
 </script>
 
-<Select.Root bind:open bind:value {...restProps}>
+<Select.Root bind:open bind:value={value as never} {...restProps}>
   <Select.Trigger
     class={cn(
       'border p-2 rounded-lg flex items-center min-w-64 whitespace-nowrap overflow-hidden disabled:cursor-not-allowed disabled:opacity-50',
@@ -53,7 +64,7 @@
         {#each items as item, i (i + item.value)}
           <Select.Item
             class="flex items-center py-2 pl-3 rounded-md cursor-pointer data-highlighted:bg-muted data-disabled:opacity-50 data-disabled:cursor-default"
-            disabled={item.disabled}
+            disabled={item.disabled || (reachedMaxSelections && value ? !value.includes(item.value) : false)}
             label={item.label}
             value={item.value}
           >

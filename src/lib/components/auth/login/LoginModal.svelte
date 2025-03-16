@@ -17,7 +17,7 @@
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { accountsStore } from '$lib/stores';
-  import tauriKy from '$lib/core/services/tauriKy';
+  import oauthService from '$lib/core/services/oauth';
   import type { DeviceCodeLoginData, EpicOAuthData } from '$types/game/authorizations';
 
   type LoginMethod = 'web' | 'exchange-code';
@@ -122,15 +122,12 @@
     isLoading = true;
 
     const clientToken = await Authentication.getAccessTokenUsingClientCredentials(fortniteNewSwitchGameClient);
-    const deviceCodeResponse = await tauriKy
-      .post('https://account-public-service-prod.ol.epicgames.com/account/api/oauth/deviceAuthorization', {
-        body: new URLSearchParams({ prompt: 'login' }).toString(),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `Bearer ${clientToken.access_token}`
-        }
-      })
-      .json<DeviceCodeLoginData>();
+    const deviceCodeResponse = await oauthService.post<DeviceCodeLoginData>('deviceAuthorization', {
+      body: new URLSearchParams({ prompt: 'login' }).toString(),
+      headers: {
+        Authorization: `Bearer ${clientToken.access_token}`
+      }
+    }).json();
 
     deviceCodeData = {
       code: deviceCodeResponse.device_code,

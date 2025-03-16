@@ -73,7 +73,7 @@
 </script>
 
 <Button
-  class="flex items-center justify-center"
+  class="flex items-center justify-center shrink-0"
   disabled={launchButtonDisabled || !activeAccount}
   onclick={launchGame}
   size="md"
