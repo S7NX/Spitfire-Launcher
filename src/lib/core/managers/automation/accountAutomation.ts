@@ -147,7 +147,7 @@ export default class AccountAutomation {
     if (partyLeaderAccount) {
       const accountsWithNoAutoKick = membersWithNoAutoKick.filter((id) => id !== this.account.accountId);
 
-      await Promise.allSettled(accountsWithNoAutoKick.map(async (id) =>
+      await Promise.all(accountsWithNoAutoKick.map(async (id) =>
         PartyManager.kick(partyLeaderAccount, party.id, id)
       ));
 
@@ -159,7 +159,7 @@ export default class AccountAutomation {
 
       accountsWithNoAutoKick.push(this.account);
 
-      await Promise.allSettled(accountsWithNoAutoKick.map(async (account) => {
+      await Promise.all(accountsWithNoAutoKick.map(async (account) => {
         await PartyManager.kick(account, party.id, account.accountId);
         await RewardClaimer.claimRewards(account);
       }));

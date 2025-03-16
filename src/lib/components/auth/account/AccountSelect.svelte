@@ -4,10 +4,12 @@
   import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
   import { accountsStore } from '$lib/stores';
   import type { AccountData } from '$types/accounts';
+  import type { ClassValue } from 'svelte/elements';
 
   type Props = {
     customList?: AccountData[];
     disabled?: boolean;
+    class?: ClassValue;
   } & ({
     type: 'single';
     selected?: string;
@@ -20,7 +22,8 @@
     customList,
     type = 'multiple',
     selected = $bindable(),
-    disabled
+    disabled,
+    class: className
   }: Props = $props();
 
   const accountList = $derived(customList || $accountsStore.allAccounts);
@@ -58,7 +61,7 @@
   }
 </script>
 
-<Select disabled={disabled || !accountList.length} {items} {type} bind:value={selected as never}>
+<Select disabled={disabled || !accountList.length} {items} triggerClass={className} {type} bind:value={selected as never}>
   {#snippet trigger()}
     <UserIcon class="text-muted-foreground size-5 mr-2"/>
     <span class="text-muted-foreground">{selectedAccounts}</span>

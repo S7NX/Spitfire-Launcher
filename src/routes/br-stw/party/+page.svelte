@@ -1,0 +1,189 @@
+<script lang="ts">
+  import { accountsStore } from '$lib/stores';
+  import { nonNull } from '$lib/utils';
+  import { Label, Separator } from 'bits-ui';
+  import Button from '$components/ui/Button.svelte';
+  import Switch from '$components/ui/Switch.svelte';
+  import AccountSelect from '$components/auth/account/AccountSelect.svelte';
+  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
+  import type { PartyData } from '$types/game/party';
+  import PartyManager from '$lib/core/managers/party';
+  import { toast } from 'svelte-sonner';
+  import type { AccountData } from '$types/accounts';
+  import RewardClaimer from '$lib/core/managers/automation/rewardClaimer';
+  import AutomationBase from '$lib/core/managers/automation/base';
+
+  const allAccounts = $derived(nonNull($accountsStore.allAccounts));
+
+  let partyCache = $state<Map<string, PartyData>>(new Map());
+
+  let shouldClaimRewards = $state<boolean>();
+  let kickAllSelectedAccount = $state<string>();
+  let leavePartySelectedAccounts = $state<string[]>();
+  let claimRewardsPartySelectedAccounts = $state<string[]>();
+
+  let isKicking = $state<boolean>();
+  let isLeaving = $state<boolean>();
+  let isClaiming = $state<boolean>();
+  let isDoingSomething = $derived(isKicking || isLeaving || isClaiming);
+
+  async function kickAll() {
+    if (!kickAllSelectedAccount) return;
+
+    isKicking = true;
+
+    try {
+      const kickerAccount = allAccounts.find((account) => account.accountId === kickAllSelectedAccount);
+      if (!kickerAccount) return;
+
+      const partyData = await fetchPartyData(kickerAccount);
+      if (!partyData) {
+        toast.error('You are not in a party');
+        return;
+      }
+
+      const partyMemberIds = partyData.members.map(x => x.account_id).filter(id => id !== kickAllSelectedAccount);
+      const partyLeaderId = partyData.members.find(x => x.role === 'CAPTAIN')!.account_id;
+      if (partyLeaderId !== kickerAccount.accountId) {
+        toast.error('You are not the party leader');
+        return;
+      }
+
+      await Promise.all(partyMemberIds.map(async (id) => {
+        await PartyManager.kick(kickerAccount, partyData.id, id);
+
+        const account = allAccounts.find((account) => account.accountId === id);
+        const isAutoClaimEnabled = AutomationBase.getAccountById(id)?.settings.autoClaim || false;
+        if (account && !isAutoClaimEnabled && shouldClaimRewards) await RewardClaimer.claimRewards(account);
+      }));
+
+      await PartyManager.kick(kickerAccount, partyData.id, kickerAccount.accountId);
+
+      toast.success('Successfuly kicked everyone');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to kick everyone');
+    } finally {
+      kickAllSelectedAccount = undefined;
+      isKicking = false;
+    }
+  }
+
+  async function leaveParty() {
+    if (!leavePartySelectedAccounts?.length) return;
+
+    isLeaving = true;
+
+    try {
+      const accountParties: Map<string, string> = new Map();
+      const accounts = allAccounts.filter(account => leavePartySelectedAccounts?.includes(account.accountId));
+      const registeredAccounts = allAccounts.map(account => account.accountId);
+
+      for (const account of accounts) {
+        if (accountParties.has(account.accountId)) continue;
+
+        const party = await fetchPartyData(account);
+        if (!party) continue;
+
+        for (const member of party.members) {
+          const isRegisteredAccount = registeredAccounts.includes(member.account_id);
+          if (!isRegisteredAccount) continue;
+
+          accountParties.set(member.account_id, party.id);
+          partyCache.set(member.account_id, party);
+        }
+      }
+
+      await Promise.all(Array.from(accountParties).map(async ([accountId, partyId]) => {
+        const account = allAccounts.find((account) => account.accountId === accountId)!;
+        await PartyManager.kick(account, partyId, account.accountId);
+
+        const isAutoClaimEnabled = AutomationBase.getAccountById(accountId)?.settings.autoClaim || false;
+        if (!isAutoClaimEnabled && shouldClaimRewards) await RewardClaimer.claimRewards(account);
+      }));
+
+      toast.success('Successfully left parties');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to leave party');
+    } finally {
+      leavePartySelectedAccounts = [];
+      isLeaving = false;
+    }
+  }
+
+  async function claimRewards() {
+    if (!claimRewardsPartySelectedAccounts?.length) return;
+
+    isClaiming = true;
+
+    try {
+      const accounts = allAccounts.filter(account => claimRewardsPartySelectedAccounts?.includes(account.accountId));
+      await Promise.all(accounts.map(async (account) => {
+        await RewardClaimer.claimRewards(account);
+      }));
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to claim rewards');
+    } finally {
+      claimRewardsPartySelectedAccounts = [];
+      isClaiming = false;
+    }
+  }
+
+  async function fetchPartyData(account: AccountData) {
+    const cache = partyCache.get(account.accountId);
+    if (cache) return cache;
+
+    const partyResponse = await PartyManager.get(account);
+    const party = partyResponse?.current[0];
+    if (!party) return;
+
+    partyCache.set(account.accountId, party);
+
+    return party;
+  }
+</script>
+
+<div class="flex flex-col items-center justify-center gap-y-5 w-full h-full">
+  <div class="w-full space-y-4 border rounded-md p-6">
+    <div class="flex flex-row space-x-4 items-center justify-between">
+      <Label.Root class="font-medium">Claim rewards after leaving the mission</Label.Root>
+      <Switch checked={shouldClaimRewards} onCheckedChange={(checked) => shouldClaimRewards = checked}/>
+    </div>
+
+    <div class="flex gap-2">
+      <AccountSelect class="grow" type="single" bind:selected={kickAllSelectedAccount}/>
+      <Button class="flex items-center justify-center" disabled={isDoingSomething || !kickAllSelectedAccount} onclick={kickAll} variant="epic">
+        {#if isKicking}
+          <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
+        {/if}
+        Kick All
+      </Button>
+    </div>
+
+    <Separator.Root class="bg-border h-px"/>
+
+    <div class="flex gap-2">
+      <AccountSelect class="grow" type="multiple" bind:selected={leavePartySelectedAccounts}/>
+      <Button class="flex items-center justify-center" disabled={isDoingSomething || !leavePartySelectedAccounts?.length} onclick={leaveParty} variant="epic">
+        {#if isLeaving}
+          <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
+        {/if}
+        Leave Party
+      </Button>
+    </div>
+
+    <Separator.Root class="bg-border h-px"/>
+
+    <div class="flex gap-2">
+      <AccountSelect class="grow" type="multiple" bind:selected={claimRewardsPartySelectedAccounts}/>
+      <Button class="flex items-center justify-center" disabled={isDoingSomething || !claimRewardsPartySelectedAccounts?.length} onclick={claimRewards} variant="epic">
+        {#if isClaiming}
+          <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
+        {/if}
+        Claim Rewards
+      </Button>
+    </div>
+  </div>
+</div>

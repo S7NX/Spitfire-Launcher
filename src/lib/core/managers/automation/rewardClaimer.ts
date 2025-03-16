@@ -11,7 +11,7 @@ export default class RewardClaimer {
     const missionAlertRewardsTotal = attributes.mission_alert_redemption_record?.pendingMissionAlertRewards?.items?.length || 0;
     const difficultyIncreaseRewardsTotal = attributes.difficulty_increase_rewards_record?.pendingRewards?.length || 0;
 
-    const claimedRewardsPromises = [
+    const claimedRewardsPromises: Promise<any>[] = [
       RewardClaimer.claimQuestRewards(account, profile.items),
       RewardClaimer.openCardPackBatch(account, profile.items),
       MCPManager.compose(account, 'RedeemSTWAccoladeTokens', 'athena', {})

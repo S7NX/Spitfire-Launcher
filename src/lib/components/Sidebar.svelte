@@ -34,6 +34,7 @@
       items: [
         { name: 'Auto-Kick', href: '/br-stw/auto-kick' },
         { name: 'Custom Status', href: '/br-stw/custom-status' },
+        { name: 'Party', href: '/br-stw/party' },
         { name: 'Item Shop', href: '/br-stw/item-shop' },
         { name: 'Earned XP', href: '/br-stw/earned-xp' },
         { name: 'Daily Quests', href: '/br-stw/daily-quests' },
@@ -103,7 +104,7 @@
             class={cn(
               'w-full px-2 py-1 text-sm font-medium rounded-md',
               'flex justify-between items-center',
-              'hover:bg-accent hover:text-accent-foreground transition-colors'
+              'hover:bg-accent hover:text-accent-foreground'
             )}
             onclick={() => toggleCategory(i)}
           >
@@ -126,7 +127,7 @@
                   <a
                     class={cn(
                       'block px-3 py-1 text-sm rounded-md truncate',
-                      'hover:bg-accent hover:text-accent-foreground transition-colors',
+                      'hover:bg-accent hover:text-accent-foreground',
                       page.url.pathname === item.href && 'bg-accent text-accent-foreground'
                     )}
                     href={item.href}
