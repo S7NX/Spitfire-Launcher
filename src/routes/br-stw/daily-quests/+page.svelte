@@ -109,7 +109,7 @@
     }
 
     try {
-      const rerollResponse = await MCPManager.queryProfile(account, 'campaign');
+      const rerollResponse = await MCPManager.compose<FullQueryProfile<'campaign'>>(account, 'FortRerollDailyQuest', 'campaign', { questId });
       const status = questStatuses.find((status) => status.accountId === accountId);
       if (status) {
         handleQueryProfile(rerollResponse, status);
