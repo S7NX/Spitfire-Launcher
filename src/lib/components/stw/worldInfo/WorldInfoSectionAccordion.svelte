@@ -2,6 +2,7 @@
   import Accordion from '$components/ui/Accordion.svelte';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import type { WorldParsedMission } from '$types/game/stw/worldInfo';
+  import { isLegendaryOrMythicSurvivor } from '$lib/utils';
 
   type Props = {
     missions: WorldParsedMission[];
@@ -38,10 +39,7 @@
   }
 
   function getSurvivorsReward(mission: WorldParsedMission) {
-    return mission.alert?.rewards.find(({ itemId }) =>
-      itemId.includes('workerbasic_sr') ||
-        (itemId.startsWith('Worker:manager') && itemId.includes('_sr_'))
-    );
+    return mission.alert?.rewards.find(({ itemId }) => isLegendaryOrMythicSurvivor(itemId));
   }
 
   function getUpgradeLlamaTokens(mission: WorldParsedMission) {
@@ -123,7 +121,7 @@
   {/snippet}
 
   {#snippet content(mission)}
-    <div class="overflow-hidden text-sm mt-1 bg-muted-foreground/5"
+    <div class="overflow-hidden text-sm mt-1 bg-muted-foreground/5 rounded-sm"
     >
       <div class="grid grid-cols-2 px-4 py-2">
         {#if mission.alert?.rewards?.length}

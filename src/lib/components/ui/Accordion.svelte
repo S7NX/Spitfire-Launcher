@@ -14,8 +14,7 @@
 
 <Accordion.Root {type}>
   {#each items as item, index (index.toString())}
-    <Accordion.Item {...restProps}
-    >
+    <Accordion.Item {...restProps}>
       <Accordion.Header>
         <Accordion.Trigger class="w-full transition-all [&[data-state=open]_.lucide-chevron-down]:rotate-180">
           {@render trigger(item)}

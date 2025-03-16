@@ -53,3 +53,7 @@ export function shouldErrorBeIgnored(error: unknown) {
     if (error.errorCode === 'errors.com.epicgames.account.invalid_account_credentials') return true;
   }
 }
+
+export function isLegendaryOrMythicSurvivor(itemId: string) {
+  return itemId.includes('workerbasic_sr') || (itemId.startsWith('Worker:manager') && itemId.includes('_sr_'));
+}
