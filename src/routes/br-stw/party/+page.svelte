@@ -12,6 +12,7 @@
   import type { AccountData } from '$types/accounts';
   import RewardClaimer from '$lib/core/managers/automation/rewardClaimer';
   import AutomationBase from '$lib/core/managers/automation/base';
+  import CenteredPageContent from '$components/CenteredPageContent.svelte';
 
   const allAccounts = $derived(nonNull($accountsStore.allAccounts));
 
@@ -145,45 +146,43 @@
   }
 </script>
 
-<div class="flex flex-col items-center justify-center gap-y-5 w-full h-full">
-  <div class="w-full space-y-4 border rounded-md p-6">
-    <div class="flex flex-row space-x-4 items-center justify-between">
-      <Label.Root class="font-medium">Claim rewards after leaving the mission</Label.Root>
-      <Switch checked={shouldClaimRewards} onCheckedChange={(checked) => shouldClaimRewards = checked}/>
-    </div>
-
-    <div class="flex gap-2">
-      <AccountSelect class="grow" type="single" bind:selected={kickAllSelectedAccount}/>
-      <Button class="flex items-center justify-center" disabled={isDoingSomething || !kickAllSelectedAccount} onclick={kickAll} variant="epic">
-        {#if isKicking}
-          <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
-        {/if}
-        Kick All
-      </Button>
-    </div>
-
-    <Separator.Root class="bg-border h-px"/>
-
-    <div class="flex gap-2">
-      <AccountSelect class="grow" type="multiple" bind:selected={leavePartySelectedAccounts}/>
-      <Button class="flex items-center justify-center" disabled={isDoingSomething || !leavePartySelectedAccounts?.length} onclick={leaveParty} variant="epic">
-        {#if isLeaving}
-          <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
-        {/if}
-        Leave Party
-      </Button>
-    </div>
-
-    <Separator.Root class="bg-border h-px"/>
-
-    <div class="flex gap-2">
-      <AccountSelect class="grow" type="multiple" bind:selected={claimRewardsPartySelectedAccounts}/>
-      <Button class="flex items-center justify-center" disabled={isDoingSomething || !claimRewardsPartySelectedAccounts?.length} onclick={claimRewards} variant="epic">
-        {#if isClaiming}
-          <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
-        {/if}
-        Claim Rewards
-      </Button>
-    </div>
+<CenteredPageContent class="w-auto">
+  <div class="flex flex-row sm:space-x-20 items-center justify-between">
+    <Label.Root class="font-medium">Claim rewards after leaving the mission</Label.Root>
+    <Switch checked={shouldClaimRewards} onCheckedChange={(checked) => shouldClaimRewards = checked}/>
   </div>
-</div>
+
+  <div class="flex gap-2">
+    <AccountSelect class="grow" type="single" bind:selected={kickAllSelectedAccount}/>
+    <Button class="flex items-center justify-center" disabled={isDoingSomething || !kickAllSelectedAccount} onclick={kickAll} variant="epic">
+      {#if isKicking}
+        <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
+      {/if}
+      Kick All
+    </Button>
+  </div>
+
+  <Separator.Root class="bg-border h-px"/>
+
+  <div class="flex gap-2">
+    <AccountSelect class="grow" type="multiple" bind:selected={leavePartySelectedAccounts}/>
+    <Button class="flex items-center justify-center" disabled={isDoingSomething || !leavePartySelectedAccounts?.length} onclick={leaveParty} variant="epic">
+      {#if isLeaving}
+        <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
+      {/if}
+      Leave Party
+    </Button>
+  </div>
+
+  <Separator.Root class="bg-border h-px"/>
+
+  <div class="flex gap-2">
+    <AccountSelect class="grow" type="multiple" bind:selected={claimRewardsPartySelectedAccounts}/>
+    <Button class="flex items-center justify-center" disabled={isDoingSomething || !claimRewardsPartySelectedAccounts?.length} onclick={claimRewards} variant="epic">
+      {#if isClaiming}
+        <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
+      {/if}
+      Claim Rewards
+    </Button>
+  </div>
+</CenteredPageContent>
