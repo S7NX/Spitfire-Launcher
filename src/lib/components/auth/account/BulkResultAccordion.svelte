@@ -12,9 +12,9 @@
   const { statuses, content: accordionContent }: Props = $props();
 </script>
 
-<Accordion class="border rounded-lg mt-4" items={statuses} type="multiple">
+<Accordion class="border rounded-lg mt-4 group" items={statuses} type="multiple">
   {#snippet trigger(status)}
-    <div class="flex items-center justify-between px-3 py-2 bg-muted rounded-t-lg">
+    <div class="flex items-center justify-between px-3 py-2 bg-muted rounded-lg border-b group-data-[state=open]:rounded-b-none">
       <span class="font-semibold truncate">{status.displayName}</span>
 
       <span class="hover:bg-muted-foreground/10 flex size-8 items-center justify-center rounded-md transition-colors">
