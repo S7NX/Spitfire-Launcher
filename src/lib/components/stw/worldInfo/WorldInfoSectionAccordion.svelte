@@ -14,8 +14,8 @@
     const vbucksReward = getVbucksReward(mission);
     const survivorsReward = getSurvivorsReward(mission);
     const upgradeLlamaTokens = getUpgradeLlamaTokens(mission);
-    const uncommonPerkupReward = getUncommonPerkupReward(mission);
-    const allRewards = [vbucksReward, survivorsReward, upgradeLlamaTokens, uncommonPerkupReward].filter(x => !!x);
+    const perkupReward = getPerkupReward(mission);
+    const allRewards = [vbucksReward, survivorsReward, upgradeLlamaTokens, perkupReward].filter(x => !!x);
     const missionModifiers = mission.modifiers?.slice(0, 5) || [];
 
     return {
@@ -23,15 +23,15 @@
       vbucksReward,
       survivorsReward,
       upgradeLlamaTokens,
-      uncommonPerkupReward,
+      perkupReward,
       allRewards,
       missionModifiers
     };
   });
 
-  function getUncommonPerkupReward(mission: WorldParsedMission) {
-    return mission.rewards.find(({ itemId }) => itemId.includes('alteration_upgrade_uc'))
-      || mission.alert?.rewards.find(({ itemId }) => itemId.includes('alteration_upgrade_uc'));
+  function getPerkupReward(mission: WorldParsedMission) {
+    return mission.rewards.find(({ itemId }) => itemId.includes('alteration_upgrade_sr'))
+      || mission.alert?.rewards.find(({ itemId }) => itemId.includes('alteration_upgrade_sr'));
   }
 
   function getVbucksReward(mission: WorldParsedMission) {
@@ -121,8 +121,7 @@
   {/snippet}
 
   {#snippet content(mission)}
-    <div class="overflow-hidden text-sm mt-1 bg-muted-foreground/5 rounded-sm"
-    >
+    <div class="overflow-hidden text-sm mt-1 bg-muted-foreground/5 rounded-sm">
       <div class="grid grid-cols-2 px-4 py-2">
         {#if mission.alert?.rewards?.length}
           <div class="flex flex-col gap-y-1">

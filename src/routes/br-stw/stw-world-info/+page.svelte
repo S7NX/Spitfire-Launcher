@@ -43,9 +43,9 @@
         .filter((mission) => mission.filters.some((id) => id.includes('voucher_cardpack_bronze')))
     },
     {
-      title: 'Uncommon Perk-Up',
+      title: 'Legendary Perk-Up',
       missions: !isLoading && parsedWorldInfoArray
-        .filter((mission) => mission.filters.some((id) => id.includes('alteration_upgrade_uc')))
+        .filter((mission) => mission.filters.some((id) => id.includes('alteration_upgrade_sr')))
     }
   ]);
 
@@ -66,9 +66,9 @@
       amount: countMissionReward(sections.find(({ title }) => title === 'Upgrade Llama Tokens')?.missions, 'voucher_cardpack_bronze')
     },
     {
-      name: 'Uncommon Perk-Up',
-      icon: '/assets/resources/reagent_alteration_upgrade_uc.png',
-      amount: countMissionReward(sections.find(({ title }) => title === 'Uncommon Perk-Up')?.missions, 'alteration_upgrade_uc')
+      name: 'Legendary Perk-Up',
+      icon: '/assets/resources/reagent_alteration_upgrade_sr.png',
+      amount: countMissionReward(sections.find(({ title }) => title === 'Legendary Perk-Up')?.missions, 'alteration_upgrade_sr')
     }
   ]);
 
