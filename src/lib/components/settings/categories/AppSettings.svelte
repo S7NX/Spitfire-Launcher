@@ -10,6 +10,7 @@
   import DataStorage, { SETTINGS_FILE_PATH, SETTINGS_INITIAL_DATA } from '$lib/core/dataStorage';
   import type { AllSettings } from '$types/settings';
   import Select from '$components/ui/Select.svelte';
+  import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
 
   const activeAccount = $derived($accountsStore.activeAccount);
 
@@ -141,7 +142,8 @@
       bind:value={() => allSettings?.app?.startingPage, (value) => handleSettingChange(value || 'home', 'app', 'startingPage')}
     >
       {#snippet trigger(label)}
-        {label}
+        <p>{label}</p>
+        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
       {/snippet}
     </Select>
   </SettingTextInputItem>
@@ -157,7 +159,8 @@
       bind:value={() => allSettings?.app?.startingAccount, (value) => handleSettingChange(value || '', 'app', 'startingAccount')}
     >
       {#snippet trigger(label)}
-        {label}
+        <p>{label}</p>
+        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
       {/snippet}
     </Select>
   </SettingTextInputItem>
