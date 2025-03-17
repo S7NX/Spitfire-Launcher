@@ -85,7 +85,7 @@
               style="background: {getItemColor()}"
               class="text-primary font-medium px-3 py-1 rounded-lg capitalize"
             >
-              {item.series?.name || item.rarity?.name}
+              {(item.series?.name || item.rarity?.name)?.toLowerCase()}
             </Badge>
 
             <Badge class="text-primary font-medium px-3 py-1 rounded-lg border" variant="outline">
