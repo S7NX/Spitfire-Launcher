@@ -24,7 +24,7 @@ export const automationSettingSchema = z.object({
   accountId: z.string(),
   autoKick: z.boolean().optional(),
   autoClaim: z.boolean().optional(),
-  autoTransferMaterials: z.boolean().optional(),
-})
+  autoTransferMaterials: z.boolean().optional()
+});
 
-export const automationSettingsSchema = z.array(automationSettingSchema)
+export const automationSettingsSchema = z.array(automationSettingSchema);

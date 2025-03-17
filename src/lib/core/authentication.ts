@@ -1,5 +1,12 @@
 import oauthService from '$lib/core/services/oauth';
-import type { DeviceAuthData, EpicDeviceAuthLoginData, EpicExchangeCodeData, EpicExchangeCodeLoginData, EpicOAuthData, EpicVerifyAccessTokenData } from '$types/game/authorizations';
+import type {
+  DeviceAuthData,
+  EpicDeviceAuthLoginData,
+  EpicExchangeCodeData,
+  EpicExchangeCodeLoginData,
+  EpicOAuthData,
+  EpicVerifyAccessTokenData
+} from '$types/game/authorizations';
 import { accessTokenCache, accountsStore, doingBulkOperations } from '$lib/stores';
 import { get } from 'svelte/store';
 import { type ClientCredentials, defaultClient } from '$lib/constants/clients';

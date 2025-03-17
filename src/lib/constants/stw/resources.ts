@@ -30,7 +30,7 @@ export const FounderEditions = Object.freeze({
   Deluxe: 'Quest:foundersquest_getrewards_1_2',
   SuperDeluxe: 'Quest:foundersquest_getrewards_2_3',
   Limited: 'Quest:foundersquest_getrewards_3_4',
-  Ultimate: 'Quest:foundersquest_getrewards_4_5',
+  Ultimate: 'Quest:foundersquest_getrewards_4_5'
 } as const);
 
 export const resources = resourcesJson as Record<string, ResourceData>;

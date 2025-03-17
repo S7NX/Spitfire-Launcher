@@ -146,7 +146,7 @@
       {/snippet}
     </Select>
   </SettingTextInputItem>
-  
+
   <SettingTextInputItem
     description="Select which account to use when launching the app."
     title="Starting Account"

@@ -1,5 +1,16 @@
 import type { ParsedWorldInfo, WorldInfoData, WorldParsedMission } from '$types/game/stw/worldInfo';
-import { WorldColors, WorldColorsByTheater, WorldLetters, WorldLettersByTheaters, WorldModifiers, WorldPowerLevels, Worlds, WorldStormKingZones, ZoneCategories, ZoneGroups } from '$lib/constants/stw/worldInfo';
+import {
+  WorldColors,
+  WorldColorsByTheater,
+  WorldLetters,
+  WorldLettersByTheaters,
+  WorldModifiers,
+  WorldPowerLevels,
+  Worlds,
+  WorldStormKingZones,
+  ZoneCategories,
+  ZoneGroups
+} from '$lib/constants/stw/worldInfo';
 import type { ParsedModifierData, ParsedResourceData, RarityType } from '$types/game/stw/resources';
 import { ingredients, RarityNames, RarityTypes, resources, survivors, survivorsMythicLeads, traps } from '$lib/constants/stw/resources';
 import baseGameService from '$lib/core/services/baseGame';

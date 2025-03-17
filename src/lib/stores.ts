@@ -64,6 +64,6 @@ export const worldInfoCache = writable<ParsedWorldInfo>();
 // To avoid redirecting the user to the home page in bulk operations if there is a credential error
 export const doingBulkOperations = writable<boolean>(false);
 export const automationStore = writable<(AutomationSetting & { status: AutomationAccount['status'] })[]>([]);
-export const brShopStore = writable<SpitfireShop>()
+export const brShopStore = writable<SpitfireShop>();
 export const accountDataStore = writable<Record<string, AccountStoreData>>({});
 export const ownedItemsStore = writable<Record<string, string[]>>({});

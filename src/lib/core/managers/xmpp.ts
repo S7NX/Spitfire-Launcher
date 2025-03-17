@@ -1,6 +1,16 @@
 import * as XMPP from 'stanza';
 import { EventNotifications, ServiceEvents } from '$lib/constants/events';
-import type { ServiceEventInteractionNotification, ServiceEventMemberConnected, ServiceEventMemberDisconnected, ServiceEventMemberExpired, ServiceEventMemberJoined, ServiceEventMemberKicked, ServiceEventMemberLeft, ServiceEventMemberStateUpdated, ServiceEventPartyUpdated } from '$types/game/events';
+import type {
+  ServiceEventInteractionNotification,
+  ServiceEventMemberConnected,
+  ServiceEventMemberDisconnected,
+  ServiceEventMemberExpired,
+  ServiceEventMemberJoined,
+  ServiceEventMemberKicked,
+  ServiceEventMemberLeft,
+  ServiceEventMemberStateUpdated,
+  ServiceEventPartyUpdated
+} from '$types/game/events';
 
 type EventMap = {
   [EventNotifications.MemberConnected]: ServiceEventMemberConnected;

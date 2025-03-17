@@ -82,7 +82,11 @@
 
       {@render children?.()}
 
-      <Dialog.Close class="focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden absolute right-5 top-5 rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98]"
+      <Dialog.Close
+        class={cn(
+          'absolute right-5 top-5 rounded-md active:scale-[0.98]',
+          'focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2'
+        )}
       >
         <XIcon class="text-foreground size-5"/>
       </Dialog.Close>
