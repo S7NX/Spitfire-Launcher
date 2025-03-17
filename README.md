@@ -1,8 +1,8 @@
 # Spitfire Launcher
 
-A cross-platform launcher for Fortnite Battle Royale and Save the World
+A launcher for Fortnite Battle Royale and Save the World
 
-<!-- todo: badges -->
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/BurakYs/Spitfire-Launcher/total?label=Total+Downloads)
 
 ## Table of Contents
 
@@ -43,9 +43,11 @@ Settings are stored in:
     - Launch game, auto-kick for STW, custom game status
     - Manage party, view item shop, earned XP, daily quests, STW shop, and world info
     - Lookup players, manage device authentications
-- **Planned Features:**
+- **Upcoming Features:**
     - Ghost equip, fake level, fake crown wins, fake rank
     - Hero and survivor loadout, expedition management
+    - Storage and backpack management
+    - Multiple language support
 
 ## Updating
 

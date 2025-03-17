@@ -1,7 +1,7 @@
 {
   "name": "spitfire-launcher",
   "version": "0.1.0",
-  "description": "A cross-platform launcher for Fortnite Battle Royale and Save the World",
+  "description": "A launcher for Fortnite Battle Royale and Save the World",
   "license": "MIT",
   "type": "module",
   "scripts": {
