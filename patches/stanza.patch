@@ -1,12 +1,13 @@
 diff --git a/Client.js b/Client.js
-index 90e65d1cef57caf056d2e4a1f9e8ca7b17f3f4ec..bbd4da92d9cffa34562aefdf7eb8f62eddf0d703 100644
+index 90e65d1cef57caf056d2e4a1f9e8ca7b17f3f4ec..221602bf98cc1532d563ae7d21554dd847517bfd 100644
 --- a/Client.js
 +++ b/Client.js
-@@ -17,7 +17,6 @@ class Client extends events_1.EventEmitter {
+@@ -17,7 +17,7 @@ class Client extends events_1.EventEmitter {
      constructor(opts = {}) {
          super();
          this.reconnectAttempts = 0;
 -        this.setMaxListeners(100);
++        //this.setMaxListeners(100);
          // Some EventEmitter shims don't include off()
          this.off = this.removeListener;
          this.updateConfig(opts);

@@ -52,7 +52,12 @@
     "webrtc-adapter": "^9.0.1",
     "zod": "^3.24.2"
   },
-  "patchedDependencies": {
-    "stanza@12.21.0": "patches/stanza@12.21.0.patch"
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ],
+    "patchedDependencies": {
+      "stanza": "patches/stanza.patch"
+    }
   }
 }
