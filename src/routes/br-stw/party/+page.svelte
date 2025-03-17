@@ -146,15 +146,15 @@
   }
 </script>
 
-<CenteredPageContent class="w-auto">
-  <div class="flex flex-row sm:space-x-20 items-center justify-between">
+<CenteredPageContent>
+  <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
     <Label.Root class="font-medium">Claim rewards after leaving the mission</Label.Root>
     <Switch checked={shouldClaimRewards} onCheckedChange={(checked) => shouldClaimRewards = checked}/>
   </div>
 
   <div class="flex gap-2">
-    <AccountSelect class="grow" type="single" bind:selected={kickAllSelectedAccount}/>
-    <Button class="flex items-center justify-center" disabled={isDoingSomething || !kickAllSelectedAccount} onclick={kickAll} variant="epic">
+    <AccountSelect class="grow shrink min-w-0" type="single" bind:selected={kickAllSelectedAccount}/>
+    <Button class="flex items-center justify-center shrink-0" disabled={isDoingSomething || !kickAllSelectedAccount} onclick={kickAll} variant="epic">
       {#if isKicking}
         <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
       {/if}
@@ -165,8 +165,8 @@
   <Separator.Root class="bg-border h-px"/>
 
   <div class="flex gap-2">
-    <AccountSelect class="grow" type="multiple" bind:selected={leavePartySelectedAccounts}/>
-    <Button class="flex items-center justify-center" disabled={isDoingSomething || !leavePartySelectedAccounts?.length} onclick={leaveParty} variant="epic">
+    <AccountSelect class="grow shrink min-w-0" type="multiple" bind:selected={leavePartySelectedAccounts}/>
+    <Button class="flex items-center justify-center shrink-0" disabled={isDoingSomething || !leavePartySelectedAccounts?.length} onclick={leaveParty} variant="epic">
       {#if isLeaving}
         <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
       {/if}
@@ -177,8 +177,8 @@
   <Separator.Root class="bg-border h-px"/>
 
   <div class="flex gap-2">
-    <AccountSelect class="grow" type="multiple" bind:selected={claimRewardsPartySelectedAccounts}/>
-    <Button class="flex items-center justify-center" disabled={isDoingSomething || !claimRewardsPartySelectedAccounts?.length} onclick={claimRewards} variant="epic">
+    <AccountSelect class="grow shrink min-w-0" type="multiple" bind:selected={claimRewardsPartySelectedAccounts}/>
+    <Button class="flex items-center justify-center shrink-0" disabled={isDoingSomething || !claimRewardsPartySelectedAccounts?.length} onclick={claimRewards} variant="epic">
       {#if isClaiming}
         <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
       {/if}

@@ -114,7 +114,7 @@
         </span>
       </span>
 
-      <span class="inline-flex items-center align-center">
+      <span class="inline-flex items-center justify-center">
         <ChevronDownIcon class="size-5 transition-transform"/>
       </span>
     </div>

@@ -12,7 +12,7 @@
 </script>
 
 <div class="flex flex-col items-center justify-center h-full">
-  <div class={cn('flex flex-col gap-4 w-96 p-5 border rounded-md', className)}>
+  <div class={cn('flex flex-col gap-4 xxs:w-80 xs:w-96 p-5 border rounded-md', className)}>
     {@render children()}
   </div>
 </div>

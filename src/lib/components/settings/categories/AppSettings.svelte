@@ -2,6 +2,7 @@
   import SettingItem from '$components/settings/SettingItem.svelte';
   import SettingTextInputItem from '$components/settings/SettingTextInputItem.svelte';
   import ChangeNotifier from '$components/settings/ChangeNotifier.svelte';
+  import { platform } from '@tauri-apps/plugin-os';
   import { onMount } from 'svelte';
   import { accountsStore } from '$lib/stores';
   import Manifest from '$lib/core/manifest';
@@ -13,6 +14,7 @@
   import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
 
   const activeAccount = $derived($accountsStore.activeAccount);
+  const currentPlatform = platform();
 
   let initialSettings = $state<AllSettings>(SETTINGS_INITIAL_DATA);
   let initialUserAgent = $state<string>();
@@ -97,25 +99,27 @@
 </script>
 
 <div class="space-y-6">
-  <SettingTextInputItem title="Custom Game Path">
-    <Input
-      oninput={(e) => handleSettingChange(e, 'app', 'gamePath')}
-      value={allSettings?.app?.gamePath}
-    />
-  </SettingTextInputItem>
+  {#if currentPlatform === 'windows'}
+    <SettingTextInputItem title="Custom Game Path">
+      <Input
+        oninput={(e) => handleSettingChange(e, 'app', 'gamePath')}
+        value={allSettings?.app?.gamePath}
+      />
+    </SettingTextInputItem>
 
-  <SettingTextInputItem
-    description="Only applies when Fortnite isn't installed."
-    title="Custom User-Agent"
-  >
-    <Input
-      disabled={!!activeAccount}
-      oninput={handleUserAgentChange}
-      type="text"
-      value={customUserAgent}
-      variant={!!activeAccount ? 'disabled' : 'primary'}
-    />
-  </SettingTextInputItem>
+    <SettingTextInputItem
+      description="Only applies when Fortnite isn't installed."
+      title="Custom User-Agent"
+    >
+      <Input
+        disabled={!!activeAccount}
+        oninput={handleUserAgentChange}
+        type="text"
+        value={customUserAgent}
+        variant={!!activeAccount ? 'disabled' : 'primary'}
+      />
+    </SettingTextInputItem>
+  {/if}
 
   <SettingTextInputItem
     description="Checks every {allSettings?.app?.missionCheckInterval} seconds if you are in a STW mission. Used with the auto-kick feature."
@@ -164,12 +168,14 @@
     </Select>
   </SettingTextInputItem>
 
-  <SettingItem title="Hide to system tray">
-    <Switch
-      checked={allSettings?.app?.hideToTray}
-      onCheckedChange={(checked) => handleSettingChange(checked, 'app', 'hideToTray')}
-    />
-  </SettingItem>
+  {#if currentPlatform === 'windows' || currentPlatform === 'macos' || currentPlatform === 'linux'}
+    <SettingItem title="Hide to system tray">
+      <Switch
+        checked={allSettings?.app?.hideToTray}
+        onCheckedChange={(checked) => handleSettingChange(checked, 'app', 'hideToTray')}
+      />
+    </SettingItem>
+  {/if}
 
   <SettingItem title="Check for updates">
     <Switch

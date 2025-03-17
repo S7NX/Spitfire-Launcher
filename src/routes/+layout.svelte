@@ -21,8 +21,7 @@
 
   const { children } = $props();
 
-  let newVersionTag = $state<string>();
-  let downloadUrl = $state<string>();
+  let newVersionData = $state<{ tag: string; downloadUrl: string; }>();
 
   function disableF5(e: KeyboardEvent) {
     // TODO: F5 prevents page data functions from being called, disabled until I find a better solution
@@ -46,8 +45,10 @@
     const latestVersion = await ky.get<GitHubRelease>(url).json();
 
     if (latestVersion.tag_name !== `v${currentVersion}`) {
-      newVersionTag = latestVersion.tag_name.replace('v', '');
-      downloadUrl = latestVersion.html_url;
+      newVersionData = {
+        tag: latestVersion.tag_name.replace('v', ''),
+        downloadUrl: latestVersion.html_url
+      };
     }
   }
 
@@ -85,20 +86,20 @@
   </Tooltip.Provider>
 </div>
 
-<Dialog bind:open={() => !!newVersionTag, () => newVersionTag = ''}>
+<Dialog bind:open={() => !!newVersionData, () => newVersionData = undefined}>
   {#snippet title()}
     New version available
   {/snippet}
 
   {#snippet description()}
-    Version {newVersionTag} is available. Click the button below to download it.
+    Version {newVersionData?.tag} is available. Click the button below to download it.
   {/snippet}
 
   <Button
-    class="flex gap-2 items-center w-fit"
-    href={downloadUrl}
+    class="flex gap-2 justify-center items-center w-fit"
+    href={newVersionData?.downloadUrl}
   >
-    <ExternalLinkIcon class="size-4"/>
+    <ExternalLinkIcon class="size-5"/>
     Download
   </Button>
 </Dialog>

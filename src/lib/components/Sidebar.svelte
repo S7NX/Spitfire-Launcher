@@ -85,13 +85,13 @@
 
 <aside
   class={cn(
-    'h-screen bg-surface-alt border-r border-border flex flex-col overflow-hidden select-none',
-    'fixed inset-y-0 left-0 z-50 transition-transform duration-300 ease-in-out',
-    'w-54 md:sticky md:top-0 md:translate-x-0',
-    $sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+    'w-54 h-screen bg-surface-alt border-l border flex flex-col overflow-hidden select-none',
+    'fixed inset-y-0 right-0 z-50 transition-transform duration-300 ease-in-out',
+    'md:sticky md:top-0 md:translate-x-0',
+    $sidebarOpen ? 'translate-x-0' : 'translate-x-full'
   )}
 >
-  <div class="flex align-center justify-center p-4 border-b border-border h-16" data-tauri-drag-region>
+  <div class="flex items-center justify-center p-4 border-b border-r border-border h-16" data-tauri-drag-region>
     <a class="text-xl font-bold" href={startingPage}>{config.name}</a>
   </div>
 
@@ -103,7 +103,7 @@
             class={cn(
               'w-full px-2 py-1 text-sm font-medium rounded-md',
               'flex justify-between items-center',
-              'hover:bg-accent hover:text-accent-foreground'
+              'hover:bg-accent'
             )}
             onclick={() => toggleCategory(i)}
           >
@@ -126,7 +126,7 @@
                   <a
                     class={cn(
                       'block px-3 py-1 text-sm rounded-md truncate',
-                      'hover:bg-accent hover:text-accent-foreground',
+                      'hover:bg-accent',
                       page.url.pathname === item.href && 'bg-accent text-accent-foreground'
                     )}
                     href={item.href}

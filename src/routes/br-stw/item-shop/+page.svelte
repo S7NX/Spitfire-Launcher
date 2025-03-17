@@ -23,7 +23,7 @@
   let shopLastUpdated = $state<Date>();
   let shopSections = $state<SpitfireShopSection[] | null>(null);
   let errorOccurred = $state(false);
-  let selectedFilter = $state<SpitfireShopFilter>();
+  let selectedFilter = $state<SpitfireShopFilter>('All');
 
   const filteredItems = $derived.by(() => {
     if (!shopSections)

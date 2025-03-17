@@ -9,7 +9,7 @@
 </script>
 
 <button
-  class="p-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
+  class="p-2 rounded-md hover:bg-accent transition-colors"
   onclick={toggleTheme}
 >
   {#if $theme === 'dark'}

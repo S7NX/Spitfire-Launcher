@@ -79,11 +79,11 @@
   <Dropdown bind:open={dropdownOpen}>
     {#snippet trigger()}
       <Button
-        class="border-input gap-2 h-10 border max-w-40 truncate inline-flex justify-center items-center"
+        class="border-input gap-2 h-10 border max-w-36 xs:max-w-40 truncate flex justify-center items-center"
         onclick={toggleDropdown}
         variant="accent"
       >
-        <span>{activeAccount?.displayName || 'No account'}</span>
+        <span class="truncate">{activeAccount?.displayName || 'No Account'}</span>
         <ChevronDownIcon class="size-5 transition-transform duration-200 {dropdownOpen ? 'rotate-180' : ''}"/>
       </Button>
     {/snippet}
@@ -106,7 +106,7 @@
             <DropdownMenu.Item
               class={cn(
                 'w-full text-left px-4 py-2 text-sm truncate rounded-md',
-                'hover:bg-accent hover:text-accent-foreground hover:cursor-pointer transition-colors',
+                'hover:bg-accent hover:cursor-pointer transition-colors',
                 'flex items-center'
               )}
               onclick={() => changeAccounts(account)}
@@ -127,7 +127,7 @@
         <DropdownMenu.Item
           class={cn(
             'w-full text-left px-3 py-2 text-sm rounded-md cursor-pointer',
-            'hover:bg-accent hover:text-accent-foreground transition-colors',
+            'hover:bg-accent transition-colors',
             'flex items-center'
           )}
           onclick={addNewAccount}

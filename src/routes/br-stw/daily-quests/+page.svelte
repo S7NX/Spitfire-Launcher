@@ -159,7 +159,7 @@
               },
               {
                 name: status.data.hasFounder ? 'V-Bucks' : 'X-Ray Tickets',
-                icon: '/assets/resources/currency_mtxswap.png',
+                icon: status.data.hasFounder ? '/assets/resources/currency_mtxswap.png' : '/assets/resources/currency_xrayllama.png',
                 amount: quest.rewards.mtx
               },
               {

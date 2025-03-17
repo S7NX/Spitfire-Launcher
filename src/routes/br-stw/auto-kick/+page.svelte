@@ -52,14 +52,14 @@
   }
 </script>
 
-<CenteredPageContent class="min-w-128">
-  <div class="contents text-muted-foreground text-sm">
+<CenteredPageContent class="max-w-128 !w-full @container">
+  <div class="contents text-muted-foreground text-sm ">
     <h1 class="text-lg font-semibold text-primary -mb-2">Auto-Kick</h1>
     <p>
       Automation settings for your accounts. You can enable/disable auto-kick, auto-claim, and auto-transfer materials for Save the World missions.
     </p>
 
-    <div class="flex items-center gap-x-6">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2">
       <div class="flex items-center gap-x-2">
         <div class="size-2 rounded-full bg-green-500"></div>
         <span>Active</span>
@@ -84,7 +84,7 @@
   </div>
 
   {#if $automationStore.length}
-    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 place-items-center @md:grid-cols-2 @lg:grid-cols-3 gap-4 mt-6">
       {#each $automationStore as automationAccount (automationAccount.accountId)}
         {@const isLoading = automationAccount.status === 'LOADING'}
 
