@@ -38,7 +38,6 @@
         { name: 'Item Shop', href: '/br-stw/item-shop' },
         { name: 'Earned XP', href: '/br-stw/earned-xp' },
         { name: 'Daily Quests', href: '/br-stw/daily-quests' },
-        { name: 'STW Shop', href: '/br-stw/stw-shop' },
         { name: 'STW World Info', href: '/br-stw/stw-world-info' },
         { name: 'Lookup Players', href: '/br-stw/lookup-players' }
       ]

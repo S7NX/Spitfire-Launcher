@@ -29,7 +29,6 @@
   const startingPageOptions: SelectOption<NonNullable<NonNullable<AllSettings['app']>['startingPage']>>[] = [
     { label: 'Auto-Kick', value: 'AUTO_KICK' },
     { label: 'BR Item Shop', value: 'BR_ITEM_SHOP' },
-    { label: 'STW Item Shop', value: 'STW_SHOP' },
     { label: 'STW World Info', value: 'STW_WORLD_INFO' },
     { label: 'Daily Quests', value: 'DAILY_QUESTS' }
   ];

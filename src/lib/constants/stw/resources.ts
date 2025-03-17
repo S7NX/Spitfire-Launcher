@@ -25,15 +25,6 @@ export const RarityNames: Record<RarityType, string> = {
   [RarityTypes.Mythic]: 'Mythic'
 };
 
-export const raritiesColor: Record<RarityType, string> = {
-  [RarityTypes.Common]: '#BFBABA',
-  [RarityTypes.Uncommon]: '#04C577',
-  [RarityTypes.Rare]: '#51A1DB',
-  [RarityTypes.Epic]: '#D076F6',
-  [RarityTypes.Legendary]: '#ED7E39',
-  [RarityTypes.Mythic]: '#CDAB47'
-};
-
 export const FounderEditions = Object.freeze({
   Standard: 'Quest:foundersquest_getrewards_0_1',
   Deluxe: 'Quest:foundersquest_getrewards_1_2',
