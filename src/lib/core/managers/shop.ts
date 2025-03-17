@@ -1,8 +1,8 @@
-import tauriKy from '$lib/core/services/tauriKy';
+import ky from 'ky';
 import type { SpitfireResponse, SpitfireShop, SpitfireShopItem, SpitfireShopSection } from '$types/game/shop';
 import { brShopStore } from '$lib/stores';
 
-const spitfireAPIService = tauriKy.extend({
+const spitfireAPIService = ky.extend({
   prefixUrl: 'https://api.rookie-spitfire.xyz/v1/epic',
   hooks: {
     afterResponse: [

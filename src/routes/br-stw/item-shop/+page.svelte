@@ -59,6 +59,7 @@
       shopLastUpdated = new Date(shopResponse.lastUpdated);
       shopSections = ShopManager.groupBySections(shopResponse.offers);
     } catch (error) {
+      console.error(error);
       errorOccurred = true;
     }
   }
