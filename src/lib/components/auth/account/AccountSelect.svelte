@@ -51,10 +51,18 @@
     }
   });
 
-  const selectedAccounts = $derived(!selected?.length
-    ? `Select ${type === 'single' ? 'an account' : 'accounts'}`
-    : type === 'single' ? (getAccountName(selected as string)) : `${selected.length} account${selected.length === 1 ? '' : 's'} selected`
-  );
+  const selectedAccounts = $derived.by(() => {
+    if (!selected?.length) {
+      return `Select ${type === 'single' ? 'an account' : 'accounts'}`;
+    }
+
+    if (type === 'single' || (type === 'multiple' && selected.length === 1)) {
+      const accountId = Array.isArray(selected) ? selected[0] : selected;
+      return getAccountName(accountId);
+    }
+
+    return `${selected.length} account${selected.length === 1 ? '' : 's'} selected`;
+  });
 
   function getAccountName(accountId: string) {
     return accountList.find((account) => account.accountId === accountId)?.displayName;
@@ -64,7 +72,7 @@
 <Select disabled={disabled || !accountList.length} {items} triggerClass={className} {type} bind:value={selected as never}>
   {#snippet trigger()}
     <UserIcon class="text-muted-foreground size-5 mr-2"/>
-    <span class="text-muted-foreground">{selectedAccounts}</span>
+    <span class="text-muted-foreground truncate">{selectedAccounts}</span>
     <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
   {/snippet}
 </Select>
