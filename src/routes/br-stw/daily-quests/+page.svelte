@@ -30,7 +30,7 @@
 
   let selectedAccounts = $state<string[]>([]);
   let isFetching = $state(false);
-  let canReroll = $state(false);
+  let canReroll = $state<Record<string, boolean>>({});
   let questStatuses = $state<QuestStatus[]>([]);
   let rerollingQuestId = $state<string | null>(null);
 
@@ -74,7 +74,7 @@
     const profile = queryProfile.profileChanges[0].profile;
     const items = profile.items;
 
-    canReroll = (profile.stats.attributes.quest_manager?.dailyQuestRerolls || 0) > 0;
+    canReroll[profile.accountId] = (profile.stats.attributes.quest_manager?.dailyQuestRerolls || 0) > 0;
     status.data.quests = [];
     status.data.hasFounder = Object.values(items).some((item) => item.templateId === 'Token:receivemtxcurrency');
 
@@ -176,7 +176,7 @@
                 <div class="flex items-center gap-2">
                   <span class="font-medium">{quest.completionProgress}/{quest.limit}</span>
 
-                  {#if canReroll}
+                  {#if canReroll[status.accountId]}
                     <Button
                       class="flex items-center justify-center h-8 w-8"
                       disabled={!!rerollingQuestId}
