@@ -2,6 +2,7 @@
   import SettingItem from '$components/settings/SettingItem.svelte';
   import SettingTextInputItem from '$components/settings/SettingTextInputItem.svelte';
   import ChangeNotifier from '$components/settings/ChangeNotifier.svelte';
+  import { allSettingsSchema } from '$lib/validations/settings';
   import { platform } from '@tauri-apps/plugin-os';
   import { onMount } from 'svelte';
   import { accountsStore } from '$lib/stores';
@@ -12,6 +13,7 @@
   import type { AllSettings } from '$types/settings';
   import Select from '$components/ui/Select.svelte';
   import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
+  import { toast } from 'svelte-sonner';
 
   const activeAccount = $derived($accountsStore.activeAccount);
   const currentPlatform = platform();
@@ -55,8 +57,9 @@
 
     const settingsChanged = JSON.stringify(allSettings) !== JSON.stringify(initialSettings);
     const userAgentChanged = customUserAgent !== initialUserAgent;
+    const currentSettingsValid = allSettingsSchema.safeParse(allSettings).success;
 
-    hasChanges = settingsChanged || userAgentChanged;
+    hasChanges = !currentSettingsValid ? false : settingsChanged || userAgentChanged;
   });
 
   async function handleSave() {
@@ -72,7 +75,7 @@
     hasChanges = false;
   }
 
-  function handleSettingChange<C extends keyof AllSettings, V extends string | boolean = string | boolean>(
+  function handleSettingChange<C extends keyof AllSettings, V extends string | number | boolean = string | number | boolean>(
     eventOrValue: Event | V,
     section: C,
     key: string
@@ -81,13 +84,19 @@
       ? (eventOrValue.target as HTMLInputElement).value
       : eventOrValue;
 
-    allSettings = {
+    const newSettings = {
       ...allSettings,
       [section]: {
         ...allSettings[section],
         [key]: value
       }
     };
+
+    if (!allSettingsSchema.safeParse(newSettings).success) {
+      toast.error('You have entered an invalid value.');
+    } else {
+      allSettings = newSettings;
+    }
   }
 
   function handleUserAgentChange(event: Event) {
@@ -95,6 +104,10 @@
     customUserAgent = target.value;
 
     handleSettingChange(target.value, 'app', 'userAgent');
+  }
+
+  function convertToNumber(event: Event) {
+    return Number.parseFloat((event.target as HTMLInputElement).value);
   }
 </script>
 
@@ -128,9 +141,22 @@
     <Input
       max={10}
       min={1}
-      oninput={(e) => handleSettingChange(e, 'app', 'missionCheckInterval')}
+      oninput={(e) => handleSettingChange(convertToNumber(e), 'app', 'missionCheckInterval')}
       type="number"
       value={allSettings?.app?.missionCheckInterval}
+    />
+  </SettingTextInputItem>
+
+  <SettingTextInputItem
+    description="Waits {allSettings?.app?.claimRewardsDelay} seconds before claiming STW mission rewards."
+    title="Delay for Claiming Rewards"
+  >
+    <Input
+      max={10}
+      min={1}
+      oninput={(e) => handleSettingChange(convertToNumber(e), 'app', 'claimRewardsDelay')}
+      type="number"
+      value={allSettings?.app?.claimRewardsDelay}
     />
   </SettingTextInputItem>
 

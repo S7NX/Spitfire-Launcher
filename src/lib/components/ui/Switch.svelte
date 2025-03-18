@@ -17,14 +17,14 @@
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
     'disabled:cursor-not-allowed disabled:opacity-50',
     'focus-visible:ring-ring focus-visible:ring-offset-background',
-    'data-[state=checked]:bg-primary dark:data-[state=unchecked]:bg-input'
+    'data-[state=checked]:bg-primary data-[state=unchecked]:bg-input'
   )}
 >
   <Switch.Thumb
     class={cn(
       'peer inline-block size-5 rounded-full transition-transform',
       'data-[state=checked]:translate-x-6 data-[state=unchecked]:translate-x-1',
-      'data-[state=checked]:bg-background dark:data-[state=unchecked]:bg-primary'
+      'data-[state=checked]:bg-background data-[state=unchecked]:bg-primary'
     )}
   />
 </Switch.Root>

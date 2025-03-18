@@ -1,9 +1,17 @@
+import DataStorage from '$lib/core/dataStorage';
 import MCPManager from '$lib/core/managers/mcp';
 import type { AccountData } from '$types/accounts';
 import type { CampaignProfile } from '$types/game/mcp';
 
 export default class RewardClaimer {
   static async claimRewards(account: AccountData) {
+    const settings = await DataStorage.getSettingsFile();
+    const delaySeconds = settings.app?.claimRewardsDelay;
+
+    if (delaySeconds) {
+      await new Promise(resolve => setTimeout(resolve, delaySeconds * 1000));
+    }
+
     const queryProfile = await MCPManager.queryProfile(account, 'campaign');
     const profile = queryProfile.profileChanges[0].profile;
     const attributes = profile.stats.attributes;
