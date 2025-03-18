@@ -50,7 +50,7 @@
         return;
       }
 
-      await Promise.all(partyMemberIds.map(async (id) => {
+      await Promise.allSettled(partyMemberIds.map(async (id) => {
         await PartyManager.kick(kickerAccount, partyData.id, id);
 
         const account = allAccounts.find((account) => account.accountId === id);
@@ -95,7 +95,7 @@
         }
       }
 
-      await Promise.all(Array.from(accountParties).map(async ([accountId, partyId]) => {
+      await Promise.allSettled(Array.from(accountParties).map(async ([accountId, partyId]) => {
         const account = allAccounts.find((account) => account.accountId === accountId)!;
         await PartyManager.kick(account, partyId, account.accountId);
 
@@ -120,7 +120,7 @@
 
     try {
       const accounts = allAccounts.filter(account => claimRewardsPartySelectedAccounts?.includes(account.accountId));
-      await Promise.all(accounts.map(async (account) => {
+      await Promise.allSettled(accounts.map(async (account) => {
         await RewardClaimer.claimRewards(account);
       }));
     } catch (error) {

@@ -24,7 +24,7 @@
     doingBulkOperations.set(true);
 
     const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
-    await Promise.all(accounts.map(async (account) => {
+    await Promise.allSettled(accounts.map(async (account) => {
       const status = xpStatuses.find((status) => status.accountId === account.accountId) ||
         { accountId: account.accountId, displayName: account.displayName, data: {} as XPStatus['data'] } satisfies XPStatus;
 

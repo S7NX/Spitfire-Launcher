@@ -37,8 +37,8 @@
     const invalidCredentialsAccounts: string[] = [];
 
     const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
-    await Promise.all(accounts.map(async (account) => {
-      await Promise.all(codesToRedeem.map(async (code) => {
+    await Promise.allSettled(accounts.map(async (account) => {
+      await Promise.allSettled(codesToRedeem.map(async (code) => {
         const status = codeStatuses.find((status) => status.accountId === account.accountId)
           || { accountId: account.accountId, displayName: account.displayName, data: [] } satisfies CodeStatus;
 

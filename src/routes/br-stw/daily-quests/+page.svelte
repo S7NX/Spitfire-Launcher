@@ -43,7 +43,7 @@
       .map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId))
       .filter(x => !!x);
 
-    await Promise.all(accounts.map(async (account) => {
+    await Promise.allSettled(accounts.map(async (account) => {
       const status: QuestStatus = {
         accountId: account.accountId,
         displayName: account.displayName,

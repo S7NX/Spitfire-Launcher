@@ -58,8 +58,9 @@ export default class AccountAutomation {
         const wasInMatch = matchmakingState.partyState === PartyStates.Matchmaking || matchmakingState.partyState === PartyStates.PostMatchmaking;
         if (!wasInMatch) {
           this.dispose();
-          return;
         }
+
+        return;
       }
 
       if (matchmakingData.started == null) return;
@@ -147,8 +148,8 @@ export default class AccountAutomation {
     if (partyLeaderAccount) {
       const accountsWithNoAutoKick = membersWithNoAutoKick.filter((id) => id !== this.account.accountId);
 
-      await Promise.all(accountsWithNoAutoKick.map(async (id) =>
-        PartyManager.kick(partyLeaderAccount, party.id, id)
+      await Promise.allSettled(accountsWithNoAutoKick.map(async (id) =>
+        await PartyManager.kick(partyLeaderAccount, party.id, id)
       ));
 
       await PartyManager.kick(this.account, party.id, this.account.accountId).catch(() => null);
@@ -159,9 +160,8 @@ export default class AccountAutomation {
 
       accountsWithNoAutoKick.push(this.account);
 
-      await Promise.all(accountsWithNoAutoKick.map(async (account) => {
+      await Promise.allSettled(accountsWithNoAutoKick.map(async (account) => {
         await PartyManager.kick(account, party.id, account.accountId);
-        await RewardClaimer.claimRewards(account);
       }));
     }
   }
