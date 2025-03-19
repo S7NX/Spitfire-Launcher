@@ -70,14 +70,19 @@
     }
   }
 
-  async function leaveParty() {
-    if (!leavePartySelectedAccounts?.length) return;
+  async function leaveParty(claimOnly?: boolean) {
+    const selectedAccounts = claimOnly ? claimRewardsPartySelectedAccounts : leavePartySelectedAccounts;
+    if (!selectedAccounts?.length) return;
 
-    isLeaving = true;
+    if (claimOnly) {
+      isClaiming = true;
+    } else {
+      isLeaving = true;
+    }
 
     try {
       const accountParties: Map<string, string> = new Map();
-      const accounts = allAccounts.filter(account => leavePartySelectedAccounts?.includes(account.accountId));
+      const accounts = allAccounts.filter(account => selectedAccounts?.includes(account.accountId));
       const registeredAccounts = allAccounts.map(account => account.accountId);
 
       for (const account of accounts) {
@@ -97,38 +102,24 @@
 
       await Promise.allSettled(Array.from(accountParties).map(async ([accountId, partyId]) => {
         const account = allAccounts.find((account) => account.accountId === accountId)!;
-        await PartyManager.kick(account, partyId, account.accountId);
+        if (!claimOnly) await PartyManager.kick(account, partyId, account.accountId);
 
         const isAutoClaimEnabled = AutomationBase.getAccountById(accountId)?.settings.autoClaim || false;
-        if (!isAutoClaimEnabled && shouldClaimRewards) await RewardClaimer.claimRewards(account);
+        if (claimOnly || (!isAutoClaimEnabled && shouldClaimRewards)) await RewardClaimer.claimRewards(account);
       }));
 
-      toast.success('Successfully left parties');
+      toast.success(claimOnly ? 'Successfully claimed rewards' : 'Successfully left parties');
     } catch (error) {
       console.error(error);
-      toast.error('Failed to leave party');
+      toast.error(claimOnly ? 'Failed to claim rewards' : 'Failed to leave party');
     } finally {
-      leavePartySelectedAccounts = [];
-      isLeaving = false;
-    }
-  }
-
-  async function claimRewards() {
-    if (!claimRewardsPartySelectedAccounts?.length) return;
-
-    isClaiming = true;
-
-    try {
-      const accounts = allAccounts.filter(account => claimRewardsPartySelectedAccounts?.includes(account.accountId));
-      await Promise.allSettled(accounts.map(async (account) => {
-        await RewardClaimer.claimRewards(account);
-      }));
-    } catch (error) {
-      console.error(error);
-      toast.error('Failed to claim rewards');
-    } finally {
-      claimRewardsPartySelectedAccounts = [];
-      isClaiming = false;
+      if (claimOnly) {
+        isClaiming = false;
+        claimRewardsPartySelectedAccounts = [];
+      } else {
+        isLeaving = false;
+        leavePartySelectedAccounts = [];
+      }
     }
   }
 
@@ -154,7 +145,11 @@
 
   <div class="flex gap-2">
     <AccountSelect class="grow shrink min-w-0" type="single" bind:selected={kickAllSelectedAccount}/>
-    <Button class="flex items-center justify-center shrink-0" disabled={isDoingSomething || !kickAllSelectedAccount} onclick={kickAll} variant="epic">
+    <Button
+      class="flex items-center justify-center shrink-0"
+      disabled={isDoingSomething || !kickAllSelectedAccount}
+      onclick={kickAll}
+      variant="epic">
       {#if isKicking}
         <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
       {/if}
@@ -166,7 +161,12 @@
 
   <div class="flex gap-2">
     <AccountSelect class="grow shrink min-w-0" type="multiple" bind:selected={leavePartySelectedAccounts}/>
-    <Button class="flex items-center justify-center shrink-0" disabled={isDoingSomething || !leavePartySelectedAccounts?.length} onclick={leaveParty} variant="epic">
+    <Button
+      class="flex items-center justify-center shrink-0"
+      disabled={isDoingSomething || !leavePartySelectedAccounts?.length}
+      onclick={() => leaveParty()}
+      variant="epic"
+    >
       {#if isLeaving}
         <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
       {/if}
@@ -178,7 +178,12 @@
 
   <div class="flex gap-2">
     <AccountSelect class="grow shrink min-w-0" type="multiple" bind:selected={claimRewardsPartySelectedAccounts}/>
-    <Button class="flex items-center justify-center shrink-0" disabled={isDoingSomething || !claimRewardsPartySelectedAccounts?.length} onclick={claimRewards} variant="epic">
+    <Button
+      class="flex items-center justify-center shrink-0"
+      disabled={isDoingSomething || !claimRewardsPartySelectedAccounts?.length}
+      onclick={() => leaveParty(true)}
+      variant="epic"
+    >
       {#if isClaiming}
         <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
       {/if}
