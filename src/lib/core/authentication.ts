@@ -5,6 +5,7 @@ import type {
   EpicExchangeCodeData,
   EpicExchangeCodeLoginData,
   EpicOAuthData,
+  EpicTokenType,
   EpicVerifyAccessTokenData
 } from '$types/game/authorizations';
 import { accessTokenCache, accountsStore, doingBulkOperations } from '$lib/stores';
@@ -50,7 +51,7 @@ export default class Authentication {
     };
   }
 
-  static async getAccessTokenUsingDeviceAuth(deviceAuthData: DeviceAuthData, useCache = true) {
+  static async getAccessTokenUsingDeviceAuth(deviceAuthData: DeviceAuthData, useCache = true, tokenType: EpicTokenType = 'eg1') {
     const cachedAccessToken = useCache && getAccessTokenFromCache(deviceAuthData.accountId);
     if (cachedAccessToken) return cachedAccessToken;
 
@@ -61,7 +62,7 @@ export default class Authentication {
           account_id: deviceAuthData.accountId,
           device_id: deviceAuthData.deviceId,
           secret: deviceAuthData.secret,
-          token_type: 'eg1'
+          token_type: tokenType
         }).toString()
       }).json();
 
@@ -125,7 +126,7 @@ export default class Authentication {
     }).json();
   }
 
-  static getAccessTokenUsingExchangeCode(exchange_code: string, clientCredentials: ClientCredentials = defaultClient, tokenType: 'eg1' | 'bearer' = 'eg1') {
+  static getAccessTokenUsingExchangeCode(exchange_code: string, clientCredentials: ClientCredentials = defaultClient, tokenType: EpicTokenType = 'eg1') {
     return oauthService.post<EpicExchangeCodeLoginData>('token', {
       body: new URLSearchParams({
         grant_type: 'exchange_code',

@@ -9,6 +9,8 @@ export type EpicAPIErrorData = {
   validationFailures?: Record<string, any>;
 };
 
+export type EpicTokenType = 'eg1' | 'bearer';
+
 export type EpicOAuthData = {
   access_token: string;
   expires_in: number;
