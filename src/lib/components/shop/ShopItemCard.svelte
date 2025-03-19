@@ -48,6 +48,7 @@
       class="absolute pointer-events-none select-none"
       alt={displayName}
       draggable="false"
+      loading="lazy"
       src={imageUrl}
     />
   {/if}
