@@ -1,16 +1,16 @@
 <script lang="ts">
-  import type { SpitfireShopFilter, SpitfireShopSection } from '$types/game/shop';
-  import { onMount } from 'svelte';
-  import ShopManager from '$lib/core/managers/shop';
   import ShopFilter from '$components/shop/ShopFilter.svelte';
-  import SkeletonShopSection from '$components/shop/SkeletonShopSection.svelte';
   import ShopSection from '$components/shop/ShopSection.svelte';
-  import { calculateVbucks } from '$lib/utils';
-  import { accountDataStore, accountsStore, brShopStore } from '$lib/stores';
-  import MCPManager from '$lib/core/managers/mcp';
+  import SkeletonShopSection from '$components/shop/SkeletonShopSection.svelte';
   import FriendManager from '$lib/core/managers/friend';
   import LookupManager from '$lib/core/managers/lookup';
+  import MCPManager from '$lib/core/managers/mcp';
+  import ShopManager from '$lib/core/managers/shop';
+  import { accountDataStore, accountsStore, brShopStore, ownedItemsStore } from '$lib/stores';
+  import { calculateVbucks } from '$lib/utils';
   import type { AccountStoreData } from '$types/accounts';
+  import type { SpitfireShopFilter, SpitfireShopSection } from '$types/game/shop';
+  import { onMount } from 'svelte';
 
   const activeAccount = $derived($accountsStore.activeAccount);
 
@@ -68,7 +68,8 @@
     const alreadyFetched = activeAccount && Object.keys($accountDataStore[activeAccount.accountId] || {}).length > 0;
     if (!activeAccount || alreadyFetched) return;
 
-    const [commonCoreProfile, friendList] = await Promise.all([
+    const [athenaProfile, commonCoreProfile, friendList] = await Promise.all([
+      MCPManager.queryProfile(activeAccount, 'athena').catch(() => null),
       MCPManager.queryProfile(activeAccount, 'common_core').catch(() => null),
       FriendManager.getFriends(activeAccount).catch(() => null)
     ]);
@@ -78,6 +79,17 @@
       remainingGifts: 0,
       friends: []
     };
+
+    if (athenaProfile) {
+      const profile = athenaProfile.profileChanges[0].profile;
+      const items = Object.values(profile.items);
+      const ownedItems = items.filter((item) => item.attributes.item_seen != null).map((item) => item.templateId.split(':')[1].toLowerCase());
+
+      ownedItemsStore.update((accounts) => {
+        accounts[activeAccount.accountId] = new Set<string>(ownedItems);
+        return accounts;
+      });
+    }
 
     if (commonCoreProfile) {
       const profile = commonCoreProfile.profileChanges[0].profile;

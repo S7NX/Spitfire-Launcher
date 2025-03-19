@@ -36,8 +36,8 @@
       });
 
       ownedItemsStore.update((accounts) => {
-        const items = accounts[activeAccount.accountId] || [];
-        items.push(item.offerId);
+        const items = accounts[activeAccount.accountId] || new Set<string>();
+        items.add(item.offerId);
 
         accounts[activeAccount.accountId] = items;
         return accounts;
@@ -62,8 +62,8 @@
         if (error.errorCode === 'errors.com.epicgames.modules.gamesubcatalog.purchase_not_allowed') {
           toast.error('You already own this item');
           ownedItemsStore.update((accounts) => {
-            const items = accounts[activeAccount.accountId] || [];
-            items.push(item.offerId);
+            const items = accounts[activeAccount.accountId] || new Set<string>();
+            items.add(item.offerId);
 
             accounts[activeAccount.accountId] = items;
             return accounts;

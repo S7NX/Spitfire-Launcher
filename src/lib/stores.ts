@@ -64,4 +64,4 @@ export const doingBulkOperations = writable<boolean>(false);
 export const automationStore = writable<(AutomationSetting & { status: AutomationAccount['status'] })[]>([]);
 export const brShopStore = writable<SpitfireShop>();
 export const accountDataStore = writable<Record<string, AccountStoreData>>({});
-export const ownedItemsStore = writable<Record<string, string[]>>({});
+export const ownedItemsStore = writable<Record<string, Set<string>>>({});

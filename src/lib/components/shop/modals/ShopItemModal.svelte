@@ -29,7 +29,7 @@
     remainingGifts = 5
   } = $derived<AccountStoreData>($accountDataStore[$activeAccountId!] || {});
 
-  const isItemOwned = $derived($ownedItemsStore[$activeAccountId!]?.includes(item.offerId));
+  const isItemOwned = $derived($ownedItemsStore[$activeAccountId!]?.has(item.id?.toLowerCase()));
 
   let isAlertDialogOpen = $state(false);
   let isPurchasing = $state(false);

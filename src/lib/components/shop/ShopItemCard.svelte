@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { SpitfireShopItem } from '$types/game/shop';
   import { ItemColors } from '$lib/constants/itemColors';
-  import { activeAccountId } from '$lib/stores';
+  import { activeAccountId, ownedItemsStore } from '$lib/stores';
   import ShopItemModal from '$components/shop/modals/ShopItemModal.svelte';
+  import CheckIcon from 'lucide-svelte/icons/check';
 
   type ItemCardProps = {
     item: SpitfireShopItem;
@@ -10,9 +11,9 @@
 
   const { item }: ItemCardProps = $props();
 
-  const hasActiveAccount = $derived(!!$activeAccountId);
   let showItemModal = $state(false);
 
+  const isItemOwned = $derived($activeAccountId && $ownedItemsStore[$activeAccountId!]?.has(item.id?.toLowerCase()));
   const displayName = item.name;
   const imageUrl = item.assets.featured || item.assets.icon || item.assets.smallIcon;
 
@@ -24,14 +25,14 @@
   const backgroundColorHex = colors[seriesId] || colors[rarityId] || colors.common;
 
   function handleItemModal() {
-    if (!hasActiveAccount) return;
+    if (!$activeAccountId) return;
     showItemModal = true;
   }
 </script>
 
 <div
   style="background-color: {backgroundColorHex}"
-  class="relative pb-[100%] rounded-xl overflow-hidden transition-all duration-300 w-full hover:scale-105 {hasActiveAccount ? 'cursor-pointer' : ''}"
+  class="relative pb-[100%] rounded-xl overflow-hidden transition-all duration-300 w-full hover:scale-105 {$activeAccountId ? 'cursor-pointer' : ''}"
   onclick={handleItemModal}
   onkeydown={(e) => {
     if (e.key === 'Enter') {
@@ -61,18 +62,26 @@
       </h3>
 
       <div class="relative flex items-center justify-start pl-6">
-        <img
-          class="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 object-contain"
-          alt="V-Bucks"
-          draggable="false"
-          src="/assets/resources/currency_mtxswap.png"
-        />
+        {#if isItemOwned}
+          <CheckIcon class="absolute left-0 top-1/2 -translate-y-1/2 size-5 object-contain text-green-500"/>
+        {:else}
+          <img
+            class="absolute left-0 top-1/2 -translate-y-1/2 size-5 object-contain"
+            alt="V-Bucks"
+            draggable="false"
+            src="/assets/resources/currency_mtxswap.png"
+          />
+        {/if}
 
         <span
           style="text-shadow: 0 2px 4px #000000"
-          class="text-sm text-white font-bold pb-0.5"
+          class="text-sm font-bold pb-0.5 {isItemOwned ? '!text-green-500' : 'text-white'}"
         >
-          {item.price.final.toLocaleString()}
+          {#if isItemOwned}
+            Owned
+          {:else}
+            {item.price.final.toLocaleString()}
+          {/if}
         </span>
       </div>
     </div>
