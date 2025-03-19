@@ -7,9 +7,10 @@
   type Props = {
     missions: WorldParsedMission[];
     claimedMissionAlerts?: Set<string>;
+    showAlertClaimedBorder?: boolean;
   };
 
-  const { missions, claimedMissionAlerts = new Set() }: Props = $props();
+  const { missions, claimedMissionAlerts = new Set(), showAlertClaimedBorder = true }: Props = $props();
 
   const parsedMissions = missions.map(mission => {
     const vbucksReward = getVbucksReward(mission);
@@ -53,7 +54,7 @@
     <div
       class={cn(
         'flex items-center justify-between px-2 h-10 bg-muted-foreground/5 rounded-sm',
-        mission.alert && claimedMissionAlerts.has(mission.alert.guid) && 'border border-green-500'
+        mission.alert && claimedMissionAlerts.has(mission.alert.guid) && showAlertClaimedBorder && 'border border-green-500'
       )}
     >
       <span class="flex gap-1 items-center py-0.5">
