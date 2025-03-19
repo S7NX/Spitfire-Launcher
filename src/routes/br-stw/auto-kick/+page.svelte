@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Separator } from 'bits-ui';
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import Button from '$components/ui/Button.svelte';
   import Automation from '$lib/core/managers/automation/base';
@@ -53,10 +54,10 @@
 </script>
 
 <CenteredPageContent class="max-w-128 !w-full @container">
-  <div class="contents text-muted-foreground text-sm ">
+  <div class="contents text-muted-foreground text-sm">
     <h1 class="text-lg font-semibold text-primary -mb-2">Auto-Kick</h1>
     <p>
-      Automation settings for your accounts. You can enable/disable auto-kick, auto-claim, and auto-transfer materials for Save the World missions.
+      Toggle auto-kick, auto-claim, and auto-transfer materials for Save the World missions.
     </p>
 
     <div class="flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2">
@@ -76,12 +77,14 @@
       </div>
     </div>
 
-    <AccountSelect
-      customList={xmppDisabledAccounts}
-      type="single"
-      bind:selected={selectedAccountId}
-    />
+    <Separator.Root class="bg-border h-px -mx-5"/>
   </div>
+
+  <AccountSelect
+    customList={xmppDisabledAccounts}
+    type="single"
+    bind:selected={selectedAccountId}
+  />
 
   {#if $automationStore.length}
     <div class="grid grid-cols-1 place-items-center @md:grid-cols-2 @lg:grid-cols-3 gap-4 mt-6">

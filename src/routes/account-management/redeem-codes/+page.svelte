@@ -86,9 +86,7 @@
   }
 </script>
 
-<CenteredPageContent>
-  <h2 class="text-lg font-medium">Redeem Codes</h2>
-
+<CenteredPageContent title="Redeem Codes">
   <form class="flex flex-col gap-2 w-full" onsubmit={redeemCodes}>
     <AccountSelect disabled={isRedeeming} type="multiple" bind:selected={selectedAccounts}/>
 

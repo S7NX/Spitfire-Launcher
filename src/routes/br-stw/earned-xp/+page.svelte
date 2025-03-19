@@ -56,15 +56,7 @@
   }
 </script>
 
-<CenteredPageContent>
-  <div class="flex flex-col gap-y-2">
-    <h2 class="text-lg font-medium">Earned XP</h2>
-
-    <p class="text-sm text-muted-foreground">
-      Check your XP progress from Battle Royale, Creative and Save the World
-    </p>
-  </div>
-
+<CenteredPageContent description="Check your XP progress from Battle Royale, Creative and Save the World" title="Earned XP">
   <form class="flex flex-col gap-y-2" onsubmit={fetchXPData}>
     <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 

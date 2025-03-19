@@ -47,9 +47,7 @@
   }
 </script>
 
-<CenteredPageContent>
-  <h2 class="text-lg font-medium">V-Bucks Information</h2>
-
+<CenteredPageContent title="V-Bucks Information">
   <form class="flex flex-col gap-y-2" onsubmit={fetchVbucksData}>
     <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 

@@ -36,15 +36,7 @@
   }
 </script>
 
-<CenteredPageContent>
-  <div class="flex flex-col gap-y-2">
-    <h2 class="text-lg font-medium">Epic Games Settings</h2>
-
-    <p class="text-sm text-muted-foreground">
-      Click the button below to login to Epic Games.
-    </p>
-  </div>
-
+<CenteredPageContent description="Click the button below to login to Epic Games." title="Epic Games Settings">
   <Button
     disabled={loginButtonDisabled}
     onclick={openEpicGamesWebsite}

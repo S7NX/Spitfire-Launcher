@@ -55,9 +55,7 @@
   }
 </script>
 
-<CenteredPageContent>
-  <h2 class="text-lg font-medium">EULA</h2>
-
+<CenteredPageContent title="EULA">
   <form class="flex flex-col gap-y-2" onsubmit={checkEULA}>
     <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 

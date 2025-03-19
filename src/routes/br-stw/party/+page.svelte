@@ -137,7 +137,7 @@
   }
 </script>
 
-<CenteredPageContent>
+<CenteredPageContent title="Party Management">
   <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
     <Label.Root class="font-medium">Claim rewards after leaving the mission</Label.Root>
     <Switch checked={shouldClaimRewards} onCheckedChange={(checked) => shouldClaimRewards = checked}/>

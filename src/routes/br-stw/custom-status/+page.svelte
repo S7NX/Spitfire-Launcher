@@ -46,16 +46,7 @@
   }
 </script>
 
-<CenteredPageContent>
-  <div class="flex flex-col gap-y-2">
-    <h2 class="text-lg font-medium">Custom Status</h2>
-
-    <p class="text-sm text-muted-foreground">
-      Set a custom status that will be displayed to your friends.
-      <br> Restart the launcher to reset the status.
-    </p>
-  </div>
-
+<CenteredPageContent description="Set a custom status that will be displayed to your friends. Restart the launcher to reset the status." title="Custom Status">
   <form class="flex flex-col gap-y-2" onsubmit={setCustomStatus}>
     <Input
       placeholder="Enter your custom status"

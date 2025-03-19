@@ -58,9 +58,7 @@
   }
 </script>
 
-<CenteredPageContent>
-  <h2 class="text-lg font-medium">Access Token</h2>
-
+<CenteredPageContent title="Access Token">
   <form class="flex flex-col gap-y-4" onsubmit={generateAccessToken}>
     <Select items={tokenTypeOptions} type="single" bind:value={selectedTokenType}>
       {#snippet trigger(label)}
