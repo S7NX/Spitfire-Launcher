@@ -1,9 +1,27 @@
+<script lang="ts" module>
+  const claimedMissionAlerts: Map<string, Set<string>> = new Map();
+</script>
+
 <script lang="ts">
+  import MCPManager from '$lib/core/managers/mcp';
   import type { WorldParsedMission } from '$types/game/stw/worldInfo';
   import WorldInfoSectionAccordion from '$components/stw/worldInfo/WorldInfoSectionAccordion.svelte';
-  import { worldInfoCache } from '$lib/stores';
+  import { accountsStore, worldInfoCache } from '$lib/stores';
   import { WorldPowerLevels, Worlds } from '$lib/constants/stw/worldInfo';
   import { isLegendaryOrMythicSurvivor } from '$lib/utils';
+
+  const activeAccount = $derived($accountsStore.activeAccount);
+
+  $effect(() => {
+    if (!activeAccount || claimedMissionAlerts.has(activeAccount.accountId)) return;
+
+    MCPManager.queryProfile(activeAccount, 'campaign').then((queryProfile) => {
+      const attributes = queryProfile.profileChanges[0].profile.stats.attributes;
+      const doneMissionAlerts = attributes.mission_alert_redemption_record?.claimData?.map((claimData) => claimData.missionAlertId) || [];
+
+      claimedMissionAlerts.set(activeAccount.accountId, new Set(doneMissionAlerts));
+    });
+  });
 
   const parsedWorldInfo = $derived($worldInfoCache);
   const parsedWorldInfoArray = $derived(parsedWorldInfo &&
@@ -111,7 +129,7 @@
         <h1 class="font-bold">{title}</h1>
 
         {#if missions.length}
-          <WorldInfoSectionAccordion {missions}/>
+          <WorldInfoSectionAccordion claimedMissionAlerts={!activeAccount ? undefined : claimedMissionAlerts.get(activeAccount.accountId)} {missions}/>
         {:else}
           {#if isLoading}
             {#each Array(Math.max(1, Math.floor(Math.random() * 3) + 1)) as _, index (index)}
