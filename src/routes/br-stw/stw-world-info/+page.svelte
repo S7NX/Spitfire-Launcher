@@ -35,9 +35,9 @@
       {#each tabs as tab (tab.name)}
         {@const TabComponent = tab.component}
 
-        {#if activeTab === tab.name}
+        <div class="{activeTab === tab.name ? 'block' : 'hidden'}">
           <TabComponent/>
-        {/if}
+        </div>
       {/each}
     </div>
   </div>

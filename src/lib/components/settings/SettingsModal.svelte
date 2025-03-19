@@ -48,11 +48,9 @@
         {#each categories as category (category.id)}
           {@const CategoryComponent = category.component}
 
-          {#if activeTab === category.id}
-            <div class="space-y-6">
-              <CategoryComponent/>
-            </div>
-          {/if}
+          <div class="space-y-6 {activeTab === category.id ? 'block' : 'hidden'}">
+            <CategoryComponent/>
+          </div>
         {/each}
       </ScrollArea>
     </div>
