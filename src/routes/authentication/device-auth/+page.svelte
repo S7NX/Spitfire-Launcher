@@ -1,5 +1,6 @@
 <script lang="ts">
   import Button from '$components/ui/Button.svelte';
+  import { Separator } from 'bits-ui';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
   import PlusIcon from 'lucide-svelte/icons/plus';
   import Trash2Icon from 'lucide-svelte/icons/trash-2';
@@ -179,21 +180,23 @@
 </script>
 
 <div class="flex flex-col p-6 gap-8 max-w-2xl mx-auto bg-background rounded-lg">
-  <div class="border rounded-md p-6">
+  <div class="border rounded-md space-y-4 p-6">
     <div class="flex flex-col">
-      <h2 class="text-2xl font-bold mb-4 flex items-center gap-x-3">
-        Device Auth List
+      <div class="flex items-center gap-x-3">
+        <h2 class="text-2xl font-bold">Device Auth List</h2>
 
         <PlusIcon
-          class="size-8 cursor-pointer pr-2 border-r-2 {isGenerating ? 'opacity-50 !cursor-not-allowed' : ''}"
+          class="size-8 cursor-pointer {isGenerating ? 'opacity-50 !cursor-not-allowed' : ''}"
           onclick={generateDeviceAuth}
         />
+
+        <Separator.Root class="bg-border h-8 w-px"/>
 
         <RefreshCwIcon
           class="size-6 cursor-pointer {isFetching ? 'animate-spin opacity-50 !cursor-not-allowed' : ''}"
           onclick={fetchDeviceAuths}
         />
-      </h2>
+      </div>
     </div>
 
     {#if !isFetching}
@@ -204,7 +207,7 @@
               <div class="flex flex-col gap-y-1">
                 <div class="flex items-center gap-2 w-fit mb-1">
                   <div class="flex items-center gap-2 group">
-                    <PencilIcon class="hidden group-hover:block size-4 cursor-pointer"/>
+                    <PencilIcon class="hidden group-hover:block size-4"/>
                     <span
                       class="font-semibold outline-none hover:underline underline-offset-2"
                       contenteditable
@@ -226,43 +229,43 @@
                   {/if}
                 </div>
 
-                {#each [
-                  { title: 'ID', value: auth.deviceId },
-                  { title: 'User-Agent', value: auth.userAgent },
-                  { title: 'Secret', value: auth.secret }
-                ] as { title, value } (title)}
-                  {#if value}
-                    <span class="text-sm flex flex-col">
-                      <span class="font-semibold">{title}:</span>
-                      <span class="text-muted-foreground">{value}</span>
-                    </span>
-                  {/if}
-                {/each}
+                <div class="flex flex-col gap-y-2">
+                  {#each [
+                    { title: 'ID', value: auth.deviceId },
+                    { title: 'User-Agent', value: auth.userAgent },
+                    { title: 'Secret', value: auth.secret }
+                  ] as { title, value } (title)}
+                    {#if value}
+                      <span class="text-sm flex flex-col">
+                        <span class="font-semibold">{title}</span>
+                        <span class="text-muted-foreground">{value}</span>
+                      </span>
+                    {/if}
+                  {/each}
 
-                {#each [
-                  { title: 'Created', data: auth.created },
-                  { title: 'Last Access', data: auth.lastAccess }
-                ] as { title, data } (title)}
-                  {#if data}
-                    <div>
-                      <span class="font-semibold">{title}:</span>
-                      <ul class="list-disc pl-5">
-                        <li>
+                  {#each [
+                    { title: 'Created', data: auth.created },
+                    { title: 'Last Access', data: auth.lastAccess }
+                  ] as { title, data } (title)}
+                    {#if data}
+                      <div>
+                        <span class="font-semibold">{title}</span>
+                        <div>
                           <span class="text-sm font-semibold">Location:</span>
                           <span class="text-sm text-muted-foreground">{data.location}</span>
-                        </li>
-                        <li>
+                        </div>
+                        <div>
                           <span class="text-sm font-semibold">IP:</span>
                           <span class="text-sm text-muted-foreground">{data.ipAddress}</span>
-                        </li>
-                        <li>
+                        </div>
+                        <div>
                           <span class="text-sm font-semibold">Date:</span>
                           <span class="text-sm text-muted-foreground">{formatDate(data.dateTime)}</span>
-                        </li>
-                      </ul>
-                    </div>
-                  {/if}
-                {/each}
+                        </div>
+                      </div>
+                    {/if}
+                  {/each}
+                </div>
               </div>
 
               <Button
