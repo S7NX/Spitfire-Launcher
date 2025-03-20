@@ -1,6 +1,7 @@
+import type { SpitfireShopItem } from '$types/game/shop';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { accountsStore } from '$lib/stores';
+import { accountsStore, ownedItemsStore } from '$lib/stores';
 import { get } from 'svelte/store';
 import { toast } from 'svelte-sonner';
 import { goto } from '$app/navigation';
@@ -66,4 +67,18 @@ export async function getStartingPage(settingsData?: AllSettings) {
   const startingPage = settings.app?.startingPage!;
 
   return Pages[startingPage];
+}
+
+export function calculateDiscountedShopPrice(accountId: string, item: SpitfireShopItem) {
+  const isBundle = item.contents.some(item => item.alreadyOwnedPriceReduction != null);
+  const ownedItems = get(ownedItemsStore)[accountId];
+  if (!ownedItems?.size || !isBundle) return item.price.final;
+
+  return item.contents.reduce((acc, item) => {
+    const isOwned = ownedItems.has(item.id?.toLowerCase());
+    const reduction = item.alreadyOwnedPriceReduction;
+
+    if (isOwned && reduction != null) return acc - reduction;
+    return acc;
+  }, item.price.final);
 }

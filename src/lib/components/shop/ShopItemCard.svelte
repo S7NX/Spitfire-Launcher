@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { calculateDiscountedShopPrice } from '$lib/utils';
   import type { SpitfireShopItem } from '$types/game/shop';
   import { ItemColors } from '$lib/constants/itemColors';
   import { activeAccountId, ownedItemsStore } from '$lib/stores';
@@ -16,6 +17,7 @@
   const isItemOwned = $derived($activeAccountId && $ownedItemsStore[$activeAccountId!]?.has(item.id?.toLowerCase()));
   const displayName = item.name;
   const imageUrl = item.assets.featured || item.assets.icon || item.assets.smallIcon;
+  const discountedPrice = $derived($activeAccountId ? calculateDiscountedShopPrice($activeAccountId, item) : item.price.final);
 
   const colors: Record<string, string> = { ...ItemColors.rarities, ...ItemColors.series };
 
@@ -81,7 +83,7 @@
           {#if isItemOwned}
             Owned
           {:else}
-            {item.price.final.toLocaleString()}
+            {discountedPrice.toLocaleString()}
           {/if}
         </span>
       </div>

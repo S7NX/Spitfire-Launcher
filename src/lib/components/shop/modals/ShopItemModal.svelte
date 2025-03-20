@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { calculateDiscountedShopPrice } from '$lib/utils';
   import { Separator } from 'bits-ui';
   import Dialog from '$components/ui/Dialog.svelte';
   import Badge from '$components/ui/Badge.svelte';
@@ -23,13 +24,18 @@
     open = $bindable(false)
   }: Props = $props();
 
+  const accountId = $activeAccountId!;
+
   const {
     vbucks: ownedVbucks = 0,
     friends = [],
     remainingGifts = 5
-  } = $derived<AccountStoreData>($accountDataStore[$activeAccountId!] || {});
+  } = $derived<AccountStoreData>($accountDataStore[accountId] || {});
 
-  const isItemOwned = $derived($ownedItemsStore[$activeAccountId!]?.has(item.id?.toLowerCase()));
+  const ownedItems = $derived($ownedItemsStore[accountId]);
+  const isItemOwned = $derived(ownedItems?.has(item.id?.toLowerCase()));
+
+  const discountedPrice = $derived(calculateDiscountedShopPrice(accountId, item));
 
   let isAlertDialogOpen = $state(false);
   let isPurchasing = $state(false);
@@ -97,7 +103,14 @@
         <div class="flex flex-col">
           <div class="flex items-center gap-1">
             <span class="text-muted-foreground font-medium">Price:</span>
-            <span>{item.price.final.toLocaleString()}</span>
+
+            {#if discountedPrice !== item.price.final}
+              <span>{discountedPrice.toLocaleString()}</span>
+              <span class="line-through text-muted-foreground/95">{item.price.final.toLocaleString()}</span>
+            {:else}
+              <span>{item.price.final.toLocaleString()}</span>
+            {/if}
+
             <img
               class="size-5"
               alt="V-Bucks"
@@ -128,7 +141,7 @@
     <div class="flex w-full gap-3">
       <Button
         class="flex justify-center items-center gap-x-2 w-full"
-        disabled={isPurchasing || ownedVbucks < item.price.final || isItemOwned}
+        disabled={isPurchasing || ownedVbucks < (discountedPrice || item.price.final) || isItemOwned}
         onclick={() => isAlertDialogOpen = true}
         variant="epic"
       >
@@ -143,7 +156,7 @@
 
       <Button
         class="flex justify-center items-center gap-x-2 w-full"
-        disabled={isSendingGifts || remainingGifts < 1 || ownedVbucks < item.price.final || !friends.length}
+        disabled={isSendingGifts || remainingGifts < 1 || ownedVbucks < item.price.final || !item.giftable || !friends.length}
         onclick={() => isGiftDialogOpen = true}
         variant="outline"
       >

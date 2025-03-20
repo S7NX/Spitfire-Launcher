@@ -65,6 +65,12 @@ export type SpitfireShopItem = {
     id: string;
     name: string;
   };
+  contents: {
+    id: string;
+    name: string;
+    alreadyOwnedPriceReduction: number;
+  }[];
+  giftable: boolean;
   shopHistory: string[];
   sortPriority: number;
 };

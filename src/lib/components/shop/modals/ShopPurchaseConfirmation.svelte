@@ -6,7 +6,7 @@
   import { toast } from 'svelte-sonner';
   import { accountDataStore, accountsStore, ownedItemsStore } from '$lib/stores';
   import MCPManager from '$lib/core/managers/mcp';
-  import { nonNull } from '$lib/utils';
+  import { calculateDiscountedShopPrice, nonNull } from '$lib/utils';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
 
   type Props = {
@@ -22,12 +22,13 @@
   }: Props = $props();
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
+  const price = $derived(calculateDiscountedShopPrice(activeAccount.accountId, item));
 
   async function purchaseItem() {
     isPurchasing = true;
 
     try {
-      const purchaseData = await MCPManager.purchaseCatalogEntry(activeAccount, item.offerId, item.price.final);
+      const purchaseData = await MCPManager.purchaseCatalogEntry(activeAccount, item.offerId, price);
 
       accountDataStore.update((accounts) => {
         const account = accounts[activeAccount.accountId];
@@ -86,7 +87,7 @@
     <p class="flex items-center gap-1">
       Are you sure you want to purchase
       <span class="font-semibold">{item.name}</span>
-      for <span class="font-semibold">{item.price.final.toLocaleString()}</span>
+      for <span class="font-semibold">{price.toLocaleString()}</span>
       <img class="size-5" alt="V-Bucks" src="/assets/resources/currency_mtxswap.png"/>?
     </p>
   {/snippet}
