@@ -28,7 +28,7 @@
 
   let { open = $bindable(false) }: Props = $props();
 
-  const activeAccount = $derived($accountsStore.activeAccount);
+  const { activeAccount, allAccounts } = $derived($accountsStore);
 
   let currentStep = $state(0);
   let selectedMethod = $state<LoginMethod | null>(null);
@@ -167,7 +167,7 @@
       return;
     }
 
-    if (accessTokenData.account_id === activeAccount?.accountId) {
+    if (allAccounts.some((account) => account.accountId === accessTokenData.account_id)) {
       toast.error(`You are already logged in with ${accessTokenData.displayName}`);
       return;
     }
