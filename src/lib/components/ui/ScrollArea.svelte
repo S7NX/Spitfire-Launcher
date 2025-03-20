@@ -23,13 +23,18 @@
 
 <ScrollArea.Root
   {...restProps}
-  class="relative overflow-hidden" bind:ref>
+  class="relative overflow-hidden"
+  bind:ref
+>
+
   <ScrollArea.Viewport class={viewportClasses}>
     {@render children?.()}
   </ScrollArea.Viewport>
+
   {#if orientation === 'vertical' || orientation === 'both'}
     {@render Scrollbar({ orientation: 'vertical' })}
   {/if}
+
   {#if orientation === 'horizontal' || orientation === 'both'}
     {@render Scrollbar({ orientation: 'horizontal' })}
   {/if}

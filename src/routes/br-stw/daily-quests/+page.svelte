@@ -149,7 +149,7 @@
   {#if !isFetching && questStatuses.length}
     <BulkResultAccordion statuses={questStatuses}>
       {#snippet content(status)}
-        <div class="p-3 space-y-3">
+        <div style="max-height: calc(80vh - 100px);" class="p-3 space-y-3 overflow-y-auto">
           {#each status.data.quests as quest (quest.id)}
             {@const rewards = [
               {
@@ -195,7 +195,7 @@
                   {#if reward.amount > 0}
                     <div class="flex items-center gap-2 bg-muted/50 p-2 rounded">
                       <img class="size-5" alt={reward.name} src={reward.icon}/>
-                      <span class=" font-medium">{reward.amount.toLocaleString()}</span>
+                      <span class="font-medium">{reward.amount.toLocaleString()}</span>
                     </div>
                   {/if}
                 {/each}

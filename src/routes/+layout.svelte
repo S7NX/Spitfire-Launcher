@@ -3,6 +3,7 @@
   import 'webrtc-adapter';
   import Sidebar from '$components/Sidebar.svelte';
   import Header from '$components/header/Header.svelte';
+  import ScrollArea from '$components/ui/ScrollArea.svelte';
   import { Toaster } from 'svelte-sonner';
   import { onMount } from 'svelte';
   import packageJson from '../../package.json';
@@ -16,7 +17,6 @@
   import { Tooltip } from 'bits-ui';
   import { getWorldInfoData, parseWorldInfo } from '$lib/core/stw/worldInfo';
   import { worldInfoCache } from '$lib/stores';
-  import { dev } from '$app/environment';
   import Automation from '$lib/core/managers/automation/base';
 
   const { children } = $props();
@@ -24,8 +24,8 @@
   let newVersionData = $state<{ tag: string; downloadUrl: string; }>();
 
   function disableF5(e: KeyboardEvent) {
-    // TODO: F5 prevents page data functions from being called, disabled until I find a better solution
-    if (e.key === 'F5' && !dev) e.preventDefault();
+    // Using CTRL + R to refresh the page is allowed
+    if (e.key === 'F5') e.preventDefault();
   }
 
   async function handleWorldInfo() {
@@ -79,9 +79,11 @@
     <Sidebar/>
     <div class="flex flex-col flex-1">
       <Header/>
-      <main class="p-4 flex-1 overflow-auto bg-background">
-        {@render children()}
-      </main>
+      <ScrollArea>
+        <main class="p-4 flex-1 overflow-auto bg-background h-[calc(100vh-4rem)]">
+          {@render children()}
+        </main>
+      </ScrollArea>
     </div>
   </Tooltip.Provider>
 </div>
