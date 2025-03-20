@@ -1,14 +1,4 @@
-<script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
-  import AccountSelect from '$components/auth/account/AccountSelect.svelte';
-  import { accountsStore, doingBulkOperations } from '$lib/stores';
-  import Button from '$components/ui/Button.svelte';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
-  import MCPManager from '$lib/core/managers/mcp';
-  import { dailyQuests } from '$lib/constants/stw/resources';
-  import type { FullQueryProfile } from '$types/game/mcp';
-  import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
+<script lang="ts" module>
   import type { BulkActionStatus } from '$types/accounts';
 
   type DailyQuest = {
@@ -28,11 +18,25 @@
     quests: DailyQuest[];
   }>;
 
-  let selectedAccounts = $state<string[]>([]);
   let isFetching = $state(false);
   let canReroll = $state<Record<string, boolean>>({});
   let questStatuses = $state<QuestStatus[]>([]);
   let rerollingQuestId = $state<string | null>(null);
+</script>
+
+<script lang="ts">
+  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import AccountSelect from '$components/auth/account/AccountSelect.svelte';
+  import { accountsStore, doingBulkOperations } from '$lib/stores';
+  import Button from '$components/ui/Button.svelte';
+  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
+  import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
+  import MCPManager from '$lib/core/managers/mcp';
+  import { dailyQuests } from '$lib/constants/stw/resources';
+  import type { FullQueryProfile } from '$types/game/mcp';
+  import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
+
+  let selectedAccounts = $state<string[]>([]);
 
   async function fetchDailyQuests() {
     isFetching = true;
@@ -139,10 +143,10 @@
     variant="epic"
   >
     {#if isFetching}
-      <LoaderCircleIcon class="size-6 animate-spin"/>
-      <span>Fetching Quests</span>
+      <LoaderCircleIcon class="size-5 animate-spin"/>
+      Fetching Quests
     {:else}
-      <span>Fetch Daily Quests</span>
+      Fetch Daily Quests
     {/if}
   </Button>
 

@@ -99,7 +99,7 @@
 
     <AlertDialogButton buttonColor="epic" buttonType="action" disabled={isPurchasing} onclick={purchaseItem}>
       {#if isPurchasing}
-        <LoaderCircleIcon class="size-6 animate-spin mr-2"/>
+        <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
         Purchasing
       {:else}
         Confirm

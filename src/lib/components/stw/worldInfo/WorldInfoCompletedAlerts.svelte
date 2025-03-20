@@ -88,13 +88,12 @@
 
 <div>
   <form class="flex items-center gap-2 w-full" onsubmit={fetchCompletedAlerts}>
-    <div class="grow">
-      <Input
-        disabled={isLoading}
-        placeholder="Search by name or account ID"
-        bind:value={searchQuery}
-      />
-    </div>
+    <Input
+      class="grow"
+      disabled={isLoading}
+      placeholder="Search by name or account ID"
+      bind:value={searchQuery}
+    />
 
     <Button
       class="flex items-center justify-center size-9"

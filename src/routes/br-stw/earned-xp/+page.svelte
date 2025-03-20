@@ -1,3 +1,16 @@
+<script lang="ts" module>
+  import type { BulkActionStatus } from '$types/accounts';
+
+  type XPStatus = BulkActionStatus<{
+    battleRoyale: number;
+    creative: number;
+    saveTheWorld: number;
+  }>;
+
+  let isFetching = $state(false);
+  let xpStatuses = $state<XPStatus[]>([]);
+</script>
+
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import { accountsStore } from '$lib/stores';
@@ -7,17 +20,8 @@
   import { doingBulkOperations } from '$lib/stores.js';
   import MCPManager from '$lib/core/managers/mcp';
   import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
-  import type { BulkActionStatus } from '$types/accounts';
-
-  type XPStatus = BulkActionStatus<{
-    battleRoyale: number;
-    creative: number;
-    saveTheWorld: number;
-  }>;
 
   let selectedAccounts = $state<string[]>([]);
-  let isFetching = $state(false);
-  let xpStatuses = $state<XPStatus[]>([]);
 
   async function fetchXPData() {
     isFetching = true;
@@ -57,17 +61,17 @@
 </script>
 
 <CenteredPageContent description="Check your XP progress from Battle Royale, Creative and Save the World" title="Earned XP">
-  <form class="flex flex-col gap-y-2" onsubmit={fetchXPData}>
+  <form class="flex flex-col gap-y-4" onsubmit={fetchXPData}>
     <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 
     <Button
-      class="flex justify-center items-center gap-x-2 mt-2"
+      class="flex justify-center items-center gap-x-2"
       disabled={!selectedAccounts?.length || isFetching}
       onclick={fetchXPData}
       variant="epic"
     >
       {#if isFetching}
-        <LoaderCircleIcon class="size-6 animate-spin"/>
+        <LoaderCircleIcon class="size-5 animate-spin"/>
         Loading XP information
       {:else}
         Check XP Progress

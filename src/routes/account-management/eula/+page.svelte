@@ -1,3 +1,14 @@
+<script lang="ts" module>
+  import type { BulkActionStatus } from '$types/accounts';
+
+  type EULAStatus = BulkActionStatus<{
+    acceptLink?: string;
+  }>;
+
+  let isFetching = $state(false);
+  let eulaStatuses = $state<EULAStatus[]>([]);
+</script>
+
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
@@ -8,15 +19,8 @@
   import { toast } from 'svelte-sonner';
   import Authentication from '$lib/core/authentication';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
-  import type { BulkActionStatus } from '$types/accounts';
-
-  type EULAStatus = BulkActionStatus<{
-    acceptLink?: string;
-  }>;
 
   let selectedAccounts = $state<string[]>([]);
-  let isFetching = $state(false);
-  let eulaStatuses = $state<EULAStatus[]>([]);
 
   async function checkEULA(event: SubmitEvent) {
     event.preventDefault();
@@ -56,16 +60,16 @@
 </script>
 
 <CenteredPageContent title="EULA">
-  <form class="flex flex-col gap-y-2" onsubmit={checkEULA}>
+  <form class="flex flex-col gap-y-4" onsubmit={checkEULA}>
     <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 
     <Button
-      class="flex justify-center items-center gap-x-2 mt-2"
+      class="flex justify-center items-center gap-x-2"
       disabled={!selectedAccounts?.length || isFetching}
       variant="epic"
     >
       {#if isFetching}
-        <LoaderCircleIcon class="size-6 animate-spin"/>
+        <LoaderCircleIcon class="size-5 animate-spin"/>
         Checking EULA
       {:else}
         Check EULA

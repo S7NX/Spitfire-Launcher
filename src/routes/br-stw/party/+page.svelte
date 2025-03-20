@@ -1,3 +1,14 @@
+<script lang="ts" module>
+  import type { PartyData } from '$types/game/party';
+
+  let partyCache = $state<Map<string, PartyData>>(new Map());
+
+  let isKicking = $state<boolean>();
+  let isLeaving = $state<boolean>();
+  let isClaiming = $state<boolean>();
+  let isDoingSomething = $derived(isKicking || isLeaving || isClaiming);
+</script>
+
 <script lang="ts">
   import { accountsStore } from '$lib/stores';
   import { nonNull } from '$lib/utils';
@@ -6,7 +17,6 @@
   import Switch from '$components/ui/Switch.svelte';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import type { PartyData } from '$types/game/party';
   import PartyManager from '$lib/core/managers/party';
   import { toast } from 'svelte-sonner';
   import type { AccountData } from '$types/accounts';
@@ -16,17 +26,10 @@
 
   const allAccounts = $derived(nonNull($accountsStore.allAccounts));
 
-  let partyCache = $state<Map<string, PartyData>>(new Map());
-
   let shouldClaimRewards = $state<boolean>();
   let kickAllSelectedAccount = $state<string>();
   let leavePartySelectedAccounts = $state<string[]>();
   let claimRewardsPartySelectedAccounts = $state<string[]>();
-
-  let isKicking = $state<boolean>();
-  let isLeaving = $state<boolean>();
-  let isClaiming = $state<boolean>();
-  let isDoingSomething = $derived(isKicking || isLeaving || isClaiming);
 
   async function kickAll() {
     if (!kickAllSelectedAccount) return;

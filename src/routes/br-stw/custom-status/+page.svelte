@@ -1,8 +1,13 @@
+<script lang="ts" module>
+  let isSettingStatus = $state(false);
+</script>
+
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
+  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { toast } from 'svelte-sonner';
   import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
   import Authentication from '$lib/core/authentication';
@@ -11,7 +16,6 @@
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
   let customStatus = $state<string>();
-  let setStatusButtonDisabled = $state(false);
 
   async function setCustomStatus(event: SubmitEvent) {
     event.preventDefault();
@@ -21,8 +25,7 @@
       return;
     }
 
-    setStatusButtonDisabled = true;
-    const toastId = toast.loading('Setting custom status...');
+    isSettingStatus = true;
 
     try {
       const accessTokenData = await Authentication.getAccessTokenUsingDeviceAuth(activeAccount, false);
@@ -31,35 +34,37 @@
 
       connection.setStatus(customStatus);
 
-      toast.success('Custom status set successfully', { id: toastId });
+      toast.success('Custom status set successfully');
     } catch (error) {
-      if (shouldErrorBeIgnored(error)) {
-        toast.dismiss(toastId);
-        return;
-      }
+      if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error('Failed to set custom status', { id: toastId });
+      toast.error('Failed to set custom status');
     } finally {
-      setStatusButtonDisabled = false;
+      isSettingStatus = false;
     }
   }
 </script>
 
 <CenteredPageContent description="Set a custom status that will be displayed to your friends. Restart the launcher to reset the status." title="Custom Status">
-  <form class="flex flex-col gap-y-2" onsubmit={setCustomStatus}>
+  <form class="flex flex-col gap-y-4" onsubmit={setCustomStatus}>
     <Input
       placeholder="Enter your custom status"
       bind:value={customStatus}
     />
 
     <Button
-      class="mt-2"
-      disabled={setStatusButtonDisabled || !customStatus?.trim()}
+      class="flex justify-center items-center gap-x-2"
+      disabled={isSettingStatus || !customStatus?.trim()}
       type="submit"
       variant="epic"
     >
-      Set Status
+      {#if isSettingStatus}
+        <LoaderCircleIcon class="size-5 animate-spin"/>
+        Setting Status
+      {:else}
+        Set Status
+      {/if}
     </Button>
   </form>
 </CenteredPageContent>

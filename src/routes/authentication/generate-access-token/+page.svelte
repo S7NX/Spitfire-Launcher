@@ -1,8 +1,13 @@
+<script lang="ts" module>
+  let generatingAccessToken = $state(false);
+</script>
+
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
+  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { toast } from 'svelte-sonner';
   import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
   import { writeText } from '@tauri-apps/plugin-clipboard-manager';
@@ -12,8 +17,6 @@
   import { defaultClient, fortniteAndroidGameClient, fortnitePCGameClient, launcherAppClient2 } from '$lib/constants/clients';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
-
-  let generateButtonDisabled = $state(false);
 
   let selectedTokenType = $state<'eg1' | 'bearer'>();
   const tokenTypeOptions = [
@@ -28,9 +31,7 @@
   async function generateAccessToken(event: SubmitEvent) {
     event.preventDefault();
 
-    generateButtonDisabled = true;
-
-    const toastId = toast.loading('Generating an access token...');
+    generatingAccessToken = true;
 
     try {
       let accessTokenData = await Authentication.getAccessTokenUsingDeviceAuth(activeAccount, false, selectedTokenType);
@@ -43,17 +44,14 @@
       }
 
       await writeText(accessTokenData.access_token);
-      toast.success('Generated and copied to clipboard', { id: toastId });
+      toast.success('Generated and copied to clipboard');
     } catch (error) {
-      if (shouldErrorBeIgnored(error)) {
-        toast.dismiss(toastId);
-        return;
-      }
+      if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error('Failed to generate an access token', { id: toastId });
+      toast.error('Failed to generate an access token');
     } finally {
-      generateButtonDisabled = false;
+      generatingAccessToken = false;
     }
   }
 </script>
@@ -77,10 +75,16 @@
     </Select>
 
     <Button
-      disabled={generateButtonDisabled || !selectedTokenType || !selectedClient}
+      class="flex justify-center items-center gap-x-2"
+      disabled={generatingAccessToken || !selectedTokenType || !selectedClient}
       variant="epic"
     >
-      Generate Access Token
+      {#if generatingAccessToken}
+        <LoaderCircleIcon class="size-5 animate-spin"/>
+        Generating
+      {:else}
+        Generate Access Token
+      {/if}
     </Button>
   </form>
 </CenteredPageContent>

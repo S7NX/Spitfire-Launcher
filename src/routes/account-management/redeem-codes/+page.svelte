@@ -1,3 +1,16 @@
+<script lang="ts" module>
+  import type { BulkActionStatus } from '$types/accounts';
+
+  type CodeStatus = BulkActionStatus<Array<{
+    code: string;
+    error?: string
+  }>>;
+
+  let codesToRedeem = $state<string[]>([]);
+  let isRedeeming = $state(false);
+  let codeStatuses = $state<CodeStatus[]>([]);
+</script>
+
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
@@ -8,17 +21,8 @@
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
-  import type { BulkActionStatus } from '$types/accounts';
-
-  type CodeStatus = BulkActionStatus<Array<{
-    code: string;
-    error?: string
-  }>>;
 
   let selectedAccounts = $state<string[]>([]);
-  let codesToRedeem = $state<string[]>([]);
-  let isRedeeming = $state(false);
-  let codeStatuses = $state<CodeStatus[]>([]);
 
   const humanizedErrors: Record<string, string> = {
     'errors.com.epicgames.coderedemption.code_not_found': 'Code not found',
@@ -101,7 +105,7 @@
       variant="epic"
     >
       {#if isRedeeming}
-        <LoaderCircleIcon class="size-6 animate-spin"/>
+        <LoaderCircleIcon class="size-5 animate-spin"/>
         Redeeming
       {:else}
         Redeem Codes

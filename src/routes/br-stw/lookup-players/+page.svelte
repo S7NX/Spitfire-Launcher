@@ -1,20 +1,7 @@
-<script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
-  import { accountsStore } from '$lib/stores';
-  import Button from '$components/ui/Button.svelte';
-  import Input from '$components/ui/Input.svelte';
+<script lang="ts" module>
   import type { EpicAccountById, EpicAccountByName } from '$types/game/lookup';
-  import SearchIcon from 'lucide-svelte/icons/search';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import LookupManager from '$lib/core/managers/lookup';
-  import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
-  import type { ProfileItem } from '$types/game/mcp';
-  import MCPManager from '$lib/core/managers/mcp';
-  import { FounderEditions } from '$lib/constants/stw/resources';
 
-  const activeAccount = $derived(nonNull($accountsStore.activeAccount));
-
+  let isLoading = $state(false);
   let lookupData = $state<EpicAccountById | EpicAccountByName>();
   let stwData = $state<{
     commanderLevel: {
@@ -30,9 +17,25 @@
       boostAmount: number;
     }
   }>();
+</script>
+
+<script lang="ts">
+  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import { accountsStore } from '$lib/stores';
+  import Button from '$components/ui/Button.svelte';
+  import Input from '$components/ui/Input.svelte';
+  import SearchIcon from 'lucide-svelte/icons/search';
+  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
+  import LookupManager from '$lib/core/managers/lookup';
+  import { toast } from 'svelte-sonner';
+  import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
+  import type { ProfileItem } from '$types/game/mcp';
+  import MCPManager from '$lib/core/managers/mcp';
+  import { FounderEditions } from '$lib/constants/stw/resources';
+
+  const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
   let searchQuery = $state<string>();
-  let isLoading = $state(false);
 
   async function lookupPlayer(event: SubmitEvent) {
     event.preventDefault();
@@ -108,13 +111,12 @@
 
 <CenteredPageContent>
   <form class="flex items-center gap-2 w-full" onsubmit={lookupPlayer}>
-    <div class="grow">
-      <Input
-        disabled={isLoading}
-        placeholder="Search by name or account ID"
-        bind:value={searchQuery}
-      />
-    </div>
+    <Input
+      class="grow"
+      disabled={isLoading}
+      placeholder="Search by name or account ID"
+      bind:value={searchQuery}
+    />
 
     <Button
       class="flex items-center justify-center size-9"

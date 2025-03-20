@@ -1,3 +1,15 @@
+<script lang="ts" module>
+  import type { BulkActionStatus } from '$types/accounts';
+
+  type VbucksStatus = BulkActionStatus<{
+    vbucksAmount?: number;
+    error?: string;
+  }>;
+
+  let isFetching = $state(false);
+  let vbucksStatuses = $state<VbucksStatus[]>([]);
+</script>
+
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
@@ -7,16 +19,8 @@
   import MCPManager from '$lib/core/managers/mcp';
   import { calculateVbucks } from '$lib/utils';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
-  import type { BulkActionStatus } from '$types/accounts';
-
-  type VbucksStatus = BulkActionStatus<{
-    vbucksAmount?: number;
-    error?: string;
-  }>;
 
   let selectedAccounts = $state<string[]>([]);
-  let isFetching = $state(false);
-  let vbucksStatuses = $state<VbucksStatus[]>([]);
 
   async function fetchVbucksData(event: SubmitEvent) {
     event.preventDefault();
@@ -48,16 +52,16 @@
 </script>
 
 <CenteredPageContent title="V-Bucks Information">
-  <form class="flex flex-col gap-y-2" onsubmit={fetchVbucksData}>
+  <form class="flex flex-col gap-y-4" onsubmit={fetchVbucksData}>
     <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 
     <Button
-      class="flex justify-center items-center gap-x-2 mt-2"
+      class="flex justify-center items-center gap-x-2"
       disabled={!selectedAccounts?.length || isFetching}
       variant="epic"
     >
       {#if isFetching}
-        <LoaderCircleIcon class="size-6 animate-spin"/>
+        <LoaderCircleIcon class="size-5 animate-spin"/>
         Loading V-Bucks information
       {:else}
         Get V-Bucks Information
