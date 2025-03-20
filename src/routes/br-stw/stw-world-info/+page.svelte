@@ -11,7 +11,7 @@
   let activeTab = $state(tabs[0].name);
 </script>
 
-<div class="flex flex-col gap-y-5">
+<div class="flex flex-col gap-y-2">
   <h2 class="font-bold text-2xl">World Info</h2>
 
   <div class="flex flex-col">

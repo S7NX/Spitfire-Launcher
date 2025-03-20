@@ -85,17 +85,17 @@
 
 <aside
   class={cn(
-    'w-54 h-screen bg-surface-alt border-l border flex flex-col overflow-hidden select-none',
+    'w-54 h-screen bg-surface-alt flex flex-col overflow-hidden select-none',
     'fixed inset-y-0 right-0 z-50 transition-transform duration-300 ease-in-out',
     'md:sticky md:top-0 md:translate-x-0',
     $sidebarOpen ? 'translate-x-0' : 'translate-x-full'
   )}
 >
-  <div class="flex items-center justify-center p-4 border-b border-r border-border h-16" data-tauri-drag-region>
+  <div class="flex items-center justify-center p-4 border-b border-r h-16" data-tauri-drag-region>
     <a class="text-xl font-bold" href={startingPage}>{config.name}</a>
   </div>
 
-  <nav class="flex-1 overflow-y-auto py-4">
+  <nav class="flex-1 overflow-y-auto py-4 border-r">
     <ul class="space-y-1 px-2">
       {#each categories as category, i (category.name)}
         <li>

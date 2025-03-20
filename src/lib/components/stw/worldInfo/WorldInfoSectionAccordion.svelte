@@ -122,7 +122,7 @@
       </span>
 
       <span class="inline-flex items-center justify-center">
-        <ChevronDownIcon class="size-5 transition-transform"/>
+        <ChevronDownIcon class="size-5 transition-transform duration-200"/>
       </span>
     </div>
   {/snippet}
