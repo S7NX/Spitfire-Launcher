@@ -1,6 +1,5 @@
 <script lang="ts">
   import { tv, type VariantProps } from 'tailwind-variants';
-  import { cn } from '$lib/utils';
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
 
@@ -35,7 +34,7 @@
 
 <span
   {...restProps}
-  class={cn(badgeVariants({ variant }), className)}
+  class={[badgeVariants({ variant }), className]}
 >
   {@render children()}
 </span>

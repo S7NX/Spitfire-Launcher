@@ -9,7 +9,6 @@
   import { DropdownMenu } from 'bits-ui';
   import Account from '$lib/core/account';
   import type { AccountData } from '$types/accounts';
-  import { cn } from '$lib/utils';
   import { accountsStore } from '$lib/stores';
   import { toast } from 'svelte-sonner';
   import LoginModal from '$components/auth/login/LoginModal.svelte';
@@ -104,11 +103,11 @@
         <div class="py-2">
           {#each filteredAccounts as account (account.accountId)}
             <DropdownMenu.Item
-              class={cn(
+              class={[
                 'w-full text-left px-4 py-2 text-sm truncate rounded-md',
                 'hover:bg-accent hover:cursor-pointer transition-colors',
                 'flex items-center'
-              )}
+              ]}
               onclick={() => changeAccounts(account)}
             >
               {#if activeAccount?.accountId === account.accountId}
@@ -125,11 +124,11 @@
         class="space-y-1 {allAccounts.length > 0 ? 'pt-2' : ''} {filteredAccounts.length > 0 ?
           'border-t border-border' : ''}">
         <DropdownMenu.Item
-          class={cn(
+          class={[
             'w-full text-left px-3 py-2 text-sm rounded-md cursor-pointer',
             'hover:bg-accent transition-colors',
             'flex items-center'
-          )}
+          ]}
           onclick={addNewAccount}
         >
           <PlusIcon class="size-4 mr-2"/>
@@ -138,11 +137,11 @@
 
         {#if activeAccount}
           <DropdownMenu.Item
-            class={cn(
+            class={[
               'w-full text-left px-3 py-2 text-sm rounded-md cursor-pointer',
               'hover:bg-destructive hover:text-destructive-foreground transition-colors',
               'flex items-center'
-            )}
+            ]}
             onclick={logout}
           >
             <LogOutIcon class="size-4 mr-2"/>

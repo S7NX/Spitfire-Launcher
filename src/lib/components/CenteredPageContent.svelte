@@ -2,7 +2,6 @@
   import { Separator } from 'bits-ui';
   import type { ClassValue } from 'svelte/elements';
   import type { Snippet } from 'svelte';
-  import { cn } from '$lib/utils';
 
   type Props = {
     title?: string;
@@ -15,7 +14,7 @@
 </script>
 
 <div class="flex flex-col items-center justify-center min-h-full">
-  <div class={cn('flex flex-col gap-4 xxs:w-80 xs:w-96 p-5 border rounded-md', className)}>
+  <div class={['flex flex-col gap-4 xxs:w-80 xs:w-96 p-5 border rounded-md', className]}>
     {#if title || description}
       <div class="flex flex-col gap-2">
         {#if title}

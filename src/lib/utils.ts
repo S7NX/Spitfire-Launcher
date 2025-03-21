@@ -1,6 +1,4 @@
 import type { SpitfireShopItem } from '$types/game/shop';
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 import { accountsStore, ownedItemsStore } from '$lib/stores';
 import { get } from 'svelte/store';
 import { toast } from 'svelte-sonner';
@@ -11,10 +9,6 @@ import type { FullQueryProfile } from '$types/game/mcp';
 import type { AllSettings } from '$types/settings';
 import DataStorage from '$lib/core/dataStorage';
 import { Pages } from '$lib/constants/pages';
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
 
 export function checkLogin() {
   const hasAccount = !!get(accountsStore).activeAccount;

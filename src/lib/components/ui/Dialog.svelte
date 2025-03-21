@@ -2,7 +2,6 @@
   import type { Snippet } from 'svelte';
   import { Dialog, type WithoutChild } from 'bits-ui';
   import XIcon from 'lucide-svelte/icons/x';
-  import { cn } from '$lib/utils';
   import type { ClassValue } from 'svelte/elements';
 
   type Props = Dialog.RootProps & {
@@ -28,34 +27,34 @@
 <Dialog.Root {...restProps} bind:open>
   {#if trigger}
     <Dialog.Trigger
-      class={cn(
+      class={[
         'transition-colors',
         'focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98]',
         'inline-flex items-center justify-center',
         triggerClass
-      )}
+      ]}
     >
       {@render trigger()}
     </Dialog.Trigger>
   {/if}
   <Dialog.Portal>
     <Dialog.Overlay
-      class={cn(
+      class={[
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
         'fixed inset-0 z-50 bg-black/80'
-      )}
+      ]}
     />
     <Dialog.Content
       {...contentProps}
-      class={cn(
+      class={[
         'rounded-xl bg-background shadow-popover',
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
         'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
         'outline-hidden fixed left-[50%] top-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] border p-6 sm:max-w-lg',
         contentProps?.class
-      )}
+      ]}
     >
       <div class="flex flex-col gap-2 mb-6">
         {#if title}
@@ -83,10 +82,10 @@
       {@render children?.()}
 
       <Dialog.Close
-        class={cn(
+        class={[
           'absolute right-5 top-5 rounded-md active:scale-[0.98]',
           'focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2'
-        )}
+        ]}
       >
         <XIcon class="text-foreground size-5"/>
       </Dialog.Close>

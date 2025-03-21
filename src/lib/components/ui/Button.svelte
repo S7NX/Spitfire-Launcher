@@ -1,6 +1,5 @@
 <script lang="ts">
   import { tv, type VariantProps } from 'tailwind-variants';
-  import { cn } from '$lib/utils';
   import type { Snippet } from 'svelte';
   import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 
@@ -38,7 +37,7 @@
 
 {#if href}
   <a
-    class={cn(buttonVariants({ variant, size }), className)}
+    class={[buttonVariants({ variant, size }), className]}
     {href}
     target="_blank"
     {...restProps}
@@ -47,7 +46,7 @@
   </a>
 {:else}
   <button
-    class={cn(buttonVariants({ variant, size }), className)}
+    class={[buttonVariants({ variant, size }), className]}
     {...restProps}
   >
     {@render children()}

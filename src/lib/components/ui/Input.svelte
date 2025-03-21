@@ -1,6 +1,5 @@
 <script lang="ts">
   import { tv, type VariantProps } from 'tailwind-variants';
-  import { cn } from '$lib/utils';
   import type { HTMLInputAttributes } from 'svelte/elements';
 
   const inputVariants = tv({
@@ -32,7 +31,7 @@
 
 <input
   {...restProps}
-  class={cn(inputVariants({ variant }), className)}
+  class={[inputVariants({ variant }), className]}
   spellcheck="false"
   bind:value
 />

@@ -4,7 +4,7 @@
   import Button from '$components/ui/Button.svelte';
   import Automation from '$lib/core/managers/automation/base';
   import { accountsStore, automationStore } from '$lib/stores';
-  import { cn, nonNull } from '$lib/utils';
+  import { nonNull } from '$lib/utils';
   import type { AutomationSetting } from '$types/settings';
   import Switch from '$components/ui/Switch.svelte';
   import Trash2Icon from 'lucide-svelte/icons/trash-2';
@@ -95,12 +95,12 @@
           <div class="bg-muted p-4 flex items-center justify-between h-12">
             <div class="flex items-center gap-2">
               <div
-                class={cn(
+                class={[
                   'size-2 rounded-full',
                   (automationAccount.status === 'DISCONNECTED' || automationAccount.status === 'LOADING') && 'bg-gray-500',
                   automationAccount.status === 'ACTIVE' && 'bg-green-500',
                   automationAccount.status === 'INVALID_CREDENTIALS' && 'bg-red-500'
-                )}></div>
+                ]}></div>
               <span class="font-medium">{allAccounts.find((a) => a.accountId === automationAccount.accountId)?.displayName || automationAccount.accountId}</span>
             </div>
 

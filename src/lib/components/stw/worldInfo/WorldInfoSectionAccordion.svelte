@@ -2,7 +2,7 @@
   import Accordion from '$components/ui/Accordion.svelte';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import type { WorldParsedMission } from '$types/game/stw/worldInfo';
-  import { cn, isLegendaryOrMythicSurvivor } from '$lib/utils';
+  import { isLegendaryOrMythicSurvivor } from '$lib/utils';
 
   type Props = {
     missions: WorldParsedMission[];
@@ -52,10 +52,10 @@
 <Accordion class="mt-1" items={parsedMissions} type="multiple">
   {#snippet trigger(mission)}
     <div
-      class={cn(
+      class={[
         'flex items-center justify-between px-2 h-10 bg-muted-foreground/5 rounded-sm',
         mission.alert && claimedMissionAlerts.has(mission.alert.guid) && showAlertClaimedBorder && 'border border-green-500'
-      )}
+      ]}
     >
       <span class="flex gap-1 items-center py-0.5">
         {#if mission.zone.iconUrl}

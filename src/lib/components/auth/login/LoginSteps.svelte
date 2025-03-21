@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { cn } from '$lib/utils';
-
   type Props = {
     steps: string[];
     currentStep: number;
@@ -21,12 +19,12 @@
     {#each steps as step, index (step)}
       <div class="flex flex-col items-center">
         <div
-          class={cn(
+          class={[
             'z-10 flex size-8 items-center justify-center rounded-full border transition-all',
             index <= currentStep
               ? 'border-muted bg-accent text-accent-foreground'
               : 'border-muted bg-background text-muted-foreground'
-          )}
+          ]}
         >
           {index + 1}
         </div>
