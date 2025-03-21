@@ -33,6 +33,14 @@ export const FounderEditions = Object.freeze({
   Ultimate: 'Quest:foundersquest_getrewards_4_5'
 } as const);
 
+export const FounderEditionNames = Object.freeze({
+  [FounderEditions.Standard]: 'Standard',
+  [FounderEditions.Deluxe]: 'Deluxe',
+  [FounderEditions.SuperDeluxe]: 'Super Deluxe',
+  [FounderEditions.Limited]: 'Limited',
+  [FounderEditions.Ultimate]: 'Ultimate'
+} as const);
+
 export const resources = resourcesJson as Record<string, ResourceData>;
 export const survivors = survivorsJson as Record<string, SurvivorData>;
 export const survivorsMythicLeads = survivorsMythicLeadsJson as Record<string, SurvivorUniqueLeadData>;

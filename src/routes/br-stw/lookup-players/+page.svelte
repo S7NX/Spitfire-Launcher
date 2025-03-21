@@ -31,7 +31,7 @@
   import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
   import type { ProfileItem } from '$types/game/mcp';
   import MCPManager from '$lib/core/managers/mcp';
-  import { FounderEditions } from '$lib/constants/stw/resources';
+  import { FounderEditionNames, FounderEditions } from '$lib/constants/stw/resources';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
@@ -92,11 +92,11 @@
   }
 
   function getFounderEdition(items: ProfileItem[]) {
-    const editions = Object.entries(FounderEditions);
+    const editions = Object.entries(FounderEditions).toReversed();
 
-    for (const [editionName, templateId] of editions) {
+    for (const [, templateId] of editions) {
       const edition = items.find((item) => item.templateId === templateId);
-      if (edition) return editionName;
+      if (edition) return FounderEditionNames[templateId];
     }
 
     return items.find((item) => item.templateId === 'Token:receivemtxcurrency') ? 'Founder' : 'Non-Founder';
