@@ -22,8 +22,7 @@ export const SETTINGS_INITIAL_DATA: AllSettings = {
     startingAccount: 'FIRST_IN_LIST',
     hideToTray: false,
     checkForUpdates: true
-  },
-  deviceAuths: []
+  }
 };
 
 export const DEVICE_AUTHS_FILE_PATH = dev ? 'device-auths-dev.json' : 'device-auths.json';
@@ -79,7 +78,7 @@ export default class DataStorage {
     const configFilePath = await path.join(await DataStorage.getDataDirectory(), pathString);
     const currentData: any = await DataStorage.getConfigFile(pathString);
 
-    const newData = !Array.isArray(data) ? Object.assign(currentData, data) : data;
+    const newData = !Array.isArray(data) && currentData ? Object.assign(currentData, data) : data;
 
     if (pathString === ACCOUNTS_FILE_PATH) {
       accountsFileCache = newData;
@@ -105,18 +104,25 @@ export default class DataStorage {
     return dataDirectory;
   }
 
-  private static async getConfigFile<T>(pathString: string, initialValue: Record<string, any> = {}): Promise<T> {
-    const initialStringValue = JSON.stringify(initialValue);
+  private static async getConfigFile<T>(pathString: string, initialValue?: T): Promise<T> {
     const configFilePath = await path.join(await DataStorage.getDataDirectory(), pathString);
     let configFileContent: string | null = null;
 
     try {
       configFileContent = await readTextFile(configFilePath);
     } catch {
-      await writeTextFile(configFilePath, initialStringValue);
+      if (initialValue) await writeTextFile(configFilePath, JSON.stringify(initialValue, null, 4));
     }
 
-    return DataStorage.mergeWithDefaults(initialValue, JSON.parse(configFileContent || initialStringValue));
+    let data: T | undefined = initialValue;
+
+    if (configFileContent) {
+      try {
+        data = JSON.parse(configFileContent);
+      } catch {}
+    }
+
+    return data && initialValue ? DataStorage.mergeWithDefaults(initialValue as T, data) : (initialValue as T);
   }
 
   private static mergeWithDefaults<T>(defaults: T, data: T): T {
