@@ -5,6 +5,7 @@
   import { activeAccountId, ownedItemsStore } from '$lib/stores';
   import ShopItemModal from '$components/shop/modals/ShopItemModal.svelte';
   import CheckIcon from 'lucide-svelte/icons/check';
+  import { derived as jsDerived } from 'svelte/store';
 
   type ItemCardProps = {
     item: SpitfireShopItem;
@@ -17,7 +18,7 @@
   const isItemOwned = $derived($activeAccountId && $ownedItemsStore[$activeAccountId!]?.has(item.id?.toLowerCase()));
   const displayName = item.name;
   const imageUrl = item.assets.featured || item.assets.icon || item.assets.smallIcon;
-  const discountedPrice = $derived($activeAccountId ? calculateDiscountedShopPrice($activeAccountId, item) : item.price.final);
+  const discountedPrice = jsDerived([activeAccountId, ownedItemsStore], ([accountId]) => calculateDiscountedShopPrice(accountId!, item));
 
   const colors: Record<string, string> = { ...ItemColors.rarities, ...ItemColors.series };
 
@@ -78,12 +79,18 @@
 
         <span
           style="text-shadow: 0 2px 4px #000000"
-          class="text-sm font-bold pb-0.5 {isItemOwned ? '!text-green-500' : 'text-white'}"
+          class="text-sm font-bold pb-0.5 {isItemOwned ? 'text-green-500' : 'text-white'}"
         >
           {#if isItemOwned}
             Owned
           {:else}
-            {discountedPrice.toLocaleString()}
+            <!-- eslint-disable-next-line svelte/require-store-reactive-access - Internal ESLint issue -->
+            {#if $discountedPrice !== item.price.final}
+              {$discountedPrice.toLocaleString()}
+              <span class="line-through text-white/95">{item.price.final.toLocaleString()}</span>
+            {:else}
+              {item.price.final.toLocaleString()}
+            {/if}
           {/if}
         </span>
       </div>

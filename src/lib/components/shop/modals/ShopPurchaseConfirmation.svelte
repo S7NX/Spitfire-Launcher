@@ -4,10 +4,11 @@
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import type { SpitfireShopItem } from '$types/game/shop';
   import { toast } from 'svelte-sonner';
-  import { accountDataStore, accountsStore, ownedItemsStore } from '$lib/stores';
+  import { accountDataStore, accountsStore, activeAccountId, ownedItemsStore } from '$lib/stores';
   import MCPManager from '$lib/core/managers/mcp';
   import { calculateDiscountedShopPrice, nonNull } from '$lib/utils';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
+  import { derived as jsDerived } from 'svelte/store';
 
   type Props = {
     item: SpitfireShopItem;
@@ -22,13 +23,13 @@
   }: Props = $props();
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
-  const price = $derived(calculateDiscountedShopPrice(activeAccount.accountId, item));
+  const discountedPrice = jsDerived([activeAccountId, ownedItemsStore], ([accountId]) => calculateDiscountedShopPrice(accountId!, item));
 
   async function purchaseItem() {
     isPurchasing = true;
 
     try {
-      const purchaseData = await MCPManager.purchaseCatalogEntry(activeAccount, item.offerId, price);
+      const purchaseData = await MCPManager.purchaseCatalogEntry(activeAccount, item.offerId, $discountedPrice);
 
       accountDataStore.update((accounts) => {
         const account = accounts[activeAccount.accountId];
@@ -87,7 +88,7 @@
     <p class="flex items-center gap-1">
       Are you sure you want to purchase
       <span class="font-semibold">{item.name}</span>
-      for <span class="font-semibold">{price.toLocaleString()}</span>
+      for <span class="font-semibold">{$discountedPrice.toLocaleString()}</span>
       <img class="size-5" alt="V-Bucks" src="/assets/resources/currency_mtxswap.png"/>?
     </p>
   {/snippet}

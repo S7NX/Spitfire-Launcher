@@ -13,6 +13,7 @@
   import ShopPurchaseConfirmation from '$components/shop/modals/ShopPurchaseConfirmation.svelte';
   import ShopGiftFriendSelection from '$components/shop/modals/ShopGiftFriendSelection.svelte';
   import type { AccountStoreData } from '$types/accounts';
+  import { derived as jsDerived } from 'svelte/store';
 
   type Props = {
     item: SpitfireShopItem;
@@ -35,7 +36,7 @@
   const ownedItems = $derived($ownedItemsStore[accountId]);
   const isItemOwned = $derived(ownedItems?.has(item.id?.toLowerCase()));
 
-  const discountedPrice = $derived(calculateDiscountedShopPrice(accountId, item));
+  const discountedPrice = jsDerived([activeAccountId, ownedItemsStore], ([accountId]) => calculateDiscountedShopPrice(accountId!, item));
 
   let isAlertDialogOpen = $state(false);
   let isPurchasing = $state(false);
@@ -70,6 +71,7 @@
   }
 </script>
 
+<!-- eslint-disable svelte/require-store-reactive-access - Internal ESLint issue -->
 <Dialog contentProps={{ class: '!max-w-160 max-h-112 overflow-y-auto' }} bind:open>
   <div class="flex flex-col gap-y-6">
     <div class="flex flex-col xs:flex-row gap-x-6">
@@ -83,7 +85,9 @@
         <div class="space-y-4">
           <div>
             <h2 class="font-bold text-2xl">{item.name}</h2>
-            <p class="text-muted-foreground italic">{item.description || 'No description'}</p>
+            {#if item.description}
+              <p class="text-muted-foreground italic mt-1">{item.description}</p>
+            {/if}
           </div>
 
           <div class="flex flex-wrap gap-2">
@@ -104,7 +108,7 @@
           <div class="flex items-center gap-1">
             <span class="text-muted-foreground font-medium">Price:</span>
 
-            {#if discountedPrice !== item.price.final}
+            {#if $discountedPrice !== item.price.final}
               <span>{discountedPrice.toLocaleString()}</span>
               <span class="line-through text-muted-foreground/95">{item.price.final.toLocaleString()}</span>
             {:else}
@@ -141,7 +145,7 @@
     <div class="flex w-full gap-3">
       <Button
         class="flex justify-center items-center gap-x-2 w-full"
-        disabled={isPurchasing || ownedVbucks < (discountedPrice || item.price.final) || isItemOwned}
+        disabled={isPurchasing || ownedVbucks < ($discountedPrice || item.price.final) || isItemOwned}
         onclick={() => isAlertDialogOpen = true}
         variant="epic"
       >
