@@ -1,6 +1,7 @@
 <script lang="ts">
   import WorldInfoOverview from '$components/stw/worldInfo/WorldInfoOverview.svelte';
   import WorldInfoCompletedAlerts from '$components/stw/worldInfo/WorldInfoCompletedAlerts.svelte';
+  import { cn } from '$lib/utils';
 
   const tabs = [
     { name: 'Overview', component: WorldInfoOverview },
@@ -17,12 +18,12 @@
     <div class="flex border-b mb-4">
       {#each tabs as tab (tab.name)}
         <button
-          class={[
+          class={cn(
             'px-3 py-2 font-medium text-sm transition-colors',
             activeTab === tab.name
               ? 'border-b-2 border-primary text-primary'
               : 'text-muted-foreground hover:text-foreground'
-          ]}
+          )}
           onclick={() => activeTab = tab.name}
         >
           {tab.name}

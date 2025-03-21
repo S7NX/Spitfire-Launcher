@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { cn } from '$lib/utils';
   import { Label } from 'bits-ui';
   import type { Snippet } from 'svelte';
 
@@ -13,10 +14,10 @@
 </script>
 
 <div
-  class={[
+  class={cn(
     'flex flex-row space-x-4 items-center justify-between',
     className
-  ]}
+  )}
 >
   <div class="space-y-0.5">
     <Label.Root class="font-medium">{title}</Label.Root>

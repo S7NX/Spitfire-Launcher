@@ -2,6 +2,7 @@
   import Dialog from '$components/ui/Dialog.svelte';
   import AppSettings from '$components/settings/categories/AppSettings.svelte';
   import SettingsIcon from 'lucide-svelte/icons/settings';
+  import { cn } from '$lib/utils';
   import ScrollArea from '$components/ui/ScrollArea.svelte';
 
   const categories = [
@@ -28,12 +29,12 @@
       <div class="flex flex-row sm:flex-col gap-2 mb-2 sm:mb-0">
         {#each categories as category (category.id)}
           <button
-            class={[
+            class={cn(
               'text-left px-3 py-2 rounded-md text-sm font-medium transition-colors w-fit sm:w-full mb-2 sm:mb-0',
               activeTab === category.id
                 ? 'bg-primary text-primary-foreground'
                 : 'hover:bg-muted'
-            ]}
+            )}
             onclick={() => activeTab = category.id}
           >
             {category.label}

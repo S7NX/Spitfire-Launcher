@@ -1,6 +1,7 @@
 <script lang="ts">
   import { AlertDialog } from 'bits-ui';
   import { tv, type VariantProps } from 'tailwind-variants';
+  import { cn } from '$lib/utils';
   import type { Snippet } from 'svelte';
 
   const dialogButtonVariants = tv({
@@ -34,11 +35,11 @@
 
 <AlertDialogButton
   {...restProps}
-  class={[
+  class={cn(
     dialogButtonVariants({ buttonColor: buttonColor || (buttonType === 'action' ? 'primary' : 'secondary') }),
     'focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2',
     restProps.class
-  ]}
+  )}
 >
   {@render children()}
 </AlertDialogButton>

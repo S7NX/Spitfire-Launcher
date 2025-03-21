@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { cn } from '$lib/utils';
   import { Separator } from 'bits-ui';
   import type { Snippet } from 'svelte';
 
@@ -12,7 +13,7 @@
   const { title, description, className, children }: Props = $props();
 </script>
 
-<div class={['space-y-4', className]}>
+<div class={cn('space-y-4', className)}>
   <div>
     <h3 class="text-lg font-medium">{title}</h3>
     {#if description}

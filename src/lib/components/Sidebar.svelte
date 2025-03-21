@@ -9,7 +9,7 @@
   import { cubicInOut } from 'svelte/easing';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import config from '$lib/config';
-  import { getStartingPage } from '$lib/utils';
+  import { cn, getStartingPage } from '$lib/utils';
   import Button from '$components/ui/Button.svelte';
   import packageJson from '../../../package.json';
   import { page } from '$app/state';
@@ -84,12 +84,12 @@
 ></div>
 
 <aside
-  class={[
+  class={cn(
     'w-54 h-screen bg-surface-alt flex flex-col overflow-hidden select-none',
     'fixed inset-y-0 right-0 z-50 transition-transform duration-300 ease-in-out',
     'md:sticky md:top-0 md:translate-x-0',
     $sidebarOpen ? 'translate-x-0' : 'translate-x-full'
-  ]}
+  )}
 >
   <div class="flex items-center justify-center p-4 border-b border-r h-16" data-tauri-drag-region>
     <a class="text-xl font-bold" href={startingPage}>{config.name}</a>
@@ -100,15 +100,20 @@
       {#each categories as category, i (category.name)}
         <li>
           <button
-            class={[
+            class={cn(
               'w-full px-2 py-1 text-sm font-medium rounded-md',
               'flex justify-between items-center',
               'hover:bg-accent'
-            ]}
+            )}
             onclick={() => toggleCategory(i)}
           >
             <span>{category.name}</span>
-            <ChevronDownIcon class="size-4 transition-transform duration-200 {category.expanded ? 'rotate-180' : ''}"/>
+            <ChevronDownIcon
+              class={cn(
+                'size-4 transition-transform duration-200',
+                category.expanded && 'rotate-180'
+              )}
+            />
           </button>
 
           {#if category.expanded}
@@ -119,11 +124,11 @@
               {#each category.items as item (item.name)}
                 <li>
                   <a
-                    class={[
+                    class={cn(
                       'block px-3 py-1 text-sm rounded-md truncate',
                       'hover:bg-accent',
                       page.url.pathname === item.href && 'bg-accent text-accent-foreground'
-                    ]}
+                    )}
                     href={item.href}
                     onclick={() => sidebarOpen.set(false)}
                   >
