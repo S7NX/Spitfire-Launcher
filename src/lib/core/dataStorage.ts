@@ -76,16 +76,16 @@ export default class DataStorage {
 
   static async writeConfigFile<T = any>(pathString: string, data: Partial<T>) {
     const configFilePath = await path.join(await DataStorage.getDataDirectory(), pathString);
-    const currentData: any = await DataStorage.getConfigFile(pathString);
+    const currentData = await DataStorage.getConfigFile(pathString);
 
-    const newData = !Array.isArray(data) && currentData ? Object.assign(currentData, data) : data;
+    const newData: unknown = !Array.isArray(data) && currentData && typeof currentData === 'object' && !Array.isArray(currentData) ? Object.assign(currentData, data) : data;
 
     if (pathString === ACCOUNTS_FILE_PATH) {
-      accountsFileCache = newData;
+      accountsFileCache = newData as AccountDataFile;
     } else if (pathString === SETTINGS_FILE_PATH) {
-      settingsFileCache = newData;
+      settingsFileCache = newData as AllSettings;
     } else if (pathString === AUTOMATION_FILE_PATH) {
-      automationFileCache = newData;
+      automationFileCache = newData as AutomationSettings;
     }
 
     await writeTextFile(configFilePath, JSON.stringify(newData, null, 4));
@@ -122,7 +122,9 @@ export default class DataStorage {
       } catch {}
     }
 
-    return data && initialValue ? DataStorage.mergeWithDefaults(initialValue as T, data) : (initialValue as T);
+    return data && initialValue
+      ? DataStorage.mergeWithDefaults(initialValue, data)
+      : initialValue as T
   }
 
   private static mergeWithDefaults<T>(defaults: T, data: T): T {
