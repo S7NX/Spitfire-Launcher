@@ -10,6 +10,7 @@
 </script>
 
 <script lang="ts">
+  import { page } from '$app/state';
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
   import Button from '$components/ui/Button.svelte';
@@ -20,7 +21,15 @@
   import Authentication from '$lib/core/authentication';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
 
+  type PageState = {
+    selectedAccounts?: string[];
+  };
+
   let selectedAccounts = $state<string[]>([]);
+
+  $effect(() => {
+    selectedAccounts = (page.state as PageState).selectedAccounts || [];
+  });
 
   async function checkEULA(event: SubmitEvent) {
     event.preventDefault();

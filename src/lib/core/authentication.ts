@@ -72,6 +72,8 @@ export default class Authentication {
     } catch (error) {
       if (error instanceof EpicAPIError) {
         const isDoingBulkOperations = get(doingBulkOperations);
+        const { allAccounts } = get(accountsStore);
+        const accountName = allAccounts.find(account => account.accountId === deviceAuthData.accountId)?.displayName;
 
         if (error.errorCode === 'errors.com.epicgames.account.invalid_account_credentials') {
           if (!isDoingBulkOperations) await goto('/', {
@@ -80,12 +82,19 @@ export default class Authentication {
             }
           });
 
-          const { allAccounts } = get(accountsStore);
-          const accountName = allAccounts.find(account => account.accountId === deviceAuthData.accountId)?.displayName;
-
           await Account.logout(deviceAuthData.accountId);
 
           if (accountName) toast.error(`${accountName}'s login session has expired, please log in again.`);
+        }
+
+        if (error.errorCode === 'errors.com.epicgames.oauth.corrective_action_required'){
+          if (!isDoingBulkOperations) await goto('/account-management/eula', {
+            state: {
+              selectedAccounts: [deviceAuthData.accountId]
+            }
+          });
+
+          if (accountName) toast.error(`${accountName} needs to accept the EULA to proceed.`);
         }
       }
 

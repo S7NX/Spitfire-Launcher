@@ -126,9 +126,7 @@
   }
 </script>
 
-<CenteredPageContent class="w-112">
-  <h2 class="text-lg font-medium">Daily Quests</h2>
-
+<CenteredPageContent class="w-112" title="Daily Quests">
   <AccountSelect
     disabled={isFetching}
     type="multiple"
