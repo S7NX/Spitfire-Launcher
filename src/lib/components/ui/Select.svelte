@@ -1,6 +1,8 @@
 <script lang="ts">
   import { Select, type WithoutChildren } from 'bits-ui';
   import CheckIcon from 'lucide-svelte/icons/check';
+  import ChevronsUpIcon from 'lucide-svelte/icons/chevrons-up';
+  import ChevronsDownIcon from 'lucide-svelte/icons/chevrons-down';
   import type { Snippet } from 'svelte';
   import { cn } from '$lib/utils';
   import type { ClassValue } from 'svelte/elements';
@@ -60,6 +62,9 @@
       sideOffset={10}
       {...contentProps}
     >
+      <Select.ScrollUpButton class="flex w-full items-center justify-center">
+        <ChevronsUpIcon class="size-3"/>
+      </Select.ScrollUpButton>
       <Select.Viewport>
         {#each items as item, i (i + item.value)}
           <Select.Item
@@ -79,6 +84,9 @@
           </Select.Item>
         {/each}
       </Select.Viewport>
+      <Select.ScrollDownButton class="flex w-full items-center justify-center">
+        <ChevronsDownIcon class="size-3"/>
+      </Select.ScrollDownButton>
     </Select.Content>
   </Select.Portal>
 </Select.Root>
