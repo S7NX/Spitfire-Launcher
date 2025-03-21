@@ -101,7 +101,7 @@
       {/if}
 
       {#if filteredAccounts.length > 0}
-        <div class="py-2">
+        <div class="py-2 max-h-64 overflow-y-auto">
           {#each filteredAccounts as account (account.accountId)}
             <DropdownMenu.Item
               class={cn(
@@ -121,9 +121,7 @@
         </div>
       {/if}
 
-      <div
-        class="space-y-1 {allAccounts.length > 0 ? 'pt-2' : ''} {filteredAccounts.length > 0 ?
-          'border-t border-border' : ''}">
+      <div class={['space-y-1', { 'pt-2': allAccounts.length }, { 'border-t border-border': filteredAccounts.length }]}>
         <DropdownMenu.Item
           class={cn(
             'w-full text-left px-3 py-2 text-sm rounded-md cursor-pointer',

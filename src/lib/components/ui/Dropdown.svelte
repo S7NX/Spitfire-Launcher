@@ -38,7 +38,10 @@
   <DropdownMenu.Portal>
     <DropdownMenu.Content
       {...contentProps}
-      class="focus-override border-muted bg-background shadow-popover outline-hidden w-60 rounded-xl border px-1 py-1.5"
+      class={cn(
+        'focus-override border-muted bg-background shadow-popover outline-hidden w-60 rounded-xl border px-1 py-1.5',
+        contentProps?.class
+      )}
       forceMount={true}
       sideOffset={8}
     >
