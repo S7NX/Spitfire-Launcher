@@ -58,7 +58,7 @@
 
         const account = allAccounts.find((account) => account.accountId === id);
         const isAutoClaimEnabled = AutomationBase.getAccountById(id)?.settings.autoClaim || false;
-        if (account && !isAutoClaimEnabled && shouldClaimRewards) await RewardClaimer.claimRewards(account);
+        if (account && !isAutoClaimEnabled && shouldClaimRewards) await RewardClaimer.claimRewards(account, true);
       }));
 
       await PartyManager.kick(kickerAccount, partyData.id, kickerAccount.accountId);
@@ -108,7 +108,7 @@
         if (!claimOnly) await PartyManager.kick(account, partyId, account.accountId);
 
         const isAutoClaimEnabled = AutomationBase.getAccountById(accountId)?.settings.autoClaim || false;
-        if (claimOnly || (!isAutoClaimEnabled && shouldClaimRewards)) await RewardClaimer.claimRewards(account);
+        if (claimOnly || (!isAutoClaimEnabled && shouldClaimRewards)) await RewardClaimer.claimRewards(account, true);
       }));
 
       toast.success(claimOnly ? 'Successfully claimed rewards' : 'Successfully left parties');

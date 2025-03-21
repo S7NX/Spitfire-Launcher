@@ -17,26 +17,30 @@ export type AutomationAccount = {
 }
 
 export default class AutomationBase {
-  private static automationAccounts: AutomationAccount[] = [];
+  private static automationAccounts: Map<string, AutomationAccount> = new Map();
   private static connections: Map<string, XMPPManager> = new Map();
-  private static providers: Map<string, AccountAutomation> = new Map();
+  private static accountAutomations: Map<string, AccountAutomation> = new Map();
 
   static async loadAccounts() {
-    if (AutomationBase.automationAccounts.length) return;
+    doingBulkOperations.set(true);
 
     const automationAccounts = await DataStorage.getAutomationFile();
     const { allAccounts } = get(accountsStore);
 
-    for (const automationAccount of automationAccounts) {
+    await Promise.allSettled(automationAccounts.map(async automationAccount => {
       const account = allAccounts.find(a => a.accountId === automationAccount.accountId);
-      if (!account) continue;
+      if (!account) return;
 
       await AutomationBase.addAccount(account, automationAccount, false);
-    }
+    }));
+
+    doingBulkOperations.set(false);
   }
 
   static async addAccount(account: AccountData, settings: AutomationAccount['settings'] = {}, writeToFile = true) {
-    AutomationBase.automationAccounts.push({
+    if (AutomationBase.automationAccounts.has(account.accountId)) return;
+
+    AutomationBase.automationAccounts.set(account.accountId, {
       status: 'LOADING',
       account,
       settings
@@ -50,16 +54,16 @@ export default class AutomationBase {
     AutomationBase.connections.get(accountId)?.disconnect();
     AutomationBase.connections.delete(accountId);
 
-    AutomationBase.providers.get(accountId)?.dispose();
-    AutomationBase.providers.delete(accountId);
+    AutomationBase.accountAutomations.get(accountId)?.dispose();
+    AutomationBase.accountAutomations.delete(accountId);
 
     automationStore.update(s => s.filter(a => a.accountId !== accountId));
-    AutomationBase.automationAccounts = AutomationBase.automationAccounts.filter((x) => x.account.accountId !== accountId);
+    AutomationBase.automationAccounts.delete(accountId);
 
-    DataStorage.writeConfigFile<AutomationSettings>(AUTOMATION_FILE_PATH, AutomationBase.automationAccounts.map((x) => ({
+    DataStorage.writeConfigFile<AutomationSettings>(AUTOMATION_FILE_PATH, Array.from(AutomationBase.automationAccounts.values()).map((x) => ({
       accountId: x.account.accountId,
       ...x.settings
-    })));
+    }))).catch(() => null);
   }
 
   static async updateSettings(accountId: string, settings: Partial<AutomationSetting>, writeToFile = true) {
@@ -71,7 +75,7 @@ export default class AutomationBase {
       ...settings
     };
 
-    const newSettings = AutomationBase.automationAccounts.map((x) => ({
+    const newSettings = Array.from(AutomationBase.automationAccounts.values()).map((x) => ({
       accountId: x.account.accountId,
       ...x.settings
     }));
@@ -123,14 +127,14 @@ export default class AutomationBase {
   private static addEventListeners(connection: XMPPManager) {
     const { account } = AutomationBase.getAccountById(connection.accountId!)!;
 
-    const oldProvider = AutomationBase.providers.get(account.accountId);
+    const oldProvider = AutomationBase.accountAutomations.get(account.accountId);
     if (oldProvider) {
       oldProvider.dispose();
-      AutomationBase.providers.delete(account.accountId);
+      AutomationBase.accountAutomations.delete(account.accountId);
     }
 
     const accountAutomation = new AccountAutomation(account);
-    this.providers.set(account.accountId, accountAutomation);
+    AutomationBase.accountAutomations.set(account.accountId, accountAutomation);
 
     let partyState: PartyState;
 
@@ -145,41 +149,40 @@ export default class AutomationBase {
     });
 
     connection.addEventListener(EventNotifications.MemberDisconnected, async (data) => {
-      if (data.account_id === account.accountId) {
-        AutomationBase.updateStatus(account.accountId, 'DISCONNECTED');
-        accountAutomation.dispose();
-      }
+      if (data.account_id !== account.accountId) return;
+
+      AutomationBase.updateStatus(account.accountId, 'DISCONNECTED');
+      accountAutomation.dispose();
     });
 
     connection.addEventListener(EventNotifications.MemberExpired, async (data) => {
-      if (data.account_id === account.accountId) {
-        AutomationBase.updateStatus(account.accountId, 'DISCONNECTED');
-        accountAutomation.dispose();
-      }
+      if (data.account_id !== account.accountId) return;
+
+      AutomationBase.updateStatus(account.accountId, 'DISCONNECTED');
+      accountAutomation.dispose();
     });
 
     connection.addEventListener(EventNotifications.MemberKicked, async (data) => {
-      if (data.account_id === account.accountId) {
-        if (accountAutomation.matchmakingState.partyState === 'PostMatchmaking' && accountAutomation.matchmakingState.started) {
-          const automationAccount = AutomationBase.getAccountById(account.accountId);
+      if (data.account_id !== account.accountId) return;
 
-          if (automationAccount?.settings.autoClaim) {
-            await RewardClaimer.claimRewards(account);
-          }
+      if (accountAutomation.matchmakingState.partyState === 'PostMatchmaking' && accountAutomation.matchmakingState.started) {
+        const automationAccount = AutomationBase.getAccountById(account.accountId);
 
-          if (automationAccount?.settings.autoTransferMaterials) {
-            await transferBuildingMaterials(account);
-          }
+        if (automationAccount?.settings.autoClaim) {
+          await RewardClaimer.claimRewards(account);
+        }
+
+        if (automationAccount?.settings.autoTransferMaterials) {
+          await transferBuildingMaterials(account);
         }
       }
     });
 
     connection.addEventListener(EventNotifications.MemberJoined, async (data) => {
-      if (data.account_id === account.accountId) {
-        AutomationBase.updateStatus(account.accountId, 'ACTIVE');
+      if (data.account_id !== account.accountId) return;
 
-        accountAutomation.initMissionCheckerIntervalTimeout(20000);
-      }
+      AutomationBase.updateStatus(account.accountId, 'ACTIVE');
+      accountAutomation.initMissionCheckerIntervalTimeout(20000);
     });
 
     connection.addEventListener(EventNotifications.PartyUpdated, async (data) => {
@@ -195,7 +198,7 @@ export default class AutomationBase {
   }
 
   static getAccountById(accountId: string) {
-    return AutomationBase.automationAccounts.find((x) => x.account.accountId === accountId);
+    return AutomationBase.automationAccounts.get(accountId);
   }
 
   private static updateStatus(accountId: string, status: AutomationAccount['status']) {

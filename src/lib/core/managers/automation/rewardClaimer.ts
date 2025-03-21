@@ -4,11 +4,11 @@ import type { AccountData } from '$types/accounts';
 import type { CampaignProfile } from '$types/game/mcp';
 
 export default class RewardClaimer {
-  static async claimRewards(account: AccountData) {
+  static async claimRewards(account: AccountData, bypassDelay = false) {
     const settings = await DataStorage.getSettingsFile();
     const delaySeconds = settings.app?.claimRewardsDelay;
 
-    if (delaySeconds) {
+    if (delaySeconds && !bypassDelay) {
       await new Promise(resolve => setTimeout(resolve, delaySeconds * 1000));
     }
 

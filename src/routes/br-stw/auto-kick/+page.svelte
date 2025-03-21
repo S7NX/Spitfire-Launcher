@@ -2,7 +2,7 @@
   import { Separator } from 'bits-ui';
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import Button from '$components/ui/Button.svelte';
-  import Automation from '$lib/core/managers/automation/base';
+  import AutomationBase from '$lib/core/managers/automation/base';
   import { accountsStore, automationStore } from '$lib/stores';
   import { cn, nonNull } from '$lib/utils';
   import type { AutomationSetting } from '$types/settings';
@@ -26,7 +26,7 @@
     }
 
     const account = allAccounts.find((a) => a.accountId === selectedAccountId)!;
-    Automation.addAccount(account, {
+    AutomationBase.addAccount(account, {
       autoKick: true
     });
 
@@ -36,20 +36,20 @@
   const settings = [
     {
       id: 'autoKick',
-      label: 'Auto-Kick'
+      label: 'Kick'
     },
     {
       id: 'autoClaim',
-      label: 'Auto-Claim'
+      label: 'Claim Rewards'
     },
     {
       id: 'autoTransferMaterials',
-      label: 'Auto-Transfer Mats'
+      label: 'Transfer Materials'
     }
   ] as const;
 
   async function changeSetting<T extends keyof Omit<AutomationSetting, 'accountId'>>(accountId: string, name: T, value: AutomationSetting[T]) {
-    await Automation.updateSettings(accountId, { [name]: value });
+    await AutomationBase.updateSettings(accountId, { [name]: value });
   }
 </script>
 
@@ -107,7 +107,7 @@
             <Button
               class="flex items-center justify-center hover:bg-muted-foreground/50 hover:text-destructive size-8"
               disabled={isLoading}
-              onclick={() => Automation.removeAccount(automationAccount.accountId)}
+              onclick={() => AutomationBase.removeAccount(automationAccount.accountId)}
               size="sm"
               variant="ghost"
             >

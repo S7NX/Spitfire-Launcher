@@ -90,7 +90,6 @@ export default class AccountAutomation {
       if (automationSettings.autoTransferMaterials) {
         await transferBuildingMaterials(this.account);
       }
-
     }, (settings.app?.missionCheckInterval || 5) * 1000);
   }
 
@@ -152,7 +151,7 @@ export default class AccountAutomation {
         await PartyManager.kick(partyLeaderAccount, party.id, id)
       ));
 
-      await PartyManager.kick(this.account, party.id, this.account.accountId).catch(() => null);
+      await PartyManager.kick(this.account, party.id, this.account.accountId);
     } else {
       const accountsWithNoAutoKick = membersWithNoAutoKick
         .map((id) => allAccounts.find(x => x.accountId === id))

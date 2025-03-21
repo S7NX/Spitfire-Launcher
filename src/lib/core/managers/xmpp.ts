@@ -161,11 +161,9 @@ export default class XMPPManager {
     this.connection.on('disconnected', () => {
       this.dispatchEvent(ServiceEvents.Disconnected, undefined);
 
-      if (!this.intentionalDisconnect) {
-        if (!this.reconnectInterval) {
-          this.reconnectInterval = window.setInterval(() => this.tryReconnect(), 5000);
-          this.tryReconnect();
-        }
+      if (!this.intentionalDisconnect && !this.reconnectInterval) {
+        this.reconnectInterval = window.setInterval(() => this.tryReconnect(), 5000);
+        this.tryReconnect();
       }
     });
 
