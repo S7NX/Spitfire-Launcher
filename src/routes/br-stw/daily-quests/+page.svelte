@@ -151,7 +151,7 @@
   {#if !isFetching && questStatuses.length}
     <BulkResultAccordion statuses={questStatuses}>
       {#snippet content(status)}
-        <div style="max-height: calc(80vh - 100px);" class="p-3 space-y-3 overflow-y-auto">
+        <div class="p-3 space-y-3">
           {#each status.data.quests as quest (quest.id)}
             {@const rewards = [
               {
