@@ -26,7 +26,7 @@
   import { accountsStore } from '$lib/stores';
   import type { LightswitchData } from '$types/game/serverStatus';
   import { Separator } from 'bits-ui';
-  import { LinkIcon } from 'lucide-svelte';
+  import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import { onMount } from 'svelte';
   import { toast } from 'svelte-sonner';
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
@@ -271,7 +271,7 @@
     {#if statusPageServices.length > 0}
       <div class="space-y-2">
         <div class="flex items-center gap-2 text-muted-foreground">
-          <LinkIcon class="size-4"/>
+          <ExternalLinkIcon class="size-4"/>
           <a class="text-sm font-medium hover:underline" href="https://status.epicgames.com" target="_blank">status.epicgames.com</a>
         </div>
 
