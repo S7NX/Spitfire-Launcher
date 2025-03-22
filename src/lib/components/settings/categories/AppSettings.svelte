@@ -75,19 +75,22 @@
     hasChanges = false;
   }
 
-  function handleSettingChange<C extends keyof AllSettings, V extends string | number | boolean = string | number | boolean>(
+  function handleSettingChange<K extends keyof NonNullable<AllSettings['app']>, V extends string | number | boolean = string | number | boolean>(
     eventOrValue: Event | V,
-    section: C,
-    key: string
+    key: K
   ) {
     const value = typeof eventOrValue === 'object'
       ? (eventOrValue.target as HTMLInputElement).value
       : eventOrValue;
 
-    const newSettings = {
+    if (key === 'userAgent') {
+      customUserAgent = value as string;
+    }
+
+    const newSettings: AllSettings = {
       ...allSettings,
-      [section]: {
-        ...allSettings[section],
+      app: {
+        ...allSettings.app,
         [key]: value
       }
     };
@@ -99,13 +102,6 @@
     }
   }
 
-  function handleUserAgentChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    customUserAgent = target.value;
-
-    handleSettingChange(target.value, 'app', 'userAgent');
-  }
-
   function convertToNumber(event: Event) {
     return Number.parseFloat((event.target as HTMLInputElement).value);
   }
@@ -115,7 +111,7 @@
   {#if currentPlatform === 'windows'}
     <SettingTextInputItem title="Custom Game Path">
       <Input
-        oninput={(e) => handleSettingChange(e, 'app', 'gamePath')}
+        oninput={(e) => handleSettingChange(e, 'gamePath')}
         value={allSettings?.app?.gamePath}
       />
     </SettingTextInputItem>
@@ -126,7 +122,7 @@
     >
       <Input
         disabled={!!activeAccount}
-        oninput={handleUserAgentChange}
+        oninput={(e) => handleSettingChange(e, 'userAgent')}
         type="text"
         value={customUserAgent}
         variant={!!activeAccount ? 'disabled' : 'primary'}
@@ -141,7 +137,7 @@
     <Input
       max={10}
       min={1}
-      oninput={(e) => handleSettingChange(convertToNumber(e), 'app', 'missionCheckInterval')}
+      oninput={(e) => handleSettingChange(convertToNumber(e), 'missionCheckInterval')}
       type="number"
       value={allSettings?.app?.missionCheckInterval}
     />
@@ -154,7 +150,7 @@
     <Input
       max={10}
       min={1}
-      oninput={(e) => handleSettingChange(convertToNumber(e), 'app', 'claimRewardsDelay')}
+      oninput={(e) => handleSettingChange(convertToNumber(e), 'claimRewardsDelay')}
       type="number"
       value={allSettings?.app?.claimRewardsDelay}
     />
@@ -168,7 +164,7 @@
       items={startingPageOptions}
       triggerClass="w-full"
       type="single"
-      bind:value={() => allSettings?.app?.startingPage, (value) => handleSettingChange(value || 'home', 'app', 'startingPage')}
+      bind:value={() => allSettings?.app?.startingPage, (value) => value && handleSettingChange(value, 'startingPage')}
     >
       {#snippet trigger(label)}
         <p>{label}</p>
@@ -185,7 +181,7 @@
       items={startingAccountOptions}
       triggerClass="w-full"
       type="single"
-      bind:value={() => allSettings?.app?.startingAccount, (value) => handleSettingChange(value || '', 'app', 'startingAccount')}
+      bind:value={() => allSettings?.app?.startingAccount, (value) => value && handleSettingChange(value, 'startingAccount')}
     >
       {#snippet trigger(label)}
         <p>{label}</p>
@@ -198,7 +194,7 @@
     <SettingItem title="Hide to system tray">
       <Switch
         checked={allSettings?.app?.hideToTray}
-        onCheckedChange={(checked) => handleSettingChange(checked, 'app', 'hideToTray')}
+        onCheckedChange={(checked) => handleSettingChange(checked, 'hideToTray')}
       />
     </SettingItem>
   {/if}
@@ -206,7 +202,7 @@
   <SettingItem title="Check for updates">
     <Switch
       checked={allSettings?.app?.checkForUpdates}
-      onCheckedChange={(checked) => handleSettingChange(checked, 'app', 'checkForUpdates')}
+      onCheckedChange={(checked) => handleSettingChange(checked, 'checkForUpdates')}
     />
   </SettingItem>
 </div>

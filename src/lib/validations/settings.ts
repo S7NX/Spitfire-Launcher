@@ -1,25 +1,45 @@
 import { z } from 'zod';
 
 export const appSettingsSchema = z.object({
-  userAgent: z.string().optional(),
-  gamePath: z.string().optional(),
-  missionCheckInterval: z.number().positive().optional(),
-  claimRewardsDelay: z.number().positive().optional(),
-  startingPage: z.enum(['AUTO_KICK', 'BR_ITEM_SHOP', 'STW_WORLD_INFO', 'DAILY_QUESTS']).optional(),
-  startingAccount: z.enum(['FIRST_IN_LIST', 'LAST_USED']).optional(),
-  hideToTray: z.boolean().optional(),
-  checkForUpdates: z.boolean().optional()
-});
+  userAgent: z.string(),
+  gamePath: z.string(),
+  missionCheckInterval: z.number().positive(),
+  claimRewardsDelay: z.number().positive(),
+  startingPage: z.enum(['AUTO_KICK', 'BR_ITEM_SHOP', 'STW_WORLD_INFO', 'DAILY_QUESTS']),
+  startingAccount: z.enum(['FIRST_IN_LIST', 'LAST_USED']),
+  hideToTray: z.boolean(),
+  checkForUpdates: z.boolean()
+}).partial();
 
 export const deviceAuthsSettingsSchema = z.array(z.object({
   deviceId: z.string(),
   customName: z.string()
 }));
 
+export const customizableMenuSettingsSchema = z.object({
+  vbucksInformation: z.boolean().default(true),
+  redeemCodes: z.boolean().default(true),
+  epicGamesSettings: z.boolean().default(true),
+  eula: z.boolean().default(true),
+
+  autoKick: z.boolean().default(true),
+  customStatus: z.boolean().default(true),
+  partyManagement: z.boolean().default(true),
+  itemShop: z.boolean().default(true),
+  earnedXp: z.boolean().default(true),
+  dailyQuests: z.boolean().default(true),
+  stwWorldInfo: z.boolean().default(true),
+  lookupPlayers: z.boolean().default(true),
+
+  exchangeCode: z.boolean().default(true),
+  accessToken: z.boolean().default(true),
+  deviceAuth: z.boolean().default(true)
+}).partial();
+
 export const allSettingsSchema = z.object({
-  app: appSettingsSchema.optional(),
-  deviceAuths: deviceAuthsSettingsSchema.optional()
-});
+  app: appSettingsSchema,
+  customizableMenu: customizableMenuSettingsSchema
+}).partial();
 
 export const automationSettingSchema = z.object({
   accountId: z.string(),

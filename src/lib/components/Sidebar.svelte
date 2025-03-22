@@ -1,7 +1,50 @@
 <script lang="ts" module>
+  import type { AllSettings } from '$types/settings';
   import { writable } from 'svelte/store';
 
+  type Category = {
+    name: string;
+    expanded: boolean;
+    items: { key: keyof NonNullable<AllSettings['customizableMenu']>; name: string; href: string }[];
+  };
+
   export const sidebarOpen = writable(false);
+
+  export const sidebarCategories: Category[] = [
+    {
+      name: 'Account',
+      expanded: true,
+      items: [
+        { key: 'vbucksInformation', name: 'V-Bucks', href: '/account-management/vbucks' },
+        { key: 'redeemCodes', name: 'Redeem Codes', href: '/account-management/redeem-codes' },
+        { key: 'epicGamesSettings', name: 'Epic Games Settings', href: '/account-management/epic-games-settings' },
+        { key: 'eula', name: 'EULA', href: '/account-management/eula' }
+      ]
+    },
+    {
+      name: 'BR & STW',
+      expanded: true,
+      items: [
+        { key: 'autoKick', name: 'Auto-Kick', href: '/br-stw/auto-kick' },
+        { key: 'customStatus', name: 'Custom Status', href: '/br-stw/custom-status' },
+        { key: 'partyManagement', name: 'Party', href: '/br-stw/party' },
+        { key: 'itemShop', name: 'Item Shop', href: '/br-stw/item-shop' },
+        { key: 'earnedXp', name: 'Earned XP', href: '/br-stw/earned-xp' },
+        { key: 'dailyQuests', name: 'Daily Quests', href: '/br-stw/daily-quests' },
+        { key: 'stwWorldInfo', name: 'STW World Info', href: '/br-stw/stw-world-info' },
+        { key: 'lookupPlayers', name: 'Lookup Players', href: '/br-stw/lookup-players' }
+      ]
+    },
+    {
+      name: 'Authentication',
+      expanded: true,
+      items: [
+        { key: 'exchangeCode', name: 'Exchange Code', href: '/authentication/generate-exchange-code' },
+        { key: 'accessToken', name: 'Access Token', href: '/authentication/generate-access-token' },
+        { key: 'deviceAuth', name: 'Device Auth', href: '/authentication/device-auth' }
+      ]
+    }
+  ];
 </script>
 
 <script lang="ts">
@@ -14,45 +57,12 @@
   import packageJson from '../../../package.json';
   import { page } from '$app/state';
   import { onMount } from 'svelte';
+  import { customizableMenuStore } from '$lib/stores';
 
-  let startingPage = $state('/');
+  let startingPage = $state<string>();
+  let menuSettings = $derived($customizableMenuStore);
 
-  const categories = $state([
-    {
-      name: 'Account',
-      expanded: true,
-      items: [
-        { name: 'V-Bucks', href: '/account-management/vbucks' },
-        { name: 'Redeem Codes', href: '/account-management/redeem-codes' },
-        { name: 'Epic Games Settings', href: '/account-management/epic-games-settings' },
-        { name: 'EULA', href: '/account-management/eula' }
-      ]
-    },
-    {
-      name: 'BR & STW',
-      expanded: true,
-      items: [
-        { name: 'Auto-Kick', href: '/br-stw/auto-kick' },
-        { name: 'Custom Status', href: '/br-stw/custom-status' },
-        { name: 'Party', href: '/br-stw/party' },
-        { name: 'Item Shop', href: '/br-stw/item-shop' },
-        { name: 'Earned XP', href: '/br-stw/earned-xp' },
-        { name: 'Daily Quests', href: '/br-stw/daily-quests' },
-        { name: 'STW World Info', href: '/br-stw/stw-world-info' },
-        { name: 'Lookup Players', href: '/br-stw/lookup-players' }
-      ]
-    },
-    {
-      name: 'Authentication',
-      expanded: true,
-      items: [
-        { name: 'Exchange Token', href: '/authentication/generate-exchange-code' },
-        { name: 'Access Token', href: '/authentication/generate-access-token' },
-        { name: 'Device Auth', href: '/authentication/device-auth' }
-      ]
-    }
-  ]);
-
+  const categories = $state(sidebarCategories);
   const externalLinks = [
     {
       name: 'Discord Server',
@@ -69,9 +79,19 @@
   function toggleCategory(index: number) {
     categories[index].expanded = !categories[index].expanded;
   }
+  
+  function getCategoryVisibility(name: string) {
+    return categories.find(category => category.name === name)?.items.some(item => getItemVisibility(item.key));
+  }
 
-  onMount(async () => {
-    startingPage = await getStartingPage();
+  function getItemVisibility(key: string) {
+    return menuSettings[key] !== false;
+  }
+
+  onMount(() => {
+    getStartingPage().then(page => {
+      startingPage = page;
+    });
   });
 </script>
 
@@ -98,47 +118,51 @@
   <nav class="flex-1 overflow-y-auto py-4 border-r">
     <ul class="space-y-1 px-2">
       {#each categories as category, i (category.name)}
-        <li>
-          <button
-            class={cn(
-              'w-full px-2 py-1 text-sm font-medium rounded-md',
-              'flex justify-between items-center',
-              'hover:bg-accent'
-            )}
-            onclick={() => toggleCategory(i)}
-          >
-            <span>{category.name}</span>
-            <ChevronDownIcon
+        {#if getCategoryVisibility(category.name)}
+          <li>
+            <button
               class={cn(
-                'size-4 transition-transform duration-200',
-                category.expanded && 'rotate-180'
+                'w-full px-2 py-1 text-sm font-medium rounded-md',
+                'flex justify-between items-center',
+                'hover:bg-accent'
               )}
-            />
-          </button>
-
-          {#if category.expanded}
-            <ul
-              class="mt-1 ml-4 space-y-1 border-l border-border pl-2"
-              transition:slide|local={{ duration: 200, easing: cubicInOut }}
+              onclick={() => toggleCategory(i)}
             >
-              {#each category.items as item (item.name)}
-                <li>
-                  <a
-                    class={cn(
-                      'block px-3 py-1 text-sm rounded-md truncate',
-                      'hover:bg-accent',
-                      page.url.pathname === item.href && 'bg-accent text-accent-foreground'
-                    )}
-                    href={item.href}
-                    onclick={() => sidebarOpen.set(false)}
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              {/each}
-            </ul>
-          {/if}
-        </li>
+              <span>{category.name}</span>
+              <ChevronDownIcon
+                class={cn(
+                  'size-4 transition-transform duration-200',
+                  category.expanded && 'rotate-180'
+                )}
+              />
+            </button>
+
+            {#if category.expanded}
+              <ul
+                class="mt-1 ml-4 space-y-1 border-l border-border pl-2"
+                transition:slide|local={{ duration: 200, easing: cubicInOut }}
+              >
+                {#each category.items as item (item.name)}
+                  {#if getItemVisibility(item.key)}
+                    <li>
+                      <a
+                        class={cn(
+                          'block px-3 py-1 text-sm rounded-md truncate',
+                          'hover:bg-accent',
+                          page.url.pathname === item.href && 'bg-accent text-accent-foreground'
+                        )}
+                        href={item.href}
+                        onclick={() => sidebarOpen.set(false)}
+                      >
+                        {item.name}
+                      </a>
+                    </li>
+                  {/if}
+                {/each}
+              </ul>
+            {/if}
+          </li>
+        {/if}
       {/each}
     </ul>
 

@@ -6,11 +6,11 @@
   type Props = {
     title: string;
     description?: string;
-    className?: string;
+    class?: string;
     children: Snippet;
   };
 
-  const { title, description, className, children }: Props = $props();
+  const { title, description, class: className, children }: Props = $props();
 </script>
 
 <div

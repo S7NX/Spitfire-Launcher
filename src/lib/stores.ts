@@ -65,3 +65,4 @@ export const automationStore = writable<(AutomationSetting & { status: Automatio
 export const brShopStore = writable<SpitfireShop>();
 export const accountDataStore = writable<Record<string, AccountStoreData>>({});
 export const ownedItemsStore = writable<Record<string, Set<string>>>({});
+export const customizableMenuStore = writable<Record<string, boolean>>({});

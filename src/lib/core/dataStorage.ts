@@ -5,8 +5,9 @@ import { dev } from '$app/environment';
 import config from '$lib/config';
 import { accountDataFileSchema } from '$lib/validations/accounts';
 import type { AccountDataFile } from '$types/accounts';
-import { allSettingsSchema, automationSettingsSchema } from '$lib/validations/settings';
-import type { AllSettings, AutomationSettings, DeviceAuthsSettings } from '$types/settings';
+import { allSettingsSchema, automationSettingsSchema, customizableMenuSettingsSchema } from '$lib/validations/settings';
+import type { AllSettings, AutomationSettings, CustomizableMenuSettings, DeviceAuthsSettings } from '$types/settings';
+import type { ZodSchema } from 'zod';
 
 export const ACCOUNTS_FILE_PATH = dev ? 'accounts-dev.json' : 'accounts.json';
 export const ACCOUNTS_INITIAL_DATA: AccountDataFile = {
@@ -22,7 +23,11 @@ export const SETTINGS_INITIAL_DATA: AllSettings = {
     startingAccount: 'FIRST_IN_LIST',
     hideToTray: false,
     checkForUpdates: true
-  }
+  },
+  customizableMenu: Object.keys(customizableMenuSettingsSchema.shape).reduce<CustomizableMenuSettings>((acc, key) => {
+    acc[key as keyof NonNullable<CustomizableMenuSettings>] = true;
+    return acc;
+  }, {})
 };
 
 export const DEVICE_AUTHS_FILE_PATH = dev ? 'device-auths-dev.json' : 'device-auths.json';
@@ -40,38 +45,58 @@ export default class DataStorage {
   static async getAccountsFile(bypassCache = false) {
     if (accountsFileCache && !bypassCache) return accountsFileCache;
 
-    const file = await DataStorage.getConfigFile<AccountDataFile>(ACCOUNTS_FILE_PATH, ACCOUNTS_INITIAL_DATA);
-
-    const parseResult = accountDataFileSchema.safeParse(file);
-    if (parseResult.success) accountsFileCache = parseResult.data;
-
-    return parseResult.success ? parseResult.data : ACCOUNTS_INITIAL_DATA;
+    return DataStorage.getFile<AccountDataFile>(
+      ACCOUNTS_FILE_PATH,
+      ACCOUNTS_INITIAL_DATA,
+      accountDataFileSchema,
+      (data) => { accountsFileCache = data; }
+    );
   }
 
   static async getSettingsFile(bypassCache = false) {
     if (settingsFileCache && !bypassCache) return settingsFileCache;
 
-    const file = await DataStorage.getConfigFile<AllSettings>(SETTINGS_FILE_PATH, SETTINGS_INITIAL_DATA);
-
-    const parseResult = allSettingsSchema.safeParse(file);
-    if (parseResult.success) settingsFileCache = parseResult.data;
-
-    return parseResult.success ? parseResult.data : SETTINGS_INITIAL_DATA;
+    return DataStorage.getFile<AllSettings>(
+      SETTINGS_FILE_PATH,
+      SETTINGS_INITIAL_DATA,
+      allSettingsSchema,
+      (data) => { settingsFileCache = data; }
+    );
   }
 
-  static getDeviceAuthsFile() {
+  static async getDeviceAuthsFile() {
     return DataStorage.getConfigFile<DeviceAuthsSettings>(DEVICE_AUTHS_FILE_PATH, DEVICE_AUTHS_INITIAL_DATA);
   }
 
-  static async getAutomationFile() {
-    if (automationFileCache) return automationFileCache;
+  static async getAutomationFile(bypassCache = false) {
+    if (automationFileCache && !bypassCache) return automationFileCache;
 
-    const file = await DataStorage.getConfigFile<AutomationSettings>(AUTOMATION_FILE_PATH, AUTOMATION_INITIAL_DATA);
+    return DataStorage.getFile<AutomationSettings>(
+      AUTOMATION_FILE_PATH,
+      AUTOMATION_INITIAL_DATA,
+      automationSettingsSchema,
+      (data) => { automationFileCache = data; }
+    );
+  }
 
-    const parseResult = automationSettingsSchema.safeParse(file);
-    if (parseResult.success) automationFileCache = parseResult.data;
+  private static async getFile<T>(
+    filePath: string,
+    initialData: T,
+    schema?: ZodSchema,
+    setCacheCallback?: (data: T) => void
+  ): Promise<T> {
+    const file = await DataStorage.getConfigFile<T>(filePath, initialData);
 
-    return parseResult.success ? parseResult.data : AUTOMATION_INITIAL_DATA;
+    if (schema) {
+      const parseResult = schema.safeParse(file);
+      if (parseResult.success && setCacheCallback) {
+        setCacheCallback(parseResult.data);
+      }
+
+      return parseResult.success ? parseResult.data : initialData;
+    }
+
+    return file;
   }
 
   static async writeConfigFile<T = any>(pathString: string, data: Partial<T>) {
@@ -124,7 +149,7 @@ export default class DataStorage {
 
     return data && initialValue
       ? DataStorage.mergeWithDefaults(initialValue, data)
-      : initialValue as T
+      : initialValue as T;
   }
 
   private static mergeWithDefaults<T>(defaults: T, data: T): T {

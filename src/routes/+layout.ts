@@ -3,7 +3,7 @@
 // See: https://v2.tauri.app/start/frontend/sveltekit/ for more info
 import { redirect } from '@sveltejs/kit';
 import DataStorage from '$lib/core/dataStorage';
-import { accountsStore, activeAccountId } from '$lib/stores';
+import { accountsStore, activeAccountId, customizableMenuStore } from '$lib/stores';
 import { page } from '$app/state';
 import { getStartingPage } from '$lib/utils';
 
@@ -33,6 +33,10 @@ export async function load() {
   });
 
   activeAccountId.set(accountId || null);
+
+  if (settings.customizableMenu) {
+    customizableMenuStore.set(settings.customizableMenu);
+  }
 
   if (page.url.pathname === '/') {
     const pagePath = await getStartingPage();
