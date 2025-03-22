@@ -7,7 +7,7 @@
   import MCPManager from '$lib/core/managers/mcp';
   import ShopManager from '$lib/core/managers/shop';
   import { accountDataStore, accountsStore, brShopStore, ownedItemsStore } from '$lib/stores';
-  import { calculateVbucks } from '$lib/utils';
+  import { calculateVbucks, formatRemainingDuration, getResolvedResults } from '$lib/utils';
   import type { AccountStoreData } from '$types/accounts';
   import type { SpitfireShopFilter, SpitfireShopSection } from '$types/game/shop';
   import { onMount } from 'svelte';
@@ -68,10 +68,10 @@
     const alreadyFetched = activeAccount && Object.keys($accountDataStore[activeAccount.accountId] || {}).length > 0;
     if (!activeAccount || alreadyFetched) return;
 
-    const [athenaProfile, commonCoreProfile, friendList] = await Promise.all([
-      MCPManager.queryProfile(activeAccount, 'athena').catch(() => null),
-      MCPManager.queryProfile(activeAccount, 'common_core').catch(() => null),
-      FriendManager.getFriends(activeAccount).catch(() => null)
+    const [athenaProfile, commonCoreProfile, friendList] = await getResolvedResults([
+      MCPManager.queryProfile(activeAccount, 'athena'),
+      MCPManager.queryProfile(activeAccount, 'common_core'),
+      FriendManager.getFriends(activeAccount)
     ]);
 
     let accountData: AccountStoreData = {
@@ -109,19 +109,6 @@
       accounts[activeAccount.accountId] = accountData;
       return accounts;
     });
-  }
-
-  function formatRemainingDuration(ms: number) {
-    const hours = Math.floor(ms / 3600000);
-    const minutes = Math.floor((ms % 3600000) / 60000);
-    const seconds = Math.floor((ms % 60000) / 1000);
-
-    const parts = [];
-    if (hours) parts.push(`${hours} hour${hours !== 1 ? 's' : ''}`);
-    if (minutes) parts.push(`${minutes} minute${minutes !== 1 ? 's' : ''}`);
-    if (seconds) parts.push(`${seconds} second${seconds !== 1 ? 's' : ''}`);
-
-    return parts.length ? parts.join(' ') : '0 seconds';
   }
 
   onMount(async () => {

@@ -16,6 +16,7 @@
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
+  import { getResolvedResults } from '$lib/utils';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { doingBulkOperations } from '$lib/stores.js';
   import MCPManager from '$lib/core/managers/mcp';
@@ -34,9 +35,9 @@
 
       if (!xpStatuses.includes(status)) xpStatuses = [...xpStatuses, status];
 
-      const [athenaProfile, campaignProfile] = await Promise.all([
-        MCPManager.queryProfile(account, 'athena').catch(() => null),
-        MCPManager.queryProfile(account, 'campaign').catch(() => null)
+      const [athenaProfile, campaignProfile] = await getResolvedResults([
+        MCPManager.queryProfile(account, 'athena'),
+        MCPManager.queryProfile(account, 'campaign')
       ]);
 
       if (athenaProfile) {

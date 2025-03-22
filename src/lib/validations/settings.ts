@@ -25,6 +25,7 @@ export const customizableMenuSettingsSchema = z.object({
   autoKick: z.boolean().default(true),
   customStatus: z.boolean().default(true),
   partyManagement: z.boolean().default(true),
+  serverStatus: z.boolean().default(true),
   itemShop: z.boolean().default(true),
   earnedXp: z.boolean().default(true),
   dailyQuests: z.boolean().default(true),

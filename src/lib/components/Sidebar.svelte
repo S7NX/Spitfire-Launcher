@@ -28,6 +28,7 @@
         { key: 'autoKick', name: 'Auto-Kick', href: '/br-stw/auto-kick' },
         { key: 'customStatus', name: 'Custom Status', href: '/br-stw/custom-status' },
         { key: 'partyManagement', name: 'Party', href: '/br-stw/party' },
+        { key: 'serverStatus', name: 'Server Status', href: '/br-stw/server-status' },
         { key: 'itemShop', name: 'Item Shop', href: '/br-stw/item-shop' },
         { key: 'earnedXp', name: 'Earned XP', href: '/br-stw/earned-xp' },
         { key: 'dailyQuests', name: 'Daily Quests', href: '/br-stw/daily-quests' },

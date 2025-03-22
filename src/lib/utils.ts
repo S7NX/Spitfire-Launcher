@@ -82,3 +82,23 @@ export function calculateDiscountedShopPrice(accountId: string, item: SpitfireSh
     return acc;
   }, item.price.final);
 }
+
+export function formatRemainingDuration(ms: number) {
+  const hours = Math.floor(ms / 3600000);
+  const minutes = Math.floor((ms % 3600000) / 60000);
+  const seconds = Math.floor((ms % 60000) / 1000);
+
+  const parts = [];
+  if (hours) parts.push(`${hours} hour${hours !== 1 ? 's' : ''}`);
+  if (minutes) parts.push(`${minutes} minute${minutes !== 1 ? 's' : ''}`);
+  if (seconds) parts.push(`${seconds} second${seconds !== 1 ? 's' : ''}`);
+
+  return parts.length ? parts.join(' ') : '0 seconds';
+}
+
+export async function getResolvedResults<T extends readonly unknown[]>(
+  promises: { [K in keyof T]: Promise<T[K]> }
+): Promise<{ [K in keyof T]: T[K] | null }> {
+  const results = await Promise.allSettled(promises);
+  return results.map(result => result.status === 'fulfilled' ? result.value : null) as { [K in keyof T]: T[K] | null };
+}
