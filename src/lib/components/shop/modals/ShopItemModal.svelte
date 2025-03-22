@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Tooltip from '$components/ui/Tooltip.svelte';
   import { calculateDiscountedShopPrice } from '$lib/utils';
   import { Separator } from 'bits-ui';
   import Dialog from '$components/ui/Dialog.svelte';
@@ -143,30 +144,40 @@
     <Separator.Root class="bg-border h-px"/>
 
     <div class="flex w-full gap-3">
-      <Button
-        class="flex justify-center items-center gap-x-2 w-full"
-        disabled={isPurchasing || ownedVbucks < ($discountedPrice || item.price.final) || isItemOwned}
-        onclick={() => isAlertDialogOpen = true}
-        variant="epic"
+      <Tooltip
+        class="w-full"
+        tooltip={ownedVbucks < $discountedPrice ? 'Not enough V-Bucks' : ''}
       >
-        {#if isItemOwned}
-          <CheckIcon class="size-5"/>
-          Owned
-        {:else}
-          <ShoppingCartIcon class="size-5"/>
-          Purchase
-        {/if}
-      </Button>
+        <Button
+          class="flex justify-center items-center gap-x-2 w-full"
+          disabled={isPurchasing || ownedVbucks < $discountedPrice || isItemOwned}
+          onclick={() => isAlertDialogOpen = true}
+          variant="epic"
+        >
+          {#if isItemOwned}
+            <CheckIcon class="size-5"/>
+            Owned
+          {:else}
+            <ShoppingCartIcon class="size-5"/>
+            Purchase
+          {/if}
+        </Button>
+      </Tooltip>
 
-      <Button
-        class="flex justify-center items-center gap-x-2 w-full"
-        disabled={isSendingGifts || remainingGifts < 1 || ownedVbucks < item.price.final || !item.giftable || !friends.length}
-        onclick={() => isGiftDialogOpen = true}
-        variant="outline"
+      <Tooltip
+        class="w-full"
+        tooltip={remainingGifts < 1 ? 'No remaining gifts' : ownedVbucks < item.price.final ? 'Not enough V-Bucks' : !friends.length ? 'No friends available' : ''}
       >
-        <GiftIcon class="size-5"/>
-        Gift
-      </Button>
+        <Button
+          class="flex justify-center items-center gap-x-2 w-full"
+          disabled={isSendingGifts || remainingGifts < 1 || ownedVbucks < item.price.final || !item.giftable || !friends.length}
+          onclick={() => isGiftDialogOpen = true}
+          variant="outline"
+        >
+          <GiftIcon class="size-5"/>
+          Gift
+        </Button>
+      </Tooltip>
     </div>
   </div>
 </Dialog>

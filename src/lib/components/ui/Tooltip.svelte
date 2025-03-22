@@ -2,22 +2,25 @@
   import { Tooltip } from 'bits-ui';
   import { type Snippet } from 'svelte';
   import { cn } from '$lib/utils';
+  import type { ClassValue } from 'svelte/elements';
 
   type Props = Tooltip.RootProps & {
     children: Snippet;
     tooltip?: Snippet | string;
+    class?: ClassValue;
   };
 
   let {
     open = $bindable(false),
     children,
-    tooltip
+    tooltip,
+    class: className
   }: Props = $props();
 </script>
 
 {#if tooltip}
   <Tooltip.Root delayDuration={200} bind:open>
-    <Tooltip.Trigger>
+    <Tooltip.Trigger class={className}>
       {@render children()}
     </Tooltip.Trigger>
     <Tooltip.Portal>
@@ -27,7 +30,8 @@
           'focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2',
           'inline-flex items-center justify-center rounded-md px-4 py-2 text-sm'
         )}
-        sideOffset={0}>
+        sideOffset={4}
+      >
         {#if typeof tooltip === 'string'}
           {tooltip}
         {:else}
