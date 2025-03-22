@@ -2,6 +2,7 @@
   import SettingItem from '$components/settings/SettingItem.svelte';
   import SettingTextInputItem from '$components/settings/SettingTextInputItem.svelte';
   import ChangeNotifier from '$components/settings/ChangeNotifier.svelte';
+  import SystemTray from '$lib/core/system/systemTray';
   import { allSettingsSchema } from '$lib/validations/settings';
   import { platform } from '@tauri-apps/plugin-os';
   import { onMount } from 'svelte';
@@ -64,6 +65,10 @@
 
   async function handleSave() {
     await DataStorage.writeConfigFile<AllSettings>(SETTINGS_FILE_PATH, allSettings);
+
+    if (initialSettings.app?.hideToTray !== allSettings.app?.hideToTray && allSettings.app?.hideToTray != null) {
+      await SystemTray.setVisibility(allSettings.app.hideToTray);
+    }
 
     initialSettings = JSON.parse(JSON.stringify(allSettings));
     hasChanges = false;

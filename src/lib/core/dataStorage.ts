@@ -1,3 +1,4 @@
+import SystemTray from '$lib/core/system/systemTray';
 import { exists, mkdir, readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
 import { dataDir } from '@tauri-apps/api/path';
 import { path } from '@tauri-apps/api';
@@ -42,7 +43,7 @@ let settingsFileCache: AllSettings;
 let automationFileCache: AutomationSettings;
 
 export default class DataStorage {
-  static async getAccountsFile(bypassCache = false) {
+  static getAccountsFile(bypassCache = false) {
     if (accountsFileCache && !bypassCache) return accountsFileCache;
 
     return DataStorage.getFile<AccountDataFile>(
@@ -56,19 +57,23 @@ export default class DataStorage {
   static async getSettingsFile(bypassCache = false) {
     if (settingsFileCache && !bypassCache) return settingsFileCache;
 
-    return DataStorage.getFile<AllSettings>(
+    const settings = await DataStorage.getFile<AllSettings>(
       SETTINGS_FILE_PATH,
       SETTINGS_INITIAL_DATA,
       allSettingsSchema,
       (data) => { settingsFileCache = data; }
     );
+
+    await SystemTray.setVisibility(settings.app.hideToTray);
+
+    return settings;
   }
 
-  static async getDeviceAuthsFile() {
+  static getDeviceAuthsFile() {
     return DataStorage.getConfigFile<DeviceAuthsSettings>(DEVICE_AUTHS_FILE_PATH, DEVICE_AUTHS_INITIAL_DATA);
   }
 
-  static async getAutomationFile(bypassCache = false) {
+  static getAutomationFile(bypassCache = false) {
     if (automationFileCache && !bypassCache) return automationFileCache;
 
     return DataStorage.getFile<AutomationSettings>(

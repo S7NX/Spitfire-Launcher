@@ -1,4 +1,5 @@
 <script lang="ts">
+  import DataStorage from '$lib/core/dataStorage';
   import { getCurrentWindow } from '@tauri-apps/api/window';
   import { platform } from '@tauri-apps/plugin-os';
   import LaunchGame from '$components/header/LaunchGame.svelte';
@@ -13,8 +14,14 @@
   const currentPlatform = platform();
   const isMobile = currentPlatform === 'android' || currentPlatform === 'ios';
 
-  async function minimize() {
-    await appWindow.minimize();
+  async function minimizeOrHide() {
+    const settings = await DataStorage.getSettingsFile();
+
+    if (settings.app?.hideToTray) {
+      await appWindow.hide();
+    } else {
+      await appWindow.minimize();
+    }
   }
 
   async function close() {
@@ -39,7 +46,7 @@
 
   {#if !isMobile}
     <div class="flex items-center space-x-2 not-sm:hidden">
-      <button class="p-2 hover:bg-accent rounded transition-colors duration-200" onclick={minimize}>
+      <button class="p-2 hover:bg-accent rounded transition-colors duration-200" onclick={minimizeOrHide}>
         <MinusIcon/>
       </button>
       <button class="p-2 hover:bg-red-500/80 hover:text-white rounded transition-colors duration-200" onclick={close}>

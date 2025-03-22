@@ -41,10 +41,9 @@
     const { owner, name } = config.repository;
     const url = `https://api.github.com/repos/${owner}/${name}/releases/latest`;
 
-    const currentVersion = packageJson.version;
     const latestVersion = await ky.get<GitHubRelease>(url).json();
 
-    if (latestVersion.tag_name !== `v${currentVersion}`) {
+    if (latestVersion.tag_name !== `v${packageJson.version}`) {
       newVersionData = {
         tag: latestVersion.tag_name.replace('v', ''),
         downloadUrl: latestVersion.html_url
