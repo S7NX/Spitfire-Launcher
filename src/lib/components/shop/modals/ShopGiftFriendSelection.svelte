@@ -52,53 +52,52 @@
       toast.success('Successfully sent all gifts');
     } catch (error) {
       if (error instanceof EpicAPIError) {
-        if (error.errorCode === 'errors.com.epicgames.modules.gamesubcatalog.gift_limit_reached') {
-          toast.error('You have reached the daily gift limit');
-          accountDataStore.update((accounts) => {
-            const account = accounts[activeAccount.accountId];
-            account.remainingGifts = 0;
-            return accounts;
-          });
+        switch (error.errorCode) {
+          case 'errors.com.epicgames.modules.gamesubcatalog.gift_limit_reached': {
+            toast.error('You have reached the daily gift limit');
+            accountDataStore.update((accounts) => {
+              const account = accounts[activeAccount.accountId];
+              account.remainingGifts = 0;
+              return accounts;
+            });
 
-          return;
-        }
+            return;
+          }
+          case 'errors.com.epicgames.modules.gameplayutils.not_enough_mtx': {
+            const [, errorItemPrice, errorOwnedVbucks] = error.messageVars;
 
-        if (error.message.toLowerCase().includes('mfa')) {
-          toast.error('You need to enable Multi-Factor Authentication on your account to send gifts');
-          return;
-        }
+            toast.error(`You need ${Number.parseInt(errorItemPrice) - Number.parseInt(errorOwnedVbucks)} more V-Bucks to send these gifts`);
+            accountDataStore.update((accounts) => {
+              const account = accounts[activeAccount.accountId];
+              account.vbucks = Number.parseInt(errorItemPrice);
+              return accounts;
+            });
 
-        if (error.errorCode === 'errors.com.epicgames.modules.gameplayutils.not_enough_mtx') {
-          const [, errorItemPrice, errorOwnedVbucks] = error.messageVars;
+            return;
+          }
+          case 'errors.com.epicgames.modules.gamesubcatalog.purchase_not_allowed': {
+            toast.error('Couldn\'t send gifts, one or more friends may already own this item');
+            return;
+          }
+          case 'errors.com.epicgames.modules.gamesubcatalog.gift_recipient_not_eligible': {
+            toast.error('Couldn\'t send gifts, one or more friends are not eligible to receive gifts');
+            return;
+          }
+          case 'errors.com.epicgames.modules.gamesubcatalog.receiver_owns_item_from_bundle': {
+            toast.error('Couldn\'t send gifts, one or more friends already own an item from this bundle');
+            return;
+          }
+          default: {
+            if (error.message.toLowerCase().includes('mfa')) {
+              toast.error('You need to enable Multi-Factor Authentication on your account to send gifts');
+              return;
+            }
 
-          toast.error(`You need ${Number.parseInt(errorItemPrice) - Number.parseInt(errorOwnedVbucks)} more V-Bucks to send these gifts`);
-          accountDataStore.update((accounts) => {
-            const account = accounts[activeAccount.accountId];
-            account.vbucks = Number.parseInt(errorItemPrice);
-            return accounts;
-          });
-
-          return;
-        }
-
-        if (error.errorCode === 'errors.com.epicgames.modules.gamesubcatalog.purchase_not_allowed') {
-          toast.error('Couldn\'t send gifts, one or more friends may already own this item');
-          return;
-        }
-
-        if (error.messageVars?.[0] === 'errors.com.epicgames.modules.gamesubcatalog.receiver_will_not_accept_gifts') {
-          toast.error('Couldn\'t send gifts, one or more friends do not accept gifts');
-          return;
-        }
-
-        if (error.errorCode === 'errors.com.epicgames.modules.gamesubcatalog.gift_recipient_not_eligible') {
-          toast.error('Couldn\'t send gifts, one or more friends are not eligible to receive gifts');
-          return;
-        }
-
-        if (error.errorCode === 'errors.com.epicgames.modules.gamesubcatalog.receiver_owns_item_from_bundle') {
-          toast.error('Couldn\'t send gifts, one or more friends already own an item from this bundle');
-          return;
+            if (error.messageVars?.[0] === 'errors.com.epicgames.modules.gamesubcatalog.receiver_will_not_accept_gifts') {
+              toast.error('Couldn\'t send gifts, one or more friends do not accept gifts');
+              return;
+            }
+          }
         }
       }
 

@@ -48,30 +48,31 @@
       toast.success('Successfully purchased item');
     } catch (error) {
       if (error instanceof EpicAPIError) {
-        if (error.errorCode === 'errors.com.epicgames.modules.gameplayutils.not_enough_mtx') {
-          const [, errorItemPrice, errorOwnedVbucks] = error.messageVars;
+        switch (error.errorCode) {
+          case 'errors.com.epicgames.modules.gameplayutils.not_enough_mtx': {
+            const [, errorItemPrice, errorOwnedVbucks] = error.messageVars;
 
-          toast.error(`You need ${Number.parseInt(errorItemPrice) - Number.parseInt(errorOwnedVbucks)} more V-Bucks to purchase this item`);
-          accountDataStore.update((accounts) => {
-            const account = accounts[activeAccount.accountId];
-            account.vbucks = Number.parseInt(errorItemPrice);
-            return accounts;
-          });
+            toast.error(`You need ${Number.parseInt(errorItemPrice) - Number.parseInt(errorOwnedVbucks)} more V-Bucks to purchase this item`);
+            accountDataStore.update((accounts) => {
+              const account = accounts[activeAccount.accountId];
+              account.vbucks = Number.parseInt(errorItemPrice);
+              return accounts;
+            });
 
-          return;
-        }
+            return;
+          }
+          case 'errors.com.epicgames.modules.gamesubcatalog.purchase_not_allowed': {
+            toast.error('You already own this item');
+            ownedItemsStore.update((accounts) => {
+              const items = accounts[activeAccount.accountId] || new Set<string>();
+              items.add(item.offerId);
 
-        if (error.errorCode === 'errors.com.epicgames.modules.gamesubcatalog.purchase_not_allowed') {
-          toast.error('You already own this item');
-          ownedItemsStore.update((accounts) => {
-            const items = accounts[activeAccount.accountId] || new Set<string>();
-            items.add(item.offerId);
+              accounts[activeAccount.accountId] = items;
+              return accounts;
+            });
 
-            accounts[activeAccount.accountId] = items;
-            return accounts;
-          });
-
-          return;
+            return;
+          }
         }
       }
 

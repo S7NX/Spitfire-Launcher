@@ -60,13 +60,11 @@ export default class MCPManager {
         data: purchaseData
       };
     } catch (error) {
-      if (error instanceof EpicAPIError) {
-        if (MCPManager.isPriceMismatchError(error) && !isPriceRetry) {
-          const newPrice = Number.parseInt(error.messageVars[1]);
-          if (newPrice > price) throw error;
+      if (error instanceof EpicAPIError && MCPManager.isPriceMismatchError(error) && !isPriceRetry) {
+        const newPrice = Number.parseInt(error.messageVars[1]);
+        if (newPrice > price) throw error;
 
-          return this.purchaseCatalogEntry(account, offerId, newPrice, true);
-        }
+        return this.purchaseCatalogEntry(account, offerId, newPrice, true);
       }
 
       throw error;
@@ -93,13 +91,11 @@ export default class MCPManager {
         data: purchaseData
       };
     } catch (error) {
-      if (error instanceof EpicAPIError) {
-        if (MCPManager.isPriceMismatchError(error) && !isPriceRetry) {
-          const newPrice = Number.parseInt(error.messageVars[1]);
-          if (newPrice > price) throw error;
+      if (error instanceof EpicAPIError && MCPManager.isPriceMismatchError(error) && !isPriceRetry) {
+        const newPrice = Number.parseInt(error.messageVars[1]);
+        if (newPrice > price) throw error;
 
-          return this.giftCatalogEntry(account, offerId, receivers, newPrice, true);
-        }
+        return this.giftCatalogEntry(account, offerId, receivers, newPrice, true);
       }
 
       throw error;

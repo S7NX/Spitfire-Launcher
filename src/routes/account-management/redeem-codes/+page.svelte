@@ -66,10 +66,17 @@
 
           if (error instanceof EpicAPIError) {
             errorString = humanizedErrors[error.errorCode] || error.message;
-            if (error.errorCode === 'errors.com.epicgames.coderedemption.code_not_found') nonExistentCodes.push(code);
-            if (error.errorCode === 'errors.com.epicgames.account.invalid_account_credentials') {
-              errorString = 'Login session has expired. Please log in again';
-              invalidCredentialsAccounts.push(account.accountId);
+
+            switch (error.errorCode) {
+              case 'errors.com.epicgames.coderedemption.code_not_found': {
+                nonExistentCodes.push(code);
+                break;
+              }
+              case 'errors.com.epicgames.account.invalid_account_credentials': {
+                errorString = 'Login session has expired. Please log in again';
+                invalidCredentialsAccounts.push(account.accountId);
+                break;
+              }
             }
           }
 
