@@ -28,7 +28,7 @@
 
   <div class="flex flex-col sm:flex-row">
     <div class="sm:w-44 sm:pr-4 sm:border-r">
-      <div class="flex flex-row sm:flex-col gap-2 mb-2 sm:mb-0">
+      <div class="flex flex-wrap sm:flex-nowrap sm:flex-col gap-2 mb-2 sm:mb-0">
         {#each categories as category (category.name)}
           <button
             class={cn(
