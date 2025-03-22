@@ -126,7 +126,7 @@
   }
 </script>
 
-<CenteredPageContent class="w-112" title="Daily Quests">
+<CenteredPageContent class="!w-112" title="Daily Quests">
   <AccountSelect
     disabled={isFetching}
     type="multiple"

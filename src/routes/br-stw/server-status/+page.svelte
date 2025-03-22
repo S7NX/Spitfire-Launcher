@@ -25,6 +25,7 @@
   import ServerStatusManager from '$lib/core/managers/serverStatus';
   import { accountsStore } from '$lib/stores';
   import type { LightswitchData } from '$types/game/serverStatus';
+  import { Separator } from 'bits-ui';
   import { LinkIcon } from 'lucide-svelte';
   import { onMount } from 'svelte';
   import { toast } from 'svelte-sonner';
@@ -186,7 +187,7 @@
   </div>
 {/snippet}
 
-<CenteredPageContent title="Fortnite Server Status">
+<CenteredPageContent class="!w-112" title="Fortnite Server Status">
   <div class="flex flex-col gap-4">
     <div class="flex justify-between items-center">
       <p class="text-sm ">
@@ -252,6 +253,8 @@
       message: `Expected wait time: ${formatRemainingDuration(expectedWait * 1000)}`
     })}
   {/if}
+
+  <Separator.Root class="bg-border h-px"/>
 
   {#if isLoading && !statusPageServices.length}
     <div class="space-y-4">
