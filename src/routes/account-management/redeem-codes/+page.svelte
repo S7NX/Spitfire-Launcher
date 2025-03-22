@@ -95,7 +95,7 @@
     <AccountSelect disabled={isRedeeming} type="multiple" bind:selected={selectedAccounts}/>
 
     <TagInput
-      placeholder="Enter codes to redeem and press Enter"
+      placeholder="Enter the codes to redeem and press Enter"
       bind:items={codesToRedeem}
     />
 

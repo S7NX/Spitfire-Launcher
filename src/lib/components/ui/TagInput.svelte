@@ -8,7 +8,7 @@
 
   let {
     items = $bindable<string[]>([]),
-    placeholder = 'Enter item and press Enter'
+    placeholder = 'Enter items and press Enter'
   }: Props = $props();
 
   let currentInput = $state<string>();
@@ -55,7 +55,7 @@
     {/each}
 
     <textarea
-      class="grow-0 min-w-20 outline-none border-none resize-none overflow-hidden bg-transparent field-sizing-content"
+      class="grow-0 {items.length ? 'min-w-20' : 'min-w-full'} outline-none border-none resize-none overflow-hidden bg-transparent field-sizing-content text-sm"
       onkeydown={handleKeyDown}
       placeholder={items.length ? '' : placeholder}
       rows="1"
