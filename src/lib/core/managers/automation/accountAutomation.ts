@@ -30,8 +30,8 @@ export default class AccountAutomation {
       this.missionCheckerIntervalInitTimeout = null;
     }
 
-    this.missionCheckerIntervalInitTimeout = setTimeout(() => {
-      this.initMissionCheckerInterval();
+    this.missionCheckerIntervalInitTimeout = setTimeout(async () => {
+      await this.initMissionCheckerInterval();
     }, timeoutMs || 10000);
   }
 
@@ -106,7 +106,7 @@ export default class AccountAutomation {
     this.matchmakingState.started = matchmakingData.started;
     this.matchmakingState.partyState = matchmakingData.started ? PartyStates.PostMatchmaking : PartyStates.Matchmaking;
 
-    this.initMissionCheckerInterval();
+    await this.initMissionCheckerInterval();
   }
 
   dispose() {

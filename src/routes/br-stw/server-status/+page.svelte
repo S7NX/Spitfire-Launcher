@@ -21,7 +21,9 @@
 <script lang="ts">
   import Switch from '$components/ui/Switch.svelte';
   import Tooltip from '$components/ui/Tooltip.svelte';
+  import NotificationManager from '$lib/core/managers/notification';
   import ServerStatusManager from '$lib/core/managers/serverStatus';
+  import { accountsStore } from '$lib/stores';
   import type { LightswitchData } from '$types/game/serverStatus';
   import { LinkIcon } from 'lucide-svelte';
   import { onMount } from 'svelte';
@@ -33,7 +35,6 @@
   import { formatRemainingDuration, getResolvedResults } from '$lib/utils';
 
   $effect(() => {
-    console.log('notifyUser', notifyUser, notifyUserIntervalId);
     if (notifyUser) {
       notifyUserIntervalId = window.setInterval(async () => {
         await fetchServerStatus();
@@ -42,8 +43,7 @@
           notifyUser = false;
           clearInterval(notifyUserIntervalId);
 
-          // todo: show a notification
-          toast.success('Fortnite is back online!');
+          await NotificationManager.sendNotification('Fortnite is back online!', 'Fortnite Server Status');
         }
       }, 15_000);
     } else {
@@ -56,7 +56,7 @@
 
     try {
       const [lightswitchData, queueData, statusPageData] = await getResolvedResults([
-        ServerStatusManager.getLightswitch(),
+        ServerStatusManager.getLightswitch($accountsStore.activeAccount || undefined),
         ServerStatusManager.getWaitingRoom(),
         ServerStatusManager.getStatusPage()
       ]);
@@ -86,7 +86,7 @@
 
     } catch (error) {
       console.error(error);
-      toast.error('Failed to fetch server status.');
+      toast.error('Failed to fetch server status');
     } finally {
       isLoading = false;
     }
@@ -124,7 +124,7 @@
     }
   }
 
-  function getStatusColor(status: ServiceStatus['status'] | string) {
+  function getStatusColor(status: ServiceStatus['status'] | StatusPageStatus['status']) {
     switch (status) {
       case 'UP':
       case 'operational':
@@ -146,16 +146,15 @@
     }
   }
 
-  function getStatusText(status: ServiceStatus['status'] | string) {
+  function getStatusText(status: ServiceStatus['status'] | StatusPageStatus['status']) {
     switch (status) {
       case 'UP':
       case 'operational':
         return 'Operational';
       case 'DOWN':
       case 'major_outage':
-        return 'Down';
       case 'MAJOR_OUTAGE':
-        return 'Major Outage';
+        return 'Down';
       case 'PARTIAL_OUTAGE':
       case 'partial_outage':
         return 'Partial Outage';
@@ -215,7 +214,14 @@
         <Tooltip tooltip="Receive a notification when Fortnite is back online">
           <p class="flex-1 text-sm font-medium">Notify me</p>
         </Tooltip>
-        <Switch checked={notifyUser} onCheckedChange={((checked) => notifyUser = checked) }/>
+
+        <Switch
+          checked={notifyUser}
+          onCheckedChange={((checked) => {
+            notifyUser = checked;
+            NotificationManager.requestPermission();
+          })}
+        />
       </div>
     {/if}
   </div>
