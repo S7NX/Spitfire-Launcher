@@ -21,6 +21,7 @@
 <script lang="ts">
   import Switch from '$components/ui/Switch.svelte';
   import Tooltip from '$components/ui/Tooltip.svelte';
+  import StatusCard from '$components/ui/StatusCard.svelte';
   import NotificationManager from '$lib/core/managers/notification';
   import ServerStatusManager from '$lib/core/managers/serverStatus';
   import { accountsStore } from '$lib/stores';
@@ -105,45 +106,25 @@
     return 'UP';
   }
 
-  function getStatusBackgroundColor(status: ServiceStatus['status'] | string) {
-    switch (status) {
-      case 'UP':
-      case 'operational':
-        return 'bg-green-500/20 border-green-500/50';
-      case 'DOWN':
-      case 'MAJOR_OUTAGE':
-      case 'major_outage':
-        return 'bg-red-500/20 border-red-500/50';
-      case 'PARTIAL_OUTAGE':
-      case 'partial_outage':
-        return 'bg-orange-500/20 border-orange-500/50';
-      case 'UNDER_MAINTENANCE':
-      case 'under_maintenance':
-        return 'bg-blue-500/20 border-blue-500/50';
-      default:
-        return 'bg-gray-500/20 border-gray-500/50';
-    }
-  }
-
   function getStatusColor(status: ServiceStatus['status'] | StatusPageStatus['status']) {
     switch (status) {
       case 'UP':
       case 'operational':
-        return 'bg-green-500';
+        return 'green';
       case 'DOWN':
       case 'MAJOR_OUTAGE':
       case 'major_outage':
-        return 'bg-red-500';
+        return 'red';
       case 'PARTIAL_OUTAGE':
       case 'partial_outage':
-        return 'bg-orange-500';
+        return 'orange';
       case 'UNDER_MAINTENANCE':
       case 'under_maintenance':
-        return 'bg-blue-500';
+        return 'blue';
       case 'degraded_performance':
-        return 'bg-yellow-500';
+        return 'yellow';
       default:
-        return 'bg-gray-500';
+        return 'gray';
     }
   }
 
@@ -173,19 +154,6 @@
     fetchServerStatus();
   });
 </script>
-
-{#snippet StatusCard({ backgroundColor, dotColor, title, message }: { backgroundColor: String; dotColor: String; title: String; message?: String; })}
-  <div class="border rounded-lg p-3 mb-2 {backgroundColor}">
-    <div class="flex items-center gap-2">
-      <div class="size-3 rounded-full {dotColor}"></div>
-      <span class="font-medium">{title}</span>
-    </div>
-
-    {#if message}
-      <p class="text-sm mt-1">{message}</p>
-    {/if}
-  </div>
-{/snippet}
 
 <CenteredPageContent class="!w-112" title="Fortnite Server Status">
   <div class="flex flex-col gap-4">
@@ -228,12 +196,11 @@
   </div>
 
   {#if serviceStatus}
-    {@render StatusCard({
-      backgroundColor: getStatusBackgroundColor(serviceStatus.status),
-      dotColor: getStatusColor(serviceStatus.status),
-      title: `Fortnite Status: ${getStatusText(serviceStatus.status)}`,
-      message: serviceStatus.message
-    })}
+    <StatusCard
+      color={getStatusColor(serviceStatus.status)}
+      message={serviceStatus.message}
+      title="Fortnite Status: {getStatusText(serviceStatus.status)}"
+    />
   {:else}
     <div class="border rounded-lg p-3 mb-2 bg-muted/50 skeleton-loader">
       <div class="flex items-center gap-2">
@@ -246,12 +213,11 @@
   {/if}
 
   {#if expectedWait}
-    {@render StatusCard({
-      backgroundColor: 'bg-yellow-500/20 border-yellow-500/50',
-      dotColor: 'bg-yellow-500',
-      title: 'Queue Active',
-      message: `Expected wait time: ${formatRemainingDuration(expectedWait * 1000)}`
-    })}
+    <StatusCard
+      color="yellow"
+      message="Expected wait time: {formatRemainingDuration(expectedWait * 1000)}"
+      title="Queue Active"
+    />
   {/if}
 
   <Separator.Root class="bg-border h-px"/>
@@ -280,7 +246,7 @@
             <div class="bg-muted/30 p-4 rounded-lg">
               <div class="flex justify-between items-center">
                 <div class="flex items-center gap-3 truncate">
-                  <div class="size-3 rounded-full {getStatusColor(service.status)}"></div>
+                  <div class="size-3 rounded-full bg-{getStatusColor(service.status)}-500"></div>
                   <span class="font-medium truncate">{service.name}</span>
                 </div>
                 <div class="text-sm">
