@@ -158,7 +158,7 @@
 <CenteredPageContent class="!w-112" title="Fortnite Server Status">
   <div class="flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <p class="text-sm ">
+      <p class="text-sm">
         Last updated: {lastUpdated ? lastUpdated.toLocaleTimeString() : '...'}
       </p>
 
@@ -199,7 +199,7 @@
     <StatusCard
       color={getStatusColor(serviceStatus.status)}
       message={serviceStatus.message}
-      title="Fortnite Status: {getStatusText(serviceStatus.status)}"
+      title="Status: {getStatusText(serviceStatus.status)}"
     />
   {:else}
     <div class="border rounded-lg p-3 mb-2 bg-muted/50 skeleton-loader">

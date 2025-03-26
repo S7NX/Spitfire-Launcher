@@ -72,6 +72,8 @@
 
         lookupData = internalLookupData;
       } catch (error) {
+        if (shouldErrorBeIgnored(error)) return;
+
         console.error(error);
         toast.error('Couldn\'t fetch STW data of the player. Their game stats are private.');
       }

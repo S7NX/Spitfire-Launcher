@@ -106,7 +106,7 @@
             <div class="space-y-1">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-1.5">
-                  <img class="size-4" alt="XP Icon" src="/assets/brxp.png"/>
+                  <img class="size-4" alt="XP Icon" src="/assets/misc/battle-royale-xp.png"/>
                   <span class="font-medium">{gamemode.name}</span>
                 </div>
 

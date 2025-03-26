@@ -29,4 +29,17 @@ export default class PartyManager {
       }
     ).json();
   }
+
+  static async promote(account: AccountData, partyId: string, accountToPromote: string) {
+    const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
+
+    return partyService.post(
+      `parties/${partyId}/members/${accountToPromote}/promote`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      }
+    ).json();
+  }
 }

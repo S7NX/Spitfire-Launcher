@@ -14,8 +14,14 @@ export type PartyData = {
   }
   members: Array<{
     account_id: string
-    meta: Record<string, unknown>
-    connections: Array<unknown>
+    meta: Record<string, string>
+    connections: Array<{
+      id: string
+      connected_at: string
+      updated_at: string
+      yield_leadership: boolean
+      meta: Record<string, string>
+    }>
     revision: number
     updated_at: string
     joined_at: string
