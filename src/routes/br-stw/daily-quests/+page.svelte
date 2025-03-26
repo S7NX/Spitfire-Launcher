@@ -29,7 +29,6 @@
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
   import MCPManager from '$lib/core/managers/mcp';
   import { dailyQuests } from '$lib/constants/stw/resources';
@@ -134,18 +133,15 @@
   />
 
   <Button
-    class="flex justify-center items-center gap-x-2 w-full"
+    class="w-full"
     disabled={!selectedAccounts?.length || isFetching}
+    loading={isFetching}
+    loadingText="Fetching Quests"
     onclick={fetchDailyQuests}
     type="submit"
     variant="epic"
   >
-    {#if isFetching}
-      <LoaderCircleIcon class="size-5 animate-spin"/>
-      Fetching Quests
-    {:else}
-      Fetch Daily Quests
-    {/if}
+    Fetch Daily Quests
   </Button>
 
   {#if !isFetching && questStatuses.length}

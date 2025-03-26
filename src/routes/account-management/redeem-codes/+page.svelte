@@ -19,7 +19,6 @@
   import { accountsStore, doingBulkOperations } from '$lib/stores';
   import CodeManager from '$lib/core/managers/code';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
 
   let selectedAccounts = $state<string[]>([]);
@@ -107,16 +106,13 @@
     />
 
     <Button
-      class="flex justify-center items-center gap-x-2 mt-2"
+      class="mt-2"
       disabled={!selectedAccounts?.length || !codesToRedeem.length || isRedeeming}
+      loading={isRedeeming}
+      loadingText="Redeeming"
       variant="epic"
     >
-      {#if isRedeeming}
-        <LoaderCircleIcon class="size-5 animate-spin"/>
-        Redeeming
-      {:else}
-        Redeem Codes
-      {/if}
+      Redeem Codes
     </Button>
   </form>
 

@@ -7,7 +7,6 @@
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { toast } from 'svelte-sonner';
   import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
   import { writeText } from '@tauri-apps/plugin-clipboard-manager';
@@ -75,16 +74,12 @@
     </Select>
 
     <Button
-      class="flex justify-center items-center gap-x-2"
       disabled={generatingAccessToken || !selectedTokenType || !selectedClient}
+      loading={generatingAccessToken}
+      loadingText="Generating"
       variant="epic"
     >
-      {#if generatingAccessToken}
-        <LoaderCircleIcon class="size-5 animate-spin"/>
-        Generating
-      {:else}
-        Generate Access Token
-      {/if}
+      Generate Access Token
     </Button>
   </form>
 </CenteredPageContent>

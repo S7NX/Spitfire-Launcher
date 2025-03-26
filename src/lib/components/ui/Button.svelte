@@ -1,8 +1,9 @@
 <script lang="ts">
+  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { tv, type VariantProps } from 'tailwind-variants';
   import { cn } from '$lib/utils';
   import type { Snippet } from 'svelte';
-  import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
+  import type { ClassValue, HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 
   const buttonVariants = tv({
     base: 'px-4 py-2 rounded-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed',
@@ -29,27 +30,53 @@
   });
 
   type ElementProps = HTMLButtonAttributes & HTMLAnchorAttributes & VariantProps<typeof buttonVariants> & {
-    children: Snippet;
+    loading?: boolean;
+    loadingText?: string;
     href?: string;
+    children: Snippet;
   };
 
-  const { class: className, variant, size, href, children, ...restProps }: ElementProps = $props();
+  const {
+    class: className,
+    variant,
+    size,
+    href,
+    loading,
+    loadingText,
+    children,
+    ...restProps
+  }: ElementProps = $props();
+
+  const loadingClasses = $derived<ClassValue | null>(loading ? 'flex justify-center items-center gap-x-2' : null);
+  const allClasses = $derived(cn(buttonVariants({ variant, size }), loadingClasses, className));
 </script>
+
+{#snippet Content()}
+  {#if loading}
+    <LoaderCircleIcon class="size-5 animate-spin"/>
+  {/if}
+
+  {#if loading && loadingText}
+    {loadingText}
+  {:else}
+    {@render children()}
+  {/if}
+{/snippet}
 
 {#if href}
   <a
-    class={cn(buttonVariants({ variant, size }), className)}
+    class={allClasses}
     {href}
     target="_blank"
     {...restProps}
   >
-    {@render children()}
+    {@render Content()}
   </a>
 {:else}
   <button
-    class={cn(buttonVariants({ variant, size }), className)}
+    class={allClasses}
     {...restProps}
   >
-    {@render children()}
+    {@render Content()}
   </button>
 {/if}

@@ -15,7 +15,6 @@
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
   import Button from '$components/ui/Button.svelte';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import MCPManager from '$lib/core/managers/mcp';
   import { calculateVbucks } from '$lib/utils';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
@@ -56,16 +55,12 @@
     <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 
     <Button
-      class="flex justify-center items-center gap-x-2"
       disabled={!selectedAccounts?.length || isFetching}
+      loading={isFetching}
+      loadingText="Loading V-Bucks information"
       variant="epic"
     >
-      {#if isFetching}
-        <LoaderCircleIcon class="size-5 animate-spin"/>
-        Loading V-Bucks information
-      {:else}
-        Get V-Bucks Information
-      {/if}
+      Get V-Bucks Information
     </Button>
   </form>
 

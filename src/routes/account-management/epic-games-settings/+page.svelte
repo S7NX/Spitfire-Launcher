@@ -8,7 +8,6 @@
   import Authentication from '$lib/core/authentication';
   import { accountsStore } from '$lib/stores';
   import { openUrl } from '@tauri-apps/plugin-opener';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { toast } from 'svelte-sonner';
   import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
 
@@ -38,14 +37,11 @@
   <Button
     class="flex justify-center items-center gap-x-2"
     disabled={isLoggingIn}
+    loading={isLoggingIn}
+    loadingText="Logging in"
     onclick={openEpicGamesWebsite}
     variant="epic"
   >
-    {#if isLoggingIn}
-      <LoaderCircleIcon class="size-5 animate-spin"/>
-      Logging in
-    {:else}
-      Login to Epic Games website
-    {/if}
+    Login to Epic Games website
   </Button>
 </CenteredPageContent>

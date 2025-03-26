@@ -17,7 +17,6 @@
   import Button from '$components/ui/Button.svelte';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
   import { getResolvedResults } from '$lib/utils';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { doingBulkOperations } from '$lib/stores.js';
   import MCPManager from '$lib/core/managers/mcp';
   import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
@@ -66,17 +65,13 @@
     <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 
     <Button
-      class="flex justify-center items-center gap-x-2"
       disabled={!selectedAccounts?.length || isFetching}
+      loading={isFetching}
+      loadingText="Loading XP information"
       onclick={fetchXPData}
       variant="epic"
     >
-      {#if isFetching}
-        <LoaderCircleIcon class="size-5 animate-spin"/>
-        Loading XP information
-      {:else}
-        Check XP Progress
-      {/if}
+      Check XP Progress
     </Button>
   </form>
 

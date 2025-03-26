@@ -269,13 +269,12 @@
     <div class="flex gap-2">
       <AccountSelect class="grow shrink min-w-0" type="single" bind:selected={kickAllSelectedAccount}/>
       <Button
-        class="flex items-center justify-center shrink-0"
+        class="shrink-0"
         disabled={isDoingSomething || !kickAllSelectedAccount}
+        loading={isKicking}
         onclick={kickAll}
-        variant="epic">
-        {#if isKicking}
-          <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
-        {/if}
+        variant="epic"
+      >
         Kick All
       </Button>
     </div>
@@ -285,14 +284,12 @@
     <div class="flex gap-2">
       <AccountSelect class="grow shrink min-w-0" type="multiple" bind:selected={leavePartySelectedAccounts}/>
       <Button
-        class="flex items-center justify-center shrink-0"
+        class="shrink-0"
         disabled={isDoingSomething || !leavePartySelectedAccounts?.length}
+        loading={isLeaving}
         onclick={() => leaveParty()}
         variant="epic"
       >
-        {#if isLeaving}
-          <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
-        {/if}
         Leave Party
       </Button>
     </div>
@@ -302,14 +299,12 @@
     <div class="flex gap-2">
       <AccountSelect class="grow shrink min-w-0" type="multiple" bind:selected={claimRewardsPartySelectedAccounts}/>
       <Button
-        class="flex items-center justify-center shrink-0"
+        class="shrink-0"
         disabled={isDoingSomething || !claimRewardsPartySelectedAccounts?.length}
+        loading={isClaiming}
         onclick={() => leaveParty(true)}
         variant="epic"
       >
-        {#if isClaiming}
-          <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
-        {/if}
         Claim Rewards
       </Button>
     </div>
@@ -365,7 +360,7 @@
                     >
                       {#if partyLeaderAccount.accountId === member.accountId}
                         {#if isLeaving}
-                          <LoaderCircleIcon class="size-5"/>
+                          <LoaderCircleIcon class="size-5 animate-spin"/>
                           Leaving Party
                         {:else}
                           <LogOutIcon class="size-5"/>
@@ -373,7 +368,7 @@
                         {/if}
                       {:else}
                         {#if kickingMemberIds.has(member.accountId)}
-                          <LoaderCircleIcon class="size-5"/>
+                          <LoaderCircleIcon class="size-5 animate-spin"/>
                           Kicking
                         {:else}
                           <UserXIcon class="size-5"/>
@@ -393,7 +388,7 @@
                         onclick={() => promote(member.accountId)}
                       >
                         {#if promotingMemberId === member.accountId}
-                          <LoaderCircleIcon class="size-5"/>
+                          <LoaderCircleIcon class="size-5 animate-spin"/>
                           Promoting
                         {:else}
                           <CrownIcon class="size-5"/>

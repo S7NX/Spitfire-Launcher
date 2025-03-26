@@ -14,7 +14,6 @@
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import AccountSelect from '$components/auth/account/AccountSelect.svelte';
   import Button from '$components/ui/Button.svelte';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
   import { toast } from 'svelte-sonner';
@@ -73,16 +72,12 @@
     <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 
     <Button
-      class="flex justify-center items-center gap-x-2"
       disabled={!selectedAccounts?.length || isFetching}
+      loading={isFetching}
+      loadingText="Checking EULA"
       variant="epic"
     >
-      {#if isFetching}
-        <LoaderCircleIcon class="size-5 animate-spin"/>
-        Checking EULA
-      {:else}
-        Check EULA
-      {/if}
+      Check EULA
     </Button>
   </form>
 

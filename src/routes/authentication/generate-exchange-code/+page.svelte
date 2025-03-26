@@ -7,7 +7,6 @@
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { toast } from 'svelte-sonner';
   import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
   import { writeText } from '@tauri-apps/plugin-clipboard-manager';
@@ -36,16 +35,12 @@
 
 <CenteredPageContent description="Click the button below to generate an exchange code." title="Exchange Code">
   <Button
-    class="flex justify-center items-center gap-x-2"
     disabled={generatingExchangeCode}
+    loading={generatingExchangeCode}
+    loadingText="Generating"
     onclick={openEpicGamesWebsite}
     variant="epic"
   >
-    {#if generatingExchangeCode}
-      <LoaderCircleIcon class="size-5 animate-spin"/>
-      Generating
-    {:else}
-      Generate exchange code
-    {/if}
+    Generate exchange code
   </Button>
 </CenteredPageContent>

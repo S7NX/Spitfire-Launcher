@@ -15,7 +15,6 @@
   import ArrowLeftIcon from 'lucide-svelte/icons/arrow-left';
   import CheckCircleIcon from 'lucide-svelte/icons/check-circle';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { accountsStore } from '$lib/stores';
   import oauthService from '$lib/core/services/oauth';
   import type { DeviceCodeLoginData, EpicOAuthData } from '$types/game/authorizations';
@@ -267,15 +266,12 @@
               <Button
                 class="w-full flex items-center justify-center gap-2"
                 disabled={!exchangeCode?.trim() || exchangeCode?.trim().length < 32 || isLoading}
+                loading={isLoading}
+                loadingText="Verifying..."
                 type="submit"
                 variant="epic"
               >
-                {#if isLoading}
-                  <LoaderCircleIcon class="size-5 animate-spin"/>
-                  <span>Verifying...</span>
-                {:else}
-                  Continue
-                {/if}
+                Continue
               </Button>
             </form>
           {:else if selectedMethod === 'web'}
@@ -287,7 +283,7 @@
               </p>
 
               <Button
-                class="flex w-full items-center justify-center gap-2"
+                class="w-full"
                 disabled={!deviceCodeData?.verificationUrl}
                 onclick={openDeviceCodeLink}
                 variant="outline"
@@ -302,17 +298,14 @@
             </div>
 
             <Button
-              class="w-full flex items-center justify-center gap-2"
+              class="w-full"
               disabled={isLoading || deviceCodeVerifyButtonDisabled || !deviceCodeData?.verificationUrl}
+              loading={isLoading}
+              loadingText="Verifying..."
               onclick={handleWebConfirmation}
               variant="epic"
             >
-              {#if isLoading}
-                <LoaderCircleIcon class="size-5 animate-spin"/>
-                <span>Verifying...</span>
-              {:else}
-                Continue
-              {/if}
+              Continue
             </Button>
           {/if}
         </div>

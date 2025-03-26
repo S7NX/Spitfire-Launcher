@@ -7,7 +7,6 @@
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { toast } from 'svelte-sonner';
   import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
   import Authentication from '$lib/core/authentication';
@@ -54,17 +53,13 @@
     />
 
     <Button
-      class="flex justify-center items-center gap-x-2"
       disabled={isSettingStatus || !customStatus?.trim()}
+      loading={isSettingStatus}
+      loadingText="Setting Status"
       type="submit"
       variant="epic"
     >
-      {#if isSettingStatus}
-        <LoaderCircleIcon class="size-5 animate-spin"/>
-        Setting Status
-      {:else}
-        Set Status
-      {/if}
+      Set Status
     </Button>
   </form>
 </CenteredPageContent>

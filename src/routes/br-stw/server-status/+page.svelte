@@ -163,7 +163,7 @@
       </p>
 
       <Button
-        class="flex items-center gap-2"
+        class="flex items-center gap-x-2"
         disabled={isLoading}
         onclick={fetchServerStatus}
         size="sm"

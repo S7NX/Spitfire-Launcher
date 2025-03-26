@@ -4,7 +4,6 @@
   import Button from '$components/ui/Button.svelte';
   import UserIcon from 'lucide-svelte/icons/user';
   import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import GiftIcon from 'lucide-svelte/icons/gift';
   import { accountDataStore, accountsStore } from '$lib/stores';
   import { nonNull } from '$lib/utils';
@@ -145,16 +144,13 @@
     <Button
       class="flex justify-center items-center gap-x-2"
       disabled={!selectedFriends.length || isSendingGifts || ownedVbucks < (item.price.final * (selectedFriends.length || 1))}
+      loading={isSendingGifts}
+      loadingText="Sending"
       onclick={sendGifts}
       variant="epic"
     >
-      {#if isSendingGifts}
-        <LoaderCircleIcon class="size-5 animate-spin"/>
-        Sending
-      {:else}
-        <GiftIcon class="size-5"/>
-        Send Gift{selectedFriends.length > 1 ? 's' : ''}
-      {/if}
+      <GiftIcon class="size-5"/>
+      Send Gift{selectedFriends.length > 1 ? 's' : ''}
     </Button>
   </div>
 </Dialog>
