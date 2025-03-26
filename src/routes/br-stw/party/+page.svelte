@@ -17,6 +17,7 @@
   import Button from '$components/ui/Button.svelte';
   import Dropdown from '$components/ui/Dropdown.svelte';
   import Switch from '$components/ui/Switch.svelte';
+  import Tabs from '$components/ui/Tabs.svelte';
   import { accountsStore } from '$lib/stores';
   import { cn, nonNull } from '$lib/utils';
   import { DropdownMenu, Label, Separator } from 'bits-ui';
@@ -104,9 +105,6 @@
     { name: 'STW Actions', component: STWActions },
     { name: 'Party', component: Party, disabled: !partyData && !partyMembers?.length }
   ]);
-
-  // svelte-ignore state_referenced_locally
-  let activeTab = $state(tabs[0].name);
 
   async function kickAll() {
     if (!kickAllSelectedAccount) return;
@@ -258,30 +256,7 @@
 <div class="flex flex-col gap-4">
   <h1 class="text-2xl font-bold">Party Management</h1>
 
-  <div class="flex flex-col">
-    <div class="flex border-b mb-4">
-      {#each tabs as tab (tab.name)}
-        <button
-          class={cn(
-            'px-3 py-2 font-medium text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50',
-            activeTab === tab.name
-              ? 'border-b-2 border-primary text-primary'
-              : 'text-muted-foreground hover:text-foreground'
-          )}
-          disabled={tab.disabled}
-          onclick={() => activeTab = tab.name}
-        >
-          {tab.name}
-        </button>
-      {/each}
-    </div>
-
-    {#each tabs as tab (tab.name)}
-      {#if activeTab === tab.name}
-        {@render tab.component()}
-      {/if}
-    {/each}
-  </div>
+  <Tabs tabs={tabs}/>
 </div>
 
 {#snippet STWActions()}
