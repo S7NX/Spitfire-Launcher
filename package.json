@@ -2,7 +2,7 @@
   "name": "spitfire-launcher",
   "version": "0.1.0",
   "description": "A launcher for Fortnite Battle Royale and Save the World",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
