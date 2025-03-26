@@ -81,6 +81,7 @@
   </div>
 
   <AccountSelect
+    autoSelect={false}
     customList={xmppDisabledAccounts}
     type="single"
     bind:selected={selectedAccountId}

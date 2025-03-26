@@ -5,16 +5,20 @@
   type Props = WithoutChildrenOrChild<Accordion.ItemProps> & {
     type: 'single' | 'multiple';
     items: T[];
+    openItems?: number[];
     trigger: Snippet<[T]>;
     content: Snippet<[T]>;
   };
 
-  let { type, items, trigger, content, ...restProps }: Props = $props();
+  let { type, items, openItems, trigger, content, ...restProps }: Props = $props();
 </script>
 
-<Accordion.Root {type}>
+<Accordion.Root type={type as never} value={openItems?.map(i => `item-${i}`)}>
   {#each items as item, index (index.toString())}
-    <Accordion.Item {...restProps}>
+    <Accordion.Item
+      value="item-{index}"
+      {...restProps}
+    >
       <Accordion.Header>
         <Accordion.Trigger class="w-full transition-all [&[data-state=open]_.lucide-chevron-down]:rotate-180">
           {@render trigger(item)}

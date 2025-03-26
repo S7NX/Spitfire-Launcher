@@ -8,6 +8,8 @@
 
   type Props = {
     customList?: AccountData[];
+    // Auto selects the only account in the list if it's the only one
+    autoSelect?: boolean;
     disabled?: boolean;
     class?: ClassValue;
   } & ({
@@ -20,6 +22,7 @@
 
   let {
     customList,
+    autoSelect = true,
     type = 'multiple',
     selected = $bindable(),
     disabled,
@@ -33,6 +36,13 @@
   })));
 
   $effect(() => {
+    if (autoSelect && accountList.length === 1) {
+      const { accountId } = accountList[0];
+      selected = type === 'multiple' ? [accountId] : accountId;
+
+      return;
+    }
+
     if (!selected?.length) return;
 
     if (typeof selected === 'string') {
