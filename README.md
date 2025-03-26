@@ -72,3 +72,7 @@ Contributions are welcome. If you want to help improve Spitfire Launcher, follow
 
 - [Ciensprog](https://github.com/Ciensprog) - The resources and some ideas from his [Aerial Launcher](https://github.com/Ciensprog/Aerial-Launcher) project helped me a lot.
 - [LeleDerGrasshalmi](https://github.com/LeleDerGrasshalmi) - His [Endpoints Documentation](https://github.com/LeleDerGrasshalmi/FortniteEndpointsDocumentation) was really helpful.
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
