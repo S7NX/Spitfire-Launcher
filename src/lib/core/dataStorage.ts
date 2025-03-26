@@ -64,7 +64,7 @@ export default class DataStorage {
       (data) => { settingsFileCache = data; }
     );
 
-    await SystemTray.setVisibility(settings.app.hideToTray);
+    await SystemTray.setVisibility(settings.app?.hideToTray || false);
 
     return settings;
   }
