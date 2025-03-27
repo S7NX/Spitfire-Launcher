@@ -154,7 +154,7 @@ export default class DataStorage {
 
     return data && initialValue
       ? DataStorage.mergeWithDefaults(initialValue, data)
-      : initialValue as T;
+      : (data || initialValue) as T;
   }
 
   private static mergeWithDefaults<T>(defaults: T, data: T): T {
