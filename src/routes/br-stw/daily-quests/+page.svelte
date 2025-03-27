@@ -162,7 +162,7 @@
               },
               {
                 name: 'XP',
-                icon: '/assets/brxp.png',
+                icon: '/assets/misc/battle-royale-xp.png',
                 amount: quest.rewards.xp
               }
             ]}

@@ -169,7 +169,7 @@
         <img
           class="size-12"
           alt="FortniteDB"
-          src="/assets/fndb.png"
+          src="/assets/logos/fortnitedb.png"
         />
       </Button>
     </div>
