@@ -15,7 +15,7 @@
   import Dialog from '$components/ui/Dialog.svelte';
   import DataStorage from '$lib/core/dataStorage';
   import { Tooltip } from 'bits-ui';
-  import { getWorldInfoData, parseWorldInfo } from '$lib/core/stw/worldInfo';
+  import WorldInfoManager from '$lib/core/managers/worldInfo';
   import { worldInfoCache } from '$lib/stores';
   import Automation from '$lib/core/managers/automation/base';
 
@@ -29,8 +29,8 @@
   }
 
   async function handleWorldInfo() {
-    const worldInfoData = await getWorldInfoData();
-    const parsedWorldInfo = parseWorldInfo(worldInfoData);
+    const worldInfoData = await WorldInfoManager.getWorldInfoData();
+    const parsedWorldInfo = WorldInfoManager.parseWorldInfo(worldInfoData);
     worldInfoCache.set(parsedWorldInfo);
   }
 
