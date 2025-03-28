@@ -31,7 +31,7 @@
     "name": "Endless Shadow",
     "icon": "Icon-TeamPerk-EndlessShadow-128.png"
   },
-  "happyholidays": {
+  "holidaycheer": {
     "name": "Happy Holidays",
     "icon": "Icon-TeamPerk-HappyHolidays-128.png"
   },
@@ -95,7 +95,7 @@
     "name": "Supercharged Traps",
     "icon": "Icon-Constructor-TrapDamageBoost-128.png"
   },
-  "totallyrockinout": {
+  "totallygnarly": {
     "name": "Totally Rockin' Out",
     "icon": "Icon-TeamPerk-TotallyGnarly-128.png"
   },

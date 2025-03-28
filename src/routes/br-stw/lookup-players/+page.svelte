@@ -29,12 +29,15 @@
   };
 
   type LoadoutData = {
+    guid: string;
+    selected?: boolean;
+    index: number;
     commander: {
       name: string;
       icon: string;
       rarity: RarityType;
     };
-    teamPerk: {
+    teamPerk?: {
       name: string;
       icon: string;
     };
@@ -43,22 +46,24 @@
       icon: string;
       rarity: RarityType;
     }>;
-    gadgets: Array<{
+    gadgets?: Array<{
       name: string;
       icon: string;
     }>;
   };
 
   let isLoading = $state(false);
+  let heroLoadoutPage = $state(1);
   let lookupData = $state<(EpicAccountById | EpicAccountByName) & { avatarUrl?: string }>();
   let stwData = $state<STWData>();
   let missionPlayers = $state<MissionPlayers>();
   let mission = $state<MissionData>();
-  let loadoutData = $state<LoadoutData>();
+  let loadoutData = $state<LoadoutData[]>();
 </script>
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import Pagination from '$components/ui/Pagination.svelte';
   import { WorldNames, ZoneNames } from '$lib/constants/stw/worldInfo';
   import MatchmakingManager from '$lib/core/managers/matchmaking';
   import { accountsStore, worldInfoCache } from '$lib/stores';
@@ -131,6 +136,7 @@
   async function getSTWData(accountId: string) {
     const queryPublicProfile = await MCPManager.queryPublicProfile(activeAccount, accountId, 'campaign');
     const profile = queryPublicProfile.profileChanges[0].profile;
+    const items = Object.entries(profile.items);
     const attributes = profile.stats.attributes;
 
     stwData = {
@@ -142,43 +148,58 @@
       xpBoosts: getXPBoosts(Object.values(profile.items))
     };
 
-    const selectedLoadout = profile.items[attributes.selected_hero_loadout].attributes;
-    const selectedCommander = profile.items[selectedLoadout.crew_members.commanderslot];
-    const heroId = selectedCommander.templateId.replace('Hero:', '').split('_').slice(0, -2).join('_').toLowerCase();
-    const supportTeam = Object.entries(selectedLoadout.crew_members)
-      .filter(([key]) => key.startsWith('followerslot'))
-      .map(([, value]) => profile.items[value as string].templateId);
-    const teamPerkId = profile.items[selectedLoadout.team_perk].templateId.split('_')[1];
+    for (const [itemGuid, itemData] of items) {
+      if (itemData.attributes.loadout_index == null) continue;
 
-    loadoutData = {
-      commander: {
-        name: heroes[heroId].name,
-        icon: `/assets/heroes/${heroId}.png`,
-        rarity: Object.values(RarityTypes).find((rarity) => selectedCommander.templateId.toLowerCase().includes(`_${rarity}_`))!
-      },
-      teamPerk: {
-        name: teamPerks[teamPerkId].name,
-        icon: `/assets/perks/${teamPerks[teamPerkId].icon}`
-      },
-      supportTeam: supportTeam.map((id) => {
-        const heroId = id.replace('Hero:', '').split('_').slice(0, -2).join('_').toLowerCase();
-        const rarity = Object.values(RarityTypes).find((rarity) => id.toLowerCase().includes(`_${rarity}_`))!;
+      console.log(itemData);
 
-        return {
+      const isSelectedLoadout = itemData.attributes.selected_hero_loadout === itemGuid;
+      const selectedCommander = profile.items[itemData.attributes.crew_members.commanderslot];
+      const heroId = selectedCommander.templateId.replace('Hero:', '').split('_').slice(0, -2).join('_').toLowerCase();
+      const teamPerkId = profile.items[itemData.attributes.team_perk]?.templateId.split('_')[1];
+      const supportTeam = Object.entries(itemData.attributes.crew_members)
+        .filter(([key]) => key.startsWith('followerslot'))
+        .map(([, value]) => profile.items[value as string]?.templateId)
+        .filter(x => !!x);
+
+      if (isSelectedLoadout) heroLoadoutPage = itemData.attributes.loadout_index + 1;
+
+      loadoutData = [...(loadoutData || []), {
+        guid: itemGuid,
+        selected: isSelectedLoadout,
+        index: itemData.attributes.loadout_index,
+        commander: {
           name: heroes[heroId].name,
           icon: `/assets/heroes/${heroId}.png`,
-          rarity
-        };
-      }),
-      gadgets: selectedLoadout.gadgets.map((data: any) => {
-        const id = data.gadget.split('_')[2];
+          rarity: Object.values(RarityTypes).find((rarity) => selectedCommander.templateId.toLowerCase().includes(`_${rarity}_`))!
+        },
+        teamPerk: teamPerkId && teamPerks[teamPerkId] ? {
+          name: teamPerks[teamPerkId].name,
+          icon: `/assets/perks/${teamPerks[teamPerkId].icon}`
+        } : undefined,
+        supportTeam: supportTeam.map((id) => {
+          const heroId = id.replace('Hero:', '').split('_').slice(0, -2).join('_').toLowerCase();
+          const rarity = Object.values(RarityTypes).find((rarity) => id.toLowerCase().includes(`_${rarity}_`))!;
 
-        return {
-          name: gadgets[id].name,
-          icon: `/assets/gadgets/${gadgets[id].icon}`
-        };
-      })
-    };
+          return {
+            name: heroes[heroId].name,
+            icon: `/assets/heroes/${heroId}.png`,
+            rarity
+          };
+        }),
+        gadgets: itemData.attributes.gadgets?.map((data: any) => {
+          const id = data.gadget.split('_').at(-1);
+          console.log(id, data.gadget);
+
+          return {
+            name: gadgets[id].name,
+            icon: `/assets/gadgets/${gadgets[id].icon}`
+          };
+        })
+      }];
+    }
+
+    loadoutData = loadoutData?.sort((a, b) => a.index - b.index);
   }
 
   async function getMatchmakingData(accountId: string) {
@@ -355,55 +376,71 @@
           </div>
         {/if}
 
-        {#if loadoutData}
+        {#if loadoutData?.length}
           {#if missionPlayers?.length || mission}
             <Separator.Root class="bg-border h-px"/>
           {/if}
 
-          <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 place-items-center not-md:gap-4">
-            <div class="flex flex-col items-center gap-y-1">
-              <span class="text-lg font-semibold">Commander</span>
-              <img
-                style="background-color: {RarityColors[loadoutData.commander.rarity]}"
-                class="size-12 rounded-sm"
-                alt={loadoutData.commander.name}
-                src={loadoutData.commander.icon}
-                title={loadoutData.commander.name}
-              />
-            </div>
+          <div class="flex flex-col items-center gap-4">
+            {#each loadoutData as loadout (loadout.guid)}
+              {#if heroLoadoutPage === loadout.index + 1}
+                <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 place-items-center not-md:gap-4">
+                  {#if loadout.commander}
+                    <div class="flex flex-col items-center gap-y-1">
+                      <span class="text-lg font-semibold">Commander</span>
+                      <img
+                        style="background-color: {RarityColors[loadout.commander.rarity]}"
+                        class="size-12 rounded-sm"
+                        alt={loadout.commander.name}
+                        src={loadout.commander.icon}
+                        title={loadout.commander.name}
+                      />
+                    </div>
+                  {/if}
 
-            <div class="flex flex-col items-center gap-y-1">
-              <span class="text-lg font-semibold">Team Perk</span>
-              <img
-                class="size-12 rounded-sm"
-                alt={loadoutData.teamPerk.name}
-                src={loadoutData.teamPerk.icon}
-                title={loadoutData.teamPerk.name}
-              />
-            </div>
+                  {#if loadout.teamPerk}
+                    <div class="flex flex-col items-center gap-y-1">
+                      <span class="text-lg font-semibold">Team Perk</span>
+                      <img
+                        class="size-12 rounded-sm"
+                        alt={loadout.teamPerk.name}
+                        src={loadout.teamPerk.icon}
+                        title={loadout.teamPerk.name}
+                      />
+                    </div>
+                  {/if}
 
-            <div class="flex flex-col items-center gap-y-1">
-              <span class="text-lg font-semibold md:hidden">Support Team</span>
-              <div class="grid grid-cols-3 gap-2">
-                {#each loadoutData.supportTeam as support (support.name)}
-                  <div class="flex justify-center items-center size-10" title={support.name}>
-                    <img
-                      style="background-color: {RarityColors[support.rarity]}"
-                      class="rounded-md"
-                      alt={support.name}
-                      src={support.icon}
-                    />
-                  </div>
-                {/each}
-              </div>
-            </div>
+                  {#if loadout.supportTeam?.length}
+                    <div class="flex flex-col items-center gap-y-1">
+                      <span class="text-lg font-semibold md:hidden">Support Team</span>
+                      <div class="grid grid-cols-3 gap-2">
+                        {#each loadout.supportTeam as support (support.name)}
+                          <div class="flex justify-center items-center size-10" title={support.name}>
+                            <img
+                              style="background-color: {RarityColors[support.rarity]}"
+                              class="rounded-md"
+                              alt={support.name}
+                              src={support.icon}
+                            />
+                          </div>
+                        {/each}
+                      </div>
+                    </div>
+                  {/if}
 
-            <div class="flex flex-col items-center gap-y-1">
-              <span class="text-lg font-semibold md:hidden">Gadgets</span>
-              {#each loadoutData.gadgets as gadget (gadget.name)}
-                <img class="size-10" alt={gadget.name} src={gadget.icon} title={gadget.name}/>
-              {/each}
-            </div>
+                  {#if loadout.gadgets?.length}
+                    <div class="flex flex-col items-center gap-y-1">
+                      <span class="text-lg font-semibold md:hidden">Gadgets</span>
+                      {#each loadout.gadgets as gadget (gadget.name)}
+                        <img class="size-10" alt={gadget.name} src={gadget.icon} title={gadget.name}/>
+                      {/each}
+                    </div>
+                  {/if}
+                </div>
+              {/if}
+            {/each}
+
+            <Pagination count={loadoutData.length} perPage={1} bind:page={heroLoadoutPage}/>
           </div>
         {/if}
       {/if}
