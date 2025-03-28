@@ -52,6 +52,7 @@ export type WorldInfoData = {
     uniqueId: string
     missionRewardNamedWeightsRowName: string
     description: Record<AvailableLocales, string>
+    tiles: Array<Tile>
     regions: Array<Region>
   }>
 }
@@ -86,6 +87,20 @@ type Region = {
   }
 }
 
+type Tile = {
+  tileType: string
+  zoneTheme: string
+  requirements: {
+    commanderLevel: number
+    personalPowerRating: number
+    maxPersonalPowerRating: number
+    partyPowerRating: number
+    maxPartyPowerRating: number
+  }
+  xCoordinate: number
+  yCoordinate: number
+}
+
 export type WorldParsedMission = {
   filters: string[]
   guid: string
@@ -106,6 +121,7 @@ export type WorldParsedMission = {
     color: string
     iconUrl?: string
     letter: string
+    theme: string
     type: {
       id?: keyof typeof ZoneCategories
       imageUrl?: string

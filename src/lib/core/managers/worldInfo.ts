@@ -218,6 +218,7 @@ export default class WorldInfoManager {
             zone: {
               color: (WorldColorsByTheater as any)[theaterId] ?? WorldColors.Ventures,
               letter: zoneLetter,
+              theme: worldInfoData.theaters.find(x => x.uniqueId === theaterId)!.tiles[mission.tileIndex].zoneTheme,
               type: {
                 id: zoneInfo?.type as keyof typeof ZoneCategories | undefined,
                 imageUrl: zoneInfo?.imageUrl

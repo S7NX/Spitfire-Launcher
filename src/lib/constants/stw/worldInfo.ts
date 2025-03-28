@@ -16,6 +16,24 @@ export const Worlds = Object.freeze({
   ScurvyShoals: '243870C643F8611F25D24287814E1DA4'
 } as const);
 
+export const WorldNames = Object.freeze({
+  [Worlds.Stonewood]: 'Stonewood',
+  [Worlds.Plankerton]: 'Plankerton',
+  [Worlds.CannyValley]: 'Canny Valley',
+  [Worlds.TwinePeaks]: 'Twine Peaks',
+
+  [Worlds.StormKingsDomain]: 'Storm King\'s Domain',
+
+  [Worlds.Dungeons]: 'Dungeons',
+  [Worlds.VisitTheCrater]: 'Visit The Crater',
+
+  [Worlds.BlastedBadlands]: 'Blasted Badlands',
+  [Worlds.FlannelFalls]: 'Flannel Falls',
+  [Worlds.FrozenFjords]: 'Frozen Fjords',
+  [Worlds.Hexsylvania]: 'Hexsylvania',
+  [Worlds.ScurvyShoals]: 'Scurvy Shoals'
+} as const);
+
 export const WorldColors = Object.freeze({
   Stonewood: '#34D375',
   Plankerton: '#4DA2DD',
@@ -127,49 +145,55 @@ export const ZoneCategories = Object.freeze({
     'VindermanMansion',
     'WatchTheSkies'
   ],
-  // Fight the Storm
   atlas: ['1Gate', 'Cat1FtS', 'GateSingle'],
-  // Fight Category 2 Storm
   'atlas-c2': ['2Gates'],
-  // Fight Category 3 Storm
   'atlas-c3': ['3Gates'],
-  // Fight Category 4 Storm
   'atlas-c4': ['4Gates'],
-  // Deliver the Bomb
   dtb: ['DtB'],
-  // Destroy the Encampments
   dte: ['DestroyTheEncampments', 'DtE'],
-  // Eliminate and Collect
   eac: ['EliminateAndCollect'],
-  // Evacuate the Shelter
   ets: ['EtS_C', 'EtShelter', 'EvacuateTheSurvivors'],
   'mini-boss': ['DUDEBRO'],
-  // Hunt the Titan
   htm: ['HTM_C'],
-  // Hit the Road
   htr: ['HitTheRoad', 'Mayday'],
-  // Protect the Presents
   ptp: ['ProtectThePresents'],
-  // Build the Radar Grid
   radar: ['BuildtheRadarGrid'],
-  // Refuel the Homebase
   refuel: ['RefuelTheBase'],
-  // Rescue the Survivors
   rescue: ['EtSurvivors'],
-  // Resupply
   resupply: ['Resupply'],
-  // Launch the Rocket
   rocket: ['LtR'],
-  // Retrieve the Data
   rtd: ['RetrieveTheData', 'RtD'],
-  // Ride the Lightning
   rtl: ['LaunchTheBalloon', 'LtB', 'RideTheLightning', 'RtL'],
-  // Repair the Shelter
   rts: ['PowerTheStormShield', 'RtS'],
-  // Survive the Storm
   stn: ['SurviveTheNight'], 'storm-shield': ['Outpost'],
-  // Trap the Storm
   tts: ['TrapTheStorm']
+} as const);
+
+export const ZoneNames = Object.freeze({
+  atlas: 'Fight the Storm',
+  'atlas-c2': 'Fight Category 2 Storm',
+  'atlas-c3': 'Fight Category 3 Storm',
+  'atlas-c4': 'Fight Category 4 Storm',
+  dtb: 'Deliver the Bomb',
+  dte: 'Destroy the Encampments',
+  eac: 'Eliminate and Collect',
+  ets: 'Evacuate the Shelter',
+  'mini-boss': 'Mini-Boss',
+  htm: 'Hunt the Titan',
+  htr: 'Hit the Road',
+  ptp: 'Protect the Presents',
+  radar: 'Build the Radar Grid',
+  refuel: 'Refuel the Homebase',
+  rescue: 'Rescue the Survivors',
+  resupply: 'Resupply',
+  rocket: 'Launch the Rocket',
+  rtd: 'Retrieve the Data',
+  rtl: 'Ride the Lightning',
+  rts: 'Repair the Shelter',
+  stn: 'Survive the Storm',
+  'storm-shield': 'Storm Shield Defense',
+  tts: 'Trap the Storm',
+  quest: 'Quest'
 } as const);
 
 export const ZoneGroups = Object.freeze([

@@ -38,6 +38,25 @@ export type TrapData = {
   name: string
 }
 
+export type TeamPerkData = {
+  name: string
+  icon: string
+}
+
+export type GadgetData = {
+  name: string
+  icon: string
+}
+
+export type HeroData = {
+  name: string
+  type: 'Soldier' | 'Constructor' | 'Ninja' | 'Outlander'
+}
+
+export type ZoneThemeData = {
+  name: string
+}
+
 export type ParsedModifierData =
   WorldParsedMission['mission']['modifiers'][number]
 
@@ -59,14 +78,6 @@ export type ParsedResourceData = {
     | null
   quantity: number
 }
-
-export type RewardsSummary = Record<
-  string,
-  {
-    imageUrl: string
-    quantity: number
-  }
->
 
 export type DailyQuestData = {
   name: string

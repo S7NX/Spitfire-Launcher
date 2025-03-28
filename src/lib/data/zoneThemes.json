@@ -1,0 +1,392 @@
+{
+  "bp_zt_tp_yarrr_island_c": {
+    "name": "Tropical"
+  },
+  "bp_zt_tp_plank_island_c": {
+    "name": "Tropical"
+  },
+  "bp_zt_tp_island01_c": {
+    "name": "Tropical"
+  },
+  "bp_tz_tp_water_c": {
+    "name": "Water"
+  },
+  "bp_zt_theforestwinter_c": {
+    "name": "The Forest"
+  },
+  "bp_zt_thesuburbs_arid_c": {
+    "name": "Suburbs"
+  },
+  "bp_zt_thesuburbs_c": {
+    "name": "Suburbs"
+  },
+  "bp_zt_theforest_c": {
+    "name": "Forest"
+  },
+  "bp_zt_thegrasslands_mansion_c": {
+    "name": "The Mansion"
+  },
+  "bp_zt_thegrasslands_c": {
+    "name": "Grasslands"
+  },
+  "bp_zt_theindustrialpark_arid_c": {
+    "name": "Industrial Park"
+  },
+  "bp_zt_theindustrialpark_c": {
+    "name": "Industrial Park"
+  },
+  "bp_zt_thedesert_c": {
+    "name": "Desert"
+  },
+  "bp_zt_thecity_arid_c": {
+    "name": "City"
+  },
+  "bp_zt_thecity_c": {
+    "name": "City"
+  },
+  "bp_zt_route99_landmark_c": {
+    "name": "Thunder Route 99"
+  },
+  "bp_zt_route99_bunker_2_c": {
+    "name": "Thunder Route 99"
+  },
+  "bp_zt_route99_bunker_1_c": {
+    "name": "Thunder Route 99"
+  },
+  "bp_zt_route99_2_c": {
+    "name": "Thunder Route 99"
+  },
+  "bp_zt_route99_1_c": {
+    "name": "Thunder Route 99"
+  },
+  "bp_zt_observetheskies_c": {
+    "name": "Thunder Route 99"
+  },
+  "bp_zt_launchinglars_c": {
+    "name": "The Grasslands"
+  },
+  "bp_zt_ghosttown_highnoon_c": {
+    "name": "Ghost Town"
+  },
+  "bp_zt_ghosttown_b_c": {
+    "name": "Ghost Town"
+  },
+  "bp_zt_ghosttown_a_c": {
+    "name": "Ghost Town"
+  },
+  "bp_zt_dudebro_landmark_portal_c": {
+    "name": "Storm King"
+  },
+  "bp_zt_dudebro_landmark_lakeside_c": {
+    "name": "Storm King"
+  },
+  "bp_zt_dudebro_landmark_grasslands_c": {
+    "name": "Storm King"
+  },
+  "bp_zt_dudebro_landmark_desert_c": {
+    "name": "Storm King"
+  },
+  "bp_zt_dudebro_hard_c": {
+    "name": "The Portal"
+  },
+  "bp_zt_dudebro_c": {
+    "name": "The Portal"
+  },
+  "bp_zt_perfmem_c": {
+    "name": "PerfMem City"
+  },
+  "bp_zt_build_irwin_c": {
+    "name": "Buildasaurus Rex"
+  },
+  "bp_zt_desert_monument_c": {
+    "name": "Desert"
+  },
+  "bp_zt_desert_deployprobe_c": {
+    "name": "Desert"
+  },
+  "bp_zt_desert_bunker_c": {
+    "name": "Desert"
+  },
+  "bp_zt_desert_c": {
+    "name": "Desert"
+  },
+  "bp_zt_starlight_c": {
+    "name": "Haunted Forest"
+  },
+  "bp_zt_theoutpost_pve_04_c": {
+    "name": "Twine Peaks Storm Shield"
+  },
+  "bp_zt_theoutpost_pve_03_c": {
+    "name": "Canny Valley Storm Shield"
+  },
+  "bp_zt_theoutpost_pve_02_c": {
+    "name": "Plankerton Storm Shield"
+  },
+  "bp_zt_theoutpost_pve_01_c": {
+    "name": "Homebase Storm Shield"
+  },
+  "bp_zt_homebase_07_c": {
+    "name": "Your Homebase"
+  },
+  "bp_zt_homebase_06_c": {
+    "name": "Your Homebase"
+  },
+  "bp_zt_homebase_05_c": {
+    "name": "Your Homebase"
+  },
+  "bp_zt_homebase_03_c": {
+    "name": "Your Homebase"
+  },
+  "bp_zt_homebase_02_c": {
+    "name": "Your Homebase"
+  },
+  "bp_zt_onboarding_suburban_a_c": {
+    "name": "The Suburbs"
+  },
+  "bp_zt_buildoff_c": {
+    "name": "The Durr Burger Build-Off"
+  },
+  "bp_zt_mayday_twine2_c": {
+    "name": "Twine Peaks Tier 2"
+  },
+  "bp_zt_mayday_twine1_c": {
+    "name": "Twine Peaks Tier 1"
+  },
+  "bp_zt_mayday_plankerton2_c": {
+    "name": "Plankerton Tier 2"
+  },
+  "bp_zt_mayday_plankerton1_c": {
+    "name": "Plankerton Tier 1"
+  },
+  "bp_zt_mayday_endgame_c": {
+    "name": "Twine Peaks Tier 3"
+  },
+  "bp_zt_mayday_canny2_c": {
+    "name": "Canny Valley Tier 2"
+  },
+  "bp_zt_mayday_canny1_c": {
+    "name": "Canny Valley Tier 1"
+  },
+  "bp_zt_mayday_c": {
+    "name": "Stonewood Tier"
+  },
+  "bp_zt_buildthebase_desert_c": {
+    "name": "Fort Setup"
+  },
+  "bp_zt_trv_sw_c": {
+    "name": "The Swamps"
+  },
+  "bp_zt_trv_slashercamp_c": {
+    "name": "Shady Acres"
+  },
+  "bp_zt_trv_hf_intro_c": {
+    "name": "Haunted Forest"
+  },
+  "bp_zt_trv_hf_castleb_c": {
+    "name": "Haunted Forest"
+  },
+  "bp_zt_trv_hf_castle_c": {
+    "name": "Haunted Forest"
+  },
+  "bp_zt_trv_hf_c": {
+    "name": "Haunted Forest"
+  },
+  "bp_zt_trv_hauntedhotel_replay_c": {
+    "name": "Haunted Hotel"
+  },
+  "bp_zt_trv_hauntedhotel_aged_c": {
+    "name": "Haunted Forest"
+  },
+  "bp_zt_trv_hauntedhotel_c": {
+    "name": "Haunted Hotel"
+  },
+  "bp_zt_endless_winter_c": {
+    "name": "Frostnite"
+  },
+  "bp_zt_survival_c": {
+    "name": "Fortnite Survival Prototype"
+  },
+  "bp_zt_criticalmission_c": {
+    "name": "Play with Others"
+  },
+  "bp_zt_ad_thesuburbs_c": {
+    "name": "Autumn Suburbs"
+  },
+  "bp_zt_ad_theindustrialpark_c": {
+    "name": "Autumn Industrial Park"
+  },
+  "bp_zt_ad_thecity_c": {
+    "name": "Autumn City"
+  },
+  "bp_zt_ad_lakeside_c": {
+    "name": "Lakeside"
+  },
+  "bp_zt_ad2_thegrasslands_c": {
+    "name": "Autumn Foothills"
+  },
+  "bp_zt_phoenix_winter_twine2_town_c": {
+    "name": "Chilly Cove"
+  },
+  "bp_zt_phoenix_winter_twine2_arctic_c": {
+    "name": "Boreal Base"
+  },
+  "bp_zt_phoenix_winter_twine1_town_c": {
+    "name": "Chilly Cove"
+  },
+  "bp_zt_phoenix_winter_twine1_arctic_c": {
+    "name": "Boreal Base"
+  },
+  "bp_zt_phoenix_winter_stonewood_1_town_c": {
+    "name": "Chilly Cove"
+  },
+  "bp_zt_phoenix_winter_stonewood_1_arctic_c": {
+    "name": "Boreal Base"
+  },
+  "bp_zt_phoenix_winter_stonewood_0_town_c": {
+    "name": "Chilly Cove"
+  },
+  "bp_zt_phoenix_winter_stonewood_0_arctic_c": {
+    "name": "Boreal Base"
+  },
+  "bp_zt_phoenix_winter_plankerton2_town_c": {
+    "name": "Chilly Cove"
+  },
+  "bp_zt_phoenix_winter_plankerton2_arctic_c": {
+    "name": "Boreal Base"
+  },
+  "bp_zt_phoenix_winter_plankerton1_town_c": {
+    "name": "Chilly Cove"
+  },
+  "bp_zt_phoenix_winter_plankerton1_arctic_c": {
+    "name": "Boreal Base"
+  },
+  "bp_zt_phoenix_winter_endgame_town_c": {
+    "name": "Chilly Cove"
+  },
+  "bp_zt_phoenix_winter_endgame_arctic_c": {
+    "name": "Boreal Base"
+  },
+  "bp_zt_phoenix_winter_canny2_town_c": {
+    "name": "Chilly Cove"
+  },
+  "bp_zt_phoenix_winter_canny2_arctic_c": {
+    "name": "Boreal Base"
+  },
+  "bp_zt_phoenix_winter_canny1_town_c": {
+    "name": "Chilly Cove"
+  },
+  "bp_zt_phoenix_winter_canny1_arctic_c": {
+    "name": "Boreal Base"
+  },
+  "bp_zt_onboarding_fort_c": {
+    "name": "Onboarding Fort"
+  },
+  "bp_zt_longwayhome_c": {
+    "name": "The City"
+  },
+  "bp_zt_stabilizetherift_c": {
+    "name": "The Desert"
+  },
+  "bp_zt_trv_hauntedhotel_huskescape_c": {
+    "name": "Haunted Forest"
+  },
+  "bp_zt_outlandish_c": {
+    "name": "Suspicious Factory"
+  },
+  "bp_zt_plankharbor_c": {
+    "name": "Plank Harbor"
+  },
+  "bp_zt_winter_twine2_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_winter_twine1_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_winter_stonewood_1_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_winter_stonewood_0_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_winter_plankerton2_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_winter_plankerton1_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_winter_endgame_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_winter_canny2_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_winter_canny1_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_protectthepresents_twine2_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_protectthepresents_twine1_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_protectthepresents_stonewood_0_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_protectthepresents_plankerton2_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_protectthepresents_plankerton1_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_protectthepresents_endgame_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_protectthepresents_canny2_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_protectthepresents_canny1_c": {
+    "name": "Crackshot's Neighborhood"
+  },
+  "bp_zt_finalfrontier_c": {
+    "name": "The Desert"
+  },
+  "bp_zt_challengethehorde_twine_c": {
+    "name": "Tier 4"
+  },
+  "bp_zt_challengethehorde_sw_vh_c": {
+    "name": "Tier 1"
+  },
+  "bp_zt_challengethehorde_sw_h_c": {
+    "name": "Tier 1"
+  },
+  "bp_zt_challengethehorde_plank_vl_c": {
+    "name": "Tier 2"
+  },
+  "bp_zt_challengethehorde_plank_vh_c": {
+    "name": "Tier 2"
+  },
+  "bp_zt_challengethehorde_plank_m_c": {
+    "name": "Tier 2"
+  },
+  "bp_zt_challengethehorde_canny_vl_c": {
+    "name": "Tier 3"
+  },
+  "bp_zt_challengethehorde_canny_vh_c": {
+    "name": "Tier 3"
+  },
+  "bp_zt_challengethehorde_canny_m_c": {
+    "name": "Tier 3"
+  },
+  "bp_zt_challengethehorde_challenge_minibossarmy_twine_c": {
+    "name": "Tier 4"
+  },
+  "bp_zt_challengethehorde_challenge_minibossarmy_sw_c": {
+    "name": "Tier 1"
+  },
+  "bp_zt_challengethehorde_challenge_minibossarmy_plank_c": {
+    "name": "Tier 2"
+  },
+  "bp_zt_challengethehorde_challenge_minibossarmy_canny_c": {
+    "name": "Tier 3"
+  }
+}
