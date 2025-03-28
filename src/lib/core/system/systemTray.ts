@@ -8,7 +8,7 @@ export default class SystemTray {
   private static trayIconId: string;
 
   static async setVisibility(visible: boolean) {
-    // Multiple icons are shown because of HMR
+    // Because multiple icons are shown because of HMR
     if (dev) return;
 
     if (visible) {

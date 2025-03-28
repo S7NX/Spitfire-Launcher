@@ -5,7 +5,6 @@
     color: 'red' | 'green' | 'blue' | 'yellow' | 'orange' | 'indigo' | 'purple' | 'pink' | 'gray';
   };
 
-  // Because tailwind couldn't handle dynamic classes
   const indicatorColors: Record<Props['color'], string> = {
     red: 'bg-red-500',
     green: 'bg-green-500',

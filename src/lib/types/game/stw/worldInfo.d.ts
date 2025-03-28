@@ -141,5 +141,4 @@ export type WorldParsedMission = {
   } | null
 }
 
-// get values of Worlds
 export type ParsedWorldInfo = Map<Worlds, Map<string, WorldParsedMission>>

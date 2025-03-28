@@ -140,10 +140,6 @@ export default class AccountAutomation {
     const membersWithAutoKick = partyMemberIds.filter((id) => AutomationBase.getAccountById(id)?.settings.autoKick);
     const membersWithNoAutoKick = partyMemberIds.filter((id) => !membersWithAutoKick.includes(id));
 
-    // Automatically kicks and claims rewards for accounts with auto kick disabled
-    // As accounts with auto kick enabled will handle their own kicking
-    // But does not transfer materials since user is unlikely to spend too much material on multiple accounts
-
     if (partyLeaderAccount) {
       const accountsWithNoAutoKick = membersWithNoAutoKick.filter((id) => id !== this.account.accountId);
 
