@@ -1,3 +1,12 @@
+<script lang="ts" module>
+  import type { EpicDeviceAuthData } from '$types/game/authorizations';
+
+  let allDeviceAuths = $state<Record<string, EpicDeviceAuthData[]>>({});
+  let isFetching = $state(false);
+  let isGenerating = $state(false);
+  let isDeleting = $state(false);
+</script>
+
 <script lang="ts">
   import Button from '$components/ui/Button.svelte';
   import { Separator } from 'bits-ui';
@@ -7,7 +16,6 @@
   import PencilIcon from 'lucide-svelte/icons/pencil';
   import { toast } from 'svelte-sonner';
   import DeviceAuthManager from '$lib/core/managers/deviceAuth';
-  import type { EpicDeviceAuthData } from '$types/game/authorizations';
   import type { DeviceAuthsSettings } from '$types/settings';
   import { onMount } from 'svelte';
   import DataStorage, { DEVICE_AUTHS_FILE_PATH } from '$lib/core/dataStorage';
@@ -18,15 +26,14 @@
   import { goto } from '$app/navigation';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
+  const deviceAuths = $derived(allDeviceAuths[activeAccount.accountId]);
 
-  let deviceAuths = $state<EpicDeviceAuthData[]>([]);
-  let isFetching = $state(false);
-  let isGenerating = $state(false);
-  let isDeleting = $state(false);
-
-  let deviceAuthsSettings = $state<DeviceAuthsSettings>();
+  $effect(() => {
+    fetchDeviceAuths();
+  });
 
   const deviceNameTimeouts = new Map<string, number>();
+  let deviceAuthsSettings = $state<DeviceAuthsSettings>();
 
   function handleBlur(event: FocusEvent, deviceId: string) {
     const element = event.target as HTMLSpanElement;
@@ -76,14 +83,15 @@
     }
   }
 
-  async function fetchDeviceAuths() {
+  async function fetchDeviceAuths(force = false) {
     if (isFetching) return;
+    if (!force && deviceAuths?.length) return;
 
     isFetching = true;
 
     try {
       const data = await DeviceAuthManager.getAll(activeAccount);
-      deviceAuths = data.sort((a, b) => {
+      allDeviceAuths[activeAccount.accountId] = data.sort((a, b) => {
         const aHasCustomName = deviceAuthsSettings?.some(x => x.deviceId === a.deviceId) ? 1 : 0;
         const bHasCustomName = deviceAuthsSettings?.some(x => x.deviceId === b.deviceId) ? 1 : 0;
         const hasCustomName = bHasCustomName - aHasCustomName;
@@ -112,7 +120,7 @@
     toast.promise(DeviceAuthManager.create(activeAccount), {
       loading: 'Generating device auth...',
       success: (deviceAuth) => {
-        deviceAuths = [deviceAuth, ...deviceAuths];
+        allDeviceAuths[activeAccount.accountId] = [deviceAuth, ...deviceAuths];
         return `Device auth generated: ${deviceAuth.deviceId}`;
       },
       error: (error) => {
@@ -133,12 +141,12 @@
 
     try {
       await DeviceAuthManager.delete(activeAccount, deviceId);
-      deviceAuths = deviceAuths.filter((auth) => auth.deviceId !== deviceId);
+      allDeviceAuths[activeAccount.accountId] = deviceAuths.filter((auth) => auth.deviceId !== deviceId);
       toast.success(`Device auth deleted ${isCurrentDevice ? 'and logged out' : ''}`, { id: toastId });
 
       if (isCurrentDevice) {
         await Account.logout();
-        deviceAuths = [];
+        allDeviceAuths[activeAccount.accountId] = [];
         await goto('/');
       }
 
@@ -194,7 +202,7 @@
 
         <RefreshCwIcon
           class="size-6 cursor-pointer {isFetching ? 'animate-spin opacity-50 !cursor-not-allowed' : ''}"
-          onclick={fetchDeviceAuths}
+          onclick={() => fetchDeviceAuths(true)}
         />
       </div>
     </div>
