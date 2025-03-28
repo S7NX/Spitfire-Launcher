@@ -1,7 +1,6 @@
 <script lang="ts">
-  import Select from '$components/ui/Select.svelte';
+  import Combobox from '$components/ui/Combobox.svelte';
   import UserIcon from 'lucide-svelte/icons/user';
-  import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
   import { accountsStore } from '$lib/stores';
   import type { AccountData } from '$types/accounts';
   import type { ClassValue } from 'svelte/elements';
@@ -66,9 +65,10 @@
       return `Select ${type === 'single' ? 'an account' : 'accounts'}`;
     }
 
-    if (type === 'single' || (type === 'multiple' && selected.length === 1)) {
-      const accountId = Array.isArray(selected) ? selected[0] : selected;
-      return getAccountName(accountId);
+    if (type === 'single' || (type === 'multiple' && selected.length < 3)) {
+      return Array.isArray(selected)
+        ? selected.map(getAccountName).join(', ')
+        : getAccountName(selected);
     }
 
     return `${selected.length} account${selected.length === 1 ? '' : 's'} selected`;
@@ -79,10 +79,12 @@
   }
 </script>
 
-<Select disabled={disabled || !accountList.length} {items} triggerClass={className} {type} bind:value={selected as never}>
-  {#snippet trigger()}
-    <UserIcon class="text-muted-foreground size-5 mr-2"/>
-    <span class="text-muted-foreground truncate">{selectedAccounts}</span>
-    <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
-  {/snippet}
-</Select>
+<Combobox
+  disabled={disabled || !accountList.length}
+  icon={UserIcon}
+  inputProps={{ class: className }}
+  {items}
+  placeholder={selectedAccounts}
+  {type}
+  bind:value={selected as never}
+/>

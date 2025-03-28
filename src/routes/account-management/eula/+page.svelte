@@ -12,7 +12,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
-  import AccountSelect from '$components/auth/account/AccountSelect.svelte';
+  import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
@@ -69,7 +69,7 @@
 
 <CenteredPageContent title="EULA">
   <form class="flex flex-col gap-y-4" onsubmit={checkEULA}>
-    <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
+    <AccountCombobox disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 
     <Button
       disabled={!selectedAccounts?.length || isFetching}

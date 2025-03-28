@@ -13,7 +13,7 @@
 </script>
 
 <script lang="ts">
-  import AccountSelect from '$components/auth/account/AccountSelect.svelte';
+  import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import Dropdown from '$components/ui/Dropdown.svelte';
   import Switch from '$components/ui/Switch.svelte';
@@ -267,7 +267,7 @@
     </div>
 
     <div class="flex gap-2">
-      <AccountSelect class="grow shrink min-w-0" type="single" bind:selected={kickAllSelectedAccount}/>
+      <AccountCombobox class="grow shrink min-w-0" type="single" bind:selected={kickAllSelectedAccount}/>
       <Button
         class="shrink-0"
         disabled={isDoingSomething || !kickAllSelectedAccount}
@@ -282,7 +282,7 @@
     <Separator.Root class="bg-border h-px"/>
 
     <div class="flex gap-2">
-      <AccountSelect class="grow shrink min-w-0" type="multiple" bind:selected={leavePartySelectedAccounts}/>
+      <AccountCombobox class="grow shrink min-w-0" type="multiple" bind:selected={leavePartySelectedAccounts}/>
       <Button
         class="shrink-0"
         disabled={isDoingSomething || !leavePartySelectedAccounts?.length}
@@ -297,7 +297,7 @@
     <Separator.Root class="bg-border h-px"/>
 
     <div class="flex gap-2">
-      <AccountSelect class="grow shrink min-w-0" type="multiple" bind:selected={claimRewardsPartySelectedAccounts}/>
+      <AccountCombobox class="grow shrink min-w-0" type="multiple" bind:selected={claimRewardsPartySelectedAccounts}/>
       <Button
         class="shrink-0"
         disabled={isDoingSomething || !claimRewardsPartySelectedAccounts?.length}

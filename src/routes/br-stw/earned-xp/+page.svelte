@@ -15,7 +15,7 @@
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
-  import AccountSelect from '$components/auth/account/AccountSelect.svelte';
+  import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
   import { getResolvedResults } from '$lib/utils';
   import { doingBulkOperations } from '$lib/stores.js';
   import MCPManager from '$lib/core/managers/mcp';
@@ -62,7 +62,7 @@
 
 <CenteredPageContent description="Check your XP progress from Battle Royale, Creative and Save the World" title="Earned XP">
   <form class="flex flex-col gap-y-4" onsubmit={fetchXPData}>
-    <AccountSelect disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
+    <AccountCombobox disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
 
     <Button
       disabled={!selectedAccounts?.length || isFetching}

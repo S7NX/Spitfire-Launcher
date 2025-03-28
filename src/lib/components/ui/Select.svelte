@@ -65,6 +65,7 @@
       <Select.ScrollUpButton class="flex w-full items-center justify-center">
         <ChevronsUpIcon class="size-3"/>
       </Select.ScrollUpButton>
+
       <Select.Viewport>
         {#each items as item, i (i + item.value)}
           <Select.Item
@@ -84,6 +85,7 @@
           </Select.Item>
         {/each}
       </Select.Viewport>
+
       <Select.ScrollDownButton class="flex w-full items-center justify-center">
         <ChevronsDownIcon class="size-3"/>
       </Select.ScrollDownButton>

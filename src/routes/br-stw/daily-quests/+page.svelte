@@ -26,7 +26,7 @@
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
-  import AccountSelect from '$components/auth/account/AccountSelect.svelte';
+  import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
@@ -126,7 +126,7 @@
 </script>
 
 <CenteredPageContent class="!w-112" title="Daily Quests">
-  <AccountSelect
+  <AccountCombobox
     disabled={isFetching}
     type="multiple"
     bind:selected={selectedAccounts}

@@ -1,7 +1,5 @@
 <script generics="T" lang="ts">
   import Accordion from '$components/ui/Accordion.svelte';
-  import { accountsStore } from '$lib/stores';
-  import { nonNull } from '$lib/utils';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import type { Snippet } from 'svelte';
   import type { BulkActionStatus } from '$types/accounts';
@@ -12,13 +10,12 @@
   };
 
   const { statuses, content: accordionContent }: Props = $props();
-  const allAccounts = $derived(nonNull($accountsStore.allAccounts));
 </script>
 
 <Accordion 
   class="border rounded-lg mt-4 group"
   items={statuses}
-  openItems={allAccounts.length === 1 || statuses.length === 1 ? [0] : undefined}
+  openItems={statuses.length === 1 ? [0] : undefined}
   type="multiple"
 >
   {#snippet trigger(status)}

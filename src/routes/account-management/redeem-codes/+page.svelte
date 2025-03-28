@@ -13,7 +13,7 @@
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
-  import AccountSelect from '$components/auth/account/AccountSelect.svelte';
+  import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import TagInput from '$components/ui/TagInput.svelte';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
@@ -98,7 +98,7 @@
 
 <CenteredPageContent title="Redeem Codes">
   <form class="flex flex-col gap-2 w-full" onsubmit={redeemCodes}>
-    <AccountSelect disabled={isRedeeming} type="multiple" bind:selected={selectedAccounts}/>
+    <AccountCombobox disabled={isRedeeming} type="multiple" bind:selected={selectedAccounts}/>
 
     <TagInput
       placeholder="Enter the codes to redeem and press Enter"

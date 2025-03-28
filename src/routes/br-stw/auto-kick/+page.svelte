@@ -9,7 +9,7 @@
   import Switch from '$components/ui/Switch.svelte';
   import Trash2Icon from 'lucide-svelte/icons/trash-2';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
-  import AccountSelect from '$components/auth/account/AccountSelect.svelte';
+  import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
 
   const allAccounts = $derived(nonNull($accountsStore.allAccounts));
   const xmppDisabledAccounts = $derived(allAccounts.filter((x) => !$automationStore.some((y) => y.accountId === x.accountId)));
@@ -80,7 +80,7 @@
     <Separator.Root class="bg-border h-px -mx-5"/>
   </div>
 
-  <AccountSelect
+  <AccountCombobox
     autoSelect={false}
     customList={xmppDisabledAccounts}
     type="single"
