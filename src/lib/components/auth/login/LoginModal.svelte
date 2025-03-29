@@ -32,7 +32,7 @@
   let currentStep = $state(0);
   let selectedMethod = $state<LoginMethod | null>(null);
   let exchangeCode = $state<string>();
-  let isLoading = $state(false);
+  let isLoggingIn = $state(false);
   let deviceCodeVerifyButtonDisabled = $state(true);
 
   let deviceCodeData = $state<{ code: string; verificationUrl: string }>();
@@ -104,7 +104,7 @@
 
     if (!exchangeCode?.trim()) return;
 
-    isLoading = true;
+    isLoggingIn = true;
 
     try {
       const accessTokenData = await Authentication.getAccessTokenUsingExchangeCode(exchangeCode);
@@ -113,13 +113,11 @@
       console.error(error);
       toast.error('Failed to login');
     } finally {
-      isLoading = false;
+      isLoggingIn = false;
     }
   }
 
   async function generateDeviceCodeLink() {
-    isLoading = true;
-
     const clientToken = await Authentication.getAccessTokenUsingClientCredentials(fortniteNewSwitchGameClient);
     const deviceCodeResponse = await oauthService.post<DeviceCodeLoginData>('deviceAuthorization', {
       body: new URLSearchParams({ prompt: 'login' }).toString(),
@@ -132,12 +130,10 @@
       code: deviceCodeResponse.device_code,
       verificationUrl: deviceCodeResponse.verification_uri_complete
     };
-
-    isLoading = false;
   }
 
   async function handleWebConfirmation() {
-    isLoading = true;
+    isLoggingIn = true;
 
     try {
       const newSwitchAccessTokenData = await Authentication.getAccessTokenUsingDeviceCode(
@@ -156,7 +152,7 @@
       console.error(error);
       toast.error('Please confirm the login on the Epic Games website');
     } finally {
-      isLoading = false;
+      isLoggingIn = false;
     }
   }
 
@@ -191,7 +187,7 @@
     currentStep = 0;
     selectedMethod = null;
     exchangeCode = undefined;
-    isLoading = false;
+    isLoggingIn = false;
     deviceCodeData = undefined;
   }
 
@@ -257,7 +253,7 @@
             >
               <Input
                 class="mb-4"
-                disabled={isLoading}
+                disabled={isLoggingIn}
                 placeholder="Enter exchange code"
                 type="text"
                 bind:value={exchangeCode}
@@ -265,8 +261,8 @@
 
               <Button
                 class="w-full flex items-center justify-center gap-2"
-                disabled={!exchangeCode?.trim() || exchangeCode?.trim().length < 32 || isLoading}
-                loading={isLoading}
+                disabled={!exchangeCode?.trim() || exchangeCode?.trim().length < 32 || isLoggingIn}
+                loading={isLoggingIn}
                 loadingText="Verifying..."
                 type="submit"
                 variant="epic"
@@ -283,30 +279,30 @@
               </p>
 
               <Button
-                class="w-full"
+                class="flex justify-center items-center gap-x-2 w-full"
                 disabled={!deviceCodeData?.verificationUrl}
+                loading={!deviceCodeData?.verificationUrl}
+                loadingText="Generating URL..."
                 onclick={openDeviceCodeLink}
                 variant="outline"
               >
-                {#if deviceCodeData?.verificationUrl}
-                  <ExternalLinkIcon class="size-4"/>
-                  Open Epic Games Website
-                {:else}
-                  Generating URL...
-                {/if}
+                <ExternalLinkIcon class="size-4"/>
+                Open Epic Games Website
               </Button>
             </div>
 
-            <Button
-              class="w-full"
-              disabled={isLoading || deviceCodeVerifyButtonDisabled || !deviceCodeData?.verificationUrl}
-              loading={isLoading}
-              loadingText="Verifying..."
-              onclick={handleWebConfirmation}
-              variant="epic"
-            >
-              Continue
-            </Button>
+            {#if !deviceCodeVerifyButtonDisabled}
+              <Button
+                class="w-full"
+                disabled={isLoggingIn || deviceCodeVerifyButtonDisabled || !deviceCodeData?.verificationUrl}
+                loading={isLoggingIn}
+                loadingText="Verifying..."
+                onclick={handleWebConfirmation}
+                variant="epic"
+              >
+                Continue
+              </Button>
+            {/if}
           {/if}
         </div>
       {:else if currentStep === 2}
