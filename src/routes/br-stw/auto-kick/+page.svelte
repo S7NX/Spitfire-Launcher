@@ -88,7 +88,7 @@
   />
 
   {#if $automationStore.length}
-    <div class="grid grid-cols-1 place-items-center @md:grid-cols-2 @lg:grid-cols-3 gap-4 mt-6">
+    <div class="grid grid-cols-1 place-items-center @md:grid-cols-2 @lg:grid-cols-3 gap-4 ">
       {#each $automationStore as automationAccount (automationAccount.accountId)}
         {@const isLoading = automationAccount.status === 'LOADING'}
 

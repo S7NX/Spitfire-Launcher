@@ -48,7 +48,7 @@
 
 <Combobox.Root onOpenChange={handleOpenChange} type={type as never} bind:value={value as never} bind:open {...restProps}>
   {@const Icon = icon}
-  <Combobox.Trigger class="flex w-full items-center [&>*]:disabled:cursor-not-allowed [&>*]:disabled:opacity-50">
+  <Combobox.Trigger class="flex w-full items-center disabled:cursor-not-allowed disabled:opacity-50">
     <div
       bind:this={customAnchor}
       class={cn(
@@ -76,7 +76,7 @@
       {...contentProps}
     >
       <Combobox.ScrollUpButton class="flex w-full items-center justify-center">
-        <ChevronsUpIcon class="size-3" />
+        <ChevronsUpIcon class="size-3"/>
       </Combobox.ScrollUpButton>
 
       <Combobox.Viewport class="flex flex-col p-1">
