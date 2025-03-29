@@ -26,6 +26,7 @@
 
     isFetching = true;
     doingBulkOperations.set(true);
+    vbucksStatuses = [];
 
     const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
     await Promise.allSettled(accounts.map(async (account) => {
@@ -39,7 +40,7 @@
         status.data.vbucksAmount = calculateVbucks(queryProfile);
       } catch (error) {
         status.data.error = error instanceof EpicAPIError && error.errorCode === 'errors.com.epicgames.account.invalid_account_credentials'
-          ? 'Login session has expired. Please log in again'
+          ? 'Login session expired.'
           : 'Unknown error';
       }
     }));

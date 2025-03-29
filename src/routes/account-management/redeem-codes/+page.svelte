@@ -35,6 +35,7 @@
 
     isRedeeming = true;
     doingBulkOperations.set(true);
+    codeStatuses = [];
 
     const nonExistentCodes: string[] = [];
     const invalidCredentialsAccounts: string[] = [];
@@ -53,7 +54,7 @@
         }
 
         if (invalidCredentialsAccounts.includes(account.accountId)) {
-          status.data.push({ code, error: 'Your login session has expired. Please log in again.' });
+          status.data.push({ code, error: 'Login session expired.' });
           return;
         }
 
@@ -72,7 +73,7 @@
                 break;
               }
               case 'errors.com.epicgames.account.invalid_account_credentials': {
-                errorString = 'Login session has expired. Please log in again';
+                errorString = 'Login session expired.';
                 invalidCredentialsAccounts.push(account.accountId);
                 break;
               }

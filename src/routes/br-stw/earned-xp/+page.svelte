@@ -26,6 +26,7 @@
   async function fetchXPData() {
     isFetching = true;
     doingBulkOperations.set(true);
+    xpStatuses = [];
 
     const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
     await Promise.allSettled(accounts.map(async (account) => {

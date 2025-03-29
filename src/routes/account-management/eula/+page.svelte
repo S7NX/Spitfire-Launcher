@@ -35,6 +35,7 @@
 
     isFetching = true;
     doingBulkOperations.set(true);
+    eulaStatuses = [];
 
     const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
     await Promise.allSettled(accounts.map(async (account) => {
