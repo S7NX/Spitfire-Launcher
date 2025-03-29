@@ -32,7 +32,7 @@
     guid: string;
     selected?: boolean;
     index: number;
-    commander: {
+    commander?: {
       name: string;
       icon: string;
       rarity: RarityType;
@@ -41,7 +41,7 @@
       name: string;
       icon: string;
     };
-    supportTeam: Array<{
+    supportTeam?: Array<{
       name: string;
       icon: string;
       rarity: RarityType;
@@ -81,6 +81,7 @@
   import { FounderEditionNames, FounderEditions, RarityColors, RarityTypes, zoneThemes } from '$lib/constants/stw/resources';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
+  const selectedHeroLoadout = $derived(loadoutData?.[heroLoadoutPage - 1]);
 
   let searchQuery = $state<string>();
 
@@ -93,17 +94,11 @@
     }
 
     isLoading = true;
-
-    lookupData = undefined;
-    stwData = undefined;
-    missionPlayers = undefined;
-    mission = undefined;
-    loadoutData = undefined;
-
-    const isAccountId = searchQuery.length === 32;
+    resetData();
 
     try {
-      const internalLookupData: EpicAccountById | EpicAccountByName = isAccountId
+      const isAccountId = searchQuery.length === 32;
+      const internalLookupData = isAccountId
         ? await LookupManager.fetchById(activeAccount, searchQuery)
         : await LookupManager.fetchByName(activeAccount, searchQuery);
 
@@ -148,15 +143,16 @@
       xpBoosts: getXPBoosts(Object.values(profile.items))
     };
 
+    loadoutData = [];
+
     for (const [itemGuid, itemData] of items) {
       if (itemData.attributes.loadout_index == null) continue;
 
-      console.log(itemData);
-
-      const isSelectedLoadout = itemData.attributes.selected_hero_loadout === itemGuid;
+      const isSelectedLoadout = attributes.selected_hero_loadout === itemGuid;
       const selectedCommander = profile.items[itemData.attributes.crew_members.commanderslot];
-      const heroId = selectedCommander.templateId.replace('Hero:', '').split('_').slice(0, -2).join('_').toLowerCase();
+      const heroId = selectedCommander?.templateId.replace('Hero:', '').split('_').slice(0, -2).join('_').toLowerCase();
       const teamPerkId = profile.items[itemData.attributes.team_perk]?.templateId.split('_')[1];
+
       const supportTeam = Object.entries(itemData.attributes.crew_members)
         .filter(([key]) => key.startsWith('followerslot'))
         .map(([, value]) => profile.items[value as string]?.templateId)
@@ -164,15 +160,15 @@
 
       if (isSelectedLoadout) heroLoadoutPage = itemData.attributes.loadout_index + 1;
 
-      loadoutData = [...(loadoutData || []), {
+      loadoutData.push({
         guid: itemGuid,
         selected: isSelectedLoadout,
         index: itemData.attributes.loadout_index,
-        commander: {
+        commander: heroes[heroId] ? {
           name: heroes[heroId].name,
           icon: `/assets/heroes/${heroId}.png`,
           rarity: Object.values(RarityTypes).find((rarity) => selectedCommander.templateId.toLowerCase().includes(`_${rarity}_`))!
-        },
+        } : undefined,
         teamPerk: teamPerkId && teamPerks[teamPerkId] ? {
           name: teamPerks[teamPerkId].name,
           icon: `/assets/perks/${teamPerks[teamPerkId].icon}`
@@ -187,19 +183,21 @@
             rarity
           };
         }),
-        gadgets: itemData.attributes.gadgets?.map((data: any) => {
-          const id = data.gadget.split('_').at(-1);
-          console.log(id, data.gadget);
+        gadgets: itemData.attributes.gadgets
+          ?.sort((a: any, b: any) => a.slot_index - b.slot_index)
+          .filter((gadget: any) => gadgets[gadget.gadget.split('_').at(-1)])
+          .map((data: any) => {
+            const id = data.gadget.split('_').at(-1);
 
-          return {
-            name: gadgets[id].name,
-            icon: `/assets/gadgets/${gadgets[id].icon}`
-          };
-        })
-      }];
+            return {
+              name: gadgets[id].name,
+              icon: `/assets/gadgets/${gadgets[id].icon}`
+            };
+          })
+      });
     }
 
-    loadoutData = loadoutData?.sort((a, b) => a.index - b.index);
+    loadoutData = loadoutData.sort((a, b) => a.index - b.index);
   }
 
   async function getMatchmakingData(accountId: string) {
@@ -245,6 +243,15 @@
     const boostAmount = Math.round(boostedXp / 864191);
     return { boostedXp, boostAmount };
   }
+
+  function resetData() {
+    lookupData = undefined;
+    stwData = undefined;
+    missionPlayers = undefined;
+    mission = undefined;
+    loadoutData = undefined;
+    heroLoadoutPage = 1;
+  }
 </script>
 
 <div class="flex flex-col items-center justify-center min-h-full space-y-4">
@@ -277,10 +284,7 @@
     {@const kv = [
       { name: 'ID', value: lookupData.id },
       { name: 'Name', value: lookupData.displayName, href: `https://fortnitedb.com/profile/${lookupData.id}` },
-      {
-        name: 'Commander level',
-        value: stwData && `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}`
-      },
+      { name: 'Commander level', value: stwData && `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}` },
       {
         name: 'Boosted XP',
         value: stwData && `${stwData.xpBoosts.boostedXp.toLocaleString()} ${stwData.xpBoosts.boostAmount ? `(${stwData.xpBoosts.boostAmount} boost${stwData?.xpBoosts.boostAmount === 1 ? '' : 's'})` : ''}`
@@ -299,11 +303,7 @@
             {#if value != null}
               <div class="flex items-center gap-1">
                 {#if href}
-                  <a
-                    class="flex items-center gap-1"
-                    href={href}
-                    target="_blank"
-                  >
+                  <a class="flex items-center gap-1" href={href} target="_blank">
                     <span class="text-muted-foreground">{name}:</span>
                     <span>{value}</span>
                     <ExternalLinkIcon class="size-4 text-muted-foreground"/>
@@ -324,11 +324,7 @@
         title="View on FortniteDB"
         variant="ghost"
       >
-        <img
-          class="size-12"
-          alt="FortniteDB"
-          src="/assets/logos/fortnitedb.png"
-        />
+        <img class="size-12" alt="FortniteDB" src="/assets/logos/fortnitedb.png"/>
       </Button>
 
       {#if missionPlayers?.length || mission || loadoutData}
@@ -376,69 +372,67 @@
           </div>
         {/if}
 
-        {#if loadoutData?.length}
+        {#if selectedHeroLoadout && loadoutData?.length}
           {#if missionPlayers?.length || mission}
             <Separator.Root class="bg-border h-px"/>
           {/if}
 
           <div class="flex flex-col items-center gap-4">
-            {#each loadoutData as loadout (loadout.guid)}
-              {#if heroLoadoutPage === loadout.index + 1}
-                <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 place-items-center not-md:gap-4">
-                  {#if loadout.commander}
-                    <div class="flex flex-col items-center gap-y-1">
-                      <span class="text-lg font-semibold">Commander</span>
-                      <img
-                        style="background-color: {RarityColors[loadout.commander.rarity]}"
-                        class="size-12 rounded-sm"
-                        alt={loadout.commander.name}
-                        src={loadout.commander.icon}
-                        title={loadout.commander.name}
-                      />
-                    </div>
-                  {/if}
+            {#if selectedHeroLoadout}
+              <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 place-items-center not-md:gap-4">
+                {#if selectedHeroLoadout.commander}
+                  <div class="flex flex-col items-center gap-y-1">
+                    <span class="text-lg font-semibold">Commander</span>
+                    <img
+                      style="background-color: {RarityColors[selectedHeroLoadout.commander.rarity]}"
+                      class="size-12 rounded-sm"
+                      alt={selectedHeroLoadout.commander.name}
+                      src={selectedHeroLoadout.commander.icon}
+                      title={selectedHeroLoadout.commander.name}
+                    />
+                  </div>
+                {/if}
 
-                  {#if loadout.teamPerk}
-                    <div class="flex flex-col items-center gap-y-1">
-                      <span class="text-lg font-semibold">Team Perk</span>
-                      <img
-                        class="size-12 rounded-sm"
-                        alt={loadout.teamPerk.name}
-                        src={loadout.teamPerk.icon}
-                        title={loadout.teamPerk.name}
-                      />
-                    </div>
-                  {/if}
+                {#if selectedHeroLoadout.teamPerk}
+                  <div class="flex flex-col items-center gap-y-1">
+                    <span class="text-lg font-semibold">Team Perk</span>
+                    <img
+                      class="size-12 rounded-sm"
+                      alt={selectedHeroLoadout.teamPerk.name}
+                      src={selectedHeroLoadout.teamPerk.icon}
+                      title={selectedHeroLoadout.teamPerk.name}
+                    />
+                  </div>
+                {/if}
 
-                  {#if loadout.supportTeam?.length}
-                    <div class="flex flex-col items-center gap-y-1">
-                      <span class="text-lg font-semibold md:hidden">Support Team</span>
-                      <div class="grid grid-cols-3 gap-2">
-                        {#each loadout.supportTeam as support (support.name)}
-                          <div class="flex justify-center items-center size-10" title={support.name}>
-                            <img
-                              style="background-color: {RarityColors[support.rarity]}"
-                              class="rounded-md"
-                              alt={support.name}
-                              src={support.icon}
-                            />
-                          </div>
-                        {/each}
-                      </div>
-                    </div>
-                  {/if}
-
-                  {#if loadout.gadgets?.length}
-                    <div class="flex flex-col items-center gap-y-1">
-                      <span class="text-lg font-semibold md:hidden">Gadgets</span>
-                      {#each loadout.gadgets as gadget (gadget.name)}
-                        <img class="size-10" alt={gadget.name} src={gadget.icon} title={gadget.name}/>
+                {#if selectedHeroLoadout.supportTeam?.length}
+                  <div class="flex flex-col items-center gap-y-1">
+                    <span class="text-lg font-semibold md:hidden">Support Team</span>
+                    <div class="grid grid-cols-3 gap-2">
+                      {#each selectedHeroLoadout.supportTeam as support (support.name)}
+                        <div class="flex justify-center items-center size-10" title={support.name}>
+                          <img
+                            style="background-color: {RarityColors[support.rarity]}"
+                            class="rounded-md"
+                            alt={support.name}
+                            src={support.icon}
+                          />
+                        </div>
                       {/each}
                     </div>
-                  {/if}
-                </div>
-              {/if}
-            {/each}
+                  </div>
+                {/if}
+
+                {#if selectedHeroLoadout.gadgets?.length}
+                  <div class="flex flex-col items-center gap-y-1">
+                    <span class="text-lg font-semibold md:hidden">Gadgets</span>
+                    {#each selectedHeroLoadout.gadgets as gadget (gadget.name)}
+                      <img class="size-10" alt={gadget.name} src={gadget.icon} title={gadget.name}/>
+                    {/each}
+                  </div>
+                {/if}
+              </div>
+            {/if}
 
             <Pagination count={loadoutData.length} perPage={1} bind:page={heroLoadoutPage}/>
           </div>

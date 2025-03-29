@@ -47,7 +47,7 @@ export default class LookupManager {
     const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
 
     return publicAccountService.get<EpicAccountByName>(
-      `displayName/${displayName}`,
+      `displayName/${displayName.trim()}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`
