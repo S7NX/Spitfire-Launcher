@@ -23,7 +23,7 @@
   const colors: Record<string, string> = { ...ItemColors.rarities, ...ItemColors.series };
 
   const seriesId = item.series?.id?.toLowerCase() || '';
-  const rarityId = item.rarity.id.toLowerCase();
+  const rarityId = item.rarity?.id?.toLowerCase();
 
   const backgroundColorHex = colors[seriesId] || colors[rarityId] || colors.common;
 
@@ -84,7 +84,6 @@
           {#if isItemOwned}
             Owned
           {:else}
-            <!-- eslint-disable-next-line svelte/require-store-reactive-access - Internal ESLint issue -->
             {#if $discountedPrice !== item.price.final}
               {$discountedPrice.toLocaleString()}
               <span class="line-through text-white/95">{item.price.final.toLocaleString()}</span>

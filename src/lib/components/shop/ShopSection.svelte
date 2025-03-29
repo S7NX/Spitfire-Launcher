@@ -11,7 +11,7 @@
 
   section.items.sort((a, b) => b.sortPriority - a.sortPriority);
 
-  const isJamTracksSection = section.name.toLowerCase() === 'jam tracks' || section.id.toLowerCase().includes('jamtracks');
+  const isJamTracksSection = section.name?.toLowerCase() === 'jam tracks' || section.id?.toLowerCase().includes('jamtracks');
   const MAX_ITEMS_PER_SECTION = isJamTracksSection ? 18 : Infinity;
 
   let shownItemCount = $state(MAX_ITEMS_PER_SECTION);
