@@ -14,6 +14,7 @@
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
+  import { launcherAppClient2 } from '$lib/constants/clients';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
   import { toast } from 'svelte-sonner';
@@ -45,8 +46,11 @@
       if (!eulaStatuses.includes(status)) eulaStatuses = [...eulaStatuses, status];
 
       try {
+        // TODO:  Fastest way I could find. Might change later
         const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
-        await Authentication.verifyAccessToken(accessToken);
+        const exchangeData = await Authentication.getExchangeCodeUsingAccessToken(accessToken);
+        const launcherAccessTokenData = await Authentication.getAccessTokenUsingExchangeCode(exchangeData.code, launcherAppClient2);
+        await Authentication.getExchangeCodeUsingAccessToken(launcherAccessTokenData.access_token);
       } catch (error) {
         if (!(error instanceof EpicAPIError)) return;
 
