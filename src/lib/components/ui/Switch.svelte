@@ -6,11 +6,13 @@
 
   let {
     children,
+    checked = $bindable(false),
     ...restProps
   }: Props = $props();
 </script>
 
 <Switch.Root
+  bind:checked
   {...restProps}
   class={cn(
     'peer inline-flex items-center h-6 w-12 shrink-0 cursor-pointer rounded-full transition-colors',
