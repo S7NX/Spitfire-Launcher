@@ -5,8 +5,8 @@ export const appSettingsSchema = z.object({
   gamePath: z.string(),
   missionCheckInterval: z.number().positive(),
   claimRewardsDelay: z.number().positive(),
-  startingPage: z.enum(['AUTO_KICK', 'BR_ITEM_SHOP', 'STW_WORLD_INFO', 'DAILY_QUESTS']),
-  startingAccount: z.enum(['FIRST_IN_LIST', 'LAST_USED']),
+  startingPage: z.enum(['autoKick', 'itemShop', 'stwWorldInfo', 'dailyQuests']),
+  startingAccount: z.enum(['firstInTheList', 'lastUsed']),
   hideToTray: z.boolean(),
   checkForUpdates: z.boolean()
 }).partial();

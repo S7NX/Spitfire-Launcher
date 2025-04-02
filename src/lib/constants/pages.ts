@@ -1,6 +1,6 @@
 export const Pages = Object.freeze({
-  AUTO_KICK: '/br-stw/auto-kick',
-  BR_ITEM_SHOP: '/br-stw/item-shop',
-  STW_WORLD_INFO: '/br-stw/stw-world-info',
-  DAILY_QUESTS: '/br-stw/daily-quests'
+  autoKick: '/br-stw/auto-kick',
+  itemShop: '/br-stw/item-shop',
+  stwWorldInfo: '/br-stw/stw-world-info',
+  dailyQuests: '/br-stw/daily-quests'
 } as const);

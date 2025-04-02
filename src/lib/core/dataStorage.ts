@@ -20,8 +20,8 @@ export const SETTINGS_INITIAL_DATA: AllSettings = {
   app: {
     claimRewardsDelay: 1.5,
     missionCheckInterval: 5,
-    startingPage: 'STW_WORLD_INFO',
-    startingAccount: 'FIRST_IN_LIST',
+    startingPage: 'stwWorldInfo',
+    startingAccount: 'firstInTheList',
     hideToTray: false,
     checkForUpdates: true
   },

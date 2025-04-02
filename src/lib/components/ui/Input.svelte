@@ -33,6 +33,7 @@
 <input
   {...restProps}
   class={cn(inputVariants({ variant }), className)}
+  autocomplete="off"
   spellcheck="false"
   bind:value
 />

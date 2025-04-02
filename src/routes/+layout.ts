@@ -13,7 +13,7 @@ export async function load() {
 
   const startingAccount = settings.app?.startingAccount;
 
-  let accountId: string | null | undefined = startingAccount === 'LAST_USED'
+  let accountId: string | null | undefined = startingAccount === 'lastUsed'
     ? accountsFile.activeAccountId
     : accountsFile.accounts[0]?.accountId;
 

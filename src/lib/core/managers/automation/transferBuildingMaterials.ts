@@ -3,15 +3,15 @@ import MCPManager from '$lib/core/managers/mcp';
 import type { ProfileItem } from '$types/game/mcp';
 
 type MCPStorageTransferItem = {
-  itemId: string
-  quantity: number
-  toStorage: boolean
-  newItemIdHint: ''
+  itemId: string;
+  quantity: number;
+  toStorage: boolean;
+  newItemIdHint: '';
 }
 
 type BuildingMaterialData = {
-  total: number
-  items: MCPStorageTransferItem[]
+  total: number;
+  items: MCPStorageTransferItem[];
 }
 
 const MAX_BUILDING_MATERIALS = 5000;

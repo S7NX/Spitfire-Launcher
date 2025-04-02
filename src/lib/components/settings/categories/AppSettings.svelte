@@ -3,7 +3,8 @@
   import SettingTextInputItem from '$components/settings/SettingTextInputItem.svelte';
   import ChangeNotifier from '$components/settings/ChangeNotifier.svelte';
   import SystemTray from '$lib/core/system/systemTray';
-  import { allSettingsSchema } from '$lib/validations/settings';
+  import { sidebarCategories } from '$components/Sidebar.svelte';
+  import { allSettingsSchema, appSettingsSchema } from '$lib/validations/settings';
   import { platform } from '@tauri-apps/plugin-os';
   import { onMount } from 'svelte';
   import { accountsStore } from '$lib/stores';
@@ -31,16 +32,14 @@
     value: T;
   };
 
-  const startingPageOptions: SelectOption<NonNullable<NonNullable<AllSettings['app']>['startingPage']>>[] = [
-    { label: 'Auto-Kick', value: 'AUTO_KICK' },
-    { label: 'BR Item Shop', value: 'BR_ITEM_SHOP' },
-    { label: 'STW World Info', value: 'STW_WORLD_INFO' },
-    { label: 'Daily Quests', value: 'DAILY_QUESTS' }
-  ];
+  const startingPageOptions = appSettingsSchema.shape.startingPage._def.innerType._def.values.map((value) => ({
+    label: sidebarCategories.map((category) => category.items).flat().find((item) => item.key === value)!.name,
+    value
+  }));
 
   const startingAccountOptions: SelectOption<NonNullable<NonNullable<AllSettings['app']>['startingAccount']>>[] = [
-    { label: 'First in the list', value: 'FIRST_IN_LIST' },
-    { label: 'Last used', value: 'LAST_USED' }
+    { label: 'First in the list', value: 'firstInTheList' },
+    { label: 'Last used', value: 'lastUsed' }
   ];
 
   onMount(async function () {
