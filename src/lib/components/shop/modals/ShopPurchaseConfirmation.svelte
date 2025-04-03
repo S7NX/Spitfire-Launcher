@@ -1,6 +1,5 @@
 <script lang="ts">
-  import AlertDialog from '$components/ui/alert-dialog/AlertDialog.svelte';
-  import AlertDialogButton from '$components/ui/alert-dialog/AlertDialogButton.svelte';
+  import { AlertDialog } from '$components/ui/AlertDialog';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import type { SpitfireShopItem } from '$types/game/shop';
   import { toast } from 'svelte-sonner';
@@ -84,7 +83,7 @@
   }
 </script>
 
-<AlertDialog title="Purchase Confirmation" bind:open>
+<AlertDialog.Root title="Purchase Confirmation" bind:open>
   {#snippet description()}
     <p class="flex items-center gap-1">
       Are you sure you want to purchase
@@ -95,17 +94,17 @@
   {/snippet}
 
   <div class="flex w-full items-center justify-center gap-2">
-    <AlertDialogButton buttonType="cancel">
+    <AlertDialog.Button buttonType="cancel">
       Cancel
-    </AlertDialogButton>
+    </AlertDialog.Button>
 
-    <AlertDialogButton buttonColor="epic" buttonType="action" disabled={isPurchasing} onclick={purchaseItem}>
+    <AlertDialog.Button buttonColor="epic" buttonType="action" disabled={isPurchasing} onclick={purchaseItem}>
       {#if isPurchasing}
         <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
         Purchasing
       {:else}
         Confirm
       {/if}
-    </AlertDialogButton>
+    </AlertDialog.Button>
   </div>
-</AlertDialog>
+</AlertDialog.Root>

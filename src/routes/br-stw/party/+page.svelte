@@ -8,12 +8,12 @@
 <script lang="ts">
   import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
-  import Dropdown from '$components/ui/Dropdown.svelte';
+  import { DropdownMenu } from '$components/ui/DropdownMenu';
   import Switch from '$components/ui/Switch.svelte';
   import Tabs from '$components/ui/Tabs.svelte';
   import { accountPartiesStore, accountsStore } from '$lib/stores';
-  import { cn, nonNull } from '$lib/utils';
-  import { DropdownMenu, Label, Separator } from 'bits-ui';
+  import { nonNull } from '$lib/utils';
+  import { Label, Separator } from 'bits-ui';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import LogOutIcon from 'lucide-svelte/icons/log-out';
   import UserXIcon from 'lucide-svelte/icons/user-x';
@@ -349,7 +349,7 @@
             <div class="flex flex-col gap-3 p-4 border rounded-md w-60 relative">
               {#if canLeave || canKick || canBePromoted}
                 <div class="absolute top-3 right-3">
-                  <Dropdown contentProps={{ class: 'w-48' }}>
+                  <DropdownMenu.Root contentProps={{ class: 'w-48' }}>
                     {#snippet trigger()}
                       <EllipsisIcon class="size-6"/>
                     {/snippet}
@@ -358,10 +358,6 @@
 
                     {#if canLeave || canKick}
                       <DropdownMenu.Item
-                        class={cn(
-                          'flex items-center gap-2 w-full text-left px-4 py-2 text-sm truncate rounded-md disabled:opacity-50 disabled:cursor-not-allowed',
-                          'hover:bg-accent hover:cursor-pointer transition-colors'
-                        )}
                         disabled={isLeaving || kickingMemberIds.has(member.accountId)}
                         onclick={() => canKick
                           ? kickMember(currentAccountParty?.id || '', member.accountId)
@@ -390,10 +386,6 @@
 
                     {#if canBePromoted}
                       <DropdownMenu.Item
-                        class={cn(
-                          'flex items-center gap-2 w-full text-left px-4 py-2 text-sm truncate rounded-md disabled:opacity-50 disabled:cursor-not-allowed',
-                          'hover:bg-accent hover:cursor-pointer transition-colors'
-                        )}
                         disabled={!!promotingMemberId}
                         onclick={() => promote(member.accountId)}
                       >
@@ -406,7 +398,7 @@
                         {/if}
                       </DropdownMenu.Item>
                     {/if}
-                  </Dropdown>
+                  </DropdownMenu.Root>
                 </div>
               {/if}
 

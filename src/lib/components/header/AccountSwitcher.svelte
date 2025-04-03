@@ -5,11 +5,9 @@
   import LogOutIcon from 'lucide-svelte/icons/log-out';
   import CheckIcon from 'lucide-svelte/icons/check';
   import Button from '$components/ui/Button.svelte';
-  import Dropdown from '$components/ui/Dropdown.svelte';
-  import { DropdownMenu } from 'bits-ui';
+  import { DropdownMenu } from '$components/ui/DropdownMenu';
   import Account from '$lib/core/account';
   import type { AccountData } from '$types/accounts';
-  import { cn } from '$lib/utils';
   import { accountsStore } from '$lib/stores';
   import { toast } from 'svelte-sonner';
   import LoginModal from '$components/auth/login/LoginModal.svelte';
@@ -76,7 +74,7 @@
 </script>
 
 <div class="relative">
-  <Dropdown bind:open={dropdownOpen}>
+  <DropdownMenu.Root bind:open={dropdownOpen}>
     {#snippet trigger()}
       <Button
         class="border-input gap-2 h-10 border max-w-36 xs:max-w-40 truncate flex justify-center items-center"
@@ -103,16 +101,9 @@
       {#if filteredAccounts.length > 0}
         <div class="py-2 max-h-64 overflow-y-auto">
           {#each filteredAccounts as account (account.accountId)}
-            <DropdownMenu.Item
-              class={cn(
-                'w-full text-left px-4 py-2 text-sm truncate rounded-md',
-                'hover:bg-accent hover:cursor-pointer transition-colors',
-                'flex items-center'
-              )}
-              onclick={() => changeAccounts(account)}
-            >
+            <DropdownMenu.Item onclick={() => changeAccounts(account)}>
               {#if activeAccount?.accountId === account.accountId}
-                <CheckIcon class="size-5 mr-2"/>
+                <CheckIcon class="size-5"/>
               {/if}
 
               <span class="truncate">{account.displayName}</span>
@@ -122,34 +113,23 @@
       {/if}
 
       <div class={['space-y-1', { 'pt-2': allAccounts.length }, { 'border-t border-border': filteredAccounts.length }]}>
-        <DropdownMenu.Item
-          class={cn(
-            'w-full text-left px-3 py-2 text-sm rounded-md cursor-pointer',
-            'hover:bg-accent transition-colors',
-            'flex items-center'
-          )}
-          onclick={addNewAccount}
-        >
-          <PlusIcon class="size-4 mr-2"/>
+        <DropdownMenu.Item onclick={addNewAccount}>
+          <PlusIcon class="size-4"/>
           Add New Account
         </DropdownMenu.Item>
 
         {#if activeAccount}
           <DropdownMenu.Item
-            class={cn(
-              'w-full text-left px-3 py-2 text-sm rounded-md cursor-pointer',
-              'hover:bg-destructive hover:text-destructive-foreground transition-colors',
-              'flex items-center'
-            )}
+            class="hover:bg-destructive hover:text-destructive-foreground"
             onclick={logout}
           >
-            <LogOutIcon class="size-4 mr-2"/>
+            <LogOutIcon class="size-4"/>
             Logout
           </DropdownMenu.Item>
         {/if}
       </div>
     </div>
-  </Dropdown>
+  </DropdownMenu.Root>
 </div>
 
 <LoginModal bind:open={showLoginModal}/>
