@@ -20,7 +20,7 @@
       "identifier": "fs:allow-app-read-recursive",
       "allow": [
         {
-          "path": "C:/ProgramData/Epic/EpicGamesLauncher/Data/Manifests/**"
+          "path": "C:/ProgramData/Epic/EpicGamesLauncher/Data/Manifests/*"
         },
         {
           "path": "C:/ProgramData/Epic/EpicGamesLauncher/Data/Manifests"
@@ -31,7 +31,10 @@
       "identifier": "fs:allow-app-write-recursive",
       "allow": [
         {
-          "path": "$DATA/**"
+          "path": "$DATA/spitfire-launcher/**"
+        },
+        {
+          "path": "$DATA/spitfire-launcher"
         }
       ]
     },
@@ -50,7 +53,7 @@
           "url": "https://*.epicgames.com"
         },
         {
-          "url": "https://*.rookie-spitfire.xyz"
+          "url": "https://api.rookie-spitfire.xyz"
         }
       ]
     },
