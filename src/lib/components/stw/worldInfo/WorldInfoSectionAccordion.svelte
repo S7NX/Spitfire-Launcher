@@ -61,13 +61,13 @@
         {#if mission.zone.iconUrl}
           <img
             class="size-5"
-            alt="Zone icon"
+            alt="World icon"
             src={mission.zone.iconUrl}
           />
         {:else}
           <span
             style="border-color: {mission.zone.color}; color: {mission.zone.color};"
-            class="border border-opacity-40 flex shrink-0 font-bold items-center justify-center relative rounded size-5 text-xs uppercase"
+            class="border flex shrink-0 font-bold items-center justify-center relative rounded size-5 text-xs uppercase"
           >
             {mission.zone.letter}
           </span>

@@ -147,10 +147,7 @@ export default class WorldInfoManager {
               return acc;
             }, [])
             .map((item) => {
-              const parsedResource = WorldInfoManager.parseResource({
-                key: item.itemType,
-                quantity: item.quantity
-              });
+              const parsedResource = WorldInfoManager.parseResource(item.itemType, item.quantity);
 
               filters.push(item.itemType);
 
@@ -180,10 +177,7 @@ export default class WorldInfoManager {
               return acc;
             }, [])
             .map((item) => {
-              const parsedResource = WorldInfoManager.parseResource({
-                key: item.itemType,
-                quantity: item.quantity
-              });
+              const parsedResource = WorldInfoManager.parseResource(item.itemType, item.quantity);
 
               let isHard = false;
 
@@ -220,8 +214,8 @@ export default class WorldInfoManager {
               letter: zoneLetter,
               theme: worldInfoData.theaters.find(x => x.uniqueId === theaterId)!.tiles[mission.tileIndex].zoneTheme,
               type: {
-                id: zoneInfo?.type as keyof typeof ZoneCategories | undefined,
-                imageUrl: zoneInfo?.imageUrl
+                id: zoneInfo.type as keyof typeof ZoneCategories | undefined,
+                imageUrl: zoneInfo.imageUrl
               }
             },
             powerLevel,
@@ -274,24 +268,22 @@ export default class WorldInfoManager {
     return data;
   }
 
-  private static parseZone(missionGenerator: string): { imageUrl: string; type: keyof typeof ZoneCategories | null; } | undefined {
+  private static parseZone(missionGenerator: string) {
     const current = Object.entries(ZoneCategories).find(([, patterns]) =>
       patterns.some((pattern) => missionGenerator.includes(pattern))
     );
 
-    if (current) {
-      const [key] = current;
-      const isGroup = missionGenerator.toLowerCase().includes('group');
+    const key = current?.[0];
+    const isGroup = missionGenerator.toLowerCase().includes('group');
 
-      return {
-        imageUrl:
-          isGroup &&
-          ZoneGroups.includes(key as keyof typeof ZoneCategories)
-            ? `/assets/world/${key}-group.png`
-            : `/assets/world/${key}.png`,
-        type: key as keyof typeof ZoneCategories | null
-      };
-    }
+    return {
+      imageUrl: ZoneGroups.includes(key as keyof typeof ZoneCategories)
+        ? isGroup
+          ? `/assets/world/${key}-group.png`
+          : `/assets/world/${key}.png`
+        : '/assets/world/quest.png',
+      type: key as keyof typeof ZoneCategories | null
+    };
   }
 
   private static isEvolutionMaterial(key: string) {
@@ -303,7 +295,7 @@ export default class WorldInfoManager {
     );
   }
 
-  private static parseResource({ key, quantity }: { key: string, quantity: number }) {
+  private static parseResource(key: string, quantity: number) {
     const newKey = key
       .replace(/_((very)?low|medium|(very)?high|extreme)$/gi, '')
       .replace('AccountResource:', '')
@@ -430,14 +422,10 @@ export default class WorldInfoManager {
   private static parseRarity(value: string) {
     const type = value.split(':')[0];
     const id = value.includes(':') ? value.split(':')[1] : value;
-    const data: {
-      type: string;
-      name: string;
-      rarity: RarityType;
-    } = {
+    const data = {
       type,
       name: RarityNames[RarityTypes.Common],
-      rarity: RarityTypes.Common
+      rarity: RarityTypes.Common as RarityType
     };
 
     const rarityTypeValues = [
