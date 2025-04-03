@@ -106,47 +106,25 @@
     return 'UP';
   }
 
-  function getStatusColor(status: ServiceStatus['status'] | StatusPageStatus['status']) {
+  function getStatusData(status: ServiceStatus['status'] | StatusPageStatus['status']) {
     switch (status) {
       case 'UP':
       case 'operational':
-        return 'green';
+        return { text: 'Operational', color: 'green' } as const;
       case 'DOWN':
       case 'MAJOR_OUTAGE':
       case 'major_outage':
-        return 'red';
+        return { text: 'Down', color: 'red' } as const;
       case 'PARTIAL_OUTAGE':
       case 'partial_outage':
-        return 'orange';
+        return { text: 'Partial Outage', color: 'orange' } as const;
       case 'UNDER_MAINTENANCE':
       case 'under_maintenance':
-        return 'blue';
+        return { text: 'Maintenance', color: 'blue' } as const;
       case 'degraded_performance':
-        return 'yellow';
+        return { text: 'Degraded Performance', color: 'yellow' } as const;
       default:
-        return 'gray';
-    }
-  }
-
-  function getStatusText(status: ServiceStatus['status'] | StatusPageStatus['status']) {
-    switch (status) {
-      case 'UP':
-      case 'operational':
-        return 'Operational';
-      case 'DOWN':
-      case 'major_outage':
-      case 'MAJOR_OUTAGE':
-        return 'Down';
-      case 'PARTIAL_OUTAGE':
-      case 'partial_outage':
-        return 'Partial Outage';
-      case 'UNDER_MAINTENANCE':
-      case 'under_maintenance':
-        return 'Maintenance';
-      case 'degraded_performance':
-        return 'Degraded Performance';
-      default:
-        return 'Unknown';
+        return { text: 'Unknown', color: 'gray' } as const;
     }
   }
 
@@ -171,10 +149,11 @@
       >
         {#if isLoading}
           <LoaderCircleIcon class="size-4 animate-spin"/>
+          Refreshing
         {:else}
           <RefreshCwIcon class="size-4"/>
+          Refresh
         {/if}
-        Refresh
       </Button>
     </div>
 
@@ -185,11 +164,10 @@
         </Tooltip>
 
         <Switch
-          checked={notifyUser}
-          onCheckedChange={((checked) => {
-            notifyUser = checked;
+          onCheckedChange={() => {
             NotificationManager.requestPermission();
-          })}
+          }}
+          bind:checked={notifyUser}
         />
       </div>
     {/if}
@@ -197,9 +175,9 @@
 
   {#if serviceStatus}
     <StatusCard
-      color={getStatusColor(serviceStatus.status)}
+      color={getStatusData(serviceStatus.status).color}
       message={serviceStatus.message}
-      title="Status: {getStatusText(serviceStatus.status)}"
+      title="Status: {getStatusData(serviceStatus.status).text}"
     />
   {:else}
     <div class="border rounded-lg p-3 mb-2 bg-muted/50 skeleton-loader">
@@ -246,11 +224,11 @@
             <div class="bg-muted/30 p-4 rounded-lg">
               <div class="flex justify-between items-center">
                 <div class="flex items-center gap-3 truncate">
-                  <div class="size-3 rounded-full bg-{getStatusColor(service.status)}-500"></div>
+                  <div class="size-3 rounded-full bg-{getStatusData(service.status).color}-500"></div>
                   <span class="font-medium truncate">{service.name}</span>
                 </div>
                 <div class="text-sm">
-                  {getStatusText(service.status)}
+                  {getStatusData(service.status).text}
                 </div>
               </div>
             </div>

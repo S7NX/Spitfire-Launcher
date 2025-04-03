@@ -1,7 +1,7 @@
 import type { AccountData } from '$types/accounts';
 import MatchmakingManager from '$lib/core/managers/matchmaking';
 import { type PartyState, PartyStates } from '$lib/constants/events';
-import AutomationBase from '$lib/core/managers/automation/base';
+import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
 import PartyManager from '$lib/core/managers/party';
 import RewardClaimer from '$lib/core/managers/automation/rewardClaimer';
 import transferBuildingMaterials from '$lib/core/managers/automation/transferBuildingMaterials';
@@ -10,13 +10,14 @@ import { get } from 'svelte/store';
 import { accountsStore } from '$lib/stores';
 
 type MatchmakingState = {
-  partyState: PartyState | null
-  started: boolean
-}
+  partyState: PartyState | null;
+  started: boolean;
+};
 
-export default class AccountAutomation {
+export default class AutoKickManager {
   private missionCheckerIntervalInitTimeout: NodeJS.Timeout | null = null;
   private missionCheckerInterval: NodeJS.Timeout | null = null;
+
   public matchmakingState: MatchmakingState = {
     partyState: null,
     started: false
@@ -46,7 +47,7 @@ export default class AccountAutomation {
     this.missionCheckerInterval = setInterval(async () => {
       settings = await DataStorage.getSettingsFile();
 
-      const automationSettings = AutomationBase.getAccountById(this.account.accountId)?.settings;
+      const automationSettings = AutoKickBase.getAccountById(this.account.accountId)?.settings;
       const isAnySettingEnabled = Object.values(automationSettings || {}).some(x => x);
       if (!automationSettings || !isAnySettingEnabled) return;
 
@@ -93,8 +94,8 @@ export default class AccountAutomation {
     }, (settings.app?.missionCheckInterval || 5) * 1000);
   }
 
-  async checkOnStartup() {
-    const settings = AutomationBase.getAccountById(this.account.accountId)?.settings;
+  async checkMissionOnStartup() {
+    const settings = AutoKickBase.getAccountById(this.account.accountId)?.settings;
     const isAnySettingEnabled = Object.values(settings || {}).some(x => x);
     if (!settings || !isAnySettingEnabled) return;
 
@@ -137,7 +138,7 @@ export default class AccountAutomation {
     const partyLeaderId = party.members.find(x => x.role === 'CAPTAIN')!.account_id;
     const partyLeaderAccount = allAccounts.find(x => x.accountId === partyLeaderId);
 
-    const membersWithAutoKick = partyMemberIds.filter((id) => AutomationBase.getAccountById(id)?.settings.autoKick);
+    const membersWithAutoKick = partyMemberIds.filter((id) => AutoKickBase.getAccountById(id)?.settings.autoKick);
     const membersWithNoAutoKick = partyMemberIds.filter((id) => !membersWithAutoKick.includes(id));
 
     if (partyLeaderAccount) {
@@ -147,7 +148,7 @@ export default class AccountAutomation {
         await PartyManager.kick(partyLeaderAccount, party.id, id)
       ));
 
-      await PartyManager.kick(this.account, party.id, this.account.accountId);
+      await PartyManager.leave(this.account, party.id);
     } else {
       const accountsWithNoAutoKick = membersWithNoAutoKick
         .map((id) => allAccounts.find(x => x.accountId === id))
@@ -156,7 +157,7 @@ export default class AccountAutomation {
       accountsWithNoAutoKick.push(this.account);
 
       await Promise.allSettled(accountsWithNoAutoKick.map(async (account) => {
-        await PartyManager.kick(account, party.id, account.accountId);
+        await PartyManager.leave(account, party.id);
       }));
     }
   }

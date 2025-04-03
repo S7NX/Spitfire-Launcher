@@ -1,6 +1,12 @@
+import Authentication from '$lib/core/authentication';
+import PartyManager from '$lib/core/managers/party';
+import { accountPartiesStore, accountsStore } from '$lib/stores';
+import type { AccountData } from '$types/accounts';
+import type { PartyMember } from '$types/game/party';
 import * as XMPP from 'stanza';
 import { EventNotifications, ServiceEvents } from '$lib/constants/events';
 import type {
+  ServiceEventFriendRequest,
   ServiceEventInteractionNotification,
   ServiceEventMemberConnected,
   ServiceEventMemberDisconnected,
@@ -8,9 +14,12 @@ import type {
   ServiceEventMemberJoined,
   ServiceEventMemberKicked,
   ServiceEventMemberLeft,
+  ServiceEventMemberNewCaptain,
   ServiceEventMemberStateUpdated,
+  ServiceEventPartyPing,
   ServiceEventPartyUpdated
 } from '$types/game/events';
+import { get } from 'svelte/store';
 
 type EventMap = {
   [EventNotifications.MemberConnected]: ServiceEventMemberConnected;
@@ -20,7 +29,10 @@ type EventMap = {
   [EventNotifications.MemberKicked]: ServiceEventMemberKicked;
   [EventNotifications.MemberLeft]: ServiceEventMemberLeft;
   [EventNotifications.MemberStateUpdated]: ServiceEventMemberStateUpdated;
+  [EventNotifications.MemberNewCaptain]: ServiceEventMemberNewCaptain;
   [EventNotifications.PartyUpdated]: ServiceEventPartyUpdated;
+  [EventNotifications.PartyInvite]: ServiceEventPartyPing;
+  [EventNotifications.FriendRequest]: ServiceEventFriendRequest;
   [EventNotifications.InteractionNotification]: ServiceEventInteractionNotification;
 
   [ServiceEvents.SessionStarted]: void;
@@ -33,27 +45,42 @@ type AccountOptions = {
   accessToken: string;
 };
 
-const existingConnections: Record<string, XMPPManager> = {};
+type Purpose = 'autoKick' | 'taxiService' | 'customStatus';
 
 export default class XMPPManager {
-  private connection?: XMPP.Agent;
+  private static instances: Map<string, XMPPManager> = new Map();
+  public connection?: XMPP.Agent;
   private listeners: { [K in keyof EventMap]?: Array<(data: EventMap[K]) => void> } = {};
+  private purposes: Set<Purpose>;
+
   private reconnectInterval?: number;
   private intentionalDisconnect = false;
   private reconnectAttempts = 0;
   private maxReconnectAttempts = 50;
 
-  constructor(private account: AccountOptions) {}
+  private constructor(private account: AccountOptions, purpose: Purpose) {
+    this.purposes = new Set([purpose]);
+  }
+
+  static async create(account: AccountData, purpose: Purpose) {
+    const existingInstance = XMPPManager.instances.get(account.accountId);
+    if (existingInstance) {
+      existingInstance.purposes.add(purpose);
+      return existingInstance;
+    }
+
+    const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
+    const instance = new XMPPManager({ accountId: account.accountId, accessToken }, purpose);
+    XMPPManager.instances.set(account.accountId, instance);
+
+    return instance;
+  }
 
   async connect() {
+    if (this.connection?.jid) return;
+
     this.intentionalDisconnect = false;
     this.reconnectAttempts = 0;
-
-    const existingConnection = existingConnections[this.account.accountId];
-    if (existingConnection) {
-      this.connection = existingConnection.connection;
-      return;
-    }
 
     const server = 'prod.ol.epicgames.com';
 
@@ -89,7 +116,7 @@ export default class XMPPManager {
 
       this.connection!.once('session:started', () => {
         clearTimeout(timeout);
-        existingConnections[this.account.accountId] = this;
+        XMPPManager.instances.set(this.account.accountId, this);
         resolve();
       });
 
@@ -115,8 +142,18 @@ export default class XMPPManager {
     this.connection = undefined;
     this.listeners = {};
 
-    delete existingConnections[this.account.accountId];
+    XMPPManager.instances.delete(this.account.accountId);
     this.account = undefined!;
+  }
+
+  get accountId() {
+    return this.account?.accountId;
+  }
+
+  removePurpose(purpose: Purpose) {
+    this.purposes.delete(purpose);
+
+    if (!this.purposes.size) this.disconnect();
   }
 
   private tryReconnect() {
@@ -135,10 +172,6 @@ export default class XMPPManager {
         console.error(error);
         this.reconnectAttempts++;
       });
-  }
-
-  get accountId() {
-    return this.account?.accountId;
   }
 
   private setupEvents() {
@@ -167,7 +200,7 @@ export default class XMPPManager {
       }
     });
 
-    this.connection!.on('message', (message) => {
+    this.connection.on('message', async (message) => {
       if (
         (message.type && message.type !== 'normal')
         || !message.body
@@ -181,16 +214,165 @@ export default class XMPPManager {
         return;
       }
 
-      const type = body.type as never;
+      const { type } = body;
       if (!type) return;
 
-      const namespace = body.ns || body.namespace;
-      if (namespace?.toLowerCase() !== 'fortnite') return;
-
       const events = Object.values(EventNotifications);
-      if (events.includes(type)) {
-        this.dispatchEvent(body.type, body);
+      if (!events.includes(type)) return;
+
+      switch (body.type) {
+        case EventNotifications.MemberStateUpdated: {
+          const data = body as ServiceEventMemberStateUpdated;
+          const party = accountPartiesStore.get(data.account_id);
+          if (!party) break;
+
+          const partyMember = party.members.find((member) => member.account_id === data.account_id);
+          if (party.id !== data.party_id || !partyMember) {
+            const registeredAccount = get(accountsStore).allAccounts.find((account) => account.accountId === data.account_id);
+            if (!registeredAccount) {
+              accountPartiesStore.delete(data.account_id);
+              break;
+            }
+
+            const newParty = await PartyManager.get(registeredAccount).catch(() => null);
+            if (!newParty) accountPartiesStore.delete(data.account_id);
+
+            break;
+          }
+
+          party.revision = data.revision;
+          party.updated_at = data.updated_at;
+          partyMember.joined_at = data.joined_at;
+          partyMember.updated_at = data.updated_at;
+
+          if (data.member_state_removed) {
+            for (const state of data.member_state_removed) {
+              delete partyMember.meta[state];
+            }
+          }
+
+          if (data.member_state_updated) {
+            partyMember.meta = { ...partyMember.meta, ...data.member_state_updated };
+          }
+
+          if (data.member_state_overridden) {
+            partyMember.meta = { ...partyMember.meta, ...data.member_state_overridden };
+          }
+
+          accountPartiesStore.set(data.account_id, { ...party });
+
+          break;
+        }
+        case EventNotifications.PartyUpdated: {
+          const data = body as ServiceEventPartyUpdated;
+          const parties = accountPartiesStore.entries().filter(([, party]) => party.id === data.party_id).toArray();
+          if (!parties.length) break;
+
+          for (const [accountId, party] of parties) {
+            party.id = data.party_id;
+            party.revision = data.revision;
+            party.updated_at = data.updated_at;
+            party.config = {
+              ...party.config,
+              type: data.party_type,
+              intention_ttl: data.intention_ttl_seconds,
+              invite_ttl: data.invite_ttl_seconds,
+              max_size: data.max_number_of_members,
+              sub_type: data.party_sub_type,
+              joinability: data.party_privacy_type
+            };
+
+            party.members = party.members.map((member) => ({
+              ...member,
+              role: member.account_id === data.captain_id ? 'CAPTAIN' : 'MEMBER'
+            }));
+
+            if (data.party_state_removed) {
+              for (const state of data.party_state_removed) {
+                delete party.meta[state];
+              }
+            }
+
+            if (data.party_state_updated) {
+              party.meta = { ...party.meta, ...data.party_state_updated };
+            }
+
+            if (data.party_state_overridden) {
+              party.meta = { ...party.meta, ...data.party_state_overridden };
+            }
+
+            accountPartiesStore.set(accountId, { ...party });
+          }
+
+          break;
+        }
+        case EventNotifications.MemberExpired:
+        case EventNotifications.MemberLeft:
+        case EventNotifications.MemberKicked: {
+          const data = body as ServiceEventMemberLeft | ServiceEventMemberKicked | ServiceEventMemberExpired;
+
+          accountPartiesStore.delete(data.account_id);
+
+          const parties = accountPartiesStore.entries().filter(([, party]) => party.id === data.party_id).toArray();
+          for (const [accountId, party] of parties) {
+            party.members = party.members.filter(member => member.account_id !== data.account_id);
+            party.revision = data.revision || party.revision;
+
+            accountPartiesStore.set(accountId, { ...party });
+          }
+
+          break;
+        }
+        case EventNotifications.MemberJoined: {
+          const data = body as ServiceEventMemberJoined;
+
+          const parties = accountPartiesStore.entries().filter(([, party]) => party.id === data.party_id).toArray();
+
+          const newMember: PartyMember = {
+            account_id: data.account_id,
+            revision: data.revision,
+            connections: [data.connection],
+            meta: data.member_state_updated,
+            joined_at: data.joined_at,
+            updated_at: data.updated_at,
+            role: 'MEMBER'
+          };
+
+          for (const [accountId, party] of parties) {
+            party.members = [...party.members, newMember];
+            party.revision = data.revision;
+            party.updated_at = data.updated_at || party.updated_at;
+
+            accountPartiesStore.set(accountId, { ...party });
+          }
+
+          const joiningAccount = get(accountsStore).allAccounts?.find(account => account.accountId === data.account_id);
+          if (joiningAccount) {
+            const partyData = await PartyManager.get(joiningAccount).catch(() => null);
+            if (!partyData) accountPartiesStore.delete(data.account_id);
+          }
+
+          break;
+        }
+        case EventNotifications.MemberNewCaptain: {
+          const data = body as ServiceEventMemberNewCaptain;
+
+          const parties = accountPartiesStore.entries().filter(([, party]) => party.id === data.party_id).toArray();
+          for (const [accountId, party] of parties) {
+            party.members = party.members.map((member) => ({
+              ...member,
+              role: member.account_id === data.account_id ? 'CAPTAIN' : 'MEMBER'
+            }));
+
+            party.revision = data.revision || party.revision;
+            accountPartiesStore.set(accountId, { ...party });
+          }
+
+          break;
+        }
       }
+
+      this.dispatchEvent(type, body);
     });
   }
 
@@ -207,12 +389,20 @@ export default class XMPPManager {
     });
   }
 
-  addEventListener<T extends keyof EventMap>(eventName: T, listener: (data: EventMap[T]) => void) {
+  addEventListener<T extends keyof EventMap>(
+    eventName: T,
+    listener: (data: EventMap[T]) => void,
+    options?: { signal?: AbortSignal }
+  ) {
     if (!this.listeners[eventName]) {
       this.listeners[eventName] = [];
     }
 
-    this.listeners[eventName]!.push(listener);
+    this.listeners[eventName].push(listener);
+
+    options?.signal?.addEventListener('abort', () => {
+      this.removeEventListener(eventName, listener);
+    });
   }
 
   removeEventListener<T extends keyof EventMap>(eventName: T, listener: (data: EventMap[T]) => void) {
@@ -221,10 +411,6 @@ export default class XMPPManager {
     if (index > -1) {
       listeners!.splice(index, 1);
     }
-  }
-
-  hasEventListener<T extends keyof EventMap>(eventName: T, listener: (data: EventMap[T]) => void) {
-    return this.listeners[eventName]?.includes(listener) || false;
   }
 
   dispatchEvent<T extends keyof EventMap>(eventName: T, data: EventMap[T]) {

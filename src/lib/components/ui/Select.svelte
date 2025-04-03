@@ -69,7 +69,7 @@
       <Select.Viewport>
         {#each items as item, i (i + item.value)}
           <Select.Item
-            class="flex items-center py-2 pl-3 rounded-md cursor-pointer data-highlighted:bg-muted data-disabled:opacity-50 data-disabled:cursor-default"
+            class="flex items-center py-2 pl-4 rounded-md cursor-pointer text-sm data-highlighted:bg-muted data-disabled:opacity-50 data-disabled:cursor-default"
             disabled={item.disabled || (reachedMaxSelections && value ? !value.includes(item.value) : false)}
             label={item.label}
             value={item.value}

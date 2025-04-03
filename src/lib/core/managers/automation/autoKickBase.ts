@@ -6,7 +6,7 @@ import type { AutomationSetting, AutomationSettings } from '$types/settings';
 import Authentication from '$lib/core/authentication';
 import XMPPManager from '$lib/core/managers/xmpp';
 import { EventNotifications, type PartyState, ServiceEvents } from '$lib/constants/events';
-import AccountAutomation from '$lib/core/managers/automation/accountAutomation';
+import AutoKickManager from '$lib/core/managers/automation/autoKickManager';
 import RewardClaimer from '$lib/core/managers/automation/rewardClaimer';
 import transferBuildingMaterials from '$lib/core/managers/automation/transferBuildingMaterials';
 
@@ -16,58 +16,70 @@ export type AutomationAccount = {
   settings: Partial<Omit<AutomationSetting, 'accountId'>>;
 }
 
-export default class AutomationBase {
-  private static automationAccounts: Map<string, AutomationAccount> = new Map();
+export default class AutoKickBase {
+  private static accounts: Map<string, AutomationAccount> = new Map();
   private static connections: Map<string, XMPPManager> = new Map();
-  private static accountAutomations: Map<string, AccountAutomation> = new Map();
+  private static autoKickManagers: Map<string, AutoKickManager> = new Map();
+  private static abortControllers: Map<string, AbortController> = new Map();
 
   static async loadAccounts() {
+    const accounts = await DataStorage.getAutomationFile();
+    if (!accounts?.length) return;
+
     doingBulkOperations.set(true);
 
-    const automationAccounts = await DataStorage.getAutomationFile();
     const { allAccounts } = get(accountsStore);
-
-    await Promise.allSettled(automationAccounts.map(async automationAccount => {
+    await Promise.allSettled(accounts.map(async automationAccount => {
       const account = allAccounts.find(a => a.accountId === automationAccount.accountId);
-      if (!account) return;
+      const isAnySettingEnabled = Object.entries(automationAccount)
+        .filter(([key]) => key !== 'accountId')
+        .some(([, value]) => value);
 
-      await AutomationBase.addAccount(account, automationAccount, false);
+      if (!account || !isAnySettingEnabled) {
+        AutoKickBase.removeAccount(automationAccount.accountId);
+        return;
+      }
+
+      await AutoKickBase.addAccount(account, automationAccount, false);
     }));
 
     doingBulkOperations.set(false);
   }
 
   static async addAccount(account: AccountData, settings: AutomationAccount['settings'] = {}, writeToFile = true) {
-    if (AutomationBase.automationAccounts.has(account.accountId)) return;
+    if (AutoKickBase.accounts.has(account.accountId)) return;
 
-    AutomationBase.automationAccounts.set(account.accountId, {
+    AutoKickBase.accounts.set(account.accountId, {
       status: 'LOADING',
       account,
       settings
     });
 
-    await AutomationBase.updateSettings(account.accountId, settings, writeToFile);
-    await AutomationBase.startAccount(account.accountId);
+    await AutoKickBase.updateSettings(account.accountId, settings, writeToFile);
+    await AutoKickBase.startAccount(account.accountId);
   }
 
   static removeAccount(accountId: string) {
-    AutomationBase.connections.get(accountId)?.disconnect();
-    AutomationBase.connections.delete(accountId);
+    AutoKickBase.autoKickManagers.get(accountId)?.dispose();
+    AutoKickBase.autoKickManagers.delete(accountId);
 
-    AutomationBase.accountAutomations.get(accountId)?.dispose();
-    AutomationBase.accountAutomations.delete(accountId);
+    AutoKickBase.abortControllers.get(accountId)?.abort();
+    AutoKickBase.abortControllers.delete(accountId);
+
+    AutoKickBase.connections.get(accountId)?.removePurpose('autoKick');
+    AutoKickBase.connections.delete(accountId);
 
     automationStore.update(s => s.filter(a => a.accountId !== accountId));
-    AutomationBase.automationAccounts.delete(accountId);
+    AutoKickBase.accounts.delete(accountId);
 
-    DataStorage.writeConfigFile<AutomationSettings>(AUTOMATION_FILE_PATH, Array.from(AutomationBase.automationAccounts.values()).map((x) => ({
+    DataStorage.writeConfigFile<AutomationSettings>(AUTOMATION_FILE_PATH, AutoKickBase.accounts.values().toArray().map((x) => ({
       accountId: x.account.accountId,
       ...x.settings
     }))).catch(() => null);
   }
 
   static async updateSettings(accountId: string, settings: Partial<AutomationSetting>, writeToFile = true) {
-    const account = AutomationBase.getAccountById(accountId);
+    const account = AutoKickBase.getAccountById(accountId);
     if (!account) return;
 
     account.settings = {
@@ -75,14 +87,14 @@ export default class AutomationBase {
       ...settings
     };
 
-    const newSettings = Array.from(AutomationBase.automationAccounts.values()).map((x) => ({
+    const newSettings = AutoKickBase.accounts.values().toArray().map((x) => ({
       accountId: x.account.accountId,
       ...x.settings
     }));
 
     automationStore.set(newSettings.map((x) => ({
       ...x,
-      status: AutomationBase.getAccountById(x.accountId)?.status ?? 'LOADING'
+      status: AutoKickBase.getAccountById(x.accountId)?.status ?? 'LOADING'
     })));
 
     if (writeToFile) await DataStorage.writeConfigFile<AutomationSettings>(AUTOMATION_FILE_PATH, newSettings);
@@ -92,81 +104,77 @@ export default class AutomationBase {
     doingBulkOperations.set(true);
 
     const account = get(accountsStore).allAccounts.find(a => a.accountId === accountId)!;
-    const automationAccount = AutomationBase.getAccountById(accountId);
+    const automationAccount = AutoKickBase.getAccountById(accountId);
     if (!automationAccount) return;
 
     try {
-      const accessToken = await Authentication.getAccessTokenUsingDeviceAuth(account, false).catch(() => null);
-      if (!accessToken) {
-        AutomationBase.updateStatus(accountId, 'INVALID_CREDENTIALS');
+      AutoKickBase.updateStatus(accountId, 'LOADING');
+
+      const connection = await XMPPManager.create(account, 'autoKick').catch(() => null);
+      if (!connection) {
+        AutoKickBase.updateStatus(accountId, 'INVALID_CREDENTIALS');
         return;
       }
 
-      AutomationBase.updateStatus(accountId, 'LOADING');
-
-      const existingConnection = AutomationBase.connections.get(accountId);
-      if (existingConnection) {
-        existingConnection.disconnect();
-        AutomationBase.connections.delete(accountId);
-      }
-
-      const connection = new XMPPManager({ accountId, accessToken: accessToken.access_token });
-      AutomationBase.addEventListeners(connection);
+      AutoKickBase.addEventListeners(connection);
 
       await connection.connect();
 
-      AutomationBase.connections.set(accountId, connection);
-      AutomationBase.updateStatus(accountId, 'ACTIVE');
+      AutoKickBase.connections.set(accountId, connection);
+      AutoKickBase.updateStatus(accountId, 'ACTIVE');
     } catch (error) {
-      AutomationBase.updateStatus(accountId, 'DISCONNECTED');
+      AutoKickBase.updateStatus(accountId, 'DISCONNECTED');
     }
 
     doingBulkOperations.set(false);
   }
 
   private static addEventListeners(connection: XMPPManager) {
-    const { account } = AutomationBase.getAccountById(connection.accountId!)!;
+    const { account } = AutoKickBase.getAccountById(connection.accountId!)!;
 
-    const oldProvider = AutomationBase.accountAutomations.get(account.accountId);
+    const abortController = new AbortController();
+    const { signal } = abortController;
+    AutoKickBase.abortControllers.set(account.accountId, abortController);
+
+    const oldProvider = AutoKickBase.autoKickManagers.get(account.accountId);
     if (oldProvider) {
       oldProvider.dispose();
-      AutomationBase.accountAutomations.delete(account.accountId);
+      AutoKickBase.autoKickManagers.delete(account.accountId);
     }
 
-    const accountAutomation = new AccountAutomation(account);
-    AutomationBase.accountAutomations.set(account.accountId, accountAutomation);
+    const autoKickManager = new AutoKickManager(account);
+    AutoKickBase.autoKickManagers.set(account.accountId, autoKickManager);
 
     let partyState: PartyState;
 
     connection.addEventListener(ServiceEvents.SessionStarted, async () => {
-      AutomationBase.updateStatus(account.accountId, 'ACTIVE');
-      await accountAutomation.checkOnStartup();
-    });
+      AutoKickBase.updateStatus(account.accountId, 'ACTIVE');
+      await autoKickManager.checkMissionOnStartup();
+    }, { signal });
 
     connection.addEventListener(ServiceEvents.Disconnected, async () => {
-      AutomationBase.updateStatus(account.accountId, 'DISCONNECTED');
-      accountAutomation.dispose();
-    });
+      AutoKickBase.updateStatus(account.accountId, 'DISCONNECTED');
+      autoKickManager.dispose();
+    }, { signal });
 
     connection.addEventListener(EventNotifications.MemberDisconnected, async (data) => {
       if (data.account_id !== account.accountId) return;
 
-      AutomationBase.updateStatus(account.accountId, 'DISCONNECTED');
-      accountAutomation.dispose();
-    });
+      AutoKickBase.updateStatus(account.accountId, 'DISCONNECTED');
+      autoKickManager.dispose();
+    }, { signal });
 
     connection.addEventListener(EventNotifications.MemberExpired, async (data) => {
       if (data.account_id !== account.accountId) return;
 
-      AutomationBase.updateStatus(account.accountId, 'DISCONNECTED');
-      accountAutomation.dispose();
-    });
+      autoKickManager.dispose();
+    }, { signal });
 
     connection.addEventListener(EventNotifications.MemberKicked, async (data) => {
       if (data.account_id !== account.accountId) return;
 
-      if (accountAutomation.matchmakingState.partyState === 'PostMatchmaking' && accountAutomation.matchmakingState.started) {
-        const automationAccount = AutomationBase.getAccountById(account.accountId);
+      if (autoKickManager.matchmakingState.partyState === 'PostMatchmaking' && autoKickManager.matchmakingState.started) {
+        const automationAccount = AutoKickBase.getAccountById(account.accountId);
 
         if (automationAccount?.settings.autoClaim) {
           await RewardClaimer.claimRewards(account);
@@ -176,33 +184,33 @@ export default class AutomationBase {
           await transferBuildingMaterials(account);
         }
       }
-    });
+    }, { signal });
 
     connection.addEventListener(EventNotifications.MemberJoined, async (data) => {
       if (data.account_id !== account.accountId) return;
 
-      AutomationBase.updateStatus(account.accountId, 'ACTIVE');
-      accountAutomation.initMissionCheckerIntervalTimeout(20000);
-    });
+      AutoKickBase.updateStatus(account.accountId, 'ACTIVE');
+      autoKickManager.initMissionCheckerIntervalTimeout(20000);
+    }, { signal });
 
     connection.addEventListener(EventNotifications.PartyUpdated, async (data) => {
-      const newPartyState = data.party_state_updated['Default:PartyState_s'] as PartyState | undefined;
+      const newPartyState = data.party_state_updated?.['Default:PartyState_s'] as PartyState | undefined;
       if (!newPartyState) return;
 
       partyState = newPartyState;
 
       if (partyState === 'PostMatchmaking') {
-        accountAutomation.initMissionCheckerIntervalTimeout();
+        autoKickManager.initMissionCheckerIntervalTimeout();
       }
-    });
+    }, { signal });
   }
 
   static getAccountById(accountId: string) {
-    return AutomationBase.automationAccounts.get(accountId);
+    return AutoKickBase.accounts.get(accountId);
   }
 
   private static updateStatus(accountId: string, status: AutomationAccount['status']) {
-    const account = AutomationBase.getAccountById(accountId);
+    const account = AutoKickBase.getAccountById(accountId);
     if (!account) return;
 
     account.status = status;

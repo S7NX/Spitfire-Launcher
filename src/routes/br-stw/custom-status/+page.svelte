@@ -9,7 +9,6 @@
   import Input from '$components/ui/Input.svelte';
   import { toast } from 'svelte-sonner';
   import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
-  import Authentication from '$lib/core/authentication';
   import XMPPManager from '$lib/core/managers/xmpp';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
@@ -27,8 +26,7 @@
     isSettingStatus = true;
 
     try {
-      const accessTokenData = await Authentication.getAccessTokenUsingDeviceAuth(activeAccount, false);
-      const connection = new XMPPManager({ accountId: activeAccount.accountId, accessToken: accessTokenData.access_token });
+      const connection = await XMPPManager.create(activeAccount, 'customStatus');
       await connection.connect();
 
       connection.setStatus(customStatus);

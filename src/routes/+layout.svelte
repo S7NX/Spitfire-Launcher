@@ -17,7 +17,7 @@
   import { Tooltip } from 'bits-ui';
   import WorldInfoManager from '$lib/core/managers/worldInfo';
   import { worldInfoCache } from '$lib/stores';
-  import Automation from '$lib/core/managers/automation/base';
+  import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
 
   const { children } = $props();
 
@@ -55,7 +55,7 @@
     document.addEventListener('keydown', disableF5);
 
     Promise.allSettled([
-      Automation.loadAccounts(),
+      AutoKickBase.loadAccounts(),
       handleWorldInfo(),
       checkForUpdates()
     ]);

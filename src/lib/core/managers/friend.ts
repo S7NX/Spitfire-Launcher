@@ -129,4 +129,29 @@ export default class FriendManager {
       body: nickname
     });
   }
+
+  static async acceptAllIncomingRequests(account: AccountData, accountIds: string[]) {
+    const MAX_IDS_PER_REQUEST = 100;
+
+    const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
+    const acceptedAccounts = new Set<string>();
+
+    for (let i = 0; i < accountIds.length; i += MAX_IDS_PER_REQUEST) {
+      const ids = accountIds.slice(i, i + MAX_IDS_PER_REQUEST);
+      const acceptedRequests = await friendService.post<string[]>(`${account.accountId}/incoming/accept?targetIds=${ids.join(',')}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        },
+        json: {}
+      }).json().catch(() => null);
+
+      if (acceptedRequests?.length) {
+        for (const id of acceptedRequests) {
+          acceptedAccounts.add(id);
+        }
+      }
+    }
+
+    return acceptedAccounts;
+  }
 }

@@ -102,3 +102,21 @@ export async function getResolvedResults<T extends readonly unknown[]>(
   const results = await Promise.allSettled(promises);
   return results.map(result => result.status === 'fulfilled' ? result.value : null) as { [K in keyof T]: T[K] | null };
 }
+
+export function evaluateCurve(keys: { Time: number, Value: number }[], time: number) {
+  if (time < keys[0].Time) {
+    return keys[0].Value;
+  }
+
+  if (time >= keys[keys.length - 1].Time) {
+    return keys[keys.length - 1].Value;
+  }
+
+  const index = keys.findIndex((k) => k.Time > time);
+
+  const prev = keys[index - 1];
+  const next = keys[index];
+
+  const fac = (time - prev.Time) / (next.Time - prev.Time);
+  return prev.Value * (1 - fac) + next.Value * fac;
+}

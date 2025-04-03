@@ -2,14 +2,15 @@
   import { Separator } from 'bits-ui';
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import Button from '$components/ui/Button.svelte';
-  import AutomationBase from '$lib/core/managers/automation/base';
+  import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
   import { accountsStore, automationStore } from '$lib/stores';
   import { cn, nonNull } from '$lib/utils';
-  import type { AutomationSetting } from '$types/settings';
   import Switch from '$components/ui/Switch.svelte';
   import Trash2Icon from 'lucide-svelte/icons/trash-2';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
   import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
+
+  type AutomationSetting = 'autoKick' | 'autoClaim' | 'autoTransferMaterials';
 
   const allAccounts = $derived(nonNull($accountsStore.allAccounts));
   const xmppDisabledAccounts = $derived(allAccounts.filter((x) => !$automationStore.some((y) => y.accountId === x.accountId)));
@@ -26,14 +27,14 @@
     }
 
     const account = allAccounts.find((a) => a.accountId === selectedAccountId)!;
-    AutomationBase.addAccount(account, {
+    AutoKickBase.addAccount(account, {
       autoKick: true
     });
 
     selectedAccountId = undefined;
   });
 
-  const settings = [
+  const settings: { id: AutomationSetting; label: string }[] = [
     {
       id: 'autoKick',
       label: 'Kick'
@@ -46,10 +47,10 @@
       id: 'autoTransferMaterials',
       label: 'Transfer Materials'
     }
-  ] as const;
+  ];
 
-  async function changeSetting<T extends keyof Omit<AutomationSetting, 'accountId'>>(accountId: string, name: T, value: AutomationSetting[T]) {
-    await AutomationBase.updateSettings(accountId, { [name]: value });
+  async function changeSetting<T extends AutomationSetting>(accountId: string, name: T, enabled: boolean) {
+    await AutoKickBase.updateSettings(accountId, { [name]: enabled });
   }
 </script>
 
@@ -98,7 +99,7 @@
               <div
                 class={cn(
                   'size-2 rounded-full',
-                  (automationAccount.status === 'DISCONNECTED' || automationAccount.status === 'LOADING') && 'bg-gray-500',
+                  (automationAccount.status === 'DISCONNECTED' || isLoading) && 'bg-gray-500',
                   automationAccount.status === 'ACTIVE' && 'bg-green-500',
                   automationAccount.status === 'INVALID_CREDENTIALS' && 'bg-red-500'
                 )}></div>
@@ -108,7 +109,7 @@
             <Button
               class="flex items-center justify-center hover:bg-muted-foreground/50 hover:text-destructive size-8"
               disabled={isLoading}
-              onclick={() => AutomationBase.removeAccount(automationAccount.accountId)}
+              onclick={() => AutoKickBase.removeAccount(automationAccount.accountId)}
               size="sm"
               variant="ghost"
             >

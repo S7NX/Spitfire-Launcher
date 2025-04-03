@@ -1,10 +1,12 @@
+import type { PartyData } from '$types/game/party';
+import { SvelteMap } from 'svelte/reactivity';
 import { writable } from 'svelte/store';
 import type { AccountData, AccountStoreData } from '$types/accounts';
 import { browser } from '$app/environment';
 import type { ParsedWorldInfo } from '$types/game/stw/worldInfo';
 import type { EpicOAuthData } from '$types/game/authorizations';
 import type { AutomationSetting } from '$types/settings';
-import type { AutomationAccount } from '$lib/core/managers/automation/base';
+import type { AutomationAccount } from '$lib/core/managers/automation/autoKickBase';
 import type { SpitfireShop } from '$types/game/shop';
 
 type Theme = 'light' | 'dark';
@@ -62,6 +64,7 @@ export const worldInfoCache = writable<ParsedWorldInfo>();
 // To avoid redirecting the user to the home page in bulk operations if there is a credential error
 export const doingBulkOperations = writable<boolean>(false);
 export const automationStore = writable<(AutomationSetting & { status: AutomationAccount['status'] })[]>([]);
+export const accountPartiesStore = new SvelteMap<string, PartyData>();
 export const brShopStore = writable<SpitfireShop>();
 export const accountDataStore = writable<Record<string, AccountStoreData>>({});
 export const ownedItemsStore = writable<Record<string, Set<string>>>({});

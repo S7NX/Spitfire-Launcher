@@ -3,7 +3,7 @@ export type ServiceEventMemberConnected = {
   sent: string
   connection: {
     id: string
-    meta: Partial<Record<string, string>>
+    meta: Record<string, string>
     connected_at: string
     updated_at: string
     yield_leadership: boolean
@@ -12,7 +12,7 @@ export type ServiceEventMemberConnected = {
   party_id: string
   account_id: string
   account_dn: string
-  member_state_updated: Partial<Record<string, string>>
+  member_state_updated: Record<string, string>
   joined_at: string
   updated_at: string
 }
@@ -22,7 +22,7 @@ export type ServiceEventMemberDisconnected = {
   sent: string
   connection: {
     id: string
-    meta: Partial<Record<string, string>>
+    meta: Record<string, string>
     connected_at: string
     disconnected_at: string
     updated_at: string
@@ -33,7 +33,7 @@ export type ServiceEventMemberDisconnected = {
   party_id: string
   account_id: string
   account_dn: string
-  member_state_updated: Partial<Record<string, string>>
+  member_state_updated: Record<string, string>
   joined_at: string
   updated_at: string
 }
@@ -44,7 +44,7 @@ export type ServiceEventMemberExpired = {
   revision: number
   party_id: string
   account_id: string
-  member_state_updated: Partial<Record<string, string>>
+  member_state_updated: Record<string, string>
 }
 
 export type ServiceEventMemberJoined = {
@@ -52,7 +52,7 @@ export type ServiceEventMemberJoined = {
   sent: string
   connection: {
     id: string
-    meta: Partial<Record<string, string>>
+    meta: Record<string, string>
     connected_at: string
     updated_at: string
     yield_leadership: boolean
@@ -61,7 +61,7 @@ export type ServiceEventMemberJoined = {
   party_id: string
   account_id: string
   account_dn: string
-  member_state_updated: Partial<Record<string, string>>
+  member_state_updated: Record<string, string>
   joined_at: string
   updated_at: string
 }
@@ -72,7 +72,7 @@ export type ServiceEventMemberKicked = {
   revision: number
   party_id: string
   account_id: string
-  member_state_updated: Partial<Record<string, string>>
+  member_state_updated: Record<string, string>
 }
 
 export type ServiceEventMemberLeft = {
@@ -81,19 +81,31 @@ export type ServiceEventMemberLeft = {
   revision: number
   party_id: string
   account_id: string
-  member_state_updated: Partial<Record<string, string>>
+  member_state_updated: Record<string, string>
 }
 
 export type ServiceEventMemberStateUpdated = {
   ns?: 'Fortnite';
   sent: string
-  revision: 2
+  revision: number
   party_id: string
   account_id: string
   account_dn: string
-  member_state_removed: Array<unknown>
-  member_state_updated: Partial<Record<string, string>>
-  member_state_overridden: Partial<Record<string, string>>
+  member_state_removed: Array<string>
+  member_state_updated: Record<string, string>
+  member_state_overridden: Record<string, string>
+  joined_at: string
+  updated_at: string
+}
+
+export type ServiceEventMemberNewCaptain = {
+  ns?: 'Fortnite';
+  sent: string
+  revision: number
+  party_id: string
+  account_id: string
+  account_dn: string
+  member_state_updated: Record<string, string>
   joined_at: string
   updated_at: string
 }
@@ -103,9 +115,9 @@ export type ServiceEventPartyUpdated = {
   sent: string
   party_id: string
   captain_id: string
-  party_state_removed: Array<unknown>
-  party_state_updated: Partial<Record<string, string>>
-  party_state_overridden: Partial<Record<string, string>>
+  party_state_removed: Array<string>
+  party_state_updated: Record<string, string>
+  party_state_overridden: Record<string, string>
   party_privacy_type: 'OPEN' | 'INVITE_AND_FORMER';
   party_type: 'DEFAULT'
   party_sub_type: 'default'
@@ -145,8 +157,21 @@ export type InteractionNotification = {
   isFriend: boolean
 }
 
-export type MatchMakingData = {
+export type ServiceEventPartyPing = {
   ns?: 'Fortnite';
-  partyState: PartyState | null
-  started: boolean
+  pinger_dn: string
+  pinger_id: string
+  expires: string
+  sent: string
+  meta: Record<string, string>
+}
+
+export type ServiceEventFriendRequest = {
+  payload: {
+    accountId: string
+    created: string
+    direction: 'INBOUND' | 'OUTBOUND'
+    favorite: boolean
+    status: 'PENDING' | 'ACCEPTED' | 'REJECTED'
+  }
 }
