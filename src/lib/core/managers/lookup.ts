@@ -1,4 +1,4 @@
-import publicAccountService from '$lib/core/services/publicAccount';
+import { publicAccountService } from '$lib/core/services';
 import type { AccountData } from '$types/accounts';
 import Authentication from '$lib/core/authentication';
 import type { EpicAccountById, EpicAccountByName } from '$types/game/lookup';

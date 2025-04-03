@@ -1,5 +1,5 @@
 import type { AccountData } from '$types/accounts';
-import fulfillmentService from '$lib/core/services/fulfillment';
+import { fulfillmentService } from '$lib/core/services';
 import type { RedeemedCodeData } from '$types/game/fulfillment';
 import Authentication from '$lib/core/authentication';
 

@@ -1,5 +1,5 @@
 import type { AccountData } from '$types/accounts';
-import baseGameService from '$lib/core/services/baseGame';
+import { baseGameService } from '$lib/core/services';
 import Authentication from '$lib/core/authentication';
 import type { FullQueryProfile, MCPOperation, MCPProfileId } from '$types/game/mcp';
 import EpicAPIError from '$lib/exceptions/EpicAPIError';

@@ -16,7 +16,7 @@
   import CheckCircleIcon from 'lucide-svelte/icons/check-circle';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import { accountsStore } from '$lib/stores';
-  import oauthService from '$lib/core/services/oauth';
+  import { oauthService } from '$lib/core/services';
   import type { DeviceCodeLoginData, EpicOAuthData } from '$types/game/authorizations';
 
   type LoginMethod = 'web' | 'exchange-code';

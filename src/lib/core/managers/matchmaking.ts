@@ -1,4 +1,4 @@
-import matchmakingService from '$lib/core/services/matchmaking';
+import { matchmakingService } from '$lib/core/services';
 import Authentication from '$lib/core/authentication';
 import type { MatchmakingTrackResponse } from '$types/game/matchmaking';
 import type { AccountData } from '$types/accounts';

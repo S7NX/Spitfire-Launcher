@@ -13,7 +13,7 @@ import {
 } from '$lib/constants/stw/worldInfo';
 import type { ParsedModifierData, ParsedResourceData, RarityType } from '$types/game/stw/resources';
 import { ingredients, RarityNames, RarityTypes, resources, survivors, survivorsMythicLeads, traps } from '$lib/constants/stw/resources';
-import baseGameService from '$lib/core/services/baseGame';
+import { baseGameService } from '$lib/core/services';
 import Authentication from '$lib/core/authentication';
 
 type World = keyof typeof Worlds;

@@ -1,4 +1,4 @@
-import friendService from '$lib/core/services/friend';
+import { friendService } from '$lib/core/services';
 import type { AccountData } from '$types/accounts';
 import Authentication from '$lib/core/authentication';
 import type { BlockedAccountData, FriendData, FriendsSummary, IncomingFriendRequestData, OutgoingFriendRequestData } from '$types/game/friends';

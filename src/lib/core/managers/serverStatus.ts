@@ -1,5 +1,4 @@
-import lightswitchService from '$lib/core/services/lightswitch';
-import tauriKy from '$lib/core/services/tauriKy';
+import { lightswitchService, tauriKy } from '$lib/core/services';
 import type { AccountData } from '$types/accounts';
 import Authentication from '$lib/core/authentication';
 import type { LightswitchData, ServerStatusSummaryData, WaitingRoomData } from '$types/game/serverStatus';

@@ -8,14 +8,14 @@ import EpicAPIError from '$lib/exceptions/EpicAPIError';
 const tauriKy = ky.create({
   fetch: async (input, options) => {
     const request = new Request(input, options);
+    const headers = new Headers(request.headers);
 
     const userAgent = await Manifest.getUserAgent();
-    const headers = new Headers(request.headers);
     headers.set('User-Agent', userAgent);
 
     const response = await fetch(request.url, {
       method: request.method,
-      headers: headers,
+      headers,
       body: request.body ? await request.text() : undefined
     });
 

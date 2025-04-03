@@ -1,4 +1,4 @@
-import partyService from '$lib/core/services/party';
+import { partyService } from '$lib/core/services';
 import Authentication from '$lib/core/authentication';
 import EpicAPIError from '$lib/exceptions/EpicAPIError';
 import { accountPartiesStore } from '$lib/stores';

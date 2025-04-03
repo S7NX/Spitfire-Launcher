@@ -1,4 +1,4 @@
-import oauthService from '$lib/core/services/oauth';
+import { oauthService } from '$lib/core/services';
 import type {
   DeviceAuthData,
   EpicDeviceAuthLoginData,
