@@ -14,7 +14,7 @@
   const { title, description, class: className, children }: Props = $props();
 </script>
 
-<div class="flex flex-col items-center justify-center min-h-full">
+<div class="flex items-center justify-center min-h-full">
   <div class={cn('flex flex-col gap-4 xxs:w-80 xs:w-96 p-5 border rounded-md', className)}>
     {#if title || description}
       <div class="flex flex-col gap-2">

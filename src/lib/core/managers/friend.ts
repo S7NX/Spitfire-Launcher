@@ -3,9 +3,6 @@ import type { AccountData } from '$types/accounts';
 import Authentication from '$lib/core/authentication';
 import type { BlockedAccountData, FriendData, FriendsSummary, IncomingFriendRequestData, OutgoingFriendRequestData } from '$types/game/friends';
 
-// todo: find a better way to handle duplicate codes in the future
-// maybe create a base class called "Profile" like spitfire bot idk
-
 export default class FriendManager {
   static async getFriend(account: AccountData, friendId: string) {
     const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
