@@ -50,13 +50,13 @@
 </script>
 
 <script lang="ts">
+  import { getVersion } from '@tauri-apps/api/app';
   import { slide } from 'svelte/transition';
   import { cubicInOut } from 'svelte/easing';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import config from '$lib/config';
   import { cn, getStartingPage } from '$lib/utils';
   import Button from '$components/ui/Button.svelte';
-  import packageJson from '../../../package.json';
   import { page } from '$app/state';
   import { onMount } from 'svelte';
   import { customizableMenuStore } from '$lib/stores';
@@ -183,17 +183,21 @@
         {/each}
       </div>
 
-      <div class="text-center mt-4 text-xs text-muted-foreground">
-        <span>Version
-          <a
-            class="underline underline-offset-2"
-            href="{config.links.github}/releases/tag/v{packageJson.version}"
-            target="_blank"
-          >
-            v{packageJson.version}
-          </a>
-        </span>
-      </div>
+      {#await getVersion()}
+        <!-- -->
+      {:then version}
+        <div class="text-center mt-4 text-xs text-muted-foreground">
+          <span>Version
+            <a
+              class="underline underline-offset-2"
+              href="{config.links.github}/releases/tag/v{version}"
+              target="_blank"
+            >
+              v{version}
+            </a>
+          </span>
+        </div>
+      {/await}
     </div>
   </nav>
 </aside>

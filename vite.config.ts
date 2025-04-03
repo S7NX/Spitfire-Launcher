@@ -21,9 +21,6 @@ export default defineConfig(async () => ({
       : undefined,
     watch: {
       ignored: ['**/src-tauri/**']
-    },
-    fs: {
-      allow: ['./package.json']
     }
   },
   resolve: {

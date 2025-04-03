@@ -4,9 +4,9 @@
   import Sidebar from '$components/Sidebar.svelte';
   import Header from '$components/header/Header.svelte';
   import ScrollArea from '$components/ui/ScrollArea.svelte';
+  import { getVersion } from '@tauri-apps/api/app';
   import { Toaster } from 'svelte-sonner';
   import { onMount } from 'svelte';
-  import packageJson from '../../package.json';
   import ky from 'ky';
   import config from '$lib/config';
   import type { GitHubRelease } from '$types/github';
@@ -41,9 +41,9 @@
     const { owner, name } = config.repository;
     const url = `https://api.github.com/repos/${owner}/${name}/releases/latest`;
 
+    const currentVersion = await getVersion();
     const latestVersion = await ky.get<GitHubRelease>(url).json();
-
-    if (latestVersion.tag_name !== `v${packageJson.version}`) {
+    if (latestVersion.tag_name.replace('v', '') !== currentVersion) {
       newVersionData = {
         tag: latestVersion.tag_name.replace('v', ''),
         downloadUrl: latestVersion.html_url
