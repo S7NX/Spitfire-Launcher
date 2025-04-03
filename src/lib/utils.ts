@@ -66,7 +66,7 @@ export async function getStartingPage(settingsData?: AllSettings) {
   const settings = settingsData || await DataStorage.getSettingsFile();
   const startingPage = settings.app?.startingPage!;
 
-  return Pages[startingPage];
+  return Pages[startingPage] || Pages.stwWorldInfo;
 }
 
 export function calculateDiscountedShopPrice(accountId: string, item: SpitfireShopItem) {

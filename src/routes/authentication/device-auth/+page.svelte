@@ -20,7 +20,7 @@
   import { onMount } from 'svelte';
   import DataStorage, { DEVICE_AUTHS_FILE_PATH } from '$lib/core/dataStorage';
   import { accountsStore } from '$lib/stores';
-  import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
+  import { getStartingPage, nonNull, shouldErrorBeIgnored } from '$lib/utils';
   import Account from '$lib/core/account';
   import Tooltip from '$components/ui/Tooltip.svelte';
   import { goto } from '$app/navigation';
@@ -147,9 +147,8 @@
       if (isCurrentDevice) {
         await Account.logout();
         allDeviceAuths[activeAccount.accountId] = [];
-        await goto('/');
+        await goto(await getStartingPage());
       }
-
     } catch (error) {
       if (shouldErrorBeIgnored(error)) return;
 
