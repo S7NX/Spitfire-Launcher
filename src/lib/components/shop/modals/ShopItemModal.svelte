@@ -109,7 +109,7 @@
             <span class="text-muted-foreground font-medium">Price:</span>
 
             {#if $discountedPrice !== item.price.final}
-              <span>{discountedPrice.toLocaleString()}</span>
+              <span class="mr-1">{$discountedPrice.toLocaleString()}</span>
               <span class="line-through text-muted-foreground/95">{item.price.final.toLocaleString()}</span>
             {:else}
               <span>{item.price.final.toLocaleString()}</span>
