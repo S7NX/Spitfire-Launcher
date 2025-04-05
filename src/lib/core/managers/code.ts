@@ -19,9 +19,4 @@ export default class CodeManager {
       }
     ).json();
   }
-
-  // todo: add
-  static get(account: AccountData, code: string) {
-
-  }
 }
