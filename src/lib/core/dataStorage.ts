@@ -1,7 +1,7 @@
 import { dev } from '$app/environment';
 import config from '$lib/config';
 import { accountDataFileSchema } from '$lib/validations/accounts';
-import { allSettingsSchema, automationSettingsSchema, customizableMenuSettingsSchema, deviceAuthsSettingsSchema } from '$lib/validations/settings';
+import { allSettingsSchema, automationSettingsSchema, customizableMenuSettingsSchema, deviceAuthsSettingsSchema, taxiSettingsSchema } from '$lib/validations/settings';
 import type { AccountDataFile } from '$types/accounts';
 import type { AllSettings, AutomationSettings, CustomizableMenuSettings, DeviceAuthsSettings, TaxiSettings } from '$types/settings';
 import { path } from '@tauri-apps/api';
@@ -99,7 +99,7 @@ export default class DataStorage {
     return DataStorage.getFile<TaxiSettings>(
       TAXI_FILE_PATH,
       TAXI_INITIAL_DATA,
-      deviceAuthsSettingsSchema,
+      taxiSettingsSchema,
       (data) => { DataStorage.caches.taxiFile = data; }
     );
   }
