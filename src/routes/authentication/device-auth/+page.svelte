@@ -32,42 +32,18 @@
     fetchDeviceAuths();
   });
 
-  const deviceNameTimeouts = new Map<string, number>();
-  let deviceAuthsSettings = $state<DeviceAuthsSettings>();
+  let deviceAuthsSettings = $state<DeviceAuthsSettings>([]);
 
-  function handleBlur(event: FocusEvent, deviceId: string) {
-    const element = event.target as HTMLSpanElement;
-
-    if (!element.textContent?.trim()) {
-      element.textContent = 'No Name';
-      saveDeviceName(deviceId, null);
-    }
-  }
-
-  function handleDeviceNameInput(deviceId: string, event: Event & { currentTarget: EventTarget & HTMLSpanElement; }) {
-    if (deviceNameTimeouts.has(deviceId)) {
-      clearTimeout(deviceNameTimeouts.get(deviceId));
-    }
-
-    const newName = (event.target as HTMLSpanElement).textContent?.trim() || null;
-
-    const timeoutId = window.setTimeout(() => {
-      saveDeviceName(deviceId, newName);
-    }, 1000);
-
-    deviceNameTimeouts.set(deviceId, timeoutId);
-  }
-
-  async function saveDeviceName(deviceId: string, newName: string | null) {
+  async function saveDeviceName(event: FocusEvent & { currentTarget: HTMLSpanElement }, deviceId: string) {
     if (!deviceId) return;
 
-    deviceAuthsSettings ??= [];
-
+    const newName = event.currentTarget.textContent?.trim();
     if (!newName) {
       const deviceAuthRemoved = deviceAuthsSettings.filter(x => x.deviceId !== deviceId);
-      await DataStorage.writeConfigFile(DEVICE_AUTHS_FILE_PATH, deviceAuthRemoved);
-
       deviceAuthsSettings = deviceAuthRemoved;
+      event.currentTarget.textContent = 'No Name';
+
+      await DataStorage.writeConfigFile(DEVICE_AUTHS_FILE_PATH, deviceAuthRemoved);
     } else {
       let setting = deviceAuthsSettings.find(x => x.deviceId === deviceId);
       if (setting) {
@@ -92,8 +68,8 @@
     try {
       const data = await DeviceAuthManager.getAll(activeAccount);
       allDeviceAuths[activeAccount.accountId] = data.sort((a, b) => {
-        const aHasCustomName = deviceAuthsSettings?.some(x => x.deviceId === a.deviceId) ? 1 : 0;
-        const bHasCustomName = deviceAuthsSettings?.some(x => x.deviceId === b.deviceId) ? 1 : 0;
+        const aHasCustomName = deviceAuthsSettings.some(x => x.deviceId === a.deviceId) ? 1 : 0;
+        const bHasCustomName = deviceAuthsSettings.some(x => x.deviceId === b.deviceId) ? 1 : 0;
         const hasCustomName = bHasCustomName - aHasCustomName;
 
         const aDate = a.lastAccess?.dateTime || a.created?.dateTime;
@@ -171,18 +147,10 @@
     });
   }
 
-  onMount(() => {
-    DataStorage.getDeviceAuthsFile().then((settings) => {
-      deviceAuthsSettings = settings;
-    });
+  onMount(async () => {
+    deviceAuthsSettings = await DataStorage.getDeviceAuthsFile();
 
-    fetchDeviceAuths();
-
-    return () => {
-      for (const timeoutId of deviceNameTimeouts.values()) {
-        clearTimeout(timeoutId);
-      }
-    };
+    await fetchDeviceAuths();
   });
 </script>
 
@@ -218,8 +186,7 @@
                     <span
                       class="font-semibold outline-none hover:underline underline-offset-2"
                       contenteditable
-                      onblur={(event) => handleBlur(event, auth.deviceId)}
-                      oninput={(event) => handleDeviceNameInput(auth.deviceId, event)}
+                      onblur={(event) => saveDeviceName(event, auth.deviceId)}
                       onkeydown={(event) => event.key === 'Enter' && event.preventDefault()}
                       role="textbox"
                       spellcheck="false"

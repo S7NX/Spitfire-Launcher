@@ -108,7 +108,7 @@
 
   const tabs = $derived([
     { name: 'STW Actions', component: STWActions },
-    { name: 'Party', component: Party, disabled: !partyData && !partyMembers?.length }
+    { name: 'Party Members', component: PartyMembers, disabled: !partyData && !partyMembers?.length }
   ]);
 
   async function kickAll() {
@@ -253,14 +253,13 @@
   }
 
   function hideImageOnError(e: Event) {
-    const target = e.target as HTMLImageElement;
+    const target = e.currentTarget as HTMLImageElement;
     target.style.display = 'none';
   }
 </script>
 
 <div class="flex flex-col gap-4">
   <h1 class="text-2xl font-bold">Party Management</h1>
-
   <Tabs {tabs}/>
 </div>
 
@@ -316,7 +315,7 @@
   </div>
 {/snippet}
 
-{#snippet Party()}
+{#snippet PartyMembers()}
   <div class="space-y-4">
     {#if partyData}
       <div>

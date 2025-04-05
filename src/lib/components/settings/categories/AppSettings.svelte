@@ -115,7 +115,7 @@
   {#if currentPlatform === 'windows'}
     <SettingTextInputItem title="Custom Game Path">
       <Input
-        oninput={(e) => handleSettingChange(e, 'gamePath')}
+        onConfirm={(e) => handleSettingChange(e, 'gamePath')}
         value={allSettings?.app?.gamePath}
       />
     </SettingTextInputItem>
@@ -126,7 +126,7 @@
     >
       <Input
         disabled={!!activeAccount}
-        oninput={(e) => handleSettingChange(e, 'userAgent')}
+        onConfirm={(e) => handleSettingChange(e, 'userAgent')}
         type="text"
         value={customUserAgent}
         variant={!!activeAccount ? 'disabled' : 'primary'}
@@ -141,7 +141,7 @@
     <Input
       max={10}
       min={1}
-      oninput={(e) => handleSettingChange(convertToNumber(e), 'missionCheckInterval')}
+      onConfirm={(e) => handleSettingChange(convertToNumber(e), 'missionCheckInterval')}
       type="number"
       value={allSettings?.app?.missionCheckInterval}
     />
@@ -154,7 +154,7 @@
     <Input
       max={10}
       min={1}
-      oninput={(e) => handleSettingChange(convertToNumber(e), 'claimRewardsDelay')}
+      onConfirm={(e) => handleSettingChange(convertToNumber(e), 'claimRewardsDelay')}
       type="number"
       value={allSettings?.app?.claimRewardsDelay}
     />

@@ -1,13 +1,12 @@
-import SystemTray from '$lib/core/system/systemTray';
-import { exists, mkdir, readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
-import { dataDir } from '@tauri-apps/api/path';
-import { path } from '@tauri-apps/api';
 import { dev } from '$app/environment';
 import config from '$lib/config';
 import { accountDataFileSchema } from '$lib/validations/accounts';
+import { allSettingsSchema, automationSettingsSchema, customizableMenuSettingsSchema, deviceAuthsSettingsSchema } from '$lib/validations/settings';
 import type { AccountDataFile } from '$types/accounts';
-import { allSettingsSchema, automationSettingsSchema, customizableMenuSettingsSchema } from '$lib/validations/settings';
-import type { AllSettings, AutomationSettings, CustomizableMenuSettings, DeviceAuthsSettings } from '$types/settings';
+import type { AllSettings, AutomationSettings, CustomizableMenuSettings, DeviceAuthsSettings, TaxiSettings } from '$types/settings';
+import { path } from '@tauri-apps/api';
+import { dataDir } from '@tauri-apps/api/path';
+import { exists, mkdir, readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
 import type { ZodSchema } from 'zod';
 
 export const ACCOUNTS_FILE_PATH = dev ? 'accounts-dev.json' : 'accounts.json';
@@ -37,50 +36,71 @@ export const DEVICE_AUTHS_INITIAL_DATA: DeviceAuthsSettings = [];
 export const AUTOMATION_FILE_PATH = dev ? 'automation-dev.json' : 'automation.json';
 export const AUTOMATION_INITIAL_DATA: AutomationSettings = [];
 
-let dataDirectoryCache: string;
-let accountsFileCache: AccountDataFile;
-let settingsFileCache: AllSettings;
-let automationFileCache: AutomationSettings;
+export const TAXI_FILE_PATH = dev ? 'taxi-dev.json' : 'taxi.json';
+export const TAXI_INITIAL_DATA: TaxiSettings = [];
 
 export default class DataStorage {
-  static getAccountsFile(bypassCache = false) {
-    if (accountsFileCache && !bypassCache) return accountsFileCache;
+  private static caches: {
+    dataDirectory?: string;
+    accountsFile?: AccountDataFile;
+    settingsFile?: AllSettings;
+    deviceAuthsFile?: DeviceAuthsSettings;
+    automationFile?: AutomationSettings;
+    taxiFile?: TaxiSettings;
+  } = {};
+
+  static async getAccountsFile(bypassCache = false) {
+    if (DataStorage.caches.accountsFile && !bypassCache) return DataStorage.caches.accountsFile;
 
     return DataStorage.getFile<AccountDataFile>(
       ACCOUNTS_FILE_PATH,
       ACCOUNTS_INITIAL_DATA,
       accountDataFileSchema,
-      (data) => { accountsFileCache = data; }
+      (data) => { DataStorage.caches.accountsFile = data; }
     );
   }
 
   static async getSettingsFile(bypassCache = false) {
-    if (settingsFileCache && !bypassCache) return settingsFileCache;
+    if (DataStorage.caches.settingsFile && !bypassCache) return DataStorage.caches.settingsFile;
 
-    const settings = await DataStorage.getFile<AllSettings>(
+    return DataStorage.getFile<AllSettings>(
       SETTINGS_FILE_PATH,
       SETTINGS_INITIAL_DATA,
       allSettingsSchema,
-      (data) => { settingsFileCache = data; }
+      (data) => { DataStorage.caches.settingsFile = data; }
     );
-
-    await SystemTray.setVisibility(settings.app?.hideToTray || false);
-
-    return settings;
   }
 
-  static getDeviceAuthsFile() {
-    return DataStorage.getConfigFile<DeviceAuthsSettings>(DEVICE_AUTHS_FILE_PATH, DEVICE_AUTHS_INITIAL_DATA);
+  static async getDeviceAuthsFile(bypassCache = false) {
+    if (DataStorage.caches.deviceAuthsFile && !bypassCache) return DataStorage.caches.deviceAuthsFile;
+
+    return DataStorage.getFile<DeviceAuthsSettings>(
+      DEVICE_AUTHS_FILE_PATH,
+      DEVICE_AUTHS_INITIAL_DATA,
+      deviceAuthsSettingsSchema,
+      (data) => { DataStorage.caches.deviceAuthsFile = data; }
+    );
   }
 
-  static getAutomationFile(bypassCache = false) {
-    if (automationFileCache && !bypassCache) return automationFileCache;
+  static async getAutomationFile(bypassCache = false) {
+    if (DataStorage.caches.automationFile && !bypassCache) return DataStorage.caches.automationFile;
 
     return DataStorage.getFile<AutomationSettings>(
       AUTOMATION_FILE_PATH,
       AUTOMATION_INITIAL_DATA,
       automationSettingsSchema,
-      (data) => { automationFileCache = data; }
+      (data) => { DataStorage.caches.automationFile = data; }
+    );
+  }
+
+  static async getTaxiFile(bypassCache = false) {
+    if (DataStorage.caches.taxiFile && !bypassCache) return DataStorage.caches.taxiFile;
+
+    return DataStorage.getFile<TaxiSettings>(
+      TAXI_FILE_PATH,
+      TAXI_INITIAL_DATA,
+      deviceAuthsSettingsSchema,
+      (data) => { DataStorage.caches.taxiFile = data; }
     );
   }
 
@@ -111,18 +131,20 @@ export default class DataStorage {
     const newData: unknown = !Array.isArray(data) && currentData && typeof currentData === 'object' && !Array.isArray(currentData) ? Object.assign(currentData, data) : data;
 
     if (pathString === ACCOUNTS_FILE_PATH) {
-      accountsFileCache = newData as AccountDataFile;
+      DataStorage.caches.accountsFile = newData as AccountDataFile;
     } else if (pathString === SETTINGS_FILE_PATH) {
-      settingsFileCache = newData as AllSettings;
+      DataStorage.caches.settingsFile = newData as AllSettings;
     } else if (pathString === AUTOMATION_FILE_PATH) {
-      automationFileCache = newData as AutomationSettings;
+      DataStorage.caches.automationFile = newData as AutomationSettings;
+    } else if (pathString === TAXI_FILE_PATH) {
+      DataStorage.caches.taxiFile = newData as TaxiSettings;
     }
 
     await writeTextFile(configFilePath, JSON.stringify(newData, null, 4));
   }
 
   private static async getDataDirectory() {
-    if (dataDirectoryCache) return dataDirectoryCache;
+    if (DataStorage.caches.dataDirectory) return DataStorage.caches.dataDirectory;
 
     const dataDirectory = await path.join(await dataDir(), config.identifier);
 
@@ -130,7 +152,7 @@ export default class DataStorage {
       await mkdir(dataDirectory, { recursive: true });
     }
 
-    dataDirectoryCache = dataDirectory;
+    DataStorage.caches.dataDirectory = dataDirectory;
     return dataDirectory;
   }
 

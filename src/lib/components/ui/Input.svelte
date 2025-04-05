@@ -20,20 +20,42 @@
     }
   });
 
-  type InputProps = HTMLInputAttributes & VariantProps<typeof inputVariants>;
+  type InputProps = HTMLInputAttributes & VariantProps<typeof inputVariants> & {
+    onConfirm?: (event: Event & { currentTarget: HTMLInputElement }) => void;
+  };
 
   let {
     class: className,
     variant,
     value = $bindable<string>(),
+    onConfirm,
+    onblur,
+    onkeydown,
     ...restProps
   }: InputProps = $props();
+
+  const initialValue = value || '';
+
+  function handleBlur(event: FocusEvent & { currentTarget: HTMLInputElement }) {
+    if (event.currentTarget.value !== initialValue && onConfirm) onConfirm(event);
+  }
+
+  function handleKeyDown(event: KeyboardEvent & { currentTarget: HTMLInputElement }) {
+    if (event.currentTarget.value !== initialValue && event.key === 'Enter' && onConfirm) onConfirm(event);
+  }
+
+  if (onConfirm) {
+    onblur = handleBlur;
+    onkeydown = handleKeyDown;
+  }
 </script>
 
 <input
   {...restProps}
   class={cn(inputVariants({ variant }), className)}
   autocomplete="off"
+  {onblur}
+  {onkeydown}
   spellcheck="false"
   bind:value
 />

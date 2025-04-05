@@ -8,8 +8,11 @@
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import Alert from '$components/ui/Alert.svelte';
+  import DataStorage, { TAXI_FILE_PATH } from '$lib/core/dataStorage';
   import { accountPartiesStore, accountsStore } from '$lib/stores';
   import { nonNull } from '$lib/utils';
+  import type { TaxiSettings } from '$types/settings';
+  import { onMount } from 'svelte';
   import { toast } from 'svelte-sonner';
   import Button from '$components/ui/Button.svelte';
   import { Separator } from 'bits-ui';
@@ -19,19 +22,23 @@
   import XIcon from 'lucide-svelte/icons/x';
   import CarTaxiFrontIcon from 'lucide-svelte/icons/car-taxi-front';
 
-  type InputTimeoutId = 'powerLevel' | 'availableStatus' | 'busyStatus';
-
   const MIN_POWER_LEVEL = 1;
   const MAX_POWER_LEVEL = 145;
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
-  let inputTimeouts = new Map<InputTimeoutId, number>();
+  let customTaxiSettings = $state<TaxiSettings>([]);
 
   $effect(() => {
-    const hasManager = taxiManagers.has(activeAccount.accountId);
-    if (!hasManager) {
+    if (!taxiManagers.has(activeAccount.accountId)) {
       taxiManagers.set(activeAccount.accountId, new TaxiManager(activeAccount));
     }
+
+    const taxiManager = taxiManagers.get(activeAccount.accountId);
+    const accountSettings = customTaxiSettings.find(settings => settings.accountId === activeAccount.accountId);
+    if (!taxiManager || !accountSettings) return;
+
+    taxiManager.availableStatus = accountSettings.availableStatus || taxiManager.availableStatus;
+    taxiManager.busyStatus = accountSettings.busyStatus || taxiManager.busyStatus;
   });
 
   const taxiManager = $derived(taxiManagers.get(activeAccount.accountId) || new TaxiManager(activeAccount));
@@ -54,49 +61,55 @@
     }
   }
 
-  async function toggleAutoAccept() {
-    await taxiManager.toggleAutoAcceptFriendRequests();
+  function toggleAutoAccept() {
+    taxiManager.toggleAutoAcceptFriendRequests();
   }
 
-  function handleTextInput(timeoutId: InputTimeoutId, event: Event, callbackFn: (event: Event) => void) {
-    const timeout = inputTimeouts.get(timeoutId);
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-
-    const newTimeout = window.setTimeout(() => {
-      callbackFn(event);
-      inputTimeouts.delete(timeoutId);
-    }, 1000);
-
-    inputTimeouts.set(timeoutId, newTimeout);
-  }
-
-  async function handleTaxiLevelChange(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
+  function handleTaxiLevelChange(event: Event & { currentTarget: HTMLInputElement }) {
+    const value = event.currentTarget.value;
     if (!value) return;
 
+    const oldLevel = taxiManager.level;
     const valueNumber = Number.parseInt(value);
-    taxiManager.level = Number.isNaN(value) ? MAX_POWER_LEVEL : Math.min(Math.max(valueNumber, MIN_POWER_LEVEL), MAX_POWER_LEVEL);
+    taxiManager.level = Number.isNaN(valueNumber) ? MAX_POWER_LEVEL : Math.min(Math.max(valueNumber, MIN_POWER_LEVEL), MAX_POWER_LEVEL);
+
+    if (taxiManager.level === oldLevel) return;
 
     const party = accountPartiesStore.get(activeAccount.accountId);
     if (!party) return;
 
-    await taxiManager.setPowerLevel(party.id, party.revision);
+    taxiManager.setPowerLevel(party.id, party.revision);
   }
 
-  function handleStatusChange(event: Event, statusType: 'available' | 'busy') {
-    const value = (event.target as HTMLInputElement).value;
+  function handleStatusChange(event: Event & { currentTarget: HTMLInputElement }, statusType: 'available' | 'busy') {
+    const value = event.currentTarget.value;
     if (!value) return;
+
+    const oldStatus = statusType === 'available' ? taxiManager.availableStatus : taxiManager.busyStatus;
+    if (value === oldStatus) return;
+
+    let settings = customTaxiSettings.find(settings => settings.accountId === activeAccount.accountId);
+
+    if (!settings) {
+      settings = { accountId: activeAccount.accountId };
+      customTaxiSettings.push(settings);
+    }
 
     if (statusType === 'available') {
       taxiManager.availableStatus = value;
+      settings.availableStatus = value;
     } else {
       taxiManager.busyStatus = value;
+      settings.busyStatus = value;
     }
 
     taxiManager.setIsAvailable(taxiManager.isAvailable);
+    DataStorage.writeConfigFile<TaxiSettings>(TAXI_FILE_PATH, customTaxiSettings);
   }
+
+  onMount(async () => {
+    customTaxiSettings = await DataStorage.getTaxiFile();
+  });
 </script>
 
 <CenteredPageContent class="!w-112" description="Play STW missions that are above your power level." title="Taxi Service">
@@ -109,13 +122,13 @@
 
   <div class="space-y-4">
     <div class="flex flex-col gap-2">
-      <label class="font-medium" for="taxiLevel">Taxi Power Level</label>
+      <label class="font-medium" for="taxiLevel">Power Level</label>
       <div class="flex items-center gap-2">
         <Input
           id="taxiLevel"
           max={MAX_POWER_LEVEL}
           min={MIN_POWER_LEVEL}
-          oninput={(e) => handleTextInput('powerLevel', e, handleTaxiLevelChange)}
+          onConfirm={handleTaxiLevelChange}
           type="number"
           value={taxiManager.level}
         />
@@ -126,7 +139,7 @@
       <label class="font-medium" for="availableStatus">Available Status</label>
       <Input
         id="availableStatus"
-        oninput={(e) => handleTextInput('availableStatus', e, (event) => handleStatusChange(event, 'available'))}
+        onConfirm={(event) => handleStatusChange(event, 'available')}
         placeholder="Taxi's custom status when it's available"
         bind:value={taxiManager.availableStatus}
       />
@@ -136,7 +149,7 @@
       <label class="font-medium" for="busyStatus">Busy Status</label>
       <Input
         id="busyStatus"
-        oninput={(e) => handleTextInput('busyStatus', e, (event) => handleStatusChange(event, 'busy'))}
+        onConfirm={(event) => handleStatusChange(event, 'busy')}
         placeholder="Taxi's custom status when it's busy"
         bind:value={taxiManager.busyStatus}
       />

@@ -51,3 +51,11 @@ export const automationSettingSchema = z.object({
 });
 
 export const automationSettingsSchema = z.array(automationSettingSchema);
+
+export const taxiSettingSchema = z.object({
+  accountId: z.string(),
+  availableStatus: z.string().optional(),
+  busyStatus: z.string().optional()
+});
+
+export const taxiSettingsSchema = z.array(taxiSettingSchema);
