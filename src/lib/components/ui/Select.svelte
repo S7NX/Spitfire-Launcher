@@ -45,7 +45,7 @@
 <Select.Root bind:open bind:value={value as never} {...restProps}>
   <Select.Trigger
     class={cn(
-      'border p-2 rounded-lg flex items-center min-w-52 whitespace-nowrap overflow-hidden disabled:cursor-not-allowed disabled:opacity-50',
+      'border p-2 rounded-lg flex items-center min-w-52 whitespace-nowrap overflow-hidden peer disabled:cursor-not-allowed disabled:opacity-50',
       triggerClass
     )}>
     {@render trigger(label)}

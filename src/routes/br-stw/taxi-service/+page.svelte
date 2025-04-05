@@ -8,6 +8,7 @@
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import Alert from '$components/ui/Alert.svelte';
+  import Label from '$components/ui/Label.svelte';
   import DataStorage, { TAXI_FILE_PATH } from '$lib/core/dataStorage';
   import { accountPartiesStore, accountsStore } from '$lib/stores';
   import { nonNull } from '$lib/utils';
@@ -122,21 +123,19 @@
 
   <div class="space-y-4">
     <div class="flex flex-col gap-2">
-      <label class="font-medium" for="taxiLevel">Power Level</label>
-      <div class="flex items-center gap-2">
-        <Input
-          id="taxiLevel"
-          max={MAX_POWER_LEVEL}
-          min={MIN_POWER_LEVEL}
-          onConfirm={handleTaxiLevelChange}
-          type="number"
-          value={taxiManager.level}
-        />
-      </div>
+      <Label for="taxiLevel">Power Level</Label>
+      <Input
+        id="taxiLevel"
+        max={MAX_POWER_LEVEL}
+        min={MIN_POWER_LEVEL}
+        onConfirm={handleTaxiLevelChange}
+        type="number"
+        value={taxiManager.level}
+      />
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="font-medium" for="availableStatus">Available Status</label>
+      <Label for="availableStatus">Available Status</Label>
       <Input
         id="availableStatus"
         onConfirm={(event) => handleStatusChange(event, 'available')}
@@ -146,7 +145,7 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="font-medium" for="busyStatus">Busy Status</label>
+      <Label for="busyStatus">Busy Status</Label>
       <Input
         id="busyStatus"
         onConfirm={(event) => handleStatusChange(event, 'busy')}

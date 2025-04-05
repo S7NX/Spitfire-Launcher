@@ -1,13 +1,11 @@
 <script lang="ts">
   import SettingItem from '$components/settings/SettingItem.svelte';
-  import SettingTextInputItem from '$components/settings/SettingTextInputItem.svelte';
   import ChangeNotifier from '$components/settings/ChangeNotifier.svelte';
   import SystemTray from '$lib/core/system/systemTray';
   import { sidebarCategories } from '$components/Sidebar.svelte';
   import { allSettingsSchema, appSettingsSchema } from '$lib/validations/settings';
   import { platform } from '@tauri-apps/plugin-os';
   import { onMount } from 'svelte';
-  import { accountsStore } from '$lib/stores';
   import Manifest from '$lib/core/manifest';
   import Input from '$components/ui/Input.svelte';
   import Switch from '$components/ui/Switch.svelte';
@@ -17,7 +15,6 @@
   import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
   import { toast } from 'svelte-sonner';
 
-  const activeAccount = $derived($accountsStore.activeAccount);
   const currentPlatform = platform();
 
   let initialSettings = $state<AllSettings>(SETTINGS_INITIAL_DATA);
@@ -113,58 +110,73 @@
 
 <div class="space-y-6">
   {#if currentPlatform === 'windows'}
-    <SettingTextInputItem title="Custom Game Path">
+    <SettingItem
+      labelFor="gamePath"
+      orientation="vertical"
+      title="Custom Game Path"
+    >
       <Input
+        id="gamePath"
         onConfirm={(e) => handleSettingChange(e, 'gamePath')}
         value={allSettings?.app?.gamePath}
       />
-    </SettingTextInputItem>
+    </SettingItem>
 
-    <SettingTextInputItem
+    <SettingItem
       description="Only applies when Fortnite isn't installed."
+      labelFor="userAgent"
+      orientation="vertical"
       title="Custom User-Agent"
     >
       <Input
-        disabled={!!activeAccount}
+        id="userAgent"
         onConfirm={(e) => handleSettingChange(e, 'userAgent')}
         type="text"
         value={customUserAgent}
-        variant={!!activeAccount ? 'disabled' : 'primary'}
       />
-    </SettingTextInputItem>
+    </SettingItem>
   {/if}
 
-  <SettingTextInputItem
+  <SettingItem
     description="Checks every {allSettings?.app?.missionCheckInterval} seconds if you are in a STW mission. Used with the auto-kick feature."
+    labelFor="missionCheckInterval"
+    orientation="vertical"
     title="Mission Check Interval"
   >
     <Input
+      id="missionCheckInterval"
       max={10}
       min={1}
       onConfirm={(e) => handleSettingChange(convertToNumber(e), 'missionCheckInterval')}
       type="number"
       value={allSettings?.app?.missionCheckInterval}
     />
-  </SettingTextInputItem>
+  </SettingItem>
 
-  <SettingTextInputItem
+  <SettingItem
     description="Waits {allSettings?.app?.claimRewardsDelay} seconds before claiming STW mission rewards."
+    labelFor="claimRewardsDelay"
+    orientation="vertical"
     title="Delay for Claiming Rewards"
   >
     <Input
+      id="claimRewardsDelay"
       max={10}
       min={1}
       onConfirm={(e) => handleSettingChange(convertToNumber(e), 'claimRewardsDelay')}
       type="number"
       value={allSettings?.app?.claimRewardsDelay}
     />
-  </SettingTextInputItem>
+  </SettingItem>
 
-  <SettingTextInputItem
+  <SettingItem
     description="Select which page to show when launching the app."
+    labelFor="startingPage"
+    orientation="vertical"
     title="Starting Page"
   >
     <Select
+      id="startingPage"
       items={startingPageOptions}
       triggerClass="w-full"
       type="single"
@@ -175,13 +187,16 @@
         <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
       {/snippet}
     </Select>
-  </SettingTextInputItem>
+  </SettingItem>
 
-  <SettingTextInputItem
+  <SettingItem
     description="Select which account to use when launching the app."
+    labelFor="startingAccount"
+    orientation="vertical"
     title="Starting Account"
   >
     <Select
+      id="startingAccount"
       items={startingAccountOptions}
       triggerClass="w-full"
       type="single"
@@ -192,19 +207,29 @@
         <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
       {/snippet}
     </Select>
-  </SettingTextInputItem>
+  </SettingItem>
 
   {#if currentPlatform === 'windows' || currentPlatform === 'macos' || currentPlatform === 'linux'}
-    <SettingItem title="Hide to system tray">
+    <SettingItem
+      labelFor="hideToTray"
+      orientation="horizontal"
+      title="Hide to system tray"
+    >
       <Switch
+        id="hideToTray"
         checked={allSettings?.app?.hideToTray}
         onCheckedChange={(checked) => handleSettingChange(checked, 'hideToTray')}
       />
     </SettingItem>
   {/if}
 
-  <SettingItem title="Check for updates">
+  <SettingItem
+    labelFor="checkForUpdates"
+    orientation="horizontal"
+    title="Check for updates"
+  >
     <Switch
+      id="checkForUpdates"
       checked={allSettings?.app?.checkForUpdates}
       onCheckedChange={(checked) => handleSettingChange(checked, 'checkForUpdates')}
     />

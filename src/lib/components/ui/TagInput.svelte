@@ -39,7 +39,7 @@
   }
 </script>
 
-<div class="flex flex-col gap-2 w-full">
+<div class="flex flex-col gap-2 w-full peer">
   <div class="relative border rounded-md p-2 flex flex-wrap gap-2 items-center cursor-text">
     {#each items as item, i (i)}
       <div class="bg-muted flex items-center gap-2 px-2 py-1 rounded-md text-sm select-none cursor-default max-w-full">

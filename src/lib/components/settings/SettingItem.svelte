@@ -1,32 +1,25 @@
 <script lang="ts">
-  import { cn } from '$lib/utils';
-  import { Label } from 'bits-ui';
+  import Label from '$components/ui/Label.svelte';
   import type { Snippet } from 'svelte';
 
   type Props = {
     title: string;
     description?: string;
-    class?: string;
+    labelFor: string;
+    orientation: 'horizontal' | 'vertical';
     children: Snippet;
   };
 
-  const { title, description, class: className, children }: Props = $props();
+  const { title, description, labelFor, orientation, children }: Props = $props();
 </script>
 
-<div
-  class={cn(
-    'flex flex-row space-x-4 items-center justify-between',
-    className
-  )}
->
-  <div class="space-y-0.5">
-    <Label.Root class="font-medium">{title}</Label.Root>
+<div class="flex {orientation === 'horizontal' ? 'flex-row justify-between items-center gap-x-4' : 'flex-col gap-y-2'}">
+  <Label class="space-y-0.5" for={labelFor}>
+    {title}
     {#if description}
-      <p class="text-sm text-muted-foreground">{description}</p>
+      <p class="text-sm font-normal text-muted-foreground">{description}</p>
     {/if}
-  </div>
+  </Label>
 
-  <div class="flex items-center">
-    {@render children()}
-  </div>
+  {@render children()}
 </div>

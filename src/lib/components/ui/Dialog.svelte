@@ -29,9 +29,8 @@
   {#if trigger}
     <Dialog.Trigger
       class={cn(
-        'transition-colors',
+        'inline-flex items-center justify-center peer transition-colors',
         'focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98]',
-        'inline-flex items-center justify-center',
         triggerClass
       )}
     >

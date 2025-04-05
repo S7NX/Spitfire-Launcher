@@ -9,11 +9,12 @@
   import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import { DropdownMenu } from '$components/ui/DropdownMenu';
+  import Label from '$components/ui/Label.svelte';
   import Switch from '$components/ui/Switch.svelte';
   import Tabs from '$components/ui/Tabs.svelte';
   import { accountPartiesStore, accountsStore } from '$lib/stores';
   import { nonNull } from '$lib/utils';
-  import { Label, Separator } from 'bits-ui';
+  import { Separator } from 'bits-ui';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import LogOutIcon from 'lucide-svelte/icons/log-out';
   import UserXIcon from 'lucide-svelte/icons/user-x';
@@ -266,8 +267,8 @@
 {#snippet STWActions()}
   <div class="flex flex-col gap-2">
     <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
-      <Label.Root class="font-medium">Claim rewards after leaving the mission</Label.Root>
-      <Switch bind:checked={shouldClaimRewards}/>
+      <Label for="shouldClaimRewards">Claim rewards after leaving the mission</Label>
+      <Switch id="shouldClaimRewards" bind:checked={shouldClaimRewards}/>
     </div>
 
     <div class="flex gap-2">

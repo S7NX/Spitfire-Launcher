@@ -11,8 +11,7 @@
         primary: 'bg-primary text-primary-foreground',
         secondary: 'bg-secondary text-secondary-foreground',
         outline: 'bg-transparent text-input-foreground border-input',
-        ghost: 'bg-transparent text-input-foreground border-none',
-        disabled: 'bg-input-disabled text-input-disabled-foreground hover:cursor-not-allowed'
+        ghost: 'bg-transparent text-input-foreground border-none'
       }
     },
     defaultVariants: {

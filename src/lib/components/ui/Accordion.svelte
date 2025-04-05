@@ -20,7 +20,7 @@
       {...restProps}
     >
       <Accordion.Header>
-        <Accordion.Trigger class="w-full transition-all [&[data-state=open]_.lucide-chevron-down]:rotate-180">
+        <Accordion.Trigger class="w-full transition-all peer [&[data-state=open]_.lucide-chevron-down]:rotate-180">
           {@render trigger(item)}
         </Accordion.Trigger>
       </Accordion.Header>
