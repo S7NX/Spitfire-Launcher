@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Label from '$components/ui/Label.svelte';
   import Switch from '$components/ui/Switch.svelte';
   import DataStorage, { SETTINGS_FILE_PATH } from '$lib/core/dataStorage';
   import type { AllSettings } from '$types/settings';
@@ -29,13 +30,14 @@
   {#each sidebarCategories as category (category.name)}
     <div>
       <h2 class="text-lg font-semibold mb-1">{category.name}</h2>
-      <Separator.Root class="bg-border h-px mb-3"/>
+      <Separator.Root class="bg-border h-px mb-2"/>
 
       <div class="grid grid-cols-1 xs:grid-cols-2 gap-y-1 gap-x-3">
         {#each category.items as item (item.name)}
           <div class="flex items-center justify-between">
-            <p class="flex-1 text-sm">{item.name}</p>
+            <Label class="flex-1 text-sm font-normal" for={item.key}>{item.name}</Label>
             <Switch
+              id={item.key}
               checked={menuSettings[item.key] !== false}
               onCheckedChange={(checked) => setVisibility(checked, item.key)}
             />
