@@ -36,6 +36,7 @@
 
     const taxiManager = taxiManagers.get(activeAccount.accountId);
     const accountSettings = customTaxiSettings.find(settings => settings.accountId === activeAccount.accountId);
+    console.log('TaxiManager', customTaxiSettings);
     if (!taxiManager || !accountSettings) return;
 
     taxiManager.availableStatus = accountSettings.availableStatus || taxiManager.availableStatus;
@@ -104,6 +105,7 @@
       settings.busyStatus = value;
     }
 
+    event.currentTarget.value = value;
     taxiManager.setIsAvailable(taxiManager.isAvailable);
     DataStorage.writeConfigFile<TaxiSettings>(TAXI_FILE_PATH, customTaxiSettings);
   }
@@ -140,7 +142,7 @@
         id="availableStatus"
         onConfirm={(event) => handleStatusChange(event, 'available')}
         placeholder="Taxi's custom status when it's available"
-        bind:value={taxiManager.availableStatus}
+        value={taxiManager.availableStatus}
       />
     </div>
 
@@ -150,7 +152,7 @@
         id="busyStatus"
         onConfirm={(event) => handleStatusChange(event, 'busy')}
         placeholder="Taxi's custom status when it's busy"
-        bind:value={taxiManager.busyStatus}
+        value={taxiManager.busyStatus}
       />
     </div>
 
