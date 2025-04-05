@@ -45,3 +45,7 @@ export const partyService = tauriKy.extend({
 export const publicAccountService = tauriKy.extend({
   prefixUrl: 'https://account-public-service-prod.ol.epicgames.com/account/api/public/account'
 });
+
+export const eulaService = tauriKy.extend({
+  prefixUrl: 'https://eulatracking-public-service-prod.ol.epicgames.com/eulatracking/api/public/agreements/fn'
+});
