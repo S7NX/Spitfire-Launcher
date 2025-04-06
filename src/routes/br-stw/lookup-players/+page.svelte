@@ -292,10 +292,10 @@
       { name: 'Founder edition', value: stwData?.founderEdition }
     ]}
 
-    <div class="space-y-4 text-sm relative border p-4">
+    <div class="space-y-4 text-sm relative border p-5 rounded-md min-w-80 xs:min-w-96">
       <div class="flex gap-4 items-start">
         {#if lookupData?.avatarUrl}
-          <img class="hidden xs:block size-24 rounded-md self-center" alt={lookupData.displayName} src={lookupData.avatarUrl}/>
+          <img class="hidden xs:block size-20 rounded-md self-center" alt={lookupData.displayName} src={lookupData.avatarUrl}/>
         {/if}
 
         <div class="flex-1">
