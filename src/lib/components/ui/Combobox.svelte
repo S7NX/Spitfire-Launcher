@@ -95,7 +95,7 @@
 
         {#each filteredItems as item, i (i + item.value)}
           <Combobox.Item
-            class="rounded-md data-highlighted:bg-muted outline-hidden flex h-10 w-full select-none items-center pl-3 text-sm truncate"
+            class="rounded-md outline-hidden flex h-10 w-full select-none items-center pl-3 text-sm cursor-pointer truncate data-highlighted:bg-muted data-disabled:opacity-50 data-disabled:cursor-default"
             label={item.label}
             value={item.value}
           >
