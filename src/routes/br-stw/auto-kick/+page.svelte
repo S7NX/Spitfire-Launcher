@@ -1,4 +1,5 @@
 <script lang="ts">
+  import AutoKickTutorial from '$components/docs/tutorials/AutoKick.svelte';
   import { Separator } from 'bits-ui';
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import Button from '$components/ui/Button.svelte';
@@ -54,31 +55,27 @@
   }
 </script>
 
-<CenteredPageContent class="max-w-128 !w-full @container">
-  <div class="contents text-muted-foreground text-sm">
-    <h1 class="text-lg font-semibold text-primary -mb-2">Auto-Kick</h1>
-    <p>
-      Toggle auto-kick, auto-claim, and auto-transfer materials for Save the World missions.
-    </p>
-
-    <div class="flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2">
-      <div class="flex items-center gap-x-2">
-        <div class="size-2 rounded-full bg-green-500"></div>
-        <span>Active</span>
-      </div>
-
-      <div class="flex items-center gap-x-2">
-        <div class="size-2 rounded-full bg-red-500"></div>
-        <span>Login Expired</span>
-      </div>
-
-      <div class="flex items-center gap-x-2">
-        <div class="size-2 rounded-full bg-gray-500"></div>
-        <span>Disconnected</span>
-      </div>
+<CenteredPageContent
+  class="max-w-128 !w-full @container"
+  description="Toggle auto-kick, auto-claim, and auto-transfer materials for Save the World missions."
+  docsComponent={AutoKickTutorial}
+  title="Auto-Kick"
+>
+  <div class="flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2 text-muted-foreground text-sm">
+    <div class="flex items-center gap-x-2">
+      <div class="size-2 rounded-full bg-green-500"></div>
+      <span>Active</span>
     </div>
 
-    <Separator.Root class="bg-border h-px -mx-5"/>
+    <div class="flex items-center gap-x-2">
+      <div class="size-2 rounded-full bg-red-500"></div>
+      <span>Login Expired</span>
+    </div>
+
+    <div class="flex items-center gap-x-2">
+      <div class="size-2 rounded-full bg-gray-500"></div>
+      <span>Disconnected</span>
+    </div>
   </div>
 
   <AccountCombobox

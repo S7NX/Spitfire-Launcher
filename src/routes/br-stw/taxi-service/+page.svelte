@@ -22,6 +22,7 @@
   import AlertTriangleIcon from 'lucide-svelte/icons/alert-triangle';
   import XIcon from 'lucide-svelte/icons/x';
   import CarTaxiFrontIcon from 'lucide-svelte/icons/car-taxi-front';
+  import TaxiServiceTutorial from '$components/docs/tutorials/TaxiService.svelte';
 
   const MIN_POWER_LEVEL = 1;
   const MAX_POWER_LEVEL = 145;
@@ -36,7 +37,6 @@
 
     const taxiManager = taxiManagers.get(activeAccount.accountId);
     const accountSettings = customTaxiSettings.find(settings => settings.accountId === activeAccount.accountId);
-    console.log('TaxiManager', customTaxiSettings);
     if (!taxiManager || !accountSettings) return;
 
     taxiManager.availableStatus = accountSettings.availableStatus || taxiManager.availableStatus;
@@ -115,7 +115,12 @@
   });
 </script>
 
-<CenteredPageContent class="!w-112" description="Play STW missions that are above your power level." title="Taxi Service">
+<CenteredPageContent
+  class="!w-112"
+  description="Play STW missions that are above your power level."
+  docsComponent={TaxiServiceTutorial}
+  title="Taxi Service"
+>
   <Alert
     color="yellow"
     icon={AlertTriangleIcon}

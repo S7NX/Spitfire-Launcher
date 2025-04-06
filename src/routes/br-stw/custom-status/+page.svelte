@@ -4,6 +4,7 @@
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import CustomStatusTutorial from '$components/docs/tutorials/CustomStatus.svelte';
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
@@ -43,7 +44,11 @@
   }
 </script>
 
-<CenteredPageContent description="Set a custom status that will be displayed to your friends. Restart the launcher to reset the status." title="Custom Status">
+<CenteredPageContent
+  description="Set a custom status that will be displayed to your friends. Restart the launcher to reset the status."
+  docsComponent={CustomStatusTutorial}
+  title="Custom Status"
+>
   <form class="flex flex-col gap-y-4" onsubmit={setCustomStatus}>
     <Input
       placeholder="Enter your custom status"

@@ -48,7 +48,7 @@
     <Dialog.Content
       {...contentProps}
       class={cn(
-        'rounded-xl bg-background shadow-popover',
+        'rounded-xl bg-background shadow-popover overflow-y-auto max-h-[calc(100vh-2rem)]',
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
         'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -56,28 +56,30 @@
         contentProps?.class
       )}
     >
-      <div class="flex flex-col gap-2 mb-6">
-        {#if title}
-          <Dialog.Title class="text-lg font-semibold tracking-tight"
-          >
-            {#if typeof title === 'string'}
-              {title}
-            {:else}
-              {@render title()}
-            {/if}
-          </Dialog.Title>
-        {/if}
+      {#if title || description}
+        <div class="flex flex-col gap-2 mb-6">
+          {#if title}
+            <Dialog.Title class="text-lg font-semibold tracking-tight"
+            >
+              {#if typeof title === 'string'}
+                {title}
+              {:else}
+                {@render title()}
+              {/if}
+            </Dialog.Title>
+          {/if}
 
-        {#if description}
-          <Dialog.Description class="text-muted-foreground text-sm">
-            {#if typeof description === 'string'}
-              {description}
-            {:else}
-              {@render description()}
-            {/if}
-          </Dialog.Description>
-        {/if}
-      </div>
+          {#if description}
+            <Dialog.Description class="text-muted-foreground text-sm">
+              {#if typeof description === 'string'}
+                {description}
+              {:else}
+                {@render description()}
+              {/if}
+            </Dialog.Description>
+          {/if}
+        </div>
+      {/if}
 
       {@render children?.()}
 
