@@ -22,7 +22,7 @@ export default class Authentication {
     accessToken?: string,
     bypassCache = false
   ) {
-    const cache = getAccessTokenFromCache(deviceAuthData.accountId);
+    const cache = Authentication.getAccessTokenFromCache(deviceAuthData.accountId);
     accessToken ??= cache?.access_token;
 
     if (!accessToken) return (await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false)).access_token;
@@ -52,7 +52,7 @@ export default class Authentication {
   }
 
   static async getAccessTokenUsingDeviceAuth(deviceAuthData: DeviceAuthData, useCache = true, tokenType: EpicTokenType = 'eg1') {
-    const cachedAccessToken = useCache && getAccessTokenFromCache(deviceAuthData.accountId);
+    const cachedAccessToken = useCache && Authentication.getAccessTokenFromCache(deviceAuthData.accountId);
     if (cachedAccessToken) return cachedAccessToken;
 
     try {
@@ -66,7 +66,7 @@ export default class Authentication {
         }).toString()
       }).json();
 
-      updateAccessTokenCache(deviceAuthData.accountId, accessTokenData);
+      Authentication.updateAccessTokenCache(deviceAuthData.accountId, accessTokenData);
 
       return accessTokenData;
     } catch (error) {
@@ -147,21 +147,21 @@ export default class Authentication {
       }
     }).json();
   }
-}
 
-function getAccessTokenFromCache(accountId: string) {
-  const accessTokenData = get(accessTokenCache)?.[accountId];
-  const isExpired = !accessTokenData || new Date(accessTokenData.expires_at).getTime() < Date.now();
-  return isExpired ? null : accessTokenData;
-}
+  private static getAccessTokenFromCache(accountId: string) {
+    const accessTokenData = get(accessTokenCache)?.[accountId];
+    const isExpired = !accessTokenData || new Date(accessTokenData.expires_at).getTime() < Date.now();
+    return isExpired ? null : accessTokenData;
+  }
 
-function updateAccessTokenCache(accountId: string, response: EpicOAuthData) {
-  if (!response.account_id || !response.access_token || !response.expires_in) return;
+  private static updateAccessTokenCache(accountId: string, response: EpicOAuthData) {
+    if (!response.account_id || !response.access_token || !response.expires_in) return;
 
-  accessTokenCache.update((cache) => {
-    return {
-      ...cache,
-      [accountId]: response
-    };
-  });
+    accessTokenCache.update((cache) => {
+      return {
+        ...cache,
+        [accountId]: response
+      };
+    });
+  }
 }
