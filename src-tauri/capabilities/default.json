@@ -80,6 +80,15 @@
               "validator": "-epicuserid=[a-z0-9]{32}"
             }
           ]
+        },
+        {
+          "name": "kill-fortnite",
+          "cmd": "taskkill",
+          "args": [
+            "/IM",
+            "FortniteClient-Win64-Shipping.exe",
+            "/F"
+          ]
         }
       ]
     },
