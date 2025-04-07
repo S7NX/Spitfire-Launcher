@@ -2,44 +2,13 @@ import type { PartyData } from '$types/game/party';
 import { SvelteMap } from 'svelte/reactivity';
 import { writable } from 'svelte/store';
 import type { AccountData, AccountStoreData } from '$types/accounts';
-import { browser } from '$app/environment';
 import type { ParsedWorldInfo } from '$types/game/stw/worldInfo';
 import type { EpicOAuthData } from '$types/game/authorizations';
 import type { AutomationSetting } from '$types/settings';
 import type { AutomationAccount } from '$lib/core/managers/automation/autoKickBase';
 import type { SpitfireShop } from '$types/game/shop';
 
-type Theme = 'light' | 'dark';
-
-const defaultTheme: Theme = 'dark';
-export const theme = writable(getTheme());
-
-function getTheme() {
-  if (!browser) return defaultTheme;
-
-  const storedTheme = localStorage.getItem('theme') as Theme;
-  const theme = storedTheme || defaultTheme;
-  const rootClasslist = document.documentElement.classList;
-
-  rootClasslist.remove('light', 'dark');
-  rootClasslist.add(theme);
-
-  return theme;
-}
-
-theme.subscribe((theme) => {
-  if (!browser) return;
-
-  localStorage.setItem('theme', theme);
-
-  const rootClasslist = document.documentElement.classList;
-  rootClasslist.remove('light', 'dark');
-
-  rootClasslist.add(theme);
-});
-
 export const activeAccountId = writable<string | null>();
-
 export const accountsStore = writable<{
   activeAccount: AccountData | null,
   allAccounts: AccountData[]

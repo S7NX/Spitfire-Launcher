@@ -4,7 +4,6 @@
   import { platform } from '@tauri-apps/plugin-os';
   import LaunchGame from '$components/header/LaunchGame.svelte';
   import AccountSwitcher from '$components/header/AccountSwitcher.svelte';
-  import ThemeSwitcher from '$components/header/ThemeSwitcher.svelte';
   import SettingsModal from '$components/settings/SettingsModal.svelte';
   import SidebarBurger from '$components/header/SidebarBurger.svelte';
   import MinusIcon from 'lucide-svelte/icons/minus';
@@ -39,7 +38,6 @@
     {/if}
 
     <AccountSwitcher/>
-    <ThemeSwitcher/>
     <SettingsModal/>
     <SidebarBurger/>
   </div>
