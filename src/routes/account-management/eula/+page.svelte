@@ -52,15 +52,15 @@
         const exchangeData = await Authentication.getExchangeCodeUsingAccessToken(accessToken);
         const launcherAccessTokenData = await Authentication.getAccessTokenUsingExchangeCode(exchangeData.code, launcherAppClient2);
         await Authentication.getExchangeCodeUsingAccessToken(launcherAccessTokenData.access_token);
-
-        const gameEULAData = await EULAManager.check(account).catch(() => null);
-        if (gameEULAData) await EULAManager.accept(account, gameEULAData.version).catch(() => null);
       } catch (error) {
         if (!(error instanceof EpicAPIError)) return;
 
         if (error.errorCode === 'errors.com.epicgames.oauth.corrective_action_required' && error.continuationUrl) {
           status.data.acceptLink = error.continuationUrl;
         }
+      } finally {
+        const gameEULAData = await EULAManager.check(account).catch(() => null);
+        if (gameEULAData) await EULAManager.accept(account, gameEULAData.version).catch(() => null);
       }
     }));
 

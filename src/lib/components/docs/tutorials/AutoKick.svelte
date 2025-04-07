@@ -21,5 +21,5 @@
     </li>
   </ul>
 
-  <YoutubeVideoEmbed title="Auto-Kick Tutorial" videoId="m7m0UQVTpcY"/>
+  <YoutubeVideoEmbed title="Auto-Kick Tutorial" videoId="jkQYdWAARBg"/>
 </BaseModal>
