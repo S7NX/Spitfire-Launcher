@@ -61,8 +61,7 @@
   import { onMount } from 'svelte';
   import { customizableMenuStore } from '$lib/stores';
 
-  let startingPage = $state<string>();
-  let menuSettings = $derived($customizableMenuStore);
+  let startingPage = $state('/');
 
   const categories = $state(sidebarCategories);
   const externalLinks = [
@@ -87,7 +86,7 @@
   }
 
   function getItemVisibility(key: string) {
-    return menuSettings[key] !== false;
+    return $customizableMenuStore[key] !== false;
   }
 
   onMount(() => {
