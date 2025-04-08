@@ -8,6 +8,7 @@
   import type { ClassValue } from 'svelte/elements';
 
   type Props = WithoutChildren<Select.RootProps> & {
+    id?: string;
     items: { label: string; value: string; disabled?: boolean }[];
     maxSelections?: number;
     contentProps?: WithoutChildren<Select.ContentProps>;
@@ -16,6 +17,7 @@
   };
 
   let {
+    id,
     open = $bindable(false),
     value = $bindable(),
     items,
@@ -44,10 +46,12 @@
 
 <Select.Root bind:open bind:value={value as never} {...restProps}>
   <Select.Trigger
+    {id}
     class={cn(
       'border p-2 rounded-lg flex items-center min-w-52 whitespace-nowrap overflow-hidden peer disabled:cursor-not-allowed disabled:opacity-50',
       triggerClass
-    )}>
+    )}
+  >
     {@render trigger(label)}
   </Select.Trigger>
   <Select.Portal>
