@@ -1,9 +1,16 @@
 import { dev } from '$app/environment';
 import config from '$lib/config';
 import { accountDataFileSchema } from '$lib/validations/accounts';
-import { allSettingsSchema, automationSettingsSchema, customizableMenuSettingsSchema, deviceAuthsSettingsSchema, taxiSettingsSchema } from '$lib/validations/settings';
+import {
+  allSettingsSchema,
+  automationSettingsSchema,
+  botLobbySettingsSchema,
+  customizableMenuSettingsSchema,
+  deviceAuthsSettingsSchema,
+  taxiSettingsSchema
+} from '$lib/validations/settings';
 import type { AccountDataFile } from '$types/accounts';
-import type { AllSettings, AutomationSettings, CustomizableMenuSettings, DeviceAuthsSettings, TaxiSettings } from '$types/settings';
+import type { AllSettings, AutomationSettings, BotLobbySettings, CustomizableMenuSettings, DeviceAuthsSettings, TaxiSettings } from '$types/settings';
 import { path } from '@tauri-apps/api';
 import { dataDir } from '@tauri-apps/api/path';
 import { exists, mkdir, readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
@@ -39,6 +46,9 @@ export const AUTOMATION_INITIAL_DATA: AutomationSettings = [];
 export const TAXI_FILE_PATH = dev ? 'taxi-dev.json' : 'taxi.json';
 export const TAXI_INITIAL_DATA: TaxiSettings = [];
 
+export const BOT_LOBBY_FILE_PATH = dev ? 'bot-lobby-dev.json' : 'bot-lobby.json';
+export const BOT_LOBBY_INITIAL_DATA: BotLobbySettings = [];
+
 export default class DataStorage {
   private static caches: {
     dataDirectory?: string;
@@ -47,6 +57,7 @@ export default class DataStorage {
     deviceAuthsFile?: DeviceAuthsSettings;
     automationFile?: AutomationSettings;
     taxiFile?: TaxiSettings;
+    botLobbyFile?: BotLobbySettings;
   } = {};
 
   static async getAccountsFile(bypassCache = false) {
@@ -101,6 +112,17 @@ export default class DataStorage {
       TAXI_INITIAL_DATA,
       taxiSettingsSchema,
       (data) => { DataStorage.caches.taxiFile = data; }
+    );
+  }
+
+  static async getBotLobbyFile(bypassCache = false) {
+    if (DataStorage.caches.botLobbyFile && !bypassCache) return DataStorage.caches.botLobbyFile;
+
+    return DataStorage.getFile<BotLobbySettings>(
+      BOT_LOBBY_FILE_PATH,
+      BOT_LOBBY_INITIAL_DATA,
+      botLobbySettingsSchema,
+      (data) => { DataStorage.caches.botLobbyFile = data; }
     );
   }
 

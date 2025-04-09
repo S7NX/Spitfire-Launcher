@@ -10,6 +10,7 @@
   import Alert from '$components/ui/Alert.svelte';
   import Label from '$components/ui/Label.svelte';
   import DataStorage, { TAXI_FILE_PATH } from '$lib/core/dataStorage';
+  import BotLobbyManager from '$lib/core/managers/automation/botLobbyManager.svelte';
   import { accountPartiesStore, accountsStore } from '$lib/stores';
   import { nonNull } from '$lib/utils';
   import type { TaxiSettings } from '$types/settings';
@@ -64,7 +65,7 @@
   }
 
   function toggleAutoAccept() {
-    taxiManager.toggleAutoAcceptFriendRequests();
+    taxiManager.handleFriendRequests();
   }
 
   function handleTaxiLevelChange(event: Event & { currentTarget: HTMLInputElement }) {
@@ -117,7 +118,7 @@
 
 <CenteredPageContent
   class="!w-112"
-  description="Play STW missions that are above your power level."
+  description="Turn your account into a taxi and play STW missions that are above your power level."
   docsComponent={TaxiServiceTutorial}
   title="Taxi Service"
 >
@@ -175,7 +176,7 @@
   <div class="flex justify-end">
     <Button
       class="flex items-center gap-x-2"
-      disabled={taxiManager.isStarting || taxiManager.isStopping}
+      disabled={taxiManager.isStarting || taxiManager.isStopping || BotLobbyManager.botLobbyAccountIds.has(activeAccount.accountId)}
       loading={taxiManager.isStarting || taxiManager.isStopping}
       loadingText={taxiManager.isStarting ? 'Starting' : 'Stopping'}
       onclick={() => taxiManager.active ? stopTaxiService() : startTaxiService()}

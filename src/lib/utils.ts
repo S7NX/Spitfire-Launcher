@@ -84,11 +84,13 @@ export function calculateDiscountedShopPrice(accountId: string, item: SpitfireSh
 }
 
 export function formatRemainingDuration(ms: number) {
-  const hours = Math.floor(ms / 3600000);
+  const days = Math.floor(ms / 86400000);
+  const hours = Math.floor((ms % 86400000) / 3600000);
   const minutes = Math.floor((ms % 3600000) / 60000);
   const seconds = Math.floor((ms % 60000) / 1000);
 
   const parts = [];
+  if (days) parts.push(`${days} day${days !== 1 ? 's' : ''}`);
   if (hours) parts.push(`${hours} hour${hours !== 1 ? 's' : ''}`);
   if (minutes) parts.push(`${minutes} minute${minutes !== 1 ? 's' : ''}`);
   if (seconds) parts.push(`${seconds} second${seconds !== 1 ? 's' : ''}`);

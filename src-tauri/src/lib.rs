@@ -1,5 +1,5 @@
-use tauri::{Manager, generate_handler};
 use sysinfo::System;
+use tauri::{generate_handler, Manager};
 
 #[tauri::command]
 fn get_processes() -> Vec<String> {
@@ -9,9 +9,7 @@ fn get_processes() -> Vec<String> {
     system
         .processes()
         .iter()
-        .map(|(_pid, process)| {
-            format!("{} - {}", process.pid(), process.name().to_string_lossy())
-        })
+        .map(|(_pid, process)| format!("{} - {}", process.pid(), process.name().to_string_lossy()))
         .collect()
 }
 
@@ -37,6 +35,7 @@ pub fn run() {
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_websocket::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

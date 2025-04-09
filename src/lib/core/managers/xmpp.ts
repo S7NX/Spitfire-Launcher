@@ -45,7 +45,7 @@ type AccountOptions = {
   accessToken: string;
 };
 
-type Purpose = 'autoKick' | 'taxiService' | 'customStatus';
+type Purpose = 'autoKick' | 'taxiService' | 'botLobby' | 'customStatus';
 
 export default class XMPPManager {
   private static instances: Map<string, XMPPManager> = new Map();
@@ -223,43 +223,33 @@ export default class XMPPManager {
       switch (body.type) {
         case EventNotifications.MemberStateUpdated: {
           const data = body as ServiceEventMemberStateUpdated;
-          const party = accountPartiesStore.get(data.account_id);
-          if (!party) break;
+          const parties = accountPartiesStore.entries().filter(([, party]) => party.id === data.party_id).toArray();
 
-          const partyMember = party.members.find((member) => member.account_id === data.account_id);
-          if (party.id !== data.party_id || !partyMember) {
-            const registeredAccount = get(accountsStore).allAccounts.find((account) => account.accountId === data.account_id);
-            if (!registeredAccount) {
-              accountPartiesStore.delete(data.account_id);
-              break;
+          for (const [accountId, party] of parties) {
+            const partyMember = party.members.find((member) => member.account_id === data.account_id);
+            if (!partyMember) continue;
+
+            party.revision = data.revision;
+            party.updated_at = data.updated_at;
+            partyMember.joined_at = data.joined_at;
+            partyMember.updated_at = data.updated_at;
+
+            if (data.member_state_removed) {
+              for (const state of data.member_state_removed) {
+                delete partyMember.meta[state];
+              }
             }
 
-            const newParty = await PartyManager.get(registeredAccount).catch(() => null);
-            if (!newParty) accountPartiesStore.delete(data.account_id);
-
-            break;
-          }
-
-          party.revision = data.revision;
-          party.updated_at = data.updated_at;
-          partyMember.joined_at = data.joined_at;
-          partyMember.updated_at = data.updated_at;
-
-          if (data.member_state_removed) {
-            for (const state of data.member_state_removed) {
-              delete partyMember.meta[state];
+            if (data.member_state_updated) {
+              partyMember.meta = { ...partyMember.meta, ...data.member_state_updated };
             }
-          }
 
-          if (data.member_state_updated) {
-            partyMember.meta = { ...partyMember.meta, ...data.member_state_updated };
-          }
+            if (data.member_state_overridden) {
+              partyMember.meta = { ...partyMember.meta, ...data.member_state_overridden };
+            }
 
-          if (data.member_state_overridden) {
-            partyMember.meta = { ...partyMember.meta, ...data.member_state_overridden };
+            accountPartiesStore.set(accountId, { ...party });
           }
-
-          accountPartiesStore.set(data.account_id, { ...party });
 
           break;
         }
@@ -325,7 +315,6 @@ export default class XMPPManager {
         }
         case EventNotifications.MemberJoined: {
           const data = body as ServiceEventMemberJoined;
-
           const parties = accountPartiesStore.entries().filter(([, party]) => party.id === data.party_id).toArray();
 
           const newMember: PartyMember = {
@@ -356,8 +345,8 @@ export default class XMPPManager {
         }
         case EventNotifications.MemberNewCaptain: {
           const data = body as ServiceEventMemberNewCaptain;
-
           const parties = accountPartiesStore.entries().filter(([, party]) => party.id === data.party_id).toArray();
+
           for (const [accountId, party] of parties) {
             party.members = party.members.map((member) => ({
               ...member,
@@ -415,8 +404,8 @@ export default class XMPPManager {
 
   dispatchEvent<T extends keyof EventMap>(eventName: T, data: EventMap[T]) {
     if (this.listeners[eventName]) {
-      for (const listener of this.listeners[eventName]!) {
-        listener(data);
+      for (let i = 0; i < this.listeners[eventName].length; i++) {
+        this.listeners[eventName][i](data);
       }
     }
   }

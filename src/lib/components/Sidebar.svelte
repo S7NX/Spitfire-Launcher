@@ -27,6 +27,7 @@
       items: [
         { key: 'autoKick', name: 'Auto-Kick', href: '/br-stw/auto-kick' },
         { key: 'taxiService', name: 'Taxi Service', href: '/br-stw/taxi-service' },
+        { key: 'botLobby', name: 'Bot Lobby', href: '/br-stw/bot-lobby' },
         { key: 'customStatus', name: 'Custom Status', href: '/br-stw/custom-status' },
         { key: 'partyManagement', name: 'Party', href: '/br-stw/party' },
         { key: 'serverStatus', name: 'Server Status', href: '/br-stw/server-status' },

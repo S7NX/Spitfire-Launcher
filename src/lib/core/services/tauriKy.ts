@@ -10,8 +10,13 @@ const tauriKy = ky.create({
     const request = new Request(input, options);
     const headers = new Headers(request.headers);
 
-    const userAgent = await Manifest.getUserAgent();
-    headers.set('User-Agent', userAgent);
+    if (!headers.has('x-user-agent')) {
+      const userAgent = await Manifest.getUserAgent();
+      headers.set('User-Agent', userAgent);
+    } else {
+      headers.set('User-Agent', request.headers.get('x-user-agent')!);
+      headers.delete('x-user-agent');
+    }
 
     const response = await fetch(request.url, {
       method: request.method,

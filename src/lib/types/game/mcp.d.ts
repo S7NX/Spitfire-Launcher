@@ -357,13 +357,14 @@ export type CommonCoreProfileAttributes = {
     num_received: number;
   };
   ban_status?: {
-    banStartTimeUtc: string;
-    banDurationDays: number;
     bBanHasStarted: boolean;
     banReasons?: string[];
+    banDurationDays: number;
     competitiveBanReason?: string;
-    exploitProgramName?: string;
     additionalInfo?: string;
+    exploitProgramName?: string;
+    banStartTimeUtc: string;
+    bRequiresUserAck: boolean;
   };
 };
 
