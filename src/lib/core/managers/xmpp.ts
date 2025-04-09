@@ -19,6 +19,7 @@ import type {
   ServiceEventPartyPing,
   ServiceEventPartyUpdated
 } from '$types/game/events';
+import type { Presence } from 'stanza/protocol';
 import { get } from 'svelte/store';
 
 type EventMap = {
@@ -52,6 +53,7 @@ export default class XMPPManager {
   public connection?: XMPP.Agent;
   private listeners: { [K in keyof EventMap]?: Array<(data: EventMap[K]) => void> } = {};
   private purposes: Set<Purpose>;
+  private heartbeatInterval?: number;
 
   private reconnectInterval?: number;
   private intentionalDisconnect = false;
@@ -131,9 +133,15 @@ export default class XMPPManager {
 
   disconnect() {
     this.intentionalDisconnect = true;
+
     if (this.reconnectInterval) {
       clearInterval(this.reconnectInterval);
       this.reconnectInterval = undefined;
+    }
+
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval);
+      this.heartbeatInterval = undefined;
     }
 
     this.dispatchEvent(ServiceEvents.Disconnected, undefined);
@@ -156,22 +164,22 @@ export default class XMPPManager {
     if (!this.purposes.size) this.disconnect();
   }
 
-  private tryReconnect() {
+  private async tryReconnect() {
     if (this.intentionalDisconnect || this.reconnectAttempts >= this.maxReconnectAttempts) return;
 
-    this.connect()
-      .then(() => {
-        if (this.reconnectInterval) {
-          clearInterval(this.reconnectInterval);
-          this.reconnectInterval = undefined;
-        }
+    try {
+      await this.connect();
 
-        this.reconnectAttempts = 0;
-      })
-      .catch(error => {
-        console.error(error);
-        this.reconnectAttempts++;
-      });
+      if (this.reconnectInterval) {
+        clearInterval(this.reconnectInterval);
+        this.reconnectInterval = undefined;
+      }
+
+      this.reconnectAttempts = 0;
+    } catch (error) {
+      console.error(error);
+      this.reconnectAttempts++;
+    }
   }
 
   private setupEvents() {
@@ -191,12 +199,12 @@ export default class XMPPManager {
       }
     });
 
-    this.connection.on('disconnected', () => {
+    this.connection.on('disconnected', async () => {
       this.dispatchEvent(ServiceEvents.Disconnected, undefined);
 
       if (!this.intentionalDisconnect && !this.reconnectInterval) {
         this.reconnectInterval = window.setInterval(() => this.tryReconnect(), 5000);
-        this.tryReconnect();
+        await this.tryReconnect();
       }
     });
 
@@ -368,14 +376,30 @@ export default class XMPPManager {
   setStatus(status: string, onlineType: 'online' | 'away' | 'chat' | 'dnd' | 'xa' = 'online') {
     if (!this.connection) throw new Error('Connection not established');
 
-    return this.connection.sendPresence({
+    const presenceData: Presence = {
       status: JSON.stringify({
         Status: status,
         bIsPlaying: false,
         bIsJoinable: false
       }),
       show: onlineType === 'online' ? undefined : onlineType
-    });
+    };
+
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval);
+    }
+
+    this.heartbeatInterval = window.setInterval(() => {
+      if (!this.connection) {
+        clearInterval(this.heartbeatInterval!);
+        this.heartbeatInterval = undefined;
+        return;
+      }
+
+      this.connection.sendPresence(presenceData);
+    }, 15000);
+
+    return this.connection.sendPresence(presenceData);
   }
 
   addEventListener<T extends keyof EventMap>(
