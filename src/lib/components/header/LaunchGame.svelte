@@ -131,10 +131,10 @@
   variant={isGameRunning ? 'danger' : 'epic'}
 >
   {#if isGameRunning}
-    <span class="hidden xs:block">Stop Fortnite</span>
+    <span class="hidden xs:block">Stop Game</span>
     <CircleStopIcon class="size-6 xs:hidden block"/>
   {:else}
-    <span class="hidden xs:block">Launch Fortnite</span>
+    <span class="hidden xs:block">Launch Game</span>
     <GamePad2Icon class="size-6 xs:hidden block"/>
   {/if}
 </Button>
