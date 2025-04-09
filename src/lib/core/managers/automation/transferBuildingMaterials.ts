@@ -17,15 +17,7 @@ type BuildingMaterialData = {
 const MAX_BUILDING_MATERIALS = 5000;
 
 export default async function transferBuildingMaterials(account: AccountData) {
-  await new Promise((resolve) => setTimeout(resolve, 3500));
-
-  const storageProfile = await MCPManager.queryProfile(account, 'outpost0');
-  const profile = storageProfile.profileChanges[0].profile;
-
-  const ownedBuildingMaterials = Object.entries(profile.items)
-    .filter(([, item]) => ['WorldItem:wooditemdata', 'WorldItem:stoneitemdata', 'WorldItem:metalitemdata'].includes(item.templateId));
-
-  if (!ownedBuildingMaterials.length) return;
+  await new Promise((resolve) => setTimeout(resolve, 1500));
 
   const wood: BuildingMaterialData = {
     total: 0,
@@ -42,13 +34,19 @@ export default async function transferBuildingMaterials(account: AccountData) {
     items: []
   };
 
-  for (const [itemId, itemData] of ownedBuildingMaterials) {
-    const buildingMaterialArrays: Record<string, BuildingMaterialData> = {
-      'WorldItem:wooditemdata': wood,
-      'WorldItem:stoneitemdata': stone,
-      'WorldItem:metalitemdata': metal
-    };
+  const buildingMaterialArrays: Record<string, BuildingMaterialData> = {
+    'WorldItem:wooditemdata': wood,
+    'WorldItem:stoneitemdata': stone,
+    'WorldItem:metalitemdata': metal
+  };
 
+  const storageProfile = await MCPManager.queryProfile(account, 'outpost0');
+  const profile = storageProfile.profileChanges[0].profile;
+  const ownedBuildingMaterials = Object.entries(profile.items).filter(([, item]) => Object.keys(buildingMaterialArrays).includes(item.templateId));
+
+  if (!ownedBuildingMaterials.length) return;
+
+  for (const [itemId, itemData] of ownedBuildingMaterials) {
     const buildingMaterial = buildingMaterialArrays[itemData.templateId];
     const quantity = calculateMaterial(itemData, buildingMaterial.total);
 
@@ -66,10 +64,7 @@ export default async function transferBuildingMaterials(account: AccountData) {
   });
 }
 
-function calculateMaterial(
-  itemData: ProfileItem,
-  total: number
-) {
+function calculateMaterial(itemData: ProfileItem, total: number) {
   const tempTotalSum = total + itemData.quantity;
   const tempRemoveOverflow = MAX_BUILDING_MATERIALS - total;
   return tempTotalSum <= MAX_BUILDING_MATERIALS
