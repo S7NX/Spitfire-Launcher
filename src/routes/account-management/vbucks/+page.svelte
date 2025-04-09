@@ -58,7 +58,7 @@
     <Button
       disabled={!selectedAccounts?.length || isFetching}
       loading={isFetching}
-      loadingText="Loading V-Bucks information"
+      loadingText="Loading V-Bucks Information"
       variant="epic"
     >
       Get V-Bucks Information
