@@ -55,9 +55,8 @@
 
     try {
       const connection = await XMPPManager.create(activeAccount, 'customStatus');
-      await connection.connect();
 
-      connection.setStatus('');
+      connection.resetStatus();
       connection.removePurpose('customStatus');
       statusSetAccounts.delete(activeAccount.accountId);
 

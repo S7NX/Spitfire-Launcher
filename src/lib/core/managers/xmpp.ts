@@ -402,6 +402,23 @@ export default class XMPPManager {
     return this.connection.sendPresence(presenceData);
   }
 
+  resetStatus() {
+    if (!this.connection) throw new Error('Connection not established');
+
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval);
+      this.heartbeatInterval = undefined;
+    }
+
+    return this.connection.sendPresence({
+      status: JSON.stringify({
+        Status: '',
+        bIsPlaying: false,
+        bIsJoinable: false
+      })
+    });
+  }
+
   addEventListener<T extends keyof EventMap>(
     eventName: T,
     listener: (data: EventMap[T]) => void,
