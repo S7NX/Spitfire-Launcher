@@ -32,8 +32,10 @@
   });
 
   function getPerkupReward(mission: WorldParsedMission) {
-    return mission.rewards.find(({ itemId }) => itemId.includes('alteration_upgrade_sr'))
-      || mission.alert?.rewards.find(({ itemId }) => itemId.includes('alteration_upgrade_sr'));
+    const normalReward = mission.rewards.find(({ itemId }) => itemId.includes('alteration_upgrade_sr'));
+    const alertReward = mission.alert?.rewards.find(({ itemId }) => itemId.includes('alteration_upgrade_sr'));
+
+    return normalReward || (alertReward ? { ...alertReward!, isAlert: true } : null);
   }
 
   function getVbucksReward(mission: WorldParsedMission) {
@@ -92,7 +94,7 @@
 
                 {#if reward.quantity > 1}
                   <span class="font-bold">
-                    {reward.quantity.toLocaleString()}
+                    {reward.quantity.toLocaleString()}{'isAlert' in reward ? '' : 'x'}
                   </span>
                 {/if}
 

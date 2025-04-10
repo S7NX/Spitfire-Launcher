@@ -196,7 +196,7 @@ export const ZoneNames = Object.freeze({
   quest: 'Quest'
 } as const);
 
-export const ZoneGroups = Object.freeze([
+export const GroupZones = Object.freeze([
   'atlas',
   'atlas-c2',
   'atlas-c3',

@@ -9,7 +9,7 @@ import {
   Worlds,
   WorldStormKingZones,
   ZoneCategories,
-  ZoneGroups
+  GroupZones
 } from '$lib/constants/stw/worldInfo';
 import type { ParsedModifierData, ParsedResourceData, RarityType } from '$types/game/stw/resources';
 import { ingredients, RarityNames, RarityTypes, resources, survivors, survivorsMythicLeads, traps } from '$lib/constants/stw/resources';
@@ -269,19 +269,20 @@ export default class WorldInfoManager {
   }
 
   private static parseZone(missionGenerator: string) {
-    const current = Object.entries(ZoneCategories).find(([, patterns]) =>
+    const category = Object.entries(ZoneCategories).find(([, patterns]) =>
       patterns.some((pattern) => missionGenerator.includes(pattern))
     );
 
-    const key = current?.[0];
+    const key = category?.[0];
     const isGroup = missionGenerator.toLowerCase().includes('group');
 
     return {
-      imageUrl: ZoneGroups.includes(key as keyof typeof ZoneCategories)
-        ? isGroup
-          ? `/assets/world/${key}-group.png`
-          : `/assets/world/${key}.png`
-        : '/assets/world/quest.png',
+      imageUrl:
+        key ?
+          isGroup && GroupZones.includes(key as keyof typeof ZoneCategories)
+            ? `/assets/world/${key}-group.png`
+            : `/assets/world/${key}.png`
+          : '/assets/world/quest.png',
       type: key as keyof typeof ZoneCategories | null
     };
   }
