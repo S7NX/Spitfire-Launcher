@@ -1,5 +1,6 @@
-import type { AccountData } from '$types/accounts';
+import DataStorage from '$lib/core/dataStorage';
 import MCPManager from '$lib/core/managers/mcp';
+import type { AccountData } from '$types/accounts';
 import type { ProfileItem } from '$types/game/mcp';
 
 type MCPStorageTransferItem = {
@@ -17,7 +18,9 @@ type BuildingMaterialData = {
 const MAX_BUILDING_MATERIALS = 5000;
 
 export default async function transferBuildingMaterials(account: AccountData) {
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+  const settings = await DataStorage.getSettingsFile();
+  const delaySeconds = settings.app?.claimRewardsDelay;
+  await new Promise((resolve) => setTimeout(resolve, (delaySeconds || 1.5) * 1000));
 
   const wood: BuildingMaterialData = {
     total: 0,
@@ -43,7 +46,6 @@ export default async function transferBuildingMaterials(account: AccountData) {
   const storageProfile = await MCPManager.queryProfile(account, 'outpost0');
   const profile = storageProfile.profileChanges[0].profile;
   const ownedBuildingMaterials = Object.entries(profile.items).filter(([, item]) => Object.keys(buildingMaterialArrays).includes(item.templateId));
-
   if (!ownedBuildingMaterials.length) return;
 
   for (const [itemId, itemData] of ownedBuildingMaterials) {

@@ -1,7 +1,7 @@
 <script lang="ts">
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { tv, type VariantProps } from 'tailwind-variants';
-  import { cn } from '$lib/utils';
+  import { cn } from '$lib/utils/util';
   import type { Snippet } from 'svelte';
   import type { ClassValue, HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 

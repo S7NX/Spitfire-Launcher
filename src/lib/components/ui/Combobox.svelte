@@ -5,7 +5,7 @@
   import ChevronsUpDownIcon from 'lucide-svelte/icons/chevrons-up-down';
   import CheckIcon from 'lucide-svelte/icons/check';
   import SearchIcon from 'lucide-svelte/icons/search';
-  import { cn } from '$lib/utils';
+  import { cn } from '$lib/utils/util';
 
   type Item = { value: string; label: string };
 

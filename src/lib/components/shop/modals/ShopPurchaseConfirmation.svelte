@@ -5,7 +5,7 @@
   import { toast } from 'svelte-sonner';
   import { accountDataStore, accountsStore, activeAccountId, ownedItemsStore } from '$lib/stores';
   import MCPManager from '$lib/core/managers/mcp';
-  import { calculateDiscountedShopPrice, nonNull } from '$lib/utils';
+  import { calculateDiscountedShopPrice, nonNull } from '$lib/utils/util';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
   import { derived as jsDerived } from 'svelte/store';
 

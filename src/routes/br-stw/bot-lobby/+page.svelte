@@ -17,7 +17,7 @@
   import Switch from '$components/ui/Switch.svelte';
   import DataStorage, { BOT_LOBBY_FILE_PATH } from '$lib/core/dataStorage';
   import { accountsStore } from '$lib/stores';
-  import { formatRemainingDuration, getResolvedResults, nonNull } from '$lib/utils';
+  import { formatRemainingDuration, getResolvedResults, nonNull } from '$lib/utils/util';
   import type { BotLobbySettings } from '$types/settings';
   import AlertTriangleIcon from 'lucide-svelte/icons/alert-triangle';
   import XIcon from 'lucide-svelte/icons/x';

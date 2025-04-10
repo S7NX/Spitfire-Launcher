@@ -13,7 +13,8 @@
   import Switch from '$components/ui/Switch.svelte';
   import Tabs from '$components/ui/Tabs.svelte';
   import { accountPartiesStore, accountsStore } from '$lib/stores';
-  import { nonNull } from '$lib/utils';
+  import { nonNull } from '$lib/utils/util';
+  import claimRewards from '$lib/utils/autoKick/claimRewards';
   import { Separator } from 'bits-ui';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import LogOutIcon from 'lucide-svelte/icons/log-out';
@@ -25,7 +26,6 @@
   import { SvelteSet } from 'svelte/reactivity';
   import { toast } from 'svelte-sonner';
   import type { AccountData } from '$types/accounts';
-  import RewardClaimer from '$lib/core/managers/automation/rewardClaimer';
   import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
 
   const allAccounts = $derived(nonNull($accountsStore.allAccounts));
@@ -160,7 +160,7 @@
 
       const account = allAccounts.find((account) => account.accountId === memberId);
       const isAutoClaimEnabled = AutoKickBase.getAccountById(memberId)?.settings.autoClaim || false;
-      if (account && !isAutoClaimEnabled && shouldClaimRewards) await RewardClaimer.claimRewards(account, true);
+      if (account && !isAutoClaimEnabled && shouldClaimRewards) await claimRewards(account, true);
     } catch (error) {
       console.error(error);
       toast.error('Failed to kick member');
@@ -204,7 +204,7 @@
         if (!claimOnly) await PartyManager.leave(account, partyId);
 
         const isAutoClaimEnabled = AutoKickBase.getAccountById(accountId)?.settings.autoClaim || false;
-        if (claimOnly || (!isAutoClaimEnabled && shouldClaimRewards)) await RewardClaimer.claimRewards(account, true);
+        if (claimOnly || (!isAutoClaimEnabled && shouldClaimRewards)) await claimRewards(account, true);
       }));
 
       toast.success(accountId

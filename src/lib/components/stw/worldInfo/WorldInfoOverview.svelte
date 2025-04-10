@@ -8,7 +8,7 @@
   import WorldInfoSectionAccordion from '$components/stw/worldInfo/WorldInfoSectionAccordion.svelte';
   import { accountsStore, worldInfoCache } from '$lib/stores';
   import { WorldPowerLevels, Worlds } from '$lib/constants/stw/worldInfo';
-  import { isLegendaryOrMythicSurvivor } from '$lib/utils';
+  import { isLegendaryOrMythicSurvivor } from '$lib/utils/util';
 
   const activeAccount = $derived($accountsStore.activeAccount);
 

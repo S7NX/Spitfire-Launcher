@@ -1,7 +1,7 @@
 <script lang="ts">
   import { AlertDialog } from 'bits-ui';
   import { tv, type VariantProps } from 'tailwind-variants';
-  import { cn } from '$lib/utils';
+  import { cn } from '$lib/utils/util';
   import type { Snippet } from 'svelte';
 
   const dialogButtonVariants = tv({

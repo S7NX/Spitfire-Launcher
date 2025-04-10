@@ -7,7 +7,7 @@
   import MCPManager from '$lib/core/managers/mcp';
   import ShopManager from '$lib/core/managers/shop';
   import { accountDataStore, accountsStore, brShopStore, ownedItemsStore } from '$lib/stores';
-  import { calculateVbucks, formatRemainingDuration, getResolvedResults } from '$lib/utils';
+  import { calculateVbucks, formatRemainingDuration, getResolvedResults } from '$lib/utils/util';
   import type { AccountStoreData } from '$types/accounts';
   import type { SpitfireShopFilter, SpitfireShopSection } from '$types/game/shop';
   import { onMount } from 'svelte';

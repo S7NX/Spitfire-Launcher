@@ -7,7 +7,7 @@ import { SvelteSet } from 'svelte/reactivity';
 import homebaseRatingMapping from '$lib/data/homebaseRatingMapping.json';
 import { accountPartiesStore } from '$lib/stores';
 import { toast } from 'svelte-sonner';
-import { evaluateCurve } from '$lib/utils';
+import { evaluateCurve } from '$lib/utils/util';
 import type { AccountData } from '$types/accounts';
 import type {
   ServiceEventFriendRequest,

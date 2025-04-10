@@ -6,7 +6,7 @@
   import Manifest from '$lib/core/manifest';
   import Process from '$lib/core/system/process';
   import { accountsStore } from '$lib/stores';
-  import { shouldErrorBeIgnored } from '$lib/utils';
+  import { shouldErrorBeIgnored } from '$lib/utils/util';
   import { path } from '@tauri-apps/api';
   import { exists } from '@tauri-apps/plugin-fs';
   import { Command } from '@tauri-apps/plugin-shell';

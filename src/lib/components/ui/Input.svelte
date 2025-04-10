@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tv, type VariantProps } from 'tailwind-variants';
-  import { cn } from '$lib/utils';
+  import { cn } from '$lib/utils/util';
   import type { HTMLInputAttributes } from 'svelte/elements';
 
   const inputVariants = tv({

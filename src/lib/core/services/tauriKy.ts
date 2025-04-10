@@ -1,7 +1,7 @@
 import ky from 'ky';
 import { fetch } from '@tauri-apps/plugin-http';
 import Manifest from '$lib/core/manifest';
-import { isEpicApiError } from '$lib/utils';
+import { isEpicApiError } from '$lib/utils/util';
 import EpicAPIError from '$lib/exceptions/EpicAPIError';
 
 // Used to avoid any CORS issues

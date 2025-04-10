@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { calculateDiscountedShopPrice } from '$lib/utils';
+  import { calculateDiscountedShopPrice } from '$lib/utils/util';
   import type { SpitfireShopItem } from '$types/game/shop';
   import { ItemColors } from '$lib/constants/itemColors';
   import { activeAccountId, ownedItemsStore } from '$lib/stores';

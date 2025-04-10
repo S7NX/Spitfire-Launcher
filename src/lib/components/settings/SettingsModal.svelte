@@ -3,7 +3,7 @@
   import AppSettings from '$components/settings/categories/AppSettings.svelte';
   import CustomizableMenu from '$components/settings/categories/CustomizableMenu.svelte';
   import SettingsIcon from 'lucide-svelte/icons/settings';
-  import { cn } from '$lib/utils';
+  import { cn } from '$lib/utils/util';
   import ScrollArea from '$components/ui/ScrollArea.svelte';
 
   const categories = [

@@ -1,4 +1,4 @@
-import { checkLogin } from '$lib/utils';
+import { checkLogin } from '$lib/utils/util';
 
 export async function load() {
   checkLogin();

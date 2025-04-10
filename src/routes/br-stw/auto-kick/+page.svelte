@@ -5,7 +5,7 @@
   import Button from '$components/ui/Button.svelte';
   import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
   import { accountsStore, automationStore } from '$lib/stores';
-  import { cn, nonNull } from '$lib/utils';
+  import { cn, nonNull } from '$lib/utils/util';
   import Switch from '$components/ui/Switch.svelte';
   import Trash2Icon from 'lucide-svelte/icons/trash-2';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';

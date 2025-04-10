@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fly } from 'svelte/transition';
-  import { cn } from '$lib/utils';
+  import { cn } from '$lib/utils/util';
   import Button from '$components/ui/Button.svelte';
   import CheckIcon from 'lucide-svelte/icons/check';
   import XIcon from 'lucide-svelte/icons/x';

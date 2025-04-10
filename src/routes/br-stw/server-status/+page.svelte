@@ -34,7 +34,7 @@
   import Button from '$components/ui/Button.svelte';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
-  import { formatRemainingDuration, getResolvedResults } from '$lib/utils';
+  import { formatRemainingDuration, getResolvedResults } from '$lib/utils/util';
 
   $effect(() => {
     if (notifyUser) {

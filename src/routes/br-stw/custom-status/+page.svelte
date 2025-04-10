@@ -15,7 +15,7 @@
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
+  import { nonNull, shouldErrorBeIgnored } from '$lib/utils/util';
   import XMPPManager from '$lib/core/managers/xmpp';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));

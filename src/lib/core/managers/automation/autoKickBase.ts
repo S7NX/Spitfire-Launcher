@@ -3,12 +3,11 @@ import { get } from 'svelte/store';
 import { accountsStore, automationStore, doingBulkOperations } from '$lib/stores';
 import type { AccountData } from '$types/accounts';
 import type { AutomationSetting, AutomationSettings } from '$types/settings';
-import Authentication from '$lib/core/authentication';
 import XMPPManager from '$lib/core/managers/xmpp';
 import { EventNotifications, type PartyState, ServiceEvents } from '$lib/constants/events';
 import AutoKickManager from '$lib/core/managers/automation/autoKickManager';
-import RewardClaimer from '$lib/core/managers/automation/rewardClaimer';
-import transferBuildingMaterials from '$lib/core/managers/automation/transferBuildingMaterials';
+import claimRewards from '$lib/utils/autoKick/claimRewards';
+import transferBuildingMaterials from '$lib/utils/autoKick/transferBuildingMaterials';
 
 export type AutomationAccount = {
   status: 'LOADING' | 'ACTIVE' | 'INVALID_CREDENTIALS' | 'DISCONNECTED';
@@ -160,7 +159,6 @@ export default class AutoKickBase {
     connection.addEventListener(EventNotifications.MemberDisconnected, async (data) => {
       if (data.account_id !== account.accountId) return;
 
-      AutoKickBase.updateStatus(account.accountId, 'DISCONNECTED');
       autoKickManager.dispose();
     }, { signal });
 
@@ -176,12 +174,12 @@ export default class AutoKickBase {
       if (autoKickManager.matchmakingState.partyState === 'PostMatchmaking' && autoKickManager.matchmakingState.started) {
         const automationAccount = AutoKickBase.getAccountById(account.accountId);
 
-        if (automationAccount?.settings.autoClaim) {
-          await RewardClaimer.claimRewards(account);
+        if (automationAccount?.settings.autoTransferMaterials) {
+          transferBuildingMaterials(account).catch(console.error);
         }
 
-        if (automationAccount?.settings.autoTransferMaterials) {
-          await transferBuildingMaterials(account);
+        if (automationAccount?.settings.autoClaim) {
+          await claimRewards(account);
         }
       }
     }, { signal });

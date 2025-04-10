@@ -6,7 +6,7 @@
   import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
   import GiftIcon from 'lucide-svelte/icons/gift';
   import { accountDataStore, accountsStore } from '$lib/stores';
-  import { nonNull } from '$lib/utils';
+  import { nonNull } from '$lib/utils/util';
   import { toast } from 'svelte-sonner';
   import type { SpitfireShopItem } from '$types/game/shop';
   import MCPManager from '$lib/core/managers/mcp';

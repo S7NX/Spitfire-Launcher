@@ -4,7 +4,7 @@
   import ChevronsUpIcon from 'lucide-svelte/icons/chevrons-up';
   import ChevronsDownIcon from 'lucide-svelte/icons/chevrons-down';
   import type { Snippet } from 'svelte';
-  import { cn } from '$lib/utils';
+  import { cn } from '$lib/utils/util';
   import type { ClassValue } from 'svelte/elements';
 
   type Props = WithoutChildren<Select.RootProps> & {

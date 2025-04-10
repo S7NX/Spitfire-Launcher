@@ -2,7 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import DataStorage from '$lib/core/dataStorage';
 import { accountsStore, activeAccountId, customizableMenuStore } from '$lib/stores';
 import { page } from '$app/state';
-import { getStartingPage } from '$lib/utils';
+import { getStartingPage } from '$lib/utils/util';
 
 export const prerender = true;
 export const ssr = false;

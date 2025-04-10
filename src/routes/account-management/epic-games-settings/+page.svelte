@@ -9,7 +9,7 @@
   import { accountsStore } from '$lib/stores';
   import { openUrl } from '@tauri-apps/plugin-opener';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
+  import { nonNull, shouldErrorBeIgnored } from '$lib/utils/util';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 

@@ -3,8 +3,8 @@ import MatchmakingManager from '$lib/core/managers/matchmaking';
 import { type PartyState, PartyStates } from '$lib/constants/events';
 import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
 import PartyManager from '$lib/core/managers/party';
-import RewardClaimer from '$lib/core/managers/automation/rewardClaimer';
-import transferBuildingMaterials from '$lib/core/managers/automation/transferBuildingMaterials';
+import claimRewards from '$lib/utils/autoKick/claimRewards';
+import transferBuildingMaterials from '$lib/utils/autoKick/transferBuildingMaterials';
 import DataStorage from '$lib/core/dataStorage';
 import { get } from 'svelte/store';
 import { accountsStore } from '$lib/stores';
@@ -15,8 +15,8 @@ type MatchmakingState = {
 };
 
 export default class AutoKickManager {
-  private missionCheckerIntervalInitTimeout: NodeJS.Timeout | null = null;
-  private missionCheckerInterval: NodeJS.Timeout | null = null;
+  private missionCheckerIntervalInitTimeout?: number;
+  private missionCheckerInterval?: number;
 
   public matchmakingState: MatchmakingState = {
     partyState: null,
@@ -28,10 +28,10 @@ export default class AutoKickManager {
   initMissionCheckerIntervalTimeout(timeoutMs?: number) {
     if (this.missionCheckerIntervalInitTimeout) {
       clearTimeout(this.missionCheckerIntervalInitTimeout);
-      this.missionCheckerIntervalInitTimeout = null;
+      this.missionCheckerIntervalInitTimeout = undefined;
     }
 
-    this.missionCheckerIntervalInitTimeout = setTimeout(async () => {
+    this.missionCheckerIntervalInitTimeout = window.setTimeout(async () => {
       await this.initMissionCheckerInterval();
     }, timeoutMs || 10000);
   }
@@ -39,12 +39,12 @@ export default class AutoKickManager {
   async initMissionCheckerInterval() {
     if (this.missionCheckerInterval) {
       clearInterval(this.missionCheckerInterval);
-      this.missionCheckerInterval = null;
+      this.missionCheckerInterval = undefined;
     }
 
     let settings = await DataStorage.getSettingsFile();
 
-    this.missionCheckerInterval = setInterval(async () => {
+    this.missionCheckerInterval = window.setInterval(async () => {
       settings = await DataStorage.getSettingsFile();
 
       const automationSettings = AutoKickBase.getAccountById(this.account.accountId)?.settings;
@@ -84,12 +84,12 @@ export default class AutoKickManager {
         await this.kick();
       }
 
-      if (automationSettings.autoClaim) {
-        await RewardClaimer.claimRewards(this.account);
+      if (automationSettings.autoTransferMaterials) {
+        transferBuildingMaterials(this.account).catch(console.error)
       }
 
-      if (automationSettings.autoTransferMaterials) {
-        await transferBuildingMaterials(this.account);
+      if (automationSettings.autoClaim) {
+        await claimRewards(this.account);
       }
     }, (settings.app?.missionCheckInterval || 5) * 1000);
   }
@@ -113,12 +113,12 @@ export default class AutoKickManager {
   dispose() {
     if (this.missionCheckerInterval) {
       clearInterval(this.missionCheckerInterval);
-      this.missionCheckerInterval = null;
+      this.missionCheckerInterval = undefined;
     }
 
     if (this.missionCheckerIntervalInitTimeout) {
       clearTimeout(this.missionCheckerIntervalInitTimeout);
-      this.missionCheckerIntervalInitTimeout = null;
+      this.missionCheckerIntervalInitTimeout = undefined;
     }
 
     this.matchmakingState = {

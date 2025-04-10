@@ -2,7 +2,7 @@
   import type { Snippet } from 'svelte';
   import { AlertDialog, type WithoutChild } from 'bits-ui';
   import type { ClassValue } from 'svelte/elements';
-  import { cn } from '$lib/utils';
+  import { cn } from '$lib/utils/util';
 
   type Props = AlertDialog.RootProps & {
     trigger?: Snippet;

@@ -16,7 +16,7 @@
   import Button from '$components/ui/Button.svelte';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
   import MCPManager from '$lib/core/managers/mcp';
-  import { calculateVbucks } from '$lib/utils';
+  import { calculateVbucks } from '$lib/utils/util';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
 
   let selectedAccounts = $state<string[]>([]);

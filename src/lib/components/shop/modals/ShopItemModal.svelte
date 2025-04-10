@@ -1,6 +1,6 @@
 <script lang="ts">
   import Tooltip from '$components/ui/Tooltip.svelte';
-  import { calculateDiscountedShopPrice } from '$lib/utils';
+  import { calculateDiscountedShopPrice } from '$lib/utils/util';
   import { Separator } from 'bits-ui';
   import Dialog from '$components/ui/Dialog.svelte';
   import Badge from '$components/ui/Badge.svelte';

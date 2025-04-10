@@ -8,7 +8,7 @@
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
+  import { nonNull, shouldErrorBeIgnored } from '$lib/utils/util';
   import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));

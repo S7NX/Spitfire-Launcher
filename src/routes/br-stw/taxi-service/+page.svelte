@@ -12,7 +12,7 @@
   import DataStorage, { TAXI_FILE_PATH } from '$lib/core/dataStorage';
   import BotLobbyManager from '$lib/core/managers/automation/botLobbyManager.svelte';
   import { accountPartiesStore, accountsStore } from '$lib/stores';
-  import { nonNull } from '$lib/utils';
+  import { nonNull } from '$lib/utils/util';
   import type { TaxiSettings } from '$types/settings';
   import { onMount } from 'svelte';
   import { toast } from 'svelte-sonner';

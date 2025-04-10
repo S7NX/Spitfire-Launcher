@@ -2,7 +2,7 @@
   import { Separator } from 'bits-ui';
   import type { ClassValue } from 'svelte/elements';
   import type { Component, Snippet } from 'svelte';
-  import { cn } from '$lib/utils';
+  import { cn } from '$lib/utils/util';
 
   type Props = {
     title?: string | Snippet;

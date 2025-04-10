@@ -56,7 +56,7 @@
   import { cubicInOut } from 'svelte/easing';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import config from '$lib/config';
-  import { cn, getStartingPage } from '$lib/utils';
+  import { cn, getStartingPage } from '$lib/utils/util';
   import Button from '$components/ui/Button.svelte';
   import { page } from '$app/state';
   import { onMount } from 'svelte';

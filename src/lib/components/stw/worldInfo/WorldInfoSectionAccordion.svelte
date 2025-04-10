@@ -2,7 +2,7 @@
   import Accordion from '$components/ui/Accordion.svelte';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import type { WorldParsedMission } from '$types/game/stw/worldInfo';
-  import { cn, isLegendaryOrMythicSurvivor } from '$lib/utils';
+  import { cn, isLegendaryOrMythicSurvivor } from '$lib/utils/util';
 
   type Props = {
     missions: WorldParsedMission[];

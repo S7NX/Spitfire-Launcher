@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { DropdownMenu, type WithoutChild } from 'bits-ui';
-  import { cn } from '$lib/utils';
+  import { cn } from '$lib/utils/util';
   import { slide } from 'svelte/transition';
   import { cubicInOut } from 'svelte/easing';
   import type { ClassValue } from 'svelte/elements';

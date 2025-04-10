@@ -9,7 +9,7 @@
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import LookupManager from '$lib/core/managers/lookup';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored } from '$lib/utils';
+  import { nonNull, shouldErrorBeIgnored } from '$lib/utils/util';
   import MCPManager from '$lib/core/managers/mcp';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));

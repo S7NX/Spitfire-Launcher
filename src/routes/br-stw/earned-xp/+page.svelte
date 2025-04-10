@@ -16,7 +16,7 @@
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
-  import { getResolvedResults } from '$lib/utils';
+  import { getResolvedResults } from '$lib/utils/util';
   import { doingBulkOperations } from '$lib/stores.js';
   import MCPManager from '$lib/core/managers/mcp';
   import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';

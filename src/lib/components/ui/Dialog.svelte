@@ -2,7 +2,7 @@
   import type { Snippet } from 'svelte';
   import { Dialog, type WithoutChild } from 'bits-ui';
   import XIcon from 'lucide-svelte/icons/x';
-  import { cn } from '$lib/utils';
+  import { cn } from '$lib/utils/util';
   import type { ClassValue } from 'svelte/elements';
 
   type Props = Dialog.RootProps & {
