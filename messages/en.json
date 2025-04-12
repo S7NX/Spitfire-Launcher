@@ -84,7 +84,7 @@
       "itemShop": "Item Shop",
       "earnedXp": "Earned XP",
       "dailyQuests": "Daily Quests",
-      "stwWorldInfo": "STW World Info",
+      "stwMissionAlerts": "STW Mission Alerts",
       "lookupPlayers": "Lookup Players"
     }
   },
@@ -348,9 +348,9 @@
     "failedToStop": "Failed to stop the taxi service",
     "botLobbyActive": "You can't start taxi service while bot lobby is active."
   },
-  "worldInfo": {
+  "stwMissionAlerts": {
     "page": {
-      "title": "World Info"
+      "title": "STW Mission Alerts"
     },
     "tabs": {
       "overview": "Overview",

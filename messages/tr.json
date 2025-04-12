@@ -70,7 +70,7 @@
       "itemShop": "İçerik Mağazası",
       "earnedXp": "Kazanılan TP",
       "dailyQuests": "Günlük Görevler",
-      "stwWorldInfo": "Görev Uyarıları",
+      "stwMissionAlerts": "STW Görev Uyarıları",
       "lookupPlayers": "Oyuncu Ara"
     },
     "worldNames": {
@@ -348,9 +348,9 @@
     "failedToStop": "Taksi hizmeti durdurulamadı",
     "botLobbyActive": "Bot lobisi aktifken taksi hizmeti başlatamazsınız."
   },
-  "worldInfo": {
+  "stwMissionAlerts": {
     "page": {
-      "title": "Dünya Bilgileri"
+      "title": "STW Görev Uyarıları"
     },
     "tabs": {
       "overview": "Genel Bakış",

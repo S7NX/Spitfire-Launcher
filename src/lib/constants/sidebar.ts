@@ -90,7 +90,7 @@ export const SidebarCategories = derived(t, ($t) => [
       },
       {
         key: 'stwWorldInfo',
-        name: $t('sidebar.items.stwWorldInfo'),
+        name: $t('sidebar.items.stwMissionAlerts'),
         href: '/br-stw/stw-world-info'
       },
       {

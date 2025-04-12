@@ -122,7 +122,7 @@
       <div class="grid grid-cols-2 px-4 py-2">
         {#if mission.alert?.rewards?.length}
           <div class="flex flex-col gap-y-1">
-            <h2 class="font-medium">{$t('worldInfo.alertRewards')}</h2>
+            <h2 class="font-medium">{$t('stwMissionAlerts.alertRewards')}</h2>
             <div class="flex flex-col gap-x-1">
               {#each mission.alert.rewards as reward (reward.itemId)}
                 <div class="flex items-center gap-1">
@@ -146,7 +146,7 @@
         {/if}
 
         <div class="flex flex-col gap-y-1">
-          <h2 class="font-medium">{$t('worldInfo.rewards')}</h2>
+          <h2 class="font-medium">{$t('stwMissionAlerts.rewards')}</h2>
           <div class="flex flex-col gap-x-1">
             {#each mission.rewards as reward (reward.itemId)}
               <div class="flex gap-1">

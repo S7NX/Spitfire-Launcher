@@ -72,13 +72,13 @@
         if (shouldErrorBeIgnored(error)) return;
 
         console.error(error);
-        toast.error($t('worldInfo.stwStatsPrivate'));
+        toast.error($t('stwMissionAlerts.stwStatsPrivate'));
       }
     } catch (error) {
       if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error($t('worldInfo.stwStatsPrivate'));
+      toast.error($t('stwMissionAlerts.stwStatsPrivate'));
     } finally {
       isLoading = false;
     }
@@ -90,7 +90,7 @@
     <Input
       class="grow"
       disabled={isLoading}
-      placeholder={$t('worldInfo.search')}
+      placeholder={$t('stwMissionAlerts.search')}
       bind:value={searchQuery}
     />
 
@@ -111,19 +111,19 @@
 
   {#if lookupData}
     {@const kv = [
-      { name: $t('worldInfo.playerInfo.id'), value: lookupData.id },
+      { name: $t('stwMissionAlerts.playerInfo.id'), value: lookupData.id },
       {
-        name: $t('worldInfo.playerInfo.name'),
+        name: $t('stwMissionAlerts.playerInfo.name'),
         value: lookupData.displayName,
         href: `https://fortnitedb.com/profile/${lookupData.id}`
       },
       {
-        name: $t('worldInfo.playerInfo.commanderLevel'),
+        name: $t('stwMissionAlerts.playerInfo.commanderLevel'),
         value: stwData &&
           `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}`
       },
       {
-        name: $t('worldInfo.playerInfo.completedAlerts'),
+        name: $t('stwMissionAlerts.playerInfo.completedAlerts'),
         value: stwData?.claimedMissionAlertIds.size || 0
       }
     ]}

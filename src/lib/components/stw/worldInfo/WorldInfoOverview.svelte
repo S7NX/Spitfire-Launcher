@@ -40,21 +40,21 @@
     },
     {
       id: 'survivors',
-      title: $t('worldInfo.sections.survivors'),
+      title: $t('stwMissionAlerts.sections.survivors'),
       missions:
         !isLoading && parsedWorldInfoArray
           .filter((mission) =>mission.filters.some((id) => isLegendaryOrMythicSurvivor(id)))
     },
     {
       id: 'twinePeaks',
-      title: $t('worldInfo.sections.twinePeaks'),
+      title: $t('stwMissionAlerts.sections.twinePeaks'),
       missions:
         !isLoading && parsedWorldInfo.get(Worlds.TwinePeaks)!.values().toArray()
           .filter((mission) => mission.powerLevel === WorldPowerLevels[Worlds.TwinePeaks].Endgame_Zone6)
     },
     {
       id: 'ventures',
-      title: $t('worldInfo.sections.ventures'),
+      title: $t('stwMissionAlerts.sections.ventures'),
       missions:
         !isLoading &&
           parsedWorldInfo.entries().toArray()
@@ -66,14 +66,14 @@
     },
     {
       id: 'upgradeLlamaTokens',
-      title: $t('worldInfo.sections.upgradeLlamaTokens'),
+      title: $t('stwMissionAlerts.sections.upgradeLlamaTokens'),
       missions:
         !isLoading && parsedWorldInfoArray
           .filter((mission) =>  mission.filters.some((id) => id.includes('voucher_cardpack_bronze')))
     },
     {
       id: 'perkUp',
-      title: $t('worldInfo.sections.perkup'),
+      title: $t('stwMissionAlerts.sections.perkup'),
       missions:
         !isLoading &&parsedWorldInfoArray
           .filter((mission) => mission.filters.some((id) => id.includes('alteration_upgrade_sr')))
@@ -89,19 +89,19 @@
     },
     {
       id: 'upgradeLlamaTokens',
-      name: $t('worldInfo.sections.survivors'),
+      name: $t('stwMissionAlerts.sections.survivors'),
       icon: '/assets/resources/voucher_generic_worker_sr.png',
       amount: countMissionReward(sections.find(({ id }) => id === 'survivors')?.missions,isLegendaryOrMythicSurvivor)
     },
     {
       id: 'perkUp',
-      name: $t('worldInfo.sections.twinePeaks'),
+      name: $t('stwMissionAlerts.sections.twinePeaks'),
       icon: '/assets/resources/voucher_cardpack_bronze.png',
       amount: countMissionReward(sections.find(({ id }) => id === 'upgradeLlamaTokens')?.missions,'voucher_cardpack_bronze')
     },
     {
       id: 'twinePeaks',
-      name: $t('worldInfo.sections.ventures'),
+      name: $t('stwMissionAlerts.sections.ventures'),
       icon: '/assets/resources/reagent_alteration_upgrade_sr.png',
       amount: countMissionReward(sections.find(({ id }) => id === 'perkUp')?.missions,'alteration_upgrade_sr')
     }
@@ -154,7 +154,7 @@
           <div class="flex items-center justify-center px-2 h-10 bg-muted-foreground/5 rounded-sm"
           >
             <span class="text-muted-foreground">
-              {$t('worldInfo.noMissions')}
+              {$t('stwMissionAlerts.noMissions')}
             </span>
           </div>
         {/if}
