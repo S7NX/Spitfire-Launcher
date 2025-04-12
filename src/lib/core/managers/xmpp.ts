@@ -71,8 +71,8 @@ export default class XMPPManager {
       return existingInstance;
     }
 
-    const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
-    const instance = new XMPPManager({ accountId: account.accountId, accessToken }, purpose);
+    const accessTokenData = await Authentication.getAccessTokenUsingDeviceAuth(account, false);
+    const instance = new XMPPManager({ accountId: account.accountId, accessToken: accessTokenData.access_token }, purpose);
     XMPPManager.instances.set(account.accountId, instance);
 
     return instance;
