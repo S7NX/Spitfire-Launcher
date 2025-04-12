@@ -36,7 +36,7 @@
 
   function toggleCategory(id: string) {
     const isNotExpanded = notExpandedCategories.has(id);
-    if (isNotExpanded) {
+    if (!isNotExpanded) {
       notExpandedCategories.add(id);
     } else {
       notExpandedCategories.delete(id);
