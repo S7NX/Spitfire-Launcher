@@ -4,6 +4,7 @@
   import Button from '$components/ui/Button.svelte';
   import CheckIcon from 'lucide-svelte/icons/check';
   import XIcon from 'lucide-svelte/icons/x';
+  import { t } from '$lib/utils/util';
 
   type Props = {
     visible: boolean;
@@ -23,16 +24,21 @@
     )}
     transition:fly={{ y: 20, duration: 300 }}
   >
-    <span class="text-sm">You have unsaved changes</span>
+    <span class="text-sm">{$t('settings.unsavedChanges.description')}</span>
     <div class="flex items-center gap-2">
-      <Button class="flex items-center gap-2 h-8" onclick={onReset} size="sm" variant="outline">
-        <XIcon class="size-4"/>
-        Reset
+      <Button
+        class="flex items-center gap-2 h-8"
+        onclick={onReset}
+        size="sm"
+        variant="outline"
+      >
+        <XIcon class="size-4" />
+        {$t('settings.unsavedChanges.reset')}
       </Button>
 
       <Button class="flex items-center gap-2 h-8" onclick={onSave} size="sm">
-        <CheckIcon class="size-4"/>
-        Save
+        <CheckIcon class="size-4" />
+        {$t('settings.unsavedChanges.save')}
       </Button>
     </div>
   </div>

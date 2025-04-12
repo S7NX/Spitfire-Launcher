@@ -18,10 +18,13 @@
   import WorldInfoManager from '$lib/core/managers/worldInfo';
   import { worldInfoCache } from '$lib/stores';
   import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
+  import { page } from '$app/state';
+  import { locales, localizeHref } from '$lib/paraglide/runtime';
+  import { t } from '$lib/utils/util';
 
   const { children } = $props();
 
-  let newVersionData = $state<{ tag: string; downloadUrl: string; }>();
+  let newVersionData = $state<{ tag: string; downloadUrl: string }>();
 
   function disableF5(e: KeyboardEvent) {
     // Using CTRL + R to refresh the page is allowed
@@ -70,16 +73,18 @@
         duration: 3000,
         unstyled: true,
         classes: {
-          toast: 'bg-secondary flex items-center px-4 py-4 border rounded-lg gap-3 min-w-96',
+          toast:
+            'bg-secondary flex items-center px-4 py-4 border rounded-lg gap-3 min-w-96',
           title: 'text-sm'
         }
       }}
     />
-    <Sidebar/>
+    <Sidebar />
     <div class="flex flex-col flex-1">
-      <Header/>
+      <Header />
       <ScrollArea>
-        <main class="p-4 flex-1 overflow-auto bg-background h-[calc(100vh-4rem)]">
+        <main class="p-4 flex-1 overflow-auto bg-background h-[calc(100vh-4rem)]"
+        >
           {@render children()}
         </main>
       </ScrollArea>
@@ -87,20 +92,26 @@
   </Tooltip.Provider>
 </div>
 
-<Dialog bind:open={() => !!newVersionData, () => newVersionData = undefined}>
+<div style="display: none">
+  {#each locales as locale (locale)}
+    <a href={localizeHref(page.url.pathname, { locale })}>{locale}</a>
+  {/each}
+</div>
+
+<Dialog bind:open={() => !!newVersionData, () => (newVersionData = undefined)}>
   {#snippet title()}
-    New version available
+    {$t('newVersionAvailable.title')}
   {/snippet}
 
   {#snippet description()}
-    Version {newVersionData?.tag} is available. Click the button below to download it.
+    {$t('newVersionAvailable.description', { version: newVersionData!.tag })}
   {/snippet}
 
   <Button
     class="flex gap-2 justify-center items-center w-fit"
     href={newVersionData?.downloadUrl}
   >
-    <ExternalLinkIcon class="size-5"/>
-    Download
+    <ExternalLinkIcon class="size-5" />
+    {$t('newVersionAvailable.download')}
   </Button>
 </Dialog>

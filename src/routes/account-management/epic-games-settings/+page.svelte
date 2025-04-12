@@ -9,7 +9,7 @@
   import { accountsStore } from '$lib/stores';
   import { openUrl } from '@tauri-apps/plugin-opener';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored } from '$lib/utils/util';
+  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
@@ -26,22 +26,22 @@
       if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error('Failed to open Epic Games website');
+      toast.error($t('epicGamesSettings.failedToOpenWebsite'));
     } finally {
       isLoggingIn = false;
     }
   }
 </script>
 
-<CenteredPageContent description="Click the button below to login to Epic Games." title="Epic Games Settings">
+<CenteredPageContent description={$t('epicGamesSettings.page.description')} title={$t('epicGamesSettings.page.title')}>
   <Button
     class="flex justify-center items-center gap-x-2"
     disabled={isLoggingIn}
     loading={isLoggingIn}
-    loadingText="Logging in"
+    loadingText={$t('epicGamesSettings.loggingIn')}
     onclick={openEpicGamesWebsite}
     variant="epic"
   >
-    Login to Epic Games website
+    {$t('epicGamesSettings.login')}
   </Button>
 </CenteredPageContent>

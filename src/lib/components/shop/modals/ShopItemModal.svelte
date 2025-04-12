@@ -10,21 +10,19 @@
   import CheckIcon from 'lucide-svelte/icons/check';
   import type { SpitfireShopItem } from '$types/game/shop';
   import { ItemColors } from '$lib/constants/itemColors';
-  import { accountDataStore, activeAccountId, ownedItemsStore } from '$lib/stores';
+  import { accountDataStore, activeAccountId, language, ownedItemsStore } from '$lib/stores';
   import ShopPurchaseConfirmation from '$components/shop/modals/ShopPurchaseConfirmation.svelte';
   import ShopGiftFriendSelection from '$components/shop/modals/ShopGiftFriendSelection.svelte';
   import type { AccountStoreData } from '$types/accounts';
   import { derived as jsDerived } from 'svelte/store';
+  import { t } from '$lib/utils/util';
 
   type Props = {
     item: SpitfireShopItem;
     open: boolean;
   };
 
-  let {
-    item,
-    open = $bindable(false)
-  }: Props = $props();
+  let { item, open = $bindable(false) }: Props = $props();
 
   const accountId = $activeAccountId!;
 
@@ -64,7 +62,7 @@
   }
 
   function formatDate(dateString: string) {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString($language, {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
@@ -72,7 +70,10 @@
   }
 </script>
 
-<Dialog contentProps={{ class: '!max-w-160 max-h-112 overflow-y-auto' }} bind:open>
+<Dialog
+  contentProps={{ class: '!max-w-160 max-h-112 overflow-y-auto' }}
+  bind:open
+>
   <div class="flex flex-col gap-y-6">
     <div class="flex flex-col xs:flex-row gap-x-6">
       <img
@@ -86,7 +87,9 @@
           <div>
             <h2 class="font-bold text-2xl">{item.name}</h2>
             {#if item.description}
-              <p class="text-muted-foreground italic mt-1">{item.description}</p>
+              <p class="text-muted-foreground italic mt-1">
+                {item.description}
+              </p>
             {/if}
           </div>
 
@@ -98,7 +101,10 @@
               {(item.series?.name || item.rarity?.name)?.toLowerCase()}
             </Badge>
 
-            <Badge class="text-primary font-medium px-3 py-1 rounded-lg border" variant="outline">
+            <Badge
+              class="text-primary font-medium px-3 py-1 rounded-lg border"
+              variant="outline"
+            >
               {item.type?.name}
             </Badge>
           </div>
@@ -106,7 +112,7 @@
 
         <div class="flex flex-col">
           <div class="flex items-center gap-1">
-            <span class="text-muted-foreground font-medium">Price:</span>
+            <span class="text-muted-foreground">{$t('itemShop.itemInformation.price')}:</span>
 
             {#if $discountedPrice !== item.price.final}
               <span class="mr-1">{$discountedPrice.toLocaleString()}</span>
@@ -123,72 +129,62 @@
           </div>
 
           <div class="flex items-center gap-1">
-            <span class="text-muted-foreground font-medium">First seen:</span>
+            <span class="text-muted-foreground">{$t('itemShop.itemInformation.firstSeen')}:</span>
             <span>{formatDate(item.dates.releaseDate)}</span>
           </div>
 
           <div class="flex items-center gap-1">
-            <span class="text-muted-foreground font-medium">Last seen:</span>
+            <span class="text-muted-foreground">{$t('itemShop.itemInformation.lastSeen')}:</span>
             <span>{formatDate(item.dates.lastSeen)}</span>
           </div>
 
           <div class="flex items-center gap-1">
-            <span class="text-muted-foreground font-medium">Leaves on:</span>
+            <span class="text-muted-foreground">{$t('itemShop.itemInformation.leavesOn')}:</span>
             <span>{formatDate(item.dates.out)}</span>
           </div>
         </div>
       </div>
     </div>
 
-    <Separator.Root class="bg-border h-px"/>
+    <Separator.Root class="bg-border h-px" />
 
     <div class="flex w-full gap-3">
       <Tooltip
         class="w-full"
-        tooltip={ownedVbucks < $discountedPrice ? 'Not enough V-Bucks' : ''}
-      >
+        tooltip={ownedVbucks < $discountedPrice ? $t('itemShop.notEnoughVbucks') : ''}>
         <Button
           class="flex justify-center items-center gap-x-2 w-full"
           disabled={isPurchasing || ownedVbucks < $discountedPrice || isItemOwned}
-          onclick={() => isAlertDialogOpen = true}
+          onclick={() => (isAlertDialogOpen = true)}
           variant="epic"
         >
           {#if isItemOwned}
-            <CheckIcon class="size-5"/>
-            Owned
+            <CheckIcon class="size-5" />
+            {$t('itemShop.owned')}
           {:else}
-            <ShoppingCartIcon class="size-5"/>
-            Purchase
+            <ShoppingCartIcon class="size-5" />
+            {$t('itemShop.purchase')}
           {/if}
         </Button>
       </Tooltip>
 
       <Tooltip
         class="w-full"
-        tooltip={remainingGifts < 1 ? 'No remaining gifts' : ownedVbucks < item.price.final ? 'Not enough V-Bucks' : !friends.length ? 'No friends available' : ''}
-      >
+        tooltip={remainingGifts < 1 ? $t('itemShop.noRemainingGifts') : ownedVbucks < item.price.final ? $t('itemShop.notEnoughVbucks') : !friends.length ? $t('itemShop.noFriends') : ''}>
         <Button
           class="flex justify-center items-center gap-x-2 w-full"
           disabled={isSendingGifts || remainingGifts < 1 || ownedVbucks < item.price.final || !item.giftable || !friends.length}
-          onclick={() => isGiftDialogOpen = true}
+          onclick={() => (isGiftDialogOpen = true)}
           variant="outline"
         >
-          <GiftIcon class="size-5"/>
-          Gift
+          <GiftIcon class="size-5" />
+          {$t('itemShop.gift')}
         </Button>
       </Tooltip>
     </div>
   </div>
 </Dialog>
 
-<ShopPurchaseConfirmation
-  {isPurchasing}
-  {item}
-  bind:open={isAlertDialogOpen}
-/>
+<ShopPurchaseConfirmation {isPurchasing} {item} bind:open={isAlertDialogOpen} />
 
-<ShopGiftFriendSelection
-  {isSendingGifts}
-  {item}
-  bind:open={isGiftDialogOpen}
-/>
+<ShopGiftFriendSelection {isSendingGifts} {item} bind:open={isGiftDialogOpen} />

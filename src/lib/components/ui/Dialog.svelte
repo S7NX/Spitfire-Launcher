@@ -11,6 +11,7 @@
     title?: string | Snippet;
     description?: string | Snippet;
     contentProps?: WithoutChild<Dialog.ContentProps>;
+    hideClose?: boolean;
   };
 
   let {
@@ -21,6 +22,7 @@
     contentProps,
     title,
     description,
+    hideClose,
     ...restProps
   }: Props = $props();
 </script>
@@ -83,14 +85,16 @@
 
       {@render children?.()}
 
-      <Dialog.Close
-        class={cn(
-          'absolute right-5 top-5 rounded-md active:scale-[0.98]',
-          'focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2'
-        )}
-      >
-        <XIcon class="text-foreground size-5"/>
-      </Dialog.Close>
+      {#if !hideClose}
+        <Dialog.Close
+          class={cn(
+            'absolute right-5 top-5 rounded-md active:scale-[0.98]',
+            'focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2'
+          )}
+        >
+          <XIcon class="text-foreground size-5"/>
+        </Dialog.Close>
+      {/if}
     </Dialog.Content>
   </Dialog.Portal>
 </Dialog.Root>

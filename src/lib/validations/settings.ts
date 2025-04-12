@@ -1,6 +1,8 @@
+import { locales } from '$lib/paraglide/runtime';
 import { z } from 'zod';
 
 export const appSettingsSchema = z.object({
+  language: z.enum(locales),
   gamePath: z.string(),
   missionCheckInterval: z.number().positive(),
   claimRewardsDelay: z.number().positive(),

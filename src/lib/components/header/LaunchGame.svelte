@@ -6,7 +6,7 @@
   import Manifest from '$lib/core/manifest';
   import Process from '$lib/core/system/process';
   import { accountsStore } from '$lib/stores';
-  import { shouldErrorBeIgnored } from '$lib/utils/util';
+  import { shouldErrorBeIgnored, t } from '$lib/utils/util';
   import { path } from '@tauri-apps/api';
   import { exists } from '@tauri-apps/plugin-fs';
   import { Command } from '@tauri-apps/plugin-shell';
@@ -25,11 +25,11 @@
     await checkIsRunning();
 
     if (isGameRunning) {
-      toast.error('Fortnite is already running');
+      toast.error($t('launchGame.alreadyRunning'));
       return;
     }
 
-    const toastId = toast.loading('Launching Fortnite...');
+    const toastId = toast.loading($t('launchGame.launching'));
 
     try {
       isAuthenticating = true;
@@ -39,7 +39,7 @@
       const executableDirectory = userSettings?.app?.gamePath || manifestData?.executableLocation.split('/').slice(0, -1).join('/').replace(/\//g, '/');
       const gameExistsInPath = executableDirectory && await exists(await path.join(executableDirectory, 'FortniteLauncher.exe'));
       if (!manifestData || !executableDirectory || !gameExistsInPath) {
-        toast.error('Fortnite is not installed. Please install it first.', { id: toastId });
+        toast.error($t('launchGame.notInstalled'), { id: toastId });
         return;
       }
 
@@ -65,9 +65,7 @@
           '-EpicPortal',
           `-epicuserid=${activeAccount!.accountId}`
         ],
-        {
-          cwd: executableDirectory
-        }).execute();
+        { cwd: executableDirectory }).execute();
     } catch (error) {
       isGameLaunched = false;
       isAuthenticating = false;
@@ -78,14 +76,14 @@
       }
 
       console.error(error);
-      toast.error('Failed to launch Fortnite', { id: toastId });
+      toast.error($t('launchGame.failedToLaunch'), { id: toastId });
     } finally {
       isAuthenticating = false;
     }
   }
 
   async function stopGame() {
-    const toastId = toast.loading('Stopping Fortnite...');
+    const toastId = toast.loading($t('launchGame.stopping'));
 
     try {
       const result = await Command.create('kill-fortnite').execute();
@@ -93,20 +91,22 @@
 
       isGameLaunched = false;
       isGameRunning = false;
-      toast.success('Fortnite stopped successfully', { id: toastId });
+      toast.success($t('launchGame.stopped'), { id: toastId });
     } catch (error) {
       console.error(error);
-      toast.error('Failed to stop Fortnite', { id: toastId });
+      toast.error($t('launchGame.failedToStop'), { id: toastId });
     }
   }
 
   async function checkIsRunning() {
     const wasRunning = isGameRunning;
     const processes = await Process.getProcesses();
-    isGameRunning = processes.some(process => process.name === 'FortniteClient-Win64-Shipping.exe');
+    isGameRunning = processes.some(
+      (process) => process.name === 'FortniteClient-Win64-Shipping.exe'
+    );
 
     if (!wasRunning && isGameRunning && isGameLaunched) {
-      toast.success('Fortnite launched successfully');
+      toast.success($t('launchGame.launched'));
     }
   }
 
@@ -126,15 +126,15 @@
 <Button
   class="flex items-center justify-center shrink-0"
   disabled={!activeAccount || isAuthenticating || (isGameLaunched && !isGameRunning)}
-  onclick={() => isGameRunning ? stopGame() : launchGame()}
+  onclick={() => (isGameRunning ? stopGame() : launchGame())}
   size="md"
   variant={isGameRunning ? 'danger' : 'epic'}
 >
   {#if isGameRunning}
-    <span class="hidden xs:block">Stop Game</span>
-    <CircleStopIcon class="size-6 xs:hidden block"/>
+    <span class="hidden xs:block">{$t('launchGame.stop')}</span>
+    <CircleStopIcon class="size-6 xs:hidden block" />
   {:else}
-    <span class="hidden xs:block">Launch Game</span>
-    <GamePad2Icon class="size-6 xs:hidden block"/>
+    <span class="hidden xs:block">{$t('launchGame.launch')}</span>
+    <GamePad2Icon class="size-6 xs:hidden block" />
   {/if}
 </Button>

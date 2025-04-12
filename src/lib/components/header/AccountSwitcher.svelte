@@ -11,6 +11,7 @@
   import { accountsStore } from '$lib/stores';
   import { toast } from 'svelte-sonner';
   import LoginModal from '$components/auth/login/LoginModal.svelte';
+  import { t } from '$lib/utils/util';
 
   type PageState = {
     showLoginModal?: boolean;
@@ -38,11 +39,11 @@
     dropdownOpen = false;
 
     toast.promise(Account.changeActiveAccount(account.accountId), {
-      loading: `Switching to ${account.displayName}...`,
-      success: `Switched to ${account.displayName}`,
+      loading: $t('accountManager.switching', { name: account.displayName }),
+      success: $t('accountManager.switched', { name: account.displayName }),
       error: (error) => {
         console.error(error);
-        return `Failed to switch to ${account.displayName}`;
+        return $t('accountManager.failedToSwitch', { name: account.displayName });
       }
     });
   }
@@ -55,11 +56,11 @@
     const accountName = activeAccount!.displayName || activeAccount!.accountId;
 
     toast.promise(Account.logout(), {
-      loading: `Logging out of ${accountName}...`,
-      success: `Logged out of ${accountName}`,
+      loading: $t('accountManager.loggingOut', { name: accountName }),
+      success: $t('accountManager.loggedOut', { name: accountName }),
       error: (error) => {
         console.error(error);
-        return `Failed to logout of ${accountName}`;
+        return $t('accountManager.failedToLogout', { name: accountName });
       }
     });
   }
@@ -81,7 +82,7 @@
         onclick={toggleDropdown}
         variant="accent"
       >
-        <span class="truncate">{activeAccount?.displayName || 'No Account'}</span>
+        <span class="truncate">{activeAccount?.displayName || $t('accountManager.noAccount')}</span>
         <ChevronDownIcon class="size-5 transition-transform duration-200 {dropdownOpen ? 'rotate-180' : ''}"/>
       </Button>
     {/snippet}
@@ -92,7 +93,7 @@
           class="w-full px-3 py-2 text-sm rounded-md bg-input border-input focus:outline-none focus:ring-2 focus:ring-ring"
           onkeydown={handleKeyPress}
           onkeyup={handleKeyPress}
-          placeholder="Search accounts..."
+          placeholder={$t('accountManager.searchAccounts')}
           type="text"
           bind:value={searchTerm}
         />
@@ -103,7 +104,7 @@
           {#each filteredAccounts as account (account.accountId)}
             <DropdownMenu.Item onclick={() => changeAccounts(account)}>
               {#if activeAccount?.accountId === account.accountId}
-                <CheckIcon class="size-5"/>
+                <CheckIcon class="size-5" />
               {/if}
 
               <span class="truncate">{account.displayName}</span>
@@ -112,10 +113,16 @@
         </div>
       {/if}
 
-      <div class={['space-y-1', { 'pt-2': allAccounts.length }, { 'border-t border-border': filteredAccounts.length }]}>
+      <div
+        class={[
+          'space-y-1',
+          { 'pt-2': allAccounts.length },
+          { 'border-t border-border': filteredAccounts.length }
+        ]}
+      >
         <DropdownMenu.Item onclick={addNewAccount}>
-          <PlusIcon class="size-4"/>
-          Add New Account
+          <PlusIcon class="size-4" />
+          {$t('accountManager.login')}
         </DropdownMenu.Item>
 
         {#if activeAccount}
@@ -123,8 +130,8 @@
             class="hover:bg-destructive hover:text-destructive-foreground"
             onclick={logout}
           >
-            <LogOutIcon class="size-4"/>
-            Logout
+            <LogOutIcon class="size-4" />
+            {$t('accountManager.logout')}
           </DropdownMenu.Item>
         {/if}
       </div>
@@ -132,4 +139,4 @@
   </DropdownMenu.Root>
 </div>
 
-<LoginModal bind:open={showLoginModal}/>
+<LoginModal bind:open={showLoginModal} />

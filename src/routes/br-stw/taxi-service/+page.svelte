@@ -12,7 +12,7 @@
   import DataStorage, { TAXI_FILE_PATH } from '$lib/core/dataStorage';
   import BotLobbyManager from '$lib/core/managers/automation/botLobbyManager.svelte';
   import { accountPartiesStore, accountsStore } from '$lib/stores';
-  import { nonNull } from '$lib/utils/util';
+  import { nonNull, t } from '$lib/utils/util';
   import type { TaxiSettings } from '$types/settings';
   import { onMount } from 'svelte';
   import { toast } from 'svelte-sonner';
@@ -51,7 +51,7 @@
       await taxiManager.start();
     } catch (error) {
       console.error(error);
-      toast.error('Failed to start the taxi service');
+      toast.error($t('taxiService.failedToStart'));
     }
   }
 
@@ -60,7 +60,7 @@
       await taxiManager.stop();
     } catch (error) {
       console.error(error);
-      toast.error('Failed to stop the taxi service');
+      toast.error($t('taxiService.failedToStop'));
     }
   }
 
@@ -68,7 +68,9 @@
     taxiManager.handleFriendRequests();
   }
 
-  function handleTaxiLevelChange(event: Event & { currentTarget: HTMLInputElement }) {
+  function handleTaxiLevelChange(
+    event: Event & { currentTarget: HTMLInputElement }
+  ) {
     const value = event.currentTarget.value;
     if (!value) return;
 
@@ -118,20 +120,20 @@
 
 <CenteredPageContent
   class="!w-112"
-  description="Turn your account into a taxi and play STW missions that are above your power level."
+  description={$t('taxiService.page.description')}
   docsComponent={TaxiServiceTutorial}
-  title="Taxi Service"
+  title={$t('taxiService.page.title')}
 >
   <Alert
     color="yellow"
     icon={AlertTriangleIcon}
-    message='You must select "No Fill" for the taxi to work properly.'
-    title="Warning"
+    message={$t('taxiService.alert.message')}
+    title={$t('taxiService.alert.title')}
   />
 
   <div class="space-y-4">
     <div class="flex flex-col gap-2">
-      <Label for="taxiLevel">Power Level</Label>
+      <Label for="taxiLevel">{$t('taxiService.settings.powerLevel')}</Label>
       <Input
         id="taxiLevel"
         max={MAX_POWER_LEVEL}
@@ -143,27 +145,29 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <Label for="availableStatus">Available Status</Label>
+      <Label for="availableStatus">{$t('taxiService.settings.availableStatus.title')}</Label>
       <Input
         id="availableStatus"
         onConfirm={(event) => handleStatusChange(event, 'available')}
-        placeholder="Taxi's custom status when it's available"
+        placeholder={$t('taxiService.settings.availableStatus.placeholder')}
         value={taxiManager.availableStatus}
       />
     </div>
 
     <div class="flex flex-col gap-2">
-      <Label for="busyStatus">Busy Status</Label>
+      <Label for="busyStatus">{$t('taxiService.settings.busyStatus.title')}</Label>
       <Input
         id="busyStatus"
         onConfirm={(event) => handleStatusChange(event, 'busy')}
-        placeholder="Taxi's custom status when it's busy"
+        placeholder={$t('taxiService.settings.busyStatus.placeholder')}
         value={taxiManager.busyStatus}
       />
     </div>
 
     <div class="flex items-center justify-between">
-      <div class="font-medium">Auto-Accept Friend Requests</div>
+      <div class="font-medium">
+        {$t('taxiService.settings.autoAcceptFriendRequests')}
+      </div>
       <Switch
         onCheckedChange={toggleAutoAccept}
         bind:checked={taxiManager.autoAcceptFriendRequests}
@@ -171,23 +175,25 @@
     </div>
   </div>
 
-  <Separator.Root class="bg-border h-px"/>
+  <Separator.Root class="bg-border h-px" />
 
   <div class="flex justify-end">
     <Button
       class="flex items-center gap-x-2"
       disabled={taxiManager.isStarting || taxiManager.isStopping || BotLobbyManager.botLobbyAccountIds.has(activeAccount.accountId)}
       loading={taxiManager.isStarting || taxiManager.isStopping}
-      loadingText={taxiManager.isStarting ? 'Starting' : 'Stopping'}
+      loadingText={taxiManager.isStarting
+        ? $t('taxiService.starting')
+        : $t('taxiService.stopping')}
       onclick={() => taxiManager.active ? stopTaxiService() : startTaxiService()}
       variant={taxiManager.active ? 'danger' : 'epic'}
     >
       {#if taxiManager.active}
-        <XIcon class="size-5"/>
-        Stop Taxi Service
+        <XIcon class="size-5" />
+        {$t('taxiService.stop')}
       {:else}
-        <CarTaxiFrontIcon class="size-5"/>
-        Start Taxi Service
+        <CarTaxiFrontIcon class="size-5" />
+        {$t('taxiService.start')}
       {/if}
     </Button>
   </div>

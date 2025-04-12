@@ -8,7 +8,7 @@
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored } from '$lib/utils/util';
+  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
   import { writeText } from '@tauri-apps/plugin-clipboard-manager';
   import Select from '$components/ui/Select.svelte';
   import KeyRound from 'lucide-svelte/icons/key-round';
@@ -43,43 +43,47 @@
       }
 
       await writeText(accessTokenData.access_token);
-      toast.success('Generated and copied to clipboard');
+      toast.success($t('accessTokenManagement.generated'));
     } catch (error) {
       if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error('Failed to generate an access token');
+      toast.error($t('accessTokenManagement.failedToGenerate'));
     } finally {
       generatingAccessToken = false;
     }
   }
 </script>
 
-<CenteredPageContent title="Access Token">
+<CenteredPageContent title={$t('accessTokenManagement.page.title')}>
   <form class="flex flex-col gap-y-4" onsubmit={generateAccessToken}>
-    <Select items={tokenTypeOptions} type="single" bind:value={selectedTokenType}>
+    <Select
+      items={tokenTypeOptions}
+      type="single"
+      bind:value={selectedTokenType}
+    >
       {#snippet trigger(label)}
-        <KeyRound class="text-muted-foreground size-5 mr-2"/>
-        <span class="text-muted-foreground">{label || 'Select token type'}</span>
-        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
+        <KeyRound class="text-muted-foreground size-5 mr-2" />
+        <span class="text-muted-foreground">{label || $t('accessTokenManagement.selectTokenType')}</span>
+        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto" />
       {/snippet}
     </Select>
 
     <Select items={clientOptions} type="single" bind:value={selectedClient}>
       {#snippet trigger(label)}
-        <KeyRound class="text-muted-foreground size-5 mr-2"/>
-        <span class="text-muted-foreground">{label || 'Select client'}</span>
-        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
+        <KeyRound class="text-muted-foreground size-5 mr-2" />
+        <span class="text-muted-foreground">{label || $t('accessTokenManagement.selectClient')}</span>
+        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto" />
       {/snippet}
     </Select>
 
     <Button
       disabled={generatingAccessToken || !selectedTokenType || !selectedClient}
       loading={generatingAccessToken}
-      loadingText="Generating"
+      loadingText={$t('accessTokenManagement.generating')}
       variant="epic"
     >
-      Generate Access Token
+      {$t('accessTokenManagement.generate')}
     </Button>
   </form>
 </CenteredPageContent>

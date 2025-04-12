@@ -8,7 +8,7 @@
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored } from '$lib/utils/util';
+  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
   import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
@@ -21,26 +21,29 @@
       const { code } = await Authentication.getExchangeCodeUsingAccessToken(accessToken);
 
       await writeText(code);
-      toast.success('Generated and copied to clipboard');
+      toast.success($t('exchangeCodeManagement.generated'));
     } catch (error) {
       if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error('Failed to generate an exchange code');
+      toast.error($t('exchangeCodeManagement.failedToGenerate'));
     } finally {
       generatingExchangeCode = false;
     }
   }
 </script>
 
-<CenteredPageContent description="Click the button below to generate an exchange code." title="Exchange Code">
+<CenteredPageContent
+  description={$t('exchangeCodeManagement.page.description')}
+  title={$t('exchangeCodeManagement.page.title')}
+>
   <Button
     disabled={generatingExchangeCode}
     loading={generatingExchangeCode}
-    loadingText="Generating"
+    loadingText={$t('exchangeCodeManagement.generating')}
     onclick={openEpicGamesWebsite}
     variant="epic"
   >
-    Generate exchange code
+    {$t('exchangeCodeManagement.generate')}
   </Button>
 </CenteredPageContent>

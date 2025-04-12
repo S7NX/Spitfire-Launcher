@@ -1,10 +1,12 @@
 <script lang="ts" module>
   import type { BulkActionStatus } from '$types/accounts';
 
-  type CodeStatus = BulkActionStatus<Array<{
-    code: string;
-    error?: string
-  }>>;
+  type CodeStatus = BulkActionStatus<
+    Array<{
+      code: string;
+      error?: string;
+    }>
+  >;
 
   let codesToRedeem = $state<string[]>([]);
   let isRedeeming = $state(false);
@@ -20,14 +22,15 @@
   import CodeManager from '$lib/core/managers/code';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
   import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
+  import { t } from '$lib/utils/util';
 
   let selectedAccounts = $state<string[]>([]);
 
   const humanizedErrors: Record<string, string> = {
-    'errors.com.epicgames.coderedemption.code_not_found': 'Code not found',
-    'errors.com.epicgames.coderedemption.codeUse_already_used': 'Items already owned',
-    'errors.com.epicgames.coderedemption.multiple_redemptions_not_allowed': 'Items already owned',
-    'errors.com.epicgames.coderedemption.code_used': 'Code already used'
+    'errors.com.epicgames.coderedemption.code_not_found': $t('redeemCodes.redeemErrors.notFound'),
+    'errors.com.epicgames.coderedemption.codeUse_already_used': $t('redeemCodes.redeemErrors.itemsAlreadyOwned'),
+    'errors.com.epicgames.coderedemption.multiple_redemptions_not_allowed': $t('redeemCodes.redeemErrors.itemsAlreadyOwned'),
+    'errors.com.epicgames.coderedemption.code_used': $t('redeemCodes.redeemErrors.alreadyUsed')
   };
 
   async function redeemCodes(event: SubmitEvent) {
@@ -49,12 +52,18 @@
         if (!codeStatuses.includes(status)) codeStatuses = [...codeStatuses, status];
 
         if (nonExistentCodes.includes(code)) {
-          status.data.push({ code, error: 'Code not found' });
+          status.data.push({
+            code,
+            error: $t('redeemCodes.redeemErrors.notFound')
+          });
           return;
         }
 
         if (invalidCredentialsAccounts.includes(account.accountId)) {
-          status.data.push({ code, error: 'Login session expired.' });
+          status.data.push({
+            code,
+            error: $t('redeemCodes.loginExpired')
+          });
           return;
         }
 
@@ -62,7 +71,7 @@
           await CodeManager.redeem(account, code);
           status.data.push({ code });
         } catch (error) {
-          let errorString = 'Unknown error';
+          let errorString = $t('redeemCodes.redeemErrors.unknownError');
 
           if (error instanceof EpicAPIError) {
             errorString = humanizedErrors[error.errorCode] || error.message;
@@ -73,7 +82,7 @@
                 break;
               }
               case 'errors.com.epicgames.account.invalid_account_credentials': {
-                errorString = 'Login session expired.';
+                errorString = $t('redeemCodes.loginExpired');
                 invalidCredentialsAccounts.push(account.accountId);
                 break;
               }
@@ -87,7 +96,10 @@
 
     codeStatuses = codeStatuses.map((status) => {
       const successCount = status.data.filter(({ error }) => !error).length;
-      return { ...status, displayName: `${status.displayName} - ${successCount}/${status.data.length}` };
+      return {
+        ...status,
+        displayName: `${status.displayName} - ${successCount}/${status.data.length}`
+      };
     });
 
     codesToRedeem = [];
@@ -97,12 +109,16 @@
   }
 </script>
 
-<CenteredPageContent title="Redeem Codes">
+<CenteredPageContent title={$t('redeemCodes.page.title')}>
   <form class="flex flex-col gap-2 w-full" onsubmit={redeemCodes}>
-    <AccountCombobox disabled={isRedeeming} type="multiple" bind:selected={selectedAccounts}/>
+    <AccountCombobox
+      disabled={isRedeeming}
+      type="multiple"
+      bind:selected={selectedAccounts}
+    />
 
     <TagInput
-      placeholder="Enter the codes to redeem and press Enter"
+      placeholder={$t('redeemCodes.codesPlaceholder')}
       bind:items={codesToRedeem}
     />
 
@@ -110,10 +126,10 @@
       class="mt-2"
       disabled={!selectedAccounts?.length || !codesToRedeem.length || isRedeeming}
       loading={isRedeeming}
-      loadingText="Redeeming"
+      loadingText={$t('redeemCodes.redeeming')}
       variant="epic"
     >
-      Redeem Codes
+      {$t('redeemCodes.redeemCodes')}
     </Button>
   </form>
 
@@ -124,7 +140,9 @@
           {#each status.data as { code, error } (code)}
             <div class="flex items-center gap-1 truncate">
               <span class="font-medium">{code}:</span>
-              <span class="truncate {error ? 'text-red-500' : 'text-green-500'}">{error || 'Redeemed'}</span>
+              <span class="truncate {error ? 'text-red-500' : 'text-green-500'}">
+                {error || $t('redeemCodes.redeemed')}
+              </span>
             </div>
           {/each}
         </div>

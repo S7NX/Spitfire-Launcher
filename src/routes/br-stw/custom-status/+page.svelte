@@ -15,7 +15,7 @@
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored } from '$lib/utils/util';
+  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
   import XMPPManager from '$lib/core/managers/xmpp';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
@@ -25,10 +25,7 @@
   async function setCustomStatus(event: SubmitEvent) {
     event.preventDefault();
 
-    if (!customStatus?.trim()) {
-      toast.error('Please enter a custom status');
-      return;
-    }
+    if (!customStatus?.trim()) return;
 
     isSettingStatus = true;
 
@@ -39,12 +36,12 @@
       connection.setStatus(customStatus);
       statusSetAccounts.add(activeAccount.accountId);
 
-      toast.success('Custom status set successfully');
+      toast.success($t('customStatus.statusSet'));
     } catch (error) {
       if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error('Failed to set custom status');
+      toast.error($t('customStatus.failedToSetStatus'));
     } finally {
       isSettingStatus = false;
     }
@@ -54,18 +51,21 @@
     isResettingStatus = true;
 
     try {
-      const connection = await XMPPManager.create(activeAccount, 'customStatus');
+      const connection = await XMPPManager.create(
+        activeAccount,
+        'customStatus'
+      );
 
       connection.resetStatus();
       connection.removePurpose('customStatus');
       statusSetAccounts.delete(activeAccount.accountId);
 
-      toast.success('Custom status reset successfully');
+      toast.success($t('customStatus.statusReset'));
     } catch (error) {
       if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error('Failed to reset custom status');
+      toast.error($t('customStatus.failedToResetStatus'));
     } finally {
       isResettingStatus = false;
     }
@@ -73,36 +73,36 @@
 </script>
 
 <CenteredPageContent
-  description="Set a custom status that will be displayed to your friends."
+  description={$t('customStatus.page.description')}
   docsComponent={CustomStatusTutorial}
-  title="Custom Status"
+  title={$t('customStatus.page.title')}
 >
   <form class="flex flex-col gap-y-4" onsubmit={setCustomStatus}>
     <Input
       disabled={isCustomStatusInUse}
-      placeholder="Enter your custom status"
+      placeholder={$t('customStatus.statusPlaceholder')}
       bind:value={customStatus}
     />
 
     <Button
       disabled={isSettingStatus || !customStatus?.trim() || isCustomStatusInUse}
       loading={isSettingStatus}
-      loadingText="Setting Status"
+      loadingText={$t('customStatus.settingStatus')}
       type="submit"
       variant="epic"
     >
-      Set Status
+      {$t('customStatus.setStatus')}
     </Button>
 
     <Button
       disabled={isResettingStatus || !statusSetAccounts.has(activeAccount.accountId)}
       loading={isResettingStatus}
-      loadingText="Resetting Status"
+      loadingText={$t('customStatus.resettingStatus')}
       onclick={resetStatus}
       type="button"
       variant="epic"
     >
-      Reset Status
+      {$t('customStatus.resetStatus')}
     </Button>
   </form>
 </CenteredPageContent>

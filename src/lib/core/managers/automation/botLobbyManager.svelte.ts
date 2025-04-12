@@ -12,6 +12,8 @@ import EpicAPIError from '$lib/exceptions/EpicAPIError';
 import { SvelteSet } from 'svelte/reactivity';
 import { baseGameService, matchmakingService } from '$lib/core/services';
 import { toast } from 'svelte-sonner';
+import { get } from 'svelte/store';
+import { t } from '$lib/utils/util';
 import type { AccountData } from '$types/accounts';
 import type { MatchmakingTrackResponse } from '$types/game/matchmaking';
 import type { PartyData } from '$types/game/party';
@@ -40,16 +42,16 @@ export default class BotLobbyManager {
   public isStarting = $state(false);
   public isStopping = $state(false);
   public isAvailable = $state(false);
-  public availableStatus = $state('Available for bot lobby. Send party invite to join!');
-  public busyStatus = $state('Currently in a party. Will be available soon.');
+  public availableStatus = $state(get(t)('botLobby.settings.availableStatus.default'));
+  public busyStatus = $state(get(t)('botLobby.settings.busyStatus.default'));
   public autoAcceptFriendRequests = $state(false);
   public partyTimeoutSeconds = $state(90);
 
-  constructor(private account: AccountData) {}
+  constructor(private account: AccountData) { }
 
   async start() {
     if (TaxiManager.taxiAccountIds.has(this.account.accountId)) {
-      toast.error('You can\'t start bot lobby while taxi service is active.');
+      toast.error(get(t)('botLobby.taxiServiceActive'));
       return;
     }
 
@@ -139,7 +141,7 @@ export default class BotLobbyManager {
       ticketData = await this.generateTicket(party, netcl);
     } catch (error) {
       if (error instanceof EpicAPIError && error.errorCode === 'errors.com.epicgames.fortnite.player_banned_from_sub_game') {
-        toast.error('This account is banned from matchmaking.');
+        toast.error(get(t)('botLobby.matchmakingBan.default'));
         await PartyManager.leave(this.account, party.id).catch(() => null);
         await MCPManager.compose(this.account, 'SetMatchmakingBansViewed', 'common_core', {}).catch(() => null);
         await this.stop();

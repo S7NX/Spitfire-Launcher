@@ -1,37 +1,38 @@
 <script lang="ts">
   import BaseModal from '$components/docs/BaseModal.svelte';
   import YoutubeVideoEmbed from '$components/docs/YoutubeVideoEmbed.svelte';
+  import { t } from '$lib/utils/util';
 </script>
 
 <BaseModal>
-  <h2>🚕 Taxi Service</h2>
+  <h2>{$t('taxiService.page.title')}</h2>
 
-  <h3>How to use the Taxi Service</h3>
+  <h3>{$t('docs.howToUse')}</h3>
   <ol>
     <li>
-      Login to an account that you want to turn into a taxi bot. This account shouldn't be your main!
+      {$t('docs.taxiService.howToUse.0')}
     </li>
     <li>
-      Start the taxi service by clicking the button.
+      {$t('docs.taxiService.howToUse.1')}
     </li>
     <li>
-      Invite the taxi account to your party.
+      {$t('docs.taxiService.howToUse.2')}
     </li>
     <li>
-      Finally, set Team Fill to "No Fill" and start the mission.
+      {$t('docs.taxiService.howToUse.3')}
     </li>
   </ol>
 
-  <h3>Important Notes</h3>
+  <h3>{$t('docs.importantNotes')}</h3>
   <ul>
     <li>
-      Team Fill option must be set to "No Fill".
+      {$t('docs.taxiService.importantNotes.0')}
     </li>
     <li>
-      The taxi bot lets you access high power level missions, however it can't take you to worlds like Twine Peaks until you complete your Storm Shield Defenses.
+      {$t('docs.taxiService.importantNotes.1')}
     </li>
     <li>
-      The taxi works for both normal missions and ventures. No additional configuration is needed.
+      {$t('docs.taxiService.importantNotes.2')}
     </li>
   </ul>
 

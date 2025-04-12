@@ -75,7 +75,7 @@
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import LookupManager from '$lib/core/managers/lookup';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored } from '$lib/utils/util';
+  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
   import type { ProfileItem } from '$types/game/mcp';
   import MCPManager from '$lib/core/managers/mcp';
   import { FounderEditionNames, FounderEditions, RarityColors, RarityTypes, zoneThemes } from '$lib/constants/stw/resources';
@@ -88,10 +88,7 @@
   async function lookupPlayer(event: SubmitEvent) {
     event.preventDefault();
 
-    if (!searchQuery?.trim()) {
-      toast.error('Please enter a name or ID to search');
-      return;
-    }
+    if (!searchQuery?.trim()) return;
 
     isLoading = true;
     resetData();
@@ -108,7 +105,7 @@
         await getSTWData(internalLookupData.id);
       } catch (error) {
         console.error(error);
-        toast.error('Couldn\'t fetch STW data of the player. Their game stats are private.');
+        toast.error($t('lookupPlayer.stwStatsPrivate'));
       }
 
       try {
@@ -122,7 +119,7 @@
       if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error('Player not found');
+      toast.error($t('lookupPlayer.notFound'));
     } finally {
       isLoading = false;
     }
@@ -232,10 +229,12 @@
 
     for (const [, templateId] of editions) {
       const edition = items.find((item) => item.templateId === templateId);
-      if (edition) return FounderEditionNames[templateId];
+      if (edition) return $FounderEditionNames[templateId];
     }
 
-    return items.find((item) => item.templateId === 'Token:receivemtxcurrency') ? 'Founder' : 'Non-Founder';
+    return items.find((item) => item.templateId === 'Token:receivemtxcurrency')
+      ? $t('common.stw.founderEditions.founder')
+      : $t('common.stw.founderEditions.none');
   }
 
   function getXPBoosts(items: ProfileItem[]) {
@@ -260,7 +259,7 @@
       <Input
         class="grow"
         disabled={isLoading}
-        placeholder="Search by name or account ID"
+        placeholder={$t('lookupPlayer.search')}
         bind:value={searchQuery}
       />
 
@@ -282,14 +281,14 @@
 
   {#if lookupData}
     {@const kv = [
-      { name: 'ID', value: lookupData.id },
-      { name: 'Name', value: lookupData.displayName, href: `https://fortnitedb.com/profile/${lookupData.id}` },
-      { name: 'Commander level', value: stwData && `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}` },
+      { name: $t('lookupPlayer.playerInfo.id'), value: lookupData.id },
+      { name: $t('lookupPlayer.playerInfo.name'), value: lookupData.displayName, href: `https://fortnitedb.com/profile/${lookupData.id}` },
+      { name: $t('lookupPlayer.playerInfo.commanderLevel'), value: stwData && `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}` },
       {
-        name: 'Boosted XP',
-        value: stwData && `${stwData.xpBoosts.boostedXp.toLocaleString()} ${stwData.xpBoosts.boostAmount ? `(${stwData.xpBoosts.boostAmount} boost${stwData?.xpBoosts.boostAmount === 1 ? '' : 's'})` : ''}`
+        name: $t('lookupPlayer.playerInfo.boostedXp', { count: stwData?.xpBoosts.boostedXp }),
+        value: stwData && `${stwData.xpBoosts.boostedXp.toLocaleString()} ${stwData.xpBoosts.boostAmount ? `(${$t('lookupPlayer.playerInfo.boostCount', { count: stwData.xpBoosts.boostAmount })})` : ''}`
       },
-      { name: 'Founder edition', value: stwData?.founderEdition }
+      { name: $t('lookupPlayer.playerInfo.founderEdition'), value: stwData?.founderEdition } 
     ]}
 
     <div class="space-y-4 text-sm relative border p-5 rounded-md min-w-80 xs:min-w-96">
@@ -330,13 +329,13 @@
       {#if missionPlayers?.length || mission || loadoutData}
         <Separator.Root class="bg-border h-px"/>
 
-        <h3 class="text-lg font-semibold text-center">Save the World Details</h3>
+        <h3 class="text-lg font-semibold text-center">{$t('lookupPlayer.stwDetails.title')}</h3>
 
         {#if missionPlayers?.length || mission}
           <div class="grid grid-cols-1 xs:grid-cols-2 gap-4">
             {#if missionPlayers?.length}
               <div>
-                <h4 class="text-lg font-semibold">Players</h4>
+                <h4 class="text-lg font-semibold">{$t('lookupPlayer.stwDetails.players')}</h4>
                 {#each missionPlayers as member (member.accountId)}
                   <div class="flex items-center gap-1">
                     <span>{member.name}</span>
@@ -350,21 +349,21 @@
 
             {#if mission}
               <div>
-                <h4 class="text-lg font-semibold">Mission Information</h4>
+                <h4 class="text-lg font-semibold">{$t('lookupPlayer.stwDetails.missionInformation.title')}</h4>
 
                 <div class="flex items-center gap-1">
-                  <span class="text-muted-foreground">Name:</span>
+                  <span class="text-muted-foreground">{$t('lookupPlayer.stwDetails.missionInformation.name')}:</span>
                   <img class="size-5" alt={mission.name} src={mission.icon}/>
                   <span>{mission.name} ⚡{mission.powerLevel}</span>
                 </div>
 
                 <div class="flex items-center gap-1">
-                  <span class="text-muted-foreground">World:</span>
+                  <span class="text-muted-foreground">{$t('lookupPlayer.stwDetails.missionInformation.world')}:</span>
                   <span>{mission.world}</span>
                 </div>
 
                 <div class="flex items-center gap-1">
-                  <span class="text-muted-foreground">Zone:</span>
+                  <span class="text-muted-foreground">{$t('lookupPlayer.stwDetails.missionInformation.zone')}:</span>
                   <span>{mission.zone}</span>
                 </div>
               </div>
@@ -382,7 +381,7 @@
               <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 place-items-center not-md:gap-4">
                 {#if selectedHeroLoadout.commander}
                   <div class="flex flex-col items-center gap-y-1">
-                    <span class="text-lg font-semibold">Commander</span>
+                    <span class="text-lg font-semibold">{$t('lookupPlayer.stwDetails.heroLoadout.commander')}</span>
                     <img
                       style="background-color: {RarityColors[selectedHeroLoadout.commander.rarity]}"
                       class="size-12 rounded-sm"
@@ -395,7 +394,7 @@
 
                 {#if selectedHeroLoadout.teamPerk}
                   <div class="flex flex-col items-center gap-y-1">
-                    <span class="text-lg font-semibold">Team Perk</span>
+                    <span class="text-lg font-semibold">{$t('lookupPlayer.stwDetails.heroLoadout.teamPerk')}</span>
                     <img
                       class="size-12 rounded-sm"
                       alt={selectedHeroLoadout.teamPerk.name}
@@ -407,7 +406,7 @@
 
                 {#if selectedHeroLoadout.supportTeam?.length}
                   <div class="flex flex-col items-center gap-y-1">
-                    <span class="text-lg font-semibold md:hidden">Support Team</span>
+                    <span class="text-lg font-semibold md:hidden">{$t('lookupPlayer.stwDetails.heroLoadout.supportTeam')}</span>
                     <div class="grid grid-cols-3 gap-2">
                       {#each selectedHeroLoadout.supportTeam as support (support.name)}
                         <div class="flex justify-center items-center size-10" title={support.name}>
@@ -425,7 +424,7 @@
 
                 {#if selectedHeroLoadout.gadgets?.length}
                   <div class="flex flex-col items-center gap-y-1">
-                    <span class="text-lg font-semibold md:hidden">Gadgets</span>
+                    <span class="text-lg font-semibold md:hidden">{$t('lookupPlayer.stwDetails.heroLoadout.gadgets')}</span>
                     {#each selectedHeroLoadout.gadgets as gadget (gadget.name)}
                       <img class="size-10" alt={gadget.name} src={gadget.icon} title={gadget.name}/>
                     {/each}

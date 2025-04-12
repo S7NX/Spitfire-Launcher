@@ -17,9 +17,10 @@
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import { accountsStore } from '$lib/stores';
   import { oauthService } from '$lib/core/services';
+  import { t } from '$lib/utils/util';
   import type { DeviceCodeLoginData, EpicOAuthData } from '$types/game/authorizations';
 
-  type LoginMethod = 'web' | 'exchange-code';
+  type LoginMethod = 'webConfirmation' | 'exchangeCode';
 
   type Props = {
     open: boolean;
@@ -37,26 +38,26 @@
 
   let deviceCodeData = $state<{ code: string; verificationUrl: string }>();
 
-  const steps = ['Select Method', 'Login', 'Complete'];
+  const steps = $derived([$t('accountManager.loginSteps.select'), $t('accountManager.loginSteps.login'), $t('accountManager.loginSteps.completed')]);
 
   const loginMethods: {
     id: LoginMethod;
     name: string;
     description: string;
     icon: any;
-    recommended?: boolean
+    recommended?: boolean;
   }[] = [
     {
-      id: 'web',
-      name: 'Web Confirmation',
-      description: 'Login through Epic\'s website with a simple confirmation step.',
+      id: 'webConfirmation',
+      name: $t('accountManager.loginMethods.webConfirmation.title'),
+      description: $t('accountManager.loginMethods.webConfirmation.description'),
       icon: GlobeIcon,
       recommended: true
     },
     {
-      id: 'exchange-code',
-      name: 'Exchange Code',
-      description: 'Use a pre-generated exchange code from your Epic Games account.',
+      id: 'exchangeCode',
+      name: $t('accountManager.loginMethods.exchangeCode.title'),
+      description: $t('accountManager.loginMethods.exchangeCode.description'),
       icon: KeyIcon
     }
   ];
@@ -69,7 +70,7 @@
       }, 3000);
     }
 
-    if (selectedMethod === 'web' && currentStep === 1) {
+    if (selectedMethod === 'webConfirmation' && currentStep === 1) {
       generateDeviceCodeLink();
 
       setTimeout(() => {
@@ -78,7 +79,7 @@
     }
   });
 
-  function selectLoginMethod(method: 'web' | 'exchange-code') {
+  function selectLoginMethod(method: LoginMethod) {
     selectedMethod = method;
     goToNextStep();
   }
@@ -111,7 +112,7 @@
       await handleLogin(accessTokenData);
     } catch (error) {
       console.error(error);
-      toast.error('Failed to login');
+      toast.error($t('accountManager.failedToLogin'));
     } finally {
       isLoggingIn = false;
     }
@@ -150,7 +151,7 @@
       await handleLogin(androidAccessTokenData);
     } catch (error) {
       console.error(error);
-      toast.error('Please confirm the login on the Epic Games website');
+      toast.error($t('accountManager.confirmRequest'));
     } finally {
       isLoggingIn = false;
     }
@@ -163,7 +164,7 @@
     }
 
     if (allAccounts.some((account) => account.accountId === accessTokenData.account_id)) {
-      toast.error(`You are already logged in with ${accessTokenData.displayName}`);
+      toast.error($t('accountManager.alreadyLoggedIn', { name: accessTokenData.displayName }));
       return;
     }
 
@@ -196,14 +197,16 @@
   }
 </script>
 
-<Dialog bind:open>
+<Dialog hideClose={true} bind:open>
   <div class="flex flex-col">
-    <LoginSteps {currentStep} {steps}/>
+    <LoginSteps {currentStep} {steps} />
 
     <div class="mt-4 min-h-64">
       {#if currentStep === 0}
         <div in:fade={{ duration: 200 }}>
-          <h3 class="mb-4 text-lg font-medium">Choose Login Method</h3>
+          <h3 class="mb-4 text-lg font-medium">
+            {$t('accountManager.chooseLoginMethod')}
+          </h3>
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {#each loginMethods as method (method.id)}
               {@const Icon = method.icon}
@@ -214,7 +217,7 @@
                 variant="outline"
               >
                 <div class="mb-3 rounded-full bg-muted p-3">
-                  <Icon class="size-8 text-muted-foreground"/>
+                  <Icon class="size-8 text-muted-foreground" />
                 </div>
                 <h4 class="mb-1 font-medium">{method.name}</h4>
                 <p class="text-center text-sm text-muted-foreground">
@@ -222,9 +225,8 @@
                 </p>
 
                 {#if 'recommended' in method && method.recommended}
-                  <span class="mt-2 rounded-full bg-muted px-2 py-1 text-xs font-medium text-muted-foreground"
-                  >
-                    Recommended
+                  <span class="mt-2 rounded-full bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
+                    {$t('accountManager.recommended')}
                   </span>
                 {/if}
               </Button>
@@ -237,72 +239,76 @@
             class="mb-4 flex w-fit items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
             onclick={goToPreviousStep}
           >
-            <ArrowLeftIcon class="size-4"/>
-            Back
+            <ArrowLeftIcon class="size-4" />
+            {$t('accountManager.back')}
           </button>
 
-          {#if selectedMethod === 'exchange-code'}
-            <h3 class="mb-4 text-lg font-medium">Enter Exchange Code</h3>
-            <p class="mb-4 text-sm text-muted-foreground">
-              Paste the exchange code generated from your Epic Games account.
-            </p>
-
-            <form
-              class="space-y-4"
-              onsubmit={handleExchangeCodeSubmit}
-            >
-              <Input
-                class="mb-4"
-                disabled={isLoggingIn}
-                placeholder="Enter exchange code"
-                type="text"
-                bind:value={exchangeCode}
-              />
-
-              <Button
-                class="w-full flex items-center justify-center gap-2"
-                disabled={!exchangeCode?.trim() || exchangeCode?.trim().length < 32 || isLoggingIn}
-                loading={isLoggingIn}
-                loadingText="Verifying..."
-                type="submit"
-                variant="epic"
-              >
-                Continue
-              </Button>
-            </form>
-          {:else if selectedMethod === 'web'}
-            <h3 class="mb-4 text-lg font-medium">Web Confirmation</h3>
+          {#if selectedMethod === 'webConfirmation'}
+            <h3 class="mb-4 text-lg font-medium">
+              {$t('accountManager.loginMethods.webConfirmation.title')}
+            </h3>
             <div class="mb-6 rounded-lg">
               <p class="mb-4 text-sm">
-                Click the button below to open Epic Games website. Once you've confirmed access there,
-                click "Continue" to proceed.
+                {$t('accountManager.loginMethods.webConfirmation.instructions')}
               </p>
 
               <Button
                 class="flex justify-center items-center gap-x-2 w-full"
                 disabled={!deviceCodeData?.verificationUrl}
                 loading={!deviceCodeData?.verificationUrl}
-                loadingText="Generating URL..."
+                loadingText={$t('accountManager.loginMethods.webConfirmation.generatingURL')}
                 onclick={openDeviceCodeLink}
                 variant="outline"
               >
-                <ExternalLinkIcon class="size-4"/>
-                Open Epic Games Website
+                <ExternalLinkIcon class="size-4" />
+                {$t('accountManager.loginMethods.webConfirmation.openWebsite')}
               </Button>
             </div>
 
             {#if !deviceCodeVerifyButtonDisabled}
               <Button
                 class="w-full"
-                disabled={isLoggingIn || deviceCodeVerifyButtonDisabled || !deviceCodeData?.verificationUrl}
+                disabled={isLoggingIn ||
+                  deviceCodeVerifyButtonDisabled ||
+                  !deviceCodeData?.verificationUrl}
                 loading={isLoggingIn}
-                loadingText="Verifying..."
+                loadingText={$t('accountManager.verifying')}
                 onclick={handleWebConfirmation}
                 variant="epic"
               >
-                Continue
+                {$t('accountManager.continue')}
               </Button>
             {/if}
+          {:else if selectedMethod === 'exchangeCode'}
+            <h3 class="mb-4 text-lg font-medium">
+              {$t('accountManager.loginMethods.exchangeCode.title')}
+            </h3>
+            <p class="mb-4 text-sm text-muted-foreground">
+              {$t('accountManager.loginMethods.exchangeCode.instructions')}
+            </p>
+
+            <form class="space-y-4" onsubmit={handleExchangeCodeSubmit}>
+              <Input
+                class="mb-4"
+                disabled={isLoggingIn}
+                placeholder={$t('accountManager.loginMethods.exchangeCode.inputPlaceholder')}
+                type="text"
+                bind:value={exchangeCode}
+              />
+
+              <Button
+                class="w-full flex items-center justify-center gap-2"
+                disabled={!exchangeCode?.trim() ||
+                  exchangeCode?.trim().length < 32 ||
+                  isLoggingIn}
+                loading={isLoggingIn}
+                loadingText={$t('accountManager.verifying')}
+                type="submit"
+                variant="epic"
+              >
+                {$t('accountManager.continue')}
+              </Button>
+            </form>
           {/if}
         </div>
       {:else if currentStep === 2}
@@ -311,12 +317,14 @@
           in:fade={{ duration: 200 }}
         >
           <div class="mb-4 rounded-full bg-muted p-4">
-            <CheckCircleIcon class="size-10 text-muted-foreground"/>
+            <CheckCircleIcon class="size-10 text-muted-foreground" />
           </div>
 
-          <h3 class="mb-2 text-xl font-medium">👋 Welcome, {activeAccount?.displayName}</h3>
+          <h3 class="mb-2 text-xl font-medium">
+            {$t('accountManager.welcome.title', { name: activeAccount!.displayName })}
+          </h3>
           <p class="mb-6 text-muted-foreground">
-            You have been successfully logged into your Epic Games account.
+            {$t('accountManager.welcome.description', { name: activeAccount!.displayName })}
           </p>
         </div>
       {/if}

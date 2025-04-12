@@ -8,6 +8,8 @@ import homebaseRatingMapping from '$lib/data/homebaseRatingMapping.json';
 import { accountPartiesStore } from '$lib/stores';
 import { toast } from 'svelte-sonner';
 import { evaluateCurve } from '$lib/utils/util';
+import { get } from 'svelte/store';
+import { t } from '$lib/utils/util';
 import type { AccountData } from '$types/accounts';
 import type {
   ServiceEventFriendRequest,
@@ -38,16 +40,16 @@ export default class TaxiManager {
   public isStopping = $state(false);
   public isAvailable = $state(false);
   public level = $state(145);
-  public availableStatus = $state('Available for taxi service. Send party invite to join!');
-  public busyStatus = $state('Currently in a party. Will be available soon.');
+  public availableStatus = $state(get(t)('taxiService.settings.availableStatus.default'));
+  public busyStatus = $state(get(t)('taxiService.settings.busyStatus.default'));
   public autoAcceptFriendRequests = $state(false);
   public partyTimeoutSeconds = $state(90);
 
-  constructor(private account: AccountData) {}
+  constructor(private account: AccountData) { }
 
   async start() {
     if (BotLobbyManager.botLobbyAccountIds.has(this.account.accountId)) {
-      toast.error('You can\'t start taxi service while bot lobby is active.');
+      toast.error(get(t)('taxiService.botLobbyActive'));
       return;
     }
 

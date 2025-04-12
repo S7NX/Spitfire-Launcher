@@ -3,9 +3,9 @@
   import Switch from '$components/ui/Switch.svelte';
   import DataStorage, { SETTINGS_FILE_PATH } from '$lib/core/dataStorage';
   import type { AllSettings } from '$types/settings';
-  import { sidebarCategories } from '$components/Sidebar.svelte';
   import { customizableMenuStore } from '$lib/stores';
   import { Separator } from 'bits-ui';
+  import { SidebarCategories } from '$lib/constants/sidebar';
 
   let menuSettings = $derived($customizableMenuStore);
 
@@ -27,7 +27,7 @@
 </script>
 
 <div class="space-y-6">
-  {#each sidebarCategories as category (category.name)}
+  {#each $SidebarCategories as category (category.key)}
     <div>
       <h2 class="text-lg font-semibold mb-1">{category.name}</h2>
       <Separator.Root class="bg-border h-px mb-2"/>

@@ -10,7 +10,7 @@
       gold: number;
       mtx: number;
       xp: number;
-    }
+    };
   };
 
   type QuestStatus = BulkActionStatus<{
@@ -34,6 +34,7 @@
   import { dailyQuests } from '$lib/constants/stw/resources';
   import type { FullQueryProfile } from '$types/game/mcp';
   import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
+  import { t } from '$lib/utils/util';
 
   let selectedAccounts = $state<string[]>([]);
 
@@ -125,7 +126,7 @@
   }
 </script>
 
-<CenteredPageContent class="!w-112" title="Daily Quests">
+<CenteredPageContent class="!w-112" title={$t('dailyQuests.page.title')}>
   <AccountCombobox
     disabled={isFetching}
     type="multiple"
@@ -136,12 +137,12 @@
     class="w-full"
     disabled={!selectedAccounts?.length || isFetching}
     loading={isFetching}
-    loadingText="Fetching Quests"
+    loadingText={$t('dailyQuests.loading')}
     onclick={fetchDailyQuests}
     type="submit"
     variant="epic"
   >
-    Fetch Daily Quests
+    {$t('dailyQuests.getQuests')}
   </Button>
 
   {#if !isFetching && questStatuses.length}
@@ -151,17 +152,17 @@
           {#each status.data.quests as quest (quest.id)}
             {@const rewards = [
               {
-                name: 'Gold',
+                name: $t('common.stw.gold'),
                 icon: '/assets/resources/eventcurrency_scaling.png',
                 amount: quest.rewards.gold
               },
               {
-                name: status.data.hasFounder ? 'V-Bucks' : 'X-Ray Tickets',
+                name: status.data.hasFounder ? $t('common.vbucks') : $t('common.stw.xrayTickets'),
                 icon: status.data.hasFounder ? '/assets/resources/currency_mtxswap.png' : '/assets/resources/currency_xrayllama.png',
                 amount: quest.rewards.mtx
               },
               {
-                name: 'XP',
+                name: $t('common.xp'),
                 icon: '/assets/misc/battle-royale-xp.png',
                 amount: quest.rewards.xp
               }
@@ -182,7 +183,11 @@
                       size="sm"
                       variant="outline"
                     >
-                      <RefreshCwIcon class="size-4 {rerollingQuestId === quest.id ? 'animate-spin' : ''}"/>
+                      <RefreshCwIcon
+                        class="size-4 {rerollingQuestId === quest.id
+                          ? 'animate-spin'
+                          : ''}"
+                      />
                     </Button>
                   {/if}
                 </div>
@@ -192,7 +197,7 @@
                 {#each rewards as reward (reward.name)}
                   {#if reward.amount > 0}
                     <div class="flex items-center gap-2 bg-muted/50 p-2 rounded">
-                      <img class="size-5" alt={reward.name} src={reward.icon}/>
+                      <img class="size-5" alt={reward.name} src={reward.icon} />
                       <span class="font-medium">{reward.amount.toLocaleString()}</span>
                     </div>
                   {/if}

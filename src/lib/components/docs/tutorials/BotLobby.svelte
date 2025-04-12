@@ -1,43 +1,44 @@
 <script lang="ts">
   import BaseModal from '$components/docs/BaseModal.svelte';
+  import { t } from '$lib/utils/util';
 </script>
 
 <BaseModal>
-  <h2>🤖 Bot Lobby</h2>
+  <h2>{$t('botLobby.page.title')}</h2>
 
-  <h3>How to use the Lobby Bot System</h3>
+  <h3>{$t('docs.howToUse')}</h3>
   <ol>
     <li>
-      Login to an account that you want to turn into a lobby bot. This account shouldn't have any match history!
+      {$t('docs.botLobby.howToUse.0')}
     </li>
     <li>
-      Start the bot by clicking the button.
+      {$t('docs.botLobby.howToUse.1')}
     </li>
     <li>
-      Invite the bot to your party.
+      {$t('docs.botLobby.howToUse.2')}
     </li>
     <li>
-      Finally, ready up in the lobby to enter a match full of bots.
+      {$t('docs.botLobby.howToUse.3')}
     </li>
   </ol>
 
-  <h3>Frequently Asked Questions</h3>
+  <h3>{$t('docs.faq')}</h3>
   <ul>
     <li>
-      <strong>In which modes do bot lobbies work?</strong>
-      <p>Bot lobbies currently work in only Battle Royale and Zero Build modes.</p>
+      <strong>{$t('docs.botLobby.faq.0.question')}</strong>
+      <p>{$t('docs.botLobby.faq.0.answer')}</p>
     </li>
     <li>
-      <strong>Can I get victory crowns?</strong>
-      <p>No.</p>
+      <strong>{$t('docs.botLobby.faq.1.question')}</strong>
+      <p>{$t('docs.botLobby.faq.1.answer')}</p>
     </li>
     <li>
-      <strong>Can I get banned?</strong>
-      <p>The account you turn into a bot lobby bot can get banned, but your main account most likely won't. Use at your own risk.</p>
+      <strong>{$t('docs.botLobby.faq.2.question')}</strong>
+      <p>{$t('docs.botLobby.faq.2.answer')}</p>
     </li>
     <li>
-      <strong>I got an error saying "Connection Timeout"</strong>
-      <p>Try restarting the lobby bot. If that doesn't work, restart the Launcher.</p>
+      <strong>{$t('docs.botLobby.faq.3.question')}</strong>
+      <p>{$t('docs.botLobby.faq.3.answer')}</p>
     </li>
   </ul>
 </BaseModal>

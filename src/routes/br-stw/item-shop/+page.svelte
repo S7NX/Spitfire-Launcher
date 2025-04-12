@@ -6,8 +6,8 @@
   import LookupManager from '$lib/core/managers/lookup';
   import MCPManager from '$lib/core/managers/mcp';
   import ShopManager from '$lib/core/managers/shop';
-  import { accountDataStore, accountsStore, brShopStore, ownedItemsStore } from '$lib/stores';
-  import { calculateVbucks, formatRemainingDuration, getResolvedResults } from '$lib/utils/util';
+  import { accountDataStore, accountsStore, brShopStore, language, ownedItemsStore } from '$lib/stores';
+  import { calculateVbucks, formatRemainingDuration, getResolvedResults, t } from '$lib/utils/util';
   import type { AccountStoreData } from '$types/accounts';
   import type { SpitfireShopFilter, SpitfireShopSection } from '$types/game/shop';
   import { onMount } from 'svelte';
@@ -23,28 +23,26 @@
   let shopLastUpdated = $state<Date>();
   let shopSections = $state<SpitfireShopSection[] | null>(null);
   let errorOccurred = $state(false);
-  let selectedFilter = $state<SpitfireShopFilter>('All');
+  let selectedFilter = $state<SpitfireShopFilter>('all');
 
   const filteredItems = $derived.by(() => {
-    if (!shopSections)
-      return null;
+    if (!shopSections) return null;
 
-    if (!selectedFilter || selectedFilter === 'All')
-      return shopSections;
+    if (!selectedFilter || selectedFilter === 'all') return shopSections;
 
-    if (selectedFilter === 'New')
+    if (selectedFilter === 'new')
       return shopSections.map((section) => ({
         ...section,
         items: section.items.filter((item) => !item.dates.lastSeen)
       })).filter((section) => section.items.length > 0);
 
-    if (selectedFilter === 'Leaving Soon')
+    if (selectedFilter === 'leavingSoon')
       return shopSections.map((section) => ({
         ...section,
         items: section.items.filter((item) => item.dates.out && new Date(item.dates.out).getTime() - Date.now() < 3 * 24 * 60 * 60 * 1000)
       })).filter((section) => section.items.length > 0);
 
-    if (selectedFilter === 'Longest Wait')
+    if (selectedFilter === 'longestWait')
       return shopSections.map((section) => ({
         ...section,
         items: section.items.filter((item) => item.dates.lastSeen && Date.now() - new Date(item.dates.lastSeen).getTime() > 120 * 24 * 60 * 60 * 1000)
@@ -98,7 +96,10 @@
     }
 
     if (friendList) {
-      const accountsData = await LookupManager.fetchByIds(activeAccount, friendList.map((friend) => friend.accountId));
+      const accountsData = await LookupManager.fetchByIds(
+        activeAccount,
+        friendList.map((friend) => friend.accountId)
+      );
       accountData.friends = accountsData.map((account) => ({
         displayName: account.displayName,
         accountId: account.id
@@ -128,41 +129,43 @@
 
 <div class="flex flex-col gap-y-2">
   <div>
-    <h1 class="text-2xl font-bold">BR Item Shop</h1>
-    <h2 class="text-muted-foreground font-medium">Last updated: {shopLastUpdated?.toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric'
-    }) || '...'}</h2>
+    <h1 class="text-2xl font-bold">{$t('itemShop.page.title')}</h1>
+    <h2 class="text-muted-foreground font-medium">
+      {$t('itemShop.lastUpdated', { date: shopLastUpdated?.toLocaleDateString($language, {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      }) || '...'})}
+    </h2>
 
     {#if remainingTime}
-      <h2 class="text-muted-foreground font-medium">Next rotation in {formatRemainingDuration(remainingTime)}</h2>
+      <h2 class="text-muted-foreground font-medium">
+        {$t('itemShop.nextRotation', { time: formatRemainingDuration(remainingTime) })}
+      </h2>
     {/if}
   </div>
 
   <div>
-    <ShopFilter bind:selected={selectedFilter}/>
+    <ShopFilter bind:selected={selectedFilter} />
   </div>
 
   <div class="mt-6">
     {#if !filteredItems}
       {#if errorOccurred}
-        <p class="text-red-500">Failed to fetch shop items. Please try again later.</p>
+        <p class="text-red-500">{$t('itemShop.failedtoFetch')}</p>
       {:else}
         <div class="space-y-6">
           {#each Array(2) as _, index (index)}
-            <SkeletonShopSection/>
+            <SkeletonShopSection />
           {/each}
         </div>
       {/if}
+    {:else if filteredItems?.length}
+      {#each filteredItems as section (section.id)}
+        <ShopSection {section} />
+      {/each}
     {:else}
-      {#if filteredItems?.length}
-        {#each filteredItems as section (section.id)}
-          <ShopSection {section}/>
-        {/each}
-      {:else}
-        <p>No items found</p>
-      {/if}
+      <p>{$t('itemShop.noItems')}</p>
     {/if}
   </div>
 </div>

@@ -1,0 +1,634 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "language": "English",
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "vbucks": "V-Bucks",
+    "xp": "XP",
+    "stw": {
+      "xrayTickets": "İçi Dışı Bir Biletleri",
+      "gold": "Gold",
+      "founderEditions": {
+        "none": "Non-Founder",
+        "founder": "Founder",
+        "standard": "Standard",
+        "deluxe": "Deluxe",
+        "superDeluxe": "Super Deluxe",
+        "limited": "Limited",
+        "ultimate": "Ultimate"
+      },
+      "worldNames": {
+        "stonewood": "Stonewood",
+        "plankerton": "Plankerton",
+        "cannyValley": "Canny Valley",
+        "twinePeaks": "Twine Peaks",
+        "stormKingsDomain": "Storm King's Domain",
+        "dungeons": "Dungeons",
+        "visitTheCrater": "Visit the Crater",
+        "blastedBadlands": "Blasted Badlands",
+        "flannelFalls": "Flannel Falls",
+        "frozenFjords": "Frozen Fjords",
+        "hexsylvania": "Hexsylvania",
+        "scurvyShoals": "Scurvy Shoals"
+      }
+    },
+    "gameModes": {
+      "battleRoyale": "Battle Royale",
+      "creative": "Creative",
+      "saveTheWorld": "Save the World"
+    },
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "times": {
+    "seconds": {
+      "one": "{count} second",
+      "other": "{count} seconds"
+    },
+    "minutes": {
+      "one": "{count} minute",
+      "other": "{count} minutes"
+    },
+    "hours": {
+      "one": "{count} hour",
+      "other": "{count} hours"
+    },
+    "days": {
+      "one": "{count} day",
+      "other": "{count} days"
+    }
+  },
+  "sidebar": {
+    "externalLinks": {
+      "discord": "Discord Server",
+      "repository": "GitHub Repository"
+    },
+    "version": "Version",
+    "categories": {
+      "account": "Account",
+      "brStw": "BR & STW",
+      "authentication": "Authentication"
+    },
+    "items": {
+      "vbucksInformation": "V-Bucks",
+      "redeemCodes": "Redeem Codes",
+      "epicGamesSettings": "Epic Games Settings",
+      "eula": "EULA",
+      "autoKick": "Auto-Kick",
+      "taxiService": "Taxi Service",
+      "botLobby": "Bot Lobby",
+      "customStatus": "Custom Status",
+      "partyManagement": "Party Management",
+      "serverStatus": "Server Status",
+      "itemShop": "Item Shop",
+      "earnedXp": "Earned XP",
+      "dailyQuests": "Daily Quests",
+      "stwWorldInfo": "STW World Info",
+      "lookupPlayers": "Lookup Players"
+    }
+  },
+  "newVersionAvailable": {
+    "title": "New Version Available",
+    "description": "Version {version} is available. Click the button below to update.",
+    "download": "Download"
+  },
+  "epicGamesSettings": {
+    "page": {
+      "title": "Epic Games Settings",
+      "description": "Click the button below to login to Epic Games."
+    },
+    "login": "Login to Epic Games Website",
+    "loggingIn": "Logging in",
+    "openedWebsite": "Opened Epic Games website",
+    "failedToOpenWebsite": "Failed to open Epic Games website"
+  },
+  "eula": {
+    "page": {
+      "title": "EULA"
+    },
+    "check": "Check EULA",
+    "checking": "Checking EULA",
+    "allAccountsAlreadyAccepted": "All selected accounts have already accepted the EULA"
+  },
+  "redeemCodes": {
+    "page": {
+      "title": "Redeem Codes"
+    },
+    "codesPlaceholder": "Enter the codes to redeem and press Enter",
+    "redeemCodes": "Redeem Codes",
+    "redeeming": "Redeeming",
+    "redeemed": "Redeemed",
+    "redeemErrors": {
+      "notFound": "Code not found",
+      "itemsAlreadyOwned": "Items already owned",
+      "alreadyUsed": "Code already used",
+      "unknownError": "Unknown error"
+    },
+    "loginExpired": "Login expired. Please login again."
+  },
+  "vbucksInformation": {
+    "page": {
+      "title": "V-Bucks Information"
+    },
+    "getInformation": "Get V-Bucks Information",
+    "loading": "Loading V-Bucks information",
+    "loginExpired": "Login expired. Please login again.",
+    "unknownError": "Unknown error"
+  },
+  "deviceAuthManagement": {
+    "page": {
+      "title": "Device Auth List"
+    },
+    "authInfo": {
+      "noName": "No Name",
+      "activeAuth": "The launcher uses this device auth",
+      "id": "Device ID",
+      "created": "Created",
+      "lastAccess": "Last Access",
+      "location": "Location",
+      "ip": "IP",
+      "date": "Date"
+    },
+    "failedToFetch": "Failed to fetch device auth list",
+    "generating": "Generating device auth...",
+    "generated": "Device auth generated",
+    "failedToGenerate": "Failed to generate device auth",
+    "deleting": "Deleting device auth...",
+    "deleted": "Device auth deleted",
+    "deletedAndLoggedOut": "Device auth deleted and logged out",
+    "failedToDelete": "Failed to delete device auth"
+  },
+  "accessTokenManagement": {
+    "page": {
+      "title": "Access Token"
+    },
+    "selectTokenType": "Select token type",
+    "selectClient": "Select client",
+    "generate": "Generate Access Token",
+    "generating": "Generating",
+    "generated": "Generated and copied to clipboard",
+    "failedToGenerate": "Failed to generate access token"
+  },
+  "exchangeCodeManagement": {
+    "page": {
+      "title": "Exchange Code",
+      "description": "Click the button below to generate an exchange code."
+    },
+    "generate": "Generate Exchange Code",
+    "generating": "Generating",
+    "generated": "Generated and copied to clipboard",
+    "failedToGenerate": "Failed to generate exchange code"
+  },
+  "autoKick": {
+    "page": {
+      "title": "Auto-Kick",
+      "description": "Toggle auto-kick, auto-claim, and auto-transfer materials for Save the World missions."
+    },
+    "accountStatus": {
+      "active": "Active",
+      "loginExpired": "Login Expired",
+      "disconnected": "Disconnected"
+    },
+    "settings": {
+      "kick": "Kick",
+      "claim": "Claim Rewards",
+      "transferMaterials": "Transfer Materials"
+    }
+  },
+  "botLobby": {
+    "page": {
+      "title": "Bot Lobby",
+      "description": "Turn your account into a bot lobby bot."
+    },
+    "banWarning": {
+      "title": "Warning",
+      "description": "The account you turn into a bot lobby bot can get banned! Use at your own risk."
+    },
+    "settings": {
+      "availableStatus": {
+        "title": "Available Status",
+        "placeholder": "The custom status of the bot when it's available",
+        "default": "Available for bot lobby. Send party invite to join!"
+      },
+      "busyStatus": {
+        "title": "Busy Status",
+        "placeholder": "The custom status of the bot when it's busy",
+        "default": "Currently in a party. Will be available soon."
+      },
+      "autoAcceptFriendRequests": "Auto Accept Friend Requests"
+    },
+    "start": "Start Bot Lobby",
+    "starting": "Starting",
+    "stop": "Stop Bot Lobby",
+    "stopping": "Stopping",
+    "checkingEligibility": "Checking",
+    "failedToFetchProfile": "Failed to fetch profile data",
+    "matchmakingBan": {
+      "default": "This account is banned from matchmaking.",
+      "indefinite": "This account is indefinitely banned from matchmaking.",
+      "temporary": "This account is banned from matchmaking for {time}."
+    },
+    "useNewAccount": "You must use a fresh account with no match history to start a bot lobby.",
+    "taxiServiceActive": "You can't start bot lobby while taxi service is active.",
+    "failedToStart": "Failed to start bot lobby",
+    "failedToStop": "Failed to stop bot lobby"
+  },
+  "customStatus": {
+    "page": {
+      "title": "Custom Status",
+      "description": "Set a custom status for your account."
+    },
+    "statusPlaceholder": "Enter your custom status",
+    "setStatus": "Set Status",
+    "settingStatus": "Setting Status",
+    "statusSet": "Custom status set successfully",
+    "failedToSetStatus": "Failed to set status",
+    "resetStatus": "Reset Status",
+    "resettingStatus": "Resetting Status",
+    "statusReset": "Custom status reset successfully",
+    "failedToResetStatus": "Failed to reset custom status"
+  },
+  "dailyQuests": {
+    "page": {
+      "title": "Daily Quests"
+    },
+    "getQuests": "Get Daily Quests",
+    "loading": "Loading Quests"
+  },
+  "earnedXP": {
+    "page": {
+      "title": "Earned XP",
+      "description": "Check your XP progress from Battle Royale, Creative and Save the World."
+    },
+    "check": "Check Earned XP",
+    "loading": "Loading"
+  },
+  "itemShop": {
+    "page": {
+      "title": "Item Shop"
+    },
+    "lastUpdated": "Last updated: {date}",
+    "nextRotation": "Next rotation in {time}",
+    "failedtoFetch": "Failed to fetch item shop items. Please try again later.",
+    "noItems": "No items found",
+    "selectFilter": "Select a filter",
+    "filters": {
+      "all": "All",
+      "new": "New",
+      "leavingSoon": "Leaving Soon",
+      "longestWait": "Longest Wait"
+    },
+    "owned": "Owned",
+    "purchase": "Purchase",
+    "gift": "Gift",
+    "itemInformation": {
+      "price": "Price",
+      "firstSeen": "First Seen",
+      "lastSeen": "Last Seen",
+      "leavesOn": "Leaves on"
+    },
+    "notEnoughVbucks": "Not enough V-Bucks",
+    "noFriends": "No friends found",
+    "noRemainingGifts": "No remaining gifts",
+    "purchaseConfirmation": {
+      "title": "Purchase Confirmation",
+      "description": "Are you sure you want to purchase {name} for {price} {vbucksIcon}?"
+    },
+    "purchasing": "Purchasing",
+    "purchased": "Successfully purchased item",
+    "needMoreVbucksToPurchase": "You need {amount} more V-Bucks to purchase this item",
+    "alreadyOwned": "You already own this item",
+    "failedToPurchase": "Failed to purchase item",
+    "giftConfirmation": {
+      "title": "Gift Confirmation",
+      "description": "Choose friends to gift {name} for {price} {vbucksIcon}."
+    },
+    "selectFriends": "Select friends",
+    "selectedFriendCount": "{count} friends selected",
+    "sendGift": "Send Gift",
+    "sentGift": "Successfully sent gift",
+    "reachedDailyGiftLimit": "You have reached the daily gift limit",
+    "needMoreVbucksToGift": "You need {amount} more V-Bucks to gift this item",
+    "friendsMayOwnItem": "Couldn't send gifts, one or more friends may already own this item.",
+    "friendsNotEligible": "Couldn't send gifts, one or more friends are not eligible.",
+    "friendsOwnItemFromBundle": "Couldn't send gifts, one or more friends own an item from this bundle.",
+    "friendsDoNotAcceptGifts": "Couldn't send gifts, one or more friends do not accept gifts.",
+    "enableMFA": "You need to enable MFA to gift items",
+    "failedToGift": "Failed to gift item"
+  },
+  "taxiService": {
+    "page": {
+      "title": "Taxi Service",
+      "description": "Turn your account into a taxi and play STW missions that are above your power level."
+    },
+    "alert": {
+      "title": "Warning",
+      "message": "You must select \"No Fill\" for the taxi to work properly."
+    },
+    "settings": {
+      "powerLevel": "Power Level",
+      "availableStatus": {
+        "title": "Available Status",
+        "placeholder": "The custom status of the taxi when it's available",
+        "default": "Available for taxi service. Send party invite to join!"
+      },
+      "busyStatus": {
+        "title": "Busy Status",
+        "placeholder": "The custom status of the taxi when it's busy",
+        "default": "Currently in a party. Will be available soon."
+      },
+      "autoAcceptFriendRequests": "Auto Accept Friend Requests"
+    },
+    "start": "Start Taxi Service",
+    "starting": "Starting",
+    "stop": "Stop Taxi Service",
+    "stopping": "Stopping",
+    "failedToStart": "Failed to start the taxi service",
+    "failedToStop": "Failed to stop the taxi service",
+    "botLobbyActive": "You can't start taxi service while bot lobby is active."
+  },
+  "worldInfo": {
+    "page": {
+      "title": "World Info"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "claimedAlerts": "Claimed Alerts"
+    },
+    "search": "Search by name or account ID",
+    "playerNotFound": "Player not found",
+    "stwStatsPrivate": "Couldn't fetch STW data of the player. Their game stats are private.",
+    "playerInfo": {
+      "id": "ID",
+      "name": "Name",
+      "commanderLevel": "Commander level",
+      "completedAlerts": "Completed alerts"
+    },
+    "sections": {
+      "survivors": "Legendary/Mythic Survivors",
+      "twinePeaks": "Twine Peaks ⚡160",
+      "ventures": "Ventures ⚡160",
+      "upgradeLlamaTokens": "Upgrade Llama Tokens",
+      "perkup": "Legendary PERK-UP!"
+    },
+    "noMissions": "No available missions",
+    "rewards": "Rewards",
+    "alertRewards": "Alert Rewards"
+  },
+  "lookupPlayer": {
+    "search": "Search by name or account ID",
+    "notFound": "Player not found",
+    "stwStatsPrivate": "Couldn't fetch STW data of the player. Their game stats are private.",
+    "playerInfo": {
+      "id": "ID",
+      "name": "Name",
+      "commanderLevel": "Commander level",
+      "boostedXp": "Boosted XP",
+      "boostCount": "{count} boosts",
+      "founderEdition": "Founder edition"
+    },
+    "stwDetails": {
+      "title":  "Save the World Details",
+      "players": "Players",
+      "missionInformation": {
+        "title": "Mission Information",
+        "name": "Name",
+        "world": "World",
+        "zone": "Zone"
+      },
+      "heroLoadout": {
+        "commander": "Commander",
+        "teamPerk": "Team Perk",
+        "supportTeam": "Support Team",
+        "gadgets": "Gadgets"
+      }
+    }
+  },
+  "serverStatus": {
+    "page": {
+      "title": "Fortnite Server Status"
+    },
+    "statuses": {
+      "operational": "Operational",
+      "down": "Down",
+      "majorOutage": "Major Outage",
+      "partialOutage": "Partial Outage",
+      "underMaintenance": "Under Maintenance",
+      "degradedPerformance": "Degraded Performance",
+      "unknown": "Unknown"
+    },
+    "notification": {
+      "title": "Fortnite Server Status",
+      "message": "Fortnite is back online!"
+    },
+    "status": "Status: {status}",
+    "failedToFetch": "Failed to fetch server status",
+    "lastUpdated": "Last updated: {date}",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing",
+    "notifyMe": {
+      "title": "Notify me",
+      "description": "Receive a notification when Fortnite is back online"
+    },
+    "queue": {
+      "title": "Queue Active",
+      "description": "Expected wait time: {time}"
+    }
+  },
+  "partyManagement": {
+    "page": {
+      "title": "Party Management"
+    },
+    "tabs": {
+      "stwActions": "STW Actions",
+      "partyMembers": "Party Members"
+    },
+    "stwActions": {
+      "claimRewardsAfterLeaving": "Claim rewards after leaving the mission",
+      "kickAll": "Kick All",
+      "leaveParty": "Leave Party",
+      "claimRewards": "Claim Rewards",
+      "notInParty": "You are not in a party",
+      "notLeader": "You are not the party leader",
+      "kickedAll": "Successfully kicked all players",
+      "failedToKickAll": "Failed to kick all players",
+      "failedToKickMember": "Failed to kick member",
+      "leftParty": "Successfully left party",
+      "claimedRewards": "Successfully claimed rewards",
+      "failedToClaimRewards": "Failed to claim rewards",
+      "leftParties": "Successfully left parties",
+      "failedToLeaveParties": "Failed to leave parties",
+      "promotedMember": "Successfully promoted {name} to party leader",
+      "failedToPromoteMember": "Failed to promote member"
+    },
+    "partyMembers": {
+      "size": "Size",
+      "region": "Region",
+      "createdAt": "Created at",
+      "kick": "Kick",
+      "kicking": "Kicking",
+      "leaveParty": "Leave Party",
+      "leavingParty": "Leaving Party",
+      "promote": "Promote to Leader",
+      "promoting": "Promoting",
+      "platform": "Platform",
+      "ownsSTW": "Owns STW",
+      "loadout": "Loadout",
+      "ready": "Ready",
+      "notReady": "Not Ready"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "tabs": {
+      "appSettings": "App Settings",
+      "customizableMenu": "Customizable Menu"
+    },
+    "appSettings": {
+      "invalidValue": "You have entered an invalid value.",
+      "gamePath": "Custom Game Path",
+      "missionCheckInterval": {
+        "title": "Mission Check Interval",
+        "description": "Interval in seconds to check if you are in a STW mission. Used with the Auto-Kick feature."
+      },
+      "claimRewardsDelay": {
+        "title": "Claim Rewards Delay",
+        "description": "Delay in seconds before claiming rewards after leaving a STW mission. Used with the Auto-Kick feature."
+      },
+      "startingPage": {
+        "title": "Starting Page",
+        "description": "Select the page to show when the launcher starts."
+      },
+      "startingAccount": {
+        "title": "Starting Account",
+        "description": "Select the account to use when the launcher starts.",
+        "values": {
+          "firstInList": "First in the List",
+          "lastUsed": "Last Used"
+        }
+      },
+      "hideToTray": "Hide to System Tray",
+      "checkForUpdates": "Check for Updates"
+    },
+    "unsavedChanges": {
+      "description": "You have unsaved changes",
+      "reset": "Reset",
+      "save": "Save"
+    }
+  },
+  "launchGame": {
+    "launch": "Launch Game",
+    "stop": "Stop Game",
+    "alreadyRunning": "Fortnite is already running",
+    "launching": "Launching Fortnite...",
+    "notInstalled": "Fortnite is not installed. Please install it first.",
+    "launched": "Fortnite launched successfully",
+    "failedToLaunch": "Failed to launch Fortnite",
+    "stopping": "Stopping Fortnite...",
+    "stopped": "Fortnite stopped successfully",
+    "failedToStop": "Failed to stop Fortnite"
+  },
+  "accountManager": {
+    "noAccount": "No Account",
+    "searchAccounts": "Search accounts...",
+    "login": "Add New Account",
+    "logout": "Logout",
+    "switching": "Switching to {name}...",
+    "switched": "Switched to {name}",
+    "failedToSwitch": "Failed to switch to {name}",
+    "loggingOut": "Logging out of {name}...",
+    "loggedOut": "Logged out of {name}",
+    "failedToLogout": "Failed to logout of {name}",
+    "selectAccount": "Select an account",
+    "selectAccounts": "Select accounts",
+    "selectedAccounts": "{count} accounts selected",
+    "chooseLoginMethod": "Choose Login Method",
+    "back": "Back",
+    "recommended": "Recommended",
+    "continue": "Continue",
+    "verifying": "Verifying...",
+    "loginSteps": {
+      "select": "Select Method",
+      "login": "Login",
+      "completed": "Completed"
+    },
+    "loginMethods": {
+      "webConfirmation": {
+        "title": "Web Confirmation",
+        "description": "Login through Epic's website with a simple confirmation step.",
+        "instructions": "Click the button below to open Epic Games website. Once you've confirmed access there, click \"Continue\" to proceed.",
+        "generatingURL": "Generating URL...",
+        "openWebsite": "Open Epic Games Website"
+      },
+      "exchangeCode": {
+        "title": "Exchange Code",
+        "description": "Login using an exchange code, if you have one.",
+        "instructions": "Paste the exchange code and click \"Continue\".",
+        "inputPlaceholder": "Paste your exchange code here"
+      }
+    },
+    "failedToLogin": "Failed to login",
+    "confirmRequest": "Please confirm the login on the Epic Games website to continue.",
+    "alreadyLoggedIn": "You have already logged in with {name}.",
+    "welcome": {
+      "title": "👋 Welcome, {name}",
+      "description": "You have successfully logged into your Epic Games account."
+    }
+  },
+  "docs": {
+    "howToUse": "How to Use",
+    "importantNotes": "Important Notes",
+    "faq": "Frequently Asked Questions",
+    "autoKick": {
+      "description": "Auto-Kick is a system that automatically kicks players from a mission once they complete it. It can also claim any rewards and transfers materials from your storage to your backpack.",
+      "importantNotes": {
+        "0": "If you have multiple accounts playing the same mission, you don't need to add all of them to the Auto-Kick system. The system will automatically kick them.",
+        "1": "If claiming rewards doesn't work or there is a bug, adjust the \"Claiming Rewards Delay\" in the settings (found in the top right corner)."
+      }
+    },
+    "botLobby": {
+      "howToUse": {
+        "0": "Login to an account that you want to turn into a lobby bot. This account shouldn't have any match history!",
+        "1": "Start the bot by clicking the button.",
+        "2": "Invite the bot to your party.",
+        "3": "Finally, ready up in the lobby to enter a match full of bots."
+      },
+      "faq": {
+        "0": {
+          "question": "In which modes do bot lobbies work?",
+          "answer": "Bot lobbies currently work in only Battle Royale and Zero Build modes."
+        },
+        "1": {
+          "question": "Can I get victory crowns?",
+          "answer": "No, you can't."
+        },
+        "2": {
+          "question": "Can I get banned?",
+          "answer": "The account you turn into a bot lobby bot can get banned, but your main account most likely won't. Use at your own risk."
+        },
+        "3": {
+          "question": "I got an error saying \"Connection Timeout\"",
+          "answer": "Try restarting the lobby bot. If that doesn't work, restart the launcher."
+        }
+      }
+    },
+    "taxiService": {
+      "howToUse": {
+        "0": "Login to an account that you want to turn into a taxi. This account shouldn't be your main!",
+        "1": "Start the taxi service by clicking the button.",
+        "2": "Invite the taxi to your party.",
+        "3": "Finally, set Team Fill to \"No Fill\" and start the mission."
+      },
+      "importantNotes": {
+        "0": "Team Fill option must be set to \"No Fill\".",
+        "1": "The taxi bot lets you access high power level missions, however it can't take you to worlds like Twine Peaks until you complete your Storm Shield Defenses.",
+        "2": "The taxi works for both normal missions and ventures. No additional configuration is needed."
+      }
+    },
+    "customStatus": {
+      "description": "It allows you to set a custom status in the game, as the name suggests.",
+      "status": "Your custom status here"
+    }
+  }
+}

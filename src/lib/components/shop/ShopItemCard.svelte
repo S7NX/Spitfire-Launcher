@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { calculateDiscountedShopPrice } from '$lib/utils/util';
+  import { calculateDiscountedShopPrice, t } from '$lib/utils/util';
   import type { SpitfireShopItem } from '$types/game/shop';
   import { ItemColors } from '$lib/constants/itemColors';
   import { activeAccountId, ownedItemsStore } from '$lib/stores';
@@ -71,7 +71,7 @@
         {:else}
           <img
             class="absolute left-0 top-1/2 -translate-y-1/2 size-5 object-contain"
-            alt="V-Bucks"
+            alt={$t('common.vbucks')}
             draggable="false"
             src="/assets/resources/currency_mtxswap.png"
           />
@@ -82,14 +82,12 @@
           class="text-sm font-bold pb-0.5 {isItemOwned ? 'text-green-500' : 'text-white'}"
         >
           {#if isItemOwned}
-            Owned
+            {$t('itemShop.owned')}
+          {:else if $discountedPrice !== item.price.final}
+            {$discountedPrice.toLocaleString()}
+            <span class="line-through text-white/95">{item.price.final.toLocaleString()}</span>
           {:else}
-            {#if $discountedPrice !== item.price.final}
-              {$discountedPrice.toLocaleString()}
-              <span class="line-through text-white/95">{item.price.final.toLocaleString()}</span>
-            {:else}
-              {item.price.final.toLocaleString()}
-            {/if}
+            {item.price.final.toLocaleString()}
           {/if}
         </span>
       </div>
@@ -97,4 +95,4 @@
   </div>
 </div>
 
-<ShopItemModal {item} bind:open={showItemModal}/>
+<ShopItemModal {item} bind:open={showItemModal} />

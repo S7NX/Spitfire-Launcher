@@ -2,7 +2,7 @@
   import Accordion from '$components/ui/Accordion.svelte';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import type { WorldParsedMission } from '$types/game/stw/worldInfo';
-  import { cn, isLegendaryOrMythicSurvivor } from '$lib/utils/util';
+  import { cn, isLegendaryOrMythicSurvivor, t } from '$lib/utils/util';
 
   type Props = {
     missions: WorldParsedMission[];
@@ -12,7 +12,7 @@
 
   const { missions, claimedMissionAlerts = new Set(), showAlertClaimedBorder = true }: Props = $props();
 
-  const parsedMissions = missions.map(mission => {
+  const parsedMissions = missions.map((mission) => {
     const vbucksReward = getVbucksReward(mission);
     const survivorsReward = getSurvivorsReward(mission);
     const upgradeLlamaTokens = getUpgradeLlamaTokens(mission);
@@ -35,7 +35,7 @@
     const normalReward = mission.rewards.find(({ itemId }) => itemId.includes('alteration_upgrade_sr'));
     const alertReward = mission.alert?.rewards.find(({ itemId }) => itemId.includes('alteration_upgrade_sr'));
 
-    return normalReward || (alertReward ? { ...alertReward!, isAlert: true } : null);
+    return normalReward ? { ...normalReward, appendX: true } : alertReward;
   }
 
   function getVbucksReward(mission: WorldParsedMission) {
@@ -61,11 +61,7 @@
     >
       <span class="flex gap-1 items-center py-0.5">
         {#if mission.zone.iconUrl}
-          <img
-            class="size-5"
-            alt="World icon"
-            src={mission.zone.iconUrl}
-          />
+          <img class="size-5" alt="World icon" src={mission.zone.iconUrl} />
         {:else}
           <span
             style="border-color: {mission.zone.color}; color: {mission.zone.color};"
@@ -75,26 +71,18 @@
           </span>
         {/if}
 
-        <img
-          class="size-6"
-          alt="Zone icon"
-          src={mission.zone.type.imageUrl}
-        />
+        <img class="size-6" alt="Zone icon" src={mission.zone.type.imageUrl} />
         <span class="border shrink-0 pl-0.5 pr-2 py-1 rounded text-xs">⚡{mission.powerLevel}</span>
 
         <span class="flex gap-x-2">
           {#if mission.allRewards.length > 0}
             {#each mission.allRewards as reward, i (reward.itemId)}
               <div class="flex gap-1">
-                <img
-                  class="size-6"
-                  alt="Reward icon"
-                  src={reward.imageUrl}
-                />
+                <img class="size-6" alt="Reward icon" src={reward.imageUrl} />
 
                 {#if reward.quantity > 1}
                   <span class="font-bold">
-                    {reward.quantity.toLocaleString()}{'isAlert' in reward ? '' : 'x'}
+                    {reward.quantity.toLocaleString()}{'appendX' in reward ? 'x': ''}
                   </span>
                 {/if}
 
@@ -124,7 +112,7 @@
       </span>
 
       <span class="inline-flex items-center justify-center">
-        <ChevronDownIcon class="size-5 transition-transform duration-200"/>
+        <ChevronDownIcon class="size-5 transition-transform duration-200" />
       </span>
     </div>
   {/snippet}
@@ -134,7 +122,7 @@
       <div class="grid grid-cols-2 px-4 py-2">
         {#if mission.alert?.rewards?.length}
           <div class="flex flex-col gap-y-1">
-            <h2 class="font-medium">Alert Rewards</h2>
+            <h2 class="font-medium">{$t('worldInfo.alertRewards')}</h2>
             <div class="flex flex-col gap-x-1">
               {#each mission.alert.rewards as reward (reward.itemId)}
                 <div class="flex items-center gap-1">
@@ -144,11 +132,7 @@
                     src="/assets/world/alert.png"
                   />
 
-                  <img
-                    class="size-6"
-                    alt="Reward icon"
-                    src={reward.imageUrl}
-                  />
+                  <img class="size-6" alt="Reward icon" src={reward.imageUrl} />
 
                   {#if reward.quantity > 1}
                     <span class="font-medium">
@@ -162,15 +146,11 @@
         {/if}
 
         <div class="flex flex-col gap-y-1">
-          <h2 class="font-medium">Rewards</h2>
+          <h2 class="font-medium">{$t('worldInfo.rewards')}</h2>
           <div class="flex flex-col gap-x-1">
             {#each mission.rewards as reward (reward.itemId)}
               <div class="flex gap-1">
-                <img
-                  class="size-6"
-                  alt="Reward icon"
-                  src={reward.imageUrl}
-                />
+                <img class="size-6" alt="Reward icon" src={reward.imageUrl} />
 
                 {#if reward.quantity > 1}
                   <span class="font-medium">

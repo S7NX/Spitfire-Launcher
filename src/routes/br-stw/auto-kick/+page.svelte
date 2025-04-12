@@ -1,11 +1,10 @@
 <script lang="ts">
   import AutoKickTutorial from '$components/docs/tutorials/AutoKick.svelte';
-  import { Separator } from 'bits-ui';
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import Button from '$components/ui/Button.svelte';
   import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
   import { accountsStore, automationStore } from '$lib/stores';
-  import { cn, nonNull } from '$lib/utils/util';
+  import { cn, nonNull, t } from '$lib/utils/util';
   import Switch from '$components/ui/Switch.svelte';
   import Trash2Icon from 'lucide-svelte/icons/trash-2';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
@@ -14,20 +13,20 @@
   type AutomationSetting = 'autoKick' | 'autoClaim' | 'autoTransferMaterials';
 
   const allAccounts = $derived(nonNull($accountsStore.allAccounts));
-  const xmppDisabledAccounts = $derived(allAccounts.filter((x) => !$automationStore.some((y) => y.accountId === x.accountId)));
+  const autoKickDisabledAccounts = $derived(allAccounts.filter((x) => !$automationStore.some((y) => y.accountId === x.accountId)));
 
   let selectedAccountId = $state<string>();
 
   $effect(() => {
     if (!selectedAccountId) return;
 
-    const isAlreadyAdded = $automationStore.some((a) => a.accountId === selectedAccountId);
+    const isAlreadyAdded = $automationStore.some((x) => x.accountId === selectedAccountId);
     if (isAlreadyAdded) {
       selectedAccountId = undefined;
       return;
     }
 
-    const account = allAccounts.find((a) => a.accountId === selectedAccountId)!;
+    const account = allAccounts.find((x) => x.accountId === selectedAccountId)!;
     AutoKickBase.addAccount(account, {
       autoKick: true
     });
@@ -35,20 +34,20 @@
     selectedAccountId = undefined;
   });
 
-  const settings: { id: AutomationSetting; label: string }[] = [
+  const settings: { id: AutomationSetting; label: string }[] = $derived([
     {
       id: 'autoKick',
-      label: 'Kick'
+      label: $t('autoKick.settings.kick')
     },
     {
       id: 'autoClaim',
-      label: 'Claim Rewards'
+      label: $t('autoKick.settings.claim')
     },
     {
       id: 'autoTransferMaterials',
-      label: 'Transfer Materials'
+      label: $t('autoKick.settings.transferMaterials')
     }
-  ];
+  ]);
 
   async function changeSetting<T extends AutomationSetting>(accountId: string, name: T, enabled: boolean) {
     await AutoKickBase.updateSettings(accountId, { [name]: enabled });
@@ -57,36 +56,38 @@
 
 <CenteredPageContent
   class="max-w-128 !w-full @container"
-  description="Toggle auto-kick, auto-claim, and auto-transfer materials for Save the World missions."
+  description={$t('autoKick.page.description')}
   docsComponent={AutoKickTutorial}
-  title="Auto-Kick"
+  title={$t('autoKick.page.title')}
 >
-  <div class="flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2 text-muted-foreground text-sm">
+  <div class="flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2 text-muted-foreground text-sm"
+  >
     <div class="flex items-center gap-x-2">
       <div class="size-2 rounded-full bg-green-500"></div>
-      <span>Active</span>
+      <span>{$t('autoKick.accountStatus.active')}</span>
     </div>
 
     <div class="flex items-center gap-x-2">
       <div class="size-2 rounded-full bg-red-500"></div>
-      <span>Login Expired</span>
+      <span>{$t('autoKick.accountStatus.loginExpired')}</span>
     </div>
 
     <div class="flex items-center gap-x-2">
       <div class="size-2 rounded-full bg-gray-500"></div>
-      <span>Disconnected</span>
+      <span>{$t('autoKick.accountStatus.disconnected')}</span>
     </div>
   </div>
 
   <AccountCombobox
     autoSelect={false}
-    customList={xmppDisabledAccounts}
+    customList={autoKickDisabledAccounts}
     type="single"
     bind:selected={selectedAccountId}
   />
 
   {#if $automationStore.length}
-    <div class="grid grid-cols-1 place-items-center @md:grid-cols-2 @lg:grid-cols-3 gap-4 ">
+    <div class="grid grid-cols-1 place-items-center @md:grid-cols-2 @lg:grid-cols-3 gap-4"
+    >
       {#each $automationStore as automationAccount (automationAccount.accountId)}
         {@const isLoading = automationAccount.status === 'LOADING'}
 
@@ -96,11 +97,18 @@
               <div
                 class={cn(
                   'size-2 rounded-full',
-                  (automationAccount.status === 'DISCONNECTED' || isLoading) && 'bg-gray-500',
+                  (automationAccount.status === 'DISCONNECTED' || isLoading) &&
+                    'bg-gray-500',
                   automationAccount.status === 'ACTIVE' && 'bg-green-500',
-                  automationAccount.status === 'INVALID_CREDENTIALS' && 'bg-red-500'
-                )}></div>
-              <span class="font-medium">{allAccounts.find((a) => a.accountId === automationAccount.accountId)?.displayName || automationAccount.accountId}</span>
+                  automationAccount.status === 'INVALID_CREDENTIALS' &&
+                    'bg-red-500'
+                )}
+              ></div>
+              <span class="font-medium"
+              >{allAccounts.find(
+                (a) => a.accountId === automationAccount.accountId
+              )?.displayName || automationAccount.accountId}</span
+              >
             </div>
 
             <Button
@@ -113,7 +121,7 @@
               {#if isLoading}
                 <RefreshCwIcon class="size-6 animate-spin opacity-50 !cursor-not-allowe}"/>
               {:else}
-                <Trash2Icon class="size-4"/>
+                <Trash2Icon class="size-4" />
               {/if}
             </Button>
           </div>
@@ -123,7 +131,7 @@
               <div class="flex items-center justify-between py-1.5">
                 <span class="text-sm mr-5">{setting.label}</span>
                 <Switch
-                  checked={$automationStore.find((a) => a.accountId === automationAccount.accountId)?.[setting.id] ?? false}
+                  checked={$automationStore.find((x) => x.accountId === automationAccount.accountId)?.[setting.id] ?? false}
                   disabled={isLoading}
                   onCheckedChange={(checked) => changeSetting(automationAccount.accountId, setting.id, checked)}
                 />

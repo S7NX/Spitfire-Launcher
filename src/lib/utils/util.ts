@@ -1,16 +1,18 @@
 import type { SpitfireShopItem } from '$types/game/shop';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { accountsStore, ownedItemsStore } from '$lib/stores';
-import { get } from 'svelte/store';
+import { accountsStore, language, ownedItemsStore } from '$lib/stores';
+import { derived, get } from 'svelte/store';
 import { toast } from 'svelte-sonner';
 import { goto } from '$app/navigation';
 import EpicAPIError from '$lib/exceptions/EpicAPIError';
 import type { EpicAPIErrorData } from '$types/game/authorizations';
 import type { FullQueryProfile } from '$types/game/mcp';
 import type { AllSettings } from '$types/settings';
-import DataStorage from '$lib/core/dataStorage';
+import DataStorage, { SETTINGS_FILE_PATH } from '$lib/core/dataStorage';
 import { Pages } from '$lib/constants/pages';
+import { m } from '$lib/paraglide/messages';
+import { setLocale, type Locale } from '$lib/paraglide/runtime';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -74,28 +76,45 @@ export function calculateDiscountedShopPrice(accountId: string, item: SpitfireSh
   const ownedItems = get(ownedItemsStore)[accountId];
   if (!ownedItems?.size || !isBundle) return item.price.final;
 
-  return item.contents.reduce((acc, item) => {
-    const isOwned = ownedItems.has(item.id?.toLowerCase());
-    const reduction = item.alreadyOwnedPriceReduction;
+  return item.contents.reduce((acc, content) => {
+    const isOwned = ownedItems.has(content.id?.toLowerCase());
+    const reduction = content.alreadyOwnedPriceReduction;
 
-    if (isOwned && reduction != null) return acc - reduction;
-    return acc;
+    if (isOwned && reduction != null) return Math.max(acc - reduction, item.price.floor);
+    return Math.max(acc, item.price.floor);
   }, item.price.final);
 }
 
 export function formatRemainingDuration(ms: number) {
+  const translate = get(t);
   const days = Math.floor(ms / 86400000);
   const hours = Math.floor((ms % 86400000) / 3600000);
   const minutes = Math.floor((ms % 3600000) / 60000);
   const seconds = Math.floor((ms % 60000) / 1000);
 
   const parts = [];
-  if (days) parts.push(`${days} day${days !== 1 ? 's' : ''}`);
-  if (hours) parts.push(`${hours} hour${hours !== 1 ? 's' : ''}`);
-  if (minutes) parts.push(`${minutes} minute${minutes !== 1 ? 's' : ''}`);
-  if (seconds) parts.push(`${seconds} second${seconds !== 1 ? 's' : ''}`);
 
-  return parts.length ? parts.join(' ') : '0 seconds';
+  if (days) {
+    const key = days === 1 ? 'one' : 'other' as const;
+    parts.push(translate(`times.days.${key}`, { count: days }));
+  }
+
+  if (hours) {
+    const key = hours === 1 ? 'one' : 'other' as const;
+    parts.push(translate(`times.hours.${key}`, { count: hours }));
+  }
+
+  if (minutes) {
+    const key = minutes === 1 ? 'one' : 'other' as const;
+    parts.push(translate(`times.minutes.${key}`, { count: minutes }));
+  }
+
+  if (seconds) {
+    const key = seconds === 1 ? 'one' : 'other' as const;
+    parts.push(translate(`times.seconds.${key}`, { count: seconds }));
+  }
+
+  return parts.length ? parts.join(' ') : translate('times.seconds.other', { count: 0 });
 }
 
 export async function getResolvedResults<T extends readonly unknown[]>(
@@ -105,7 +124,7 @@ export async function getResolvedResults<T extends readonly unknown[]>(
   return results.map(result => result.status === 'fulfilled' ? result.value : null) as { [K in keyof T]: T[K] | null };
 }
 
-export function evaluateCurve(keys: { Time: number, Value: number }[], time: number) {
+export function evaluateCurve(keys: { Time: number, Value: number; }[], time: number) {
   if (time < keys[0].Time) {
     return keys[0].Value;
   }
@@ -121,4 +140,29 @@ export function evaluateCurve(keys: { Time: number, Value: number }[], time: num
 
   const fac = (time - prev.Time) / (next.Time - prev.Time);
   return prev.Value * (1 - fac) + next.Value * fac;
+}
+
+type MessageKey = keyof typeof m;
+type MessageFn<K extends MessageKey> = typeof m[K];
+type InputsOf<K extends MessageKey> = Parameters<MessageFn<K>>[0];
+type OptionsOf<K extends MessageKey> = Parameters<MessageFn<K>>[1];
+
+export const t = derived(language, ($language) => {
+  return function t<K extends MessageKey>(
+    key: K,
+    inputs?: InputsOf<K>,
+    options?: Omit<OptionsOf<K>, "locale">
+  ): string {
+    return m[key](inputs ?? {} as any, {
+      locale: $language,
+      ...options,
+    }) as ReturnType<MessageFn<K>>;
+  };
+});
+
+export function changeLocale(locale: Locale) {
+  setLocale(locale, { reload: false });
+  language.set(locale);
+
+  DataStorage.writeConfigFile<AllSettings>(SETTINGS_FILE_PATH, { app: { language: locale } }).catch(console.error);
 }

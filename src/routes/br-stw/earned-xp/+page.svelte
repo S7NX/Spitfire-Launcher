@@ -13,11 +13,10 @@
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
-  import { accountsStore } from '$lib/stores';
+  import { accountsStore, doingBulkOperations } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
-  import { getResolvedResults } from '$lib/utils/util';
-  import { doingBulkOperations } from '$lib/stores.js';
+  import { getResolvedResults, t } from '$lib/utils/util';
   import MCPManager from '$lib/core/managers/mcp';
   import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
 
@@ -61,18 +60,25 @@
   }
 </script>
 
-<CenteredPageContent description="Check your XP progress from Battle Royale, Creative and Save the World" title="Earned XP">
+<CenteredPageContent
+  description={$t('earnedXP.page.description')}
+  title={$t('earnedXP.page.title')}
+>
   <form class="flex flex-col gap-y-4" onsubmit={fetchXPData}>
-    <AccountCombobox disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
+    <AccountCombobox
+      disabled={isFetching}
+      type="multiple"
+      bind:selected={selectedAccounts}
+    />
 
     <Button
       disabled={!selectedAccounts?.length || isFetching}
       loading={isFetching}
-      loadingText="Loading XP information"
+      loadingText={$t('earnedXP.loading')}
       onclick={fetchXPData}
       variant="epic"
     >
-      Check XP Progress
+      {$t('earnedXP.check')}
     </Button>
   </form>
 
@@ -81,17 +87,17 @@
       {#snippet content(status)}
         {@const gamemodes = [
           {
-            name: 'Battle Royale',
+            name: $t('common.gameModes.battleRoyale'),
             value: status.data.battleRoyale || 0,
             limit: 4_000_000
           },
           {
-            name: 'Creative',
+            name: $t('common.gameModes.creative'),
             value: status.data.creative || 0,
             limit: 4_000_000
           },
           {
-            name: 'Save the World',
+            name: $t('common.gameModes.saveTheWorld'),
             value: status.data.saveTheWorld || 0,
             limit: 4_000_000
           }
@@ -102,7 +108,11 @@
             <div class="space-y-1">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-1.5">
-                  <img class="size-4" alt="XP Icon" src="/assets/misc/battle-royale-xp.png"/>
+                  <img
+                    class="size-4"
+                    alt="XP Icon"
+                    src="/assets/misc/battle-royale-xp.png"
+                  />
                   <span class="font-medium">{gamemode.name}</span>
                 </div>
 
@@ -114,7 +124,7 @@
 
               <div class="h-2 w-full bg-muted rounded-full overflow-hidden">
                 <div
-                  style="width: {Math.min(100, (gamemode.value / gamemode.limit) * 100)}%"
+                  style="width: {Math.min(100,(gamemode.value / gamemode.limit) * 100)}%"
                   class="h-full bg-epic"
                 ></div>
               </div>

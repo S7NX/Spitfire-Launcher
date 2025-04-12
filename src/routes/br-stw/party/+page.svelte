@@ -13,7 +13,7 @@
   import Switch from '$components/ui/Switch.svelte';
   import Tabs from '$components/ui/Tabs.svelte';
   import { accountPartiesStore, accountsStore } from '$lib/stores';
-  import { nonNull } from '$lib/utils/util';
+  import { nonNull, t } from '$lib/utils/util';
   import claimRewards from '$lib/utils/autoKick/claimRewards';
   import { Separator } from 'bits-ui';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
@@ -108,8 +108,8 @@
   let promotingMemberId = $state<string>();
 
   const tabs = $derived([
-    { name: 'STW Actions', component: STWActions },
-    { name: 'Party Members', component: PartyMembers, disabled: !partyData && !partyMembers?.length }
+    { id: 'stwActions', name: $t('partyManagement.tabs.stwActions'), component: STWActions },
+    { id: 'partyMembers', name: $t('partyManagement.tabs.partyMembers'), component: PartyMembers, disabled: !partyData && !partyMembers?.length }
   ]);
 
   async function kickAll() {
@@ -123,14 +123,14 @@
 
       const partyData = await fetchPartyData(kickerAccount);
       if (!partyData) {
-        toast.error('You are not in a party');
+        toast.error($t('partyManagement.stwActions.notInParty'));
         return;
       }
 
       const partyMemberIds = partyData.members.map(x => x.account_id).filter(id => id !== kickAllSelectedAccount);
       const partyLeaderId = partyData.members.find(x => x.role === 'CAPTAIN')!.account_id;
       if (partyLeaderId !== kickerAccount.accountId) {
-        toast.error('You are not the party leader');
+        toast.error($t('partyManagement.stwActions.notLeader'));
         return;
       }
 
@@ -140,17 +140,21 @@
 
       await PartyManager.leave(kickerAccount, partyData.id);
 
-      toast.success('Successfuly kicked everyone');
+      toast.success($t('partyManagement.stwActions.kickedAll'));
     } catch (error) {
       console.error(error);
-      toast.error('Failed to kick everyone');
+      toast.error($t('partyManagement.stwActions.failedToKickAll'));
     } finally {
       kickAllSelectedAccount = undefined;
       isKicking = false;
     }
   }
 
-  async function kickMember(partyId: string, memberId: string, kicker = partyLeaderAccount) {
+  async function kickMember(
+    partyId: string,
+    memberId: string,
+    kicker = partyLeaderAccount
+  ) {
     if (!kicker) return;
 
     kickingMemberIds.add(memberId);
@@ -158,12 +162,16 @@
     try {
       await PartyManager.kick(kicker, partyId, memberId);
 
-      const account = allAccounts.find((account) => account.accountId === memberId);
-      const isAutoClaimEnabled = AutoKickBase.getAccountById(memberId)?.settings.autoClaim || false;
-      if (account && !isAutoClaimEnabled && shouldClaimRewards) await claimRewards(account, true);
+      const account = allAccounts.find(
+        (account) => account.accountId === memberId
+      );
+      const isAutoClaimEnabled =
+        AutoKickBase.getAccountById(memberId)?.settings.autoClaim || false;
+      if (account && !isAutoClaimEnabled && shouldClaimRewards)
+        await claimRewards(account, true);
     } catch (error) {
       console.error(error);
-      toast.error('Failed to kick member');
+      toast.error($t('partyManagement.stwActions.failedToKickMember'));
     } finally {
       kickingMemberIds.delete(memberId);
     }
@@ -207,12 +215,18 @@
         if (claimOnly || (!isAutoClaimEnabled && shouldClaimRewards)) await claimRewards(account, true);
       }));
 
-      toast.success(accountId
-        ? 'Successfully left the party'
-        : claimOnly ? 'Successfully claimed rewards' : 'Successfully left parties');
+      toast.success(
+        accountId
+          ? $t('partyManagement.stwActions.leftParty')
+          : claimOnly ? $t('partyManagement.stwActions.claimedRewards') : $t('partyManagement.stwActions.leftParties')
+      );
     } catch (error) {
       console.error(error);
-      toast.error(claimOnly ? 'Failed to claim rewards' : 'Failed to leave party');
+      toast.error(
+        claimOnly
+          ? $t('partyManagement.stwActions.failedToClaimRewards')
+          : $t('partyManagement.stwActions.failedToLeaveParties')
+      );
     } finally {
       if (claimOnly) {
         isClaiming = false;
@@ -244,10 +258,10 @@
 
       await PartyManager.promote(partyLeaderAccount!, currentAccountParty?.id || '', memberId);
 
-      toast.success(`Successfully promoted ${member.displayName} to leader`);
+      toast.success($t('partyManagement.stwActions.promotedMember', { name: member.displayName }));
     } catch (error) {
       console.error(error);
-      toast.error('Failed to promote member to leader');
+      toast.error($t('partyManagement.stwActions.failedToPromoteMember'));
     } finally {
       promotingMemberId = undefined;
     }
@@ -260,19 +274,24 @@
 </script>
 
 <div class="flex flex-col gap-4">
-  <h1 class="text-2xl font-bold">Party Management</h1>
-  <Tabs {tabs}/>
+  <h1 class="text-2xl font-bold">{$t('partyManagement.page.title')}</h1>
+  <Tabs {tabs} />
 </div>
 
 {#snippet STWActions()}
   <div class="flex flex-col gap-2">
-    <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
-      <Label for="shouldClaimRewards">Claim rewards after leaving the mission</Label>
-      <Switch id="shouldClaimRewards" bind:checked={shouldClaimRewards}/>
+    <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2"
+    >
+      <Label for="shouldClaimRewards">{$t('partyManagement.stwActions.claimRewardsAfterLeaving')}</Label>
+      <Switch id="shouldClaimRewards" bind:checked={shouldClaimRewards} />
     </div>
 
     <div class="flex gap-2">
-      <AccountCombobox class="grow shrink min-w-0" type="single" bind:selected={kickAllSelectedAccount}/>
+      <AccountCombobox
+        class="grow shrink min-w-0"
+        type="single"
+        bind:selected={kickAllSelectedAccount}
+      />
       <Button
         class="shrink-0"
         disabled={isDoingSomething || !kickAllSelectedAccount}
@@ -280,14 +299,18 @@
         onclick={kickAll}
         variant="epic"
       >
-        Kick All
+        {$t('partyManagement.stwActions.kickAll')}
       </Button>
     </div>
 
-    <Separator.Root class="bg-border h-px"/>
+    <Separator.Root class="bg-border h-px" />
 
     <div class="flex gap-2">
-      <AccountCombobox class="grow shrink min-w-0" type="multiple" bind:selected={leavePartySelectedAccounts}/>
+      <AccountCombobox
+        class="grow shrink min-w-0"
+        type="multiple"
+        bind:selected={leavePartySelectedAccounts}
+      />
       <Button
         class="shrink-0"
         disabled={isDoingSomething || !leavePartySelectedAccounts?.length}
@@ -295,14 +318,18 @@
         onclick={() => leaveParty()}
         variant="epic"
       >
-        Leave Party
+        {$t('partyManagement.stwActions.leaveParty')}
       </Button>
     </div>
 
-    <Separator.Root class="bg-border h-px"/>
+    <Separator.Root class="bg-border h-px" />
 
     <div class="flex gap-2">
-      <AccountCombobox class="grow shrink min-w-0" type="multiple" bind:selected={claimRewardsPartySelectedAccounts}/>
+      <AccountCombobox
+        class="grow shrink min-w-0"
+        type="multiple"
+        bind:selected={claimRewardsPartySelectedAccounts}
+      />
       <Button
         class="shrink-0"
         disabled={isDoingSomething || !claimRewardsPartySelectedAccounts?.length}
@@ -310,7 +337,7 @@
         onclick={() => leaveParty(true)}
         variant="epic"
       >
-        Claim Rewards
+        {$t('partyManagement.stwActions.claimRewards')}
       </Button>
     </div>
   </div>
@@ -321,17 +348,17 @@
     {#if partyData}
       <div>
         <div class="flex items-center gap-1">
-          <span class="text-muted-foreground">Size:</span>
+          <span class="text-muted-foreground">{$t('partyManagement.partyMembers.size')}:</span>
           <span>{partyMembers?.length || 0}/{partyData.maxSize}</span>
         </div>
 
         <div class="flex items-center gap-1">
-          <span class="text-muted-foreground">Region:</span>
+          <span class="text-muted-foreground">{$t('partyManagement.partyMembers.region')}:</span>
           <span>{partyData.region}</span>
         </div>
 
         <div class="flex items-center gap-1">
-          <span class="text-muted-foreground">Created at:</span>
+          <span class="text-muted-foreground">{$t('partyManagement.partyMembers.createdAt')}:</span>
           <span>{partyData.createdAt.toLocaleString()}</span>
         </div>
       </div>
@@ -351,7 +378,7 @@
                 <div class="absolute top-3 right-3">
                   <DropdownMenu.Root contentProps={{ class: 'w-48' }}>
                     {#snippet trigger()}
-                      <EllipsisIcon class="size-6"/>
+                      <EllipsisIcon class="size-6" />
                     {/snippet}
 
                     <!-- todo: "add friend" option -->
@@ -366,19 +393,19 @@
                       >
                         {#if canKick}
                           {#if kickingMemberIds.has(member.accountId)}
-                            <LoaderCircleIcon class="size-5 animate-spin"/>
-                            Kicking
+                            <LoaderCircleIcon class="size-5 animate-spin" />
+                            {$t('partyManagement.partyMembers.kicking')}
                           {:else}
-                            <UserXIcon class="size-5"/>
-                            Kick
+                            <UserXIcon class="size-5" />
+                            {$t('partyManagement.partyMembers.kick')}
                           {/if}
                         {:else if canLeave}
                           {#if isLeaving}
-                            <LoaderCircleIcon class="size-5 animate-spin"/>
-                            Leaving Party
+                            <LoaderCircleIcon class="size-5 animate-spin" />
+                            {$t('partyManagement.partyMembers.leavingParty')}
                           {:else}
-                            <LogOutIcon class="size-5"/>
-                            Leave Party
+                            <LogOutIcon class="size-5" />
+                            {$t('partyManagement.partyMembers.leaveParty')}
                           {/if}
                         {/if}
                       </DropdownMenu.Item>
@@ -390,11 +417,11 @@
                         onclick={() => promote(member.accountId)}
                       >
                         {#if promotingMemberId === member.accountId}
-                          <LoaderCircleIcon class="size-5 animate-spin"/>
-                          Promoting
+                          <LoaderCircleIcon class="size-5 animate-spin" />
+                          {$t('partyManagement.partyMembers.promoting')}
                         {:else}
-                          <CrownIcon class="size-5"/>
-                          Promote to Leader
+                          <CrownIcon class="size-5" />
+                          {$t('partyManagement.partyMembers.promote')}
                         {/if}
                       </DropdownMenu.Item>
                     {/if}
@@ -405,15 +432,29 @@
               <div class="flex items-center gap-2">
                 <div class="size-10 relative">
                   {#if member.avatarUrl}
-                    <img class="rounded-md" alt={member.displayName} onerror={hideImageOnError} src={member.avatarUrl}/>
+                    <img
+                      class="rounded-md"
+                      alt={member.displayName}
+                      onerror={hideImageOnError}
+                      src={member.avatarUrl}
+                    />
                   {/if}
 
                   {#if member.isLeader}
-                    <div class="absolute -bottom-2 -right-2 select-none" title="Leader">👑</div>
+                    <div
+                      class="absolute -bottom-2 -right-2 select-none"
+                      title="Leader"
+                    >
+                      👑
+                    </div>
                   {/if}
                 </div>
 
-                <a class="flex items-center gap-2 font-medium hover:underline" href="https://fortnitedb.com/profile/{member.accountId}" target="_blank">
+                <a
+                  class="flex items-center gap-2 font-medium hover:underline"
+                  href="https://fortnitedb.com/profile/{member.accountId}"
+                  target="_blank"
+                >
                   {#if member.platformSpecificName}
                     <div class="flex flex-col">
                       <div class="flex items-center gap-2">
@@ -421,11 +462,13 @@
                         <ExternalLinkIcon class="size-4 text-muted-foreground"/>
                       </div>
 
-                      <span class="text-xs text-muted-foreground">({member.displayName})</span>
+                      <span class="text-xs text-muted-foreground"
+                      >({member.displayName})</span
+                      >
                     </div>
                   {:else}
                     <span class="text-sm">{member.displayName}</span>
-                    <ExternalLinkIcon class="size-4 text-muted-foreground"/>
+                    <ExternalLinkIcon class="size-4 text-muted-foreground" />
                   {/if}
                 </a>
               </div>
@@ -433,19 +476,21 @@
               <div class="flex-1 flex flex-col gap-4 text-sm">
                 <div class="flex flex-col">
                   <div class="flex items-center gap-1">
-                    <span class="text-muted-foreground">Platform:</span>
+                    <span class="text-muted-foreground">{$t('partyManagement.partyMembers.platform')}:</span>
                     <span>{member.platform}</span>
                   </div>
 
                   <div class="flex items-center gap-1">
-                    <span class="text-muted-foreground">Owns STW:</span>
-                    <span>{member.ownsSaveTheWorld ? 'Yes' : 'No'}</span>
+                    <span class="text-muted-foreground">{$t('partyManagement.partyMembers.ownsSTW')}:</span>
+                    <span>{member.ownsSaveTheWorld
+                      ? $t('common.yes')
+                      : $t('common.no')}</span>
                   </div>
                 </div>
 
                 {#if member.loadout.length}
                   <div class="flex flex-col gap-1">
-                    <span class="text-muted-foreground">Loadout:</span>
+                    <span class="text-muted-foreground">{$t('partyManagement.partyMembers.loadout')}:</span>
                     <div class="flex gap-1">
                       {#each member.loadout as item (item.type)}
                         <div class="flex items-center gap-1">
@@ -465,18 +510,32 @@
               <div class="flex items-center justify-between">
                 <div class="flex gap-2 text-sm font-medium">
                   <div class="flex items-center gap-1">
-                    <img class="size-5" alt="Battle Pass Icon" src="/assets/misc/battle-pass-upgraded.png"/>
+                    <img
+                      class="size-5"
+                      alt="Battle Pass Icon"
+                      src="/assets/misc/battle-pass-upgraded.png"
+                    />
                     <span>{member.battlePassLevel}</span>
                   </div>
 
                   <div class="flex items-center gap-1">
-                    <img class="size-5" alt="Crown Icon" src="/assets/misc/crown.png"/>
+                    <img
+                      class="size-5"
+                      alt="Crown Icon"
+                      src="/assets/misc/crown.png"
+                    />
                     <span>{member.crownedWins}</span>
                   </div>
                 </div>
 
-                <div class="{member.isReady ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'} rounded-full px-3 py-1 text-sm font-medium">
-                  {member.isReady ? 'Ready' : 'Not Ready'}
+                <div
+                  class="{member.isReady
+                    ? 'bg-green-500/10 text-green-500'
+                    : 'bg-red-500/10 text-red-500'} rounded-full px-3 py-1 text-sm font-medium"
+                >
+                  {member.isReady
+                    ? $t('partyManagement.partyMembers.ready')
+                    : $t('partyManagement.partyMembers.notReady')}
                 </div>
               </div>
             </div>

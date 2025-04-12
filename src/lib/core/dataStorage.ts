@@ -24,6 +24,7 @@ export const ACCOUNTS_INITIAL_DATA: AccountDataFile = {
 export const SETTINGS_FILE_PATH = dev ? 'settings-dev.json' : 'settings.json';
 export const SETTINGS_INITIAL_DATA: AllSettings = {
   app: {
+    language: 'en',
     claimRewardsDelay: 1.5,
     missionCheckInterval: 5,
     startingPage: 'stwWorldInfo',
@@ -160,6 +161,10 @@ export default class DataStorage {
       DataStorage.caches.automationFile = newData as AutomationSettings;
     } else if (pathString === TAXI_FILE_PATH) {
       DataStorage.caches.taxiFile = newData as TaxiSettings;
+    } else if (pathString === DEVICE_AUTHS_FILE_PATH) {
+      DataStorage.caches.deviceAuthsFile = newData as DeviceAuthsSettings;
+    } else if (pathString === BOT_LOBBY_FILE_PATH) {
+      DataStorage.caches.botLobbyFile = newData as BotLobbySettings;
     }
 
     await writeTextFile(configFilePath, JSON.stringify(newData, null, 4));

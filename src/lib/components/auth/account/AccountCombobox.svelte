@@ -4,6 +4,7 @@
   import { accountsStore } from '$lib/stores';
   import type { AccountData } from '$types/accounts';
   import type { ClassValue } from 'svelte/elements';
+  import { t } from '$lib/utils/util';
 
   type Props = {
     customList?: AccountData[];
@@ -11,13 +12,16 @@
     autoSelect?: boolean;
     disabled?: boolean;
     class?: ClassValue;
-  } & ({
-    type: 'single';
-    selected?: string;
-  } | {
-    type: 'multiple';
-    selected?: string[];
-  });
+  } & (
+    | {
+      type: 'single';
+      selected?: string;
+    }
+    | {
+      type: 'multiple';
+      selected?: string[];
+    }
+  );
 
   let {
     customList,
@@ -50,9 +54,7 @@
     }
 
     if (Array.isArray(selected)) {
-      const filtered = selected.filter(accountId =>
-        accountList.some(account => account.accountId === accountId)
-      );
+      const filtered = selected.filter(accountId => accountList.some(account => account.accountId === accountId));
 
       if (filtered.length !== selected.length) {
         selected = filtered;
@@ -62,7 +64,9 @@
 
   const selectedAccounts = $derived.by(() => {
     if (!selected?.length) {
-      return `Select ${type === 'single' ? 'an account' : 'accounts'}`;
+      return type === 'single'
+        ? $t('accountManager.selectAccount')
+        : $t('accountManager.selectAccounts');
     }
 
     if (type === 'single' || (type === 'multiple' && selected.length < 3)) {
@@ -71,7 +75,7 @@
         : getAccountName(selected);
     }
 
-    return `${selected.length} account${selected.length === 1 ? '' : 's'} selected`;
+    return $t('accountManager.selectedAccounts', { count: selected.length });
   });
 
   function getAccountName(accountId: string) {

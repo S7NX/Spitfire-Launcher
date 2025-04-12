@@ -1,8 +1,9 @@
 import { redirect } from '@sveltejs/kit';
 import DataStorage from '$lib/core/dataStorage';
-import { accountsStore, activeAccountId, customizableMenuStore } from '$lib/stores';
+import { accountsStore, activeAccountId, customizableMenuStore, language } from '$lib/stores';
 import { page } from '$app/state';
-import { getStartingPage } from '$lib/utils/util';
+import { changeLocale, getStartingPage } from '$lib/utils/util';
+import { get } from 'svelte/store';
 
 export const prerender = true;
 export const ssr = false;
@@ -10,6 +11,10 @@ export const ssr = false;
 export async function load() {
   const accountsFile = await DataStorage.getAccountsFile();
   const settings = await DataStorage.getSettingsFile();
+
+  if (settings.app?.language && get(language) !== settings.app?.language) {
+    changeLocale(settings.app.language);
+  }
 
   const startingAccount = settings.app?.startingAccount;
 

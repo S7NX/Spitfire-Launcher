@@ -5,7 +5,7 @@ export type SpitfireResponse<T> = {
   error?: string;
 };
 
-export type SpitfireShopFilter = 'All' | 'New' | 'Leaving Soon' | 'Longest Wait';
+export type SpitfireShopFilter = 'all' | 'new' | 'leavingSoon' | 'longestWait';
 
 export type SpitfireShop = {
   lastUpdated: string;

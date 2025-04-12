@@ -1,12 +1,22 @@
 <script lang="ts" module>
   type ServiceStatus = {
-    status: 'UP' | 'DOWN' | 'MAJOR_OUTAGE' | 'PARTIAL_OUTAGE' | 'UNDER_MAINTENANCE';
+    status:
+      | 'UP'
+      | 'DOWN'
+      | 'MAJOR_OUTAGE'
+      | 'PARTIAL_OUTAGE'
+      | 'UNDER_MAINTENANCE';
     message?: string;
   };
 
   type StatusPageStatus = {
     name: string;
-    status: 'operational' | 'degraded_performance' | 'partial_outage' | 'major_outage' | 'under_maintenance';
+    status:
+      | 'operational'
+      | 'degraded_performance'
+      | 'partial_outage'
+      | 'major_outage'
+      | 'under_maintenance';
   };
 
   let isLoading = $state(true);
@@ -34,7 +44,7 @@
   import Button from '$components/ui/Button.svelte';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
-  import { formatRemainingDuration, getResolvedResults } from '$lib/utils/util';
+  import { formatRemainingDuration, getResolvedResults, t } from '$lib/utils/util';
 
   $effect(() => {
     if (notifyUser) {
@@ -45,7 +55,10 @@
           notifyUser = false;
           clearInterval(notifyUserIntervalId);
 
-          await NotificationManager.sendNotification('Fortnite is back online!', 'Fortnite Server Status');
+          await NotificationManager.sendNotification(
+            $t('serverStatus.notification.message'),
+            $t('serverStatus.notification.title')
+          );
         }
       }, 15_000);
     } else {
@@ -85,10 +98,9 @@
           };
         });
       }
-
     } catch (error) {
       console.error(error);
-      toast.error('Failed to fetch server status');
+      toast.error($t('serverStatus.failedToFetch'));
     } finally {
       isLoading = false;
     }
@@ -110,21 +122,21 @@
     switch (status) {
       case 'UP':
       case 'operational':
-        return { text: 'Operational', color: 'green' } as const;
+        return { text: $t('serverStatus.statuses.operational'), color: 'green' } as const;
       case 'DOWN':
       case 'MAJOR_OUTAGE':
       case 'major_outage':
-        return { text: 'Down', color: 'red' } as const;
+        return { text: $t('serverStatus.statuses.down'), color: 'red' } as const;
       case 'PARTIAL_OUTAGE':
       case 'partial_outage':
-        return { text: 'Partial Outage', color: 'orange' } as const;
+        return { text: $t('serverStatus.statuses.partialOutage'), color: 'orange' } as const;
       case 'UNDER_MAINTENANCE':
       case 'under_maintenance':
-        return { text: 'Maintenance', color: 'blue' } as const;
+        return { text: $t('serverStatus.statuses.underMaintenance'), color: 'blue' } as const;
       case 'degraded_performance':
-        return { text: 'Degraded Performance', color: 'yellow' } as const;
+        return { text: $t('serverStatus.statuses.degradedPerformance'), color: 'yellow' } as const;
       default:
-        return { text: 'Unknown', color: 'gray' } as const;
+        return { text: $t('serverStatus.statuses.unknown'), color: 'gray' } as const;
     }
   }
 
@@ -133,11 +145,11 @@
   });
 </script>
 
-<CenteredPageContent class="!w-112" title="Fortnite Server Status">
+<CenteredPageContent class="!w-112" title={$t('serverStatus.page.title')}>
   <div class="flex flex-col gap-4">
     <div class="flex justify-between items-center">
       <p class="text-sm">
-        Last updated: {lastUpdated ? lastUpdated.toLocaleTimeString() : '...'}
+        {$t('serverStatus.lastUpdated', { date: lastUpdated ? lastUpdated.toLocaleTimeString() : '...' })}
       </p>
 
       <Button
@@ -148,19 +160,21 @@
         variant="outline"
       >
         {#if isLoading}
-          <LoaderCircleIcon class="size-4 animate-spin"/>
-          Refreshing
+          <LoaderCircleIcon class="size-4 animate-spin" />
+          {$t('serverStatus.refreshing')}
         {:else}
-          <RefreshCwIcon class="size-4"/>
-          Refresh
+          <RefreshCwIcon class="size-4" />
+          {$t('serverStatus.refresh')}
         {/if}
       </Button>
     </div>
 
     {#if serviceStatus && serviceStatus.status !== 'UP'}
       <div class="flex items-center justify-between">
-        <Tooltip tooltip="Receive a notification when Fortnite is back online">
-          <p class="flex-1 text-sm font-medium">Notify me</p>
+        <Tooltip tooltip={$t('serverStatus.notifyMe.description')}>
+          <p class="flex-1 text-sm font-medium">
+            {$t('serverStatus.notifyMe.title')}
+          </p>
         </Tooltip>
 
         <Switch
@@ -177,7 +191,7 @@
     <StatusCard
       color={getStatusData(serviceStatus.status).color}
       message={serviceStatus.message}
-      title="Status: {getStatusData(serviceStatus.status).text}"
+      title={$t('serverStatus.status', { status: getStatusData(serviceStatus.status).text })}
     />
   {:else}
     <div class="border rounded-lg p-3 mb-2 bg-muted/50 skeleton-loader">
@@ -193,12 +207,12 @@
   {#if expectedWait}
     <StatusCard
       color="yellow"
-      message="Expected wait time: {formatRemainingDuration(expectedWait * 1000)}"
-      title="Queue Active"
+      message={$t('serverStatus.queue.description', { time: formatRemainingDuration(expectedWait * 1000) })}
+      title={$t('serverStatus.queue.title')}
     />
   {/if}
 
-  <Separator.Root class="bg-border h-px"/>
+  <Separator.Root class="bg-border h-px" />
 
   {#if isLoading && !statusPageServices.length}
     <div class="space-y-4">
@@ -211,30 +225,34 @@
         </div>
       {/each}
     </div>
-  {:else}
-    {#if statusPageServices.length > 0}
-      <div class="space-y-2">
-        <div class="flex items-center gap-2 text-muted-foreground">
-          <ExternalLinkIcon class="size-4"/>
-          <a class="text-sm font-medium hover:underline" href="https://status.epicgames.com" target="_blank">status.epicgames.com</a>
-        </div>
+  {:else if statusPageServices.length > 0}
+    <div class="space-y-2">
+      <div class="flex items-center gap-2 text-muted-foreground">
+        <ExternalLinkIcon class="size-4" />
+        <a
+          class="text-sm font-medium hover:underline"
+          href="https://status.epicgames.com"
+          target="_blank"
+        >
+          status.epicgames.com
+        </a>
+      </div>
 
-        <div class="space-y-3">
-          {#each statusPageServices as service (service.name)}
-            <div class="bg-muted/30 p-4 rounded-lg">
-              <div class="flex justify-between items-center">
-                <div class="flex items-center gap-3 truncate">
-                  <div class="size-3 rounded-full bg-{getStatusData(service.status).color}-500"></div>
-                  <span class="font-medium truncate">{service.name}</span>
-                </div>
-                <div class="text-sm">
-                  {getStatusData(service.status).text}
-                </div>
+      <div class="space-y-3">
+        {#each statusPageServices as service (service.name)}
+          <div class="bg-muted/30 p-4 rounded-lg">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-3 truncate">
+                <div class="size-3 rounded-full bg-{getStatusData(service.status) .color}-500"></div>
+                <span class="font-medium truncate">{service.name}</span>
+              </div>
+              <div class="text-sm">
+                {getStatusData(service.status).text}
               </div>
             </div>
-          {/each}
-        </div>
+          </div>
+        {/each}
       </div>
-    {/if}
+    </div>
   {/if}
 </CenteredPageContent>

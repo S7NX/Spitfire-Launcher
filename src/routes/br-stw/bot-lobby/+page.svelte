@@ -17,7 +17,7 @@
   import Switch from '$components/ui/Switch.svelte';
   import DataStorage, { BOT_LOBBY_FILE_PATH } from '$lib/core/dataStorage';
   import { accountsStore } from '$lib/stores';
-  import { formatRemainingDuration, getResolvedResults, nonNull } from '$lib/utils/util';
+  import { formatRemainingDuration, getResolvedResults, nonNull, t } from '$lib/utils/util';
   import type { BotLobbySettings } from '$types/settings';
   import AlertTriangleIcon from 'lucide-svelte/icons/alert-triangle';
   import XIcon from 'lucide-svelte/icons/x';
@@ -54,20 +54,24 @@
       ]);
 
       if (!commonCoreQueryProfile || !athenaQueryProfile) {
-        throw new Error('Failed to fetch profile data');
+        throw new Error($t('botLobby.failedToFetchProfile'));
       }
 
-      const banStatus = commonCoreQueryProfile.profileChanges[0].profile.stats.attributes.ban_status;
+      const banStatus =
+        commonCoreQueryProfile.profileChanges[0].profile.stats.attributes
+          .ban_status;
       if (banStatus) {
         isCheckingEligibility = false;
 
         const banExpirationMs = banStatus.banDurationDays
-          ? (new Date(banStatus.banStartTimeUtc).getTime() + banStatus.banDurationDays * 24 * 60 * 60 * 1000) - Date.now()
+          ? new Date(banStatus.banStartTimeUtc).getTime() +
+            banStatus.banDurationDays * 24 * 60 * 60 * 1000 -
+            Date.now()
           : null;
 
-        toast.error(banExpirationMs
-          ? `This account is banned from matchmaking for ${formatRemainingDuration(banExpirationMs)}.`
-          : 'This account is banned from matchmaking indefinitely.'
+        toast.error( banExpirationMs
+          ? $t('botLobby.matchmakingBan.temporary', { time: formatRemainingDuration(banExpirationMs)})
+          : $t('botLobby.matchmakingBan.indefinite')
         );
 
         if (banStatus.bRequiresUserAck) {
@@ -77,9 +81,12 @@
         return;
       }
 
-      if (athenaQueryProfile.profileChanges[0].profile.stats.attributes.last_match_end_datetime) {
+      if (
+        athenaQueryProfile.profileChanges[0].profile.stats.attributes
+          .last_match_end_datetime
+      ) {
         isCheckingEligibility = false;
-        toast.error('You must use a fresh account with no match history to start a bot lobby.');
+        toast.error($t('botLobby.useNewAccount'));
         return;
       }
 
@@ -88,7 +95,7 @@
     } catch (error) {
       isCheckingEligibility = false;
       console.error(error);
-      toast.error('Failed to start the bot lobby');
+      toast.error($t('botLobby.failedToStart'));
     }
   }
 
@@ -97,7 +104,7 @@
       await botLobbyManager.stop();
     } catch (error) {
       console.error(error);
-      toast.error('Failed to stop the bot lobby');
+      toast.error($t('botLobby.failedToStop'));
     }
   }
 
@@ -129,7 +136,10 @@
 
     event.currentTarget.value = value;
     botLobbyManager.setIsAvailable(botLobbyManager.isAvailable);
-    DataStorage.writeConfigFile<BotLobbySettings>(BOT_LOBBY_FILE_PATH, customBotLobbySettings);
+    DataStorage.writeConfigFile<BotLobbySettings>(
+      BOT_LOBBY_FILE_PATH,
+      customBotLobbySettings
+    );
   }
 
   onMount(async () => {
@@ -139,40 +149,42 @@
 
 <CenteredPageContent
   class="!w-112"
-  description="Turn your account into a bot lobby bot."
+  description={$t('botLobby.page.description')}
   docsComponent={BotLobbyTutorial}
-  title="Bot Lobby"
+  title={$t('botLobby.page.title')}
 >
   <Alert
     color="yellow"
     icon={AlertTriangleIcon}
-    message="The account you turn into a bot lobby bot can get banned! Use at your own risk."
-    title="Warning"
+    message={$t('botLobby.banWarning.description')}
+    title={$t('botLobby.banWarning.title')}
   />
 
   <div class="space-y-4">
     <div class="flex flex-col gap-2">
-      <Label for="availableStatus">Available Status</Label>
+      <Label for="availableStatus">{$t('botLobby.settings.availableStatus.title')}</Label>
       <Input
         id="availableStatus"
         onConfirm={(event) => handleStatusChange(event, 'available')}
-        placeholder="Bot's custom status when it's available"
+        placeholder={$t('botLobby.settings.availableStatus.placeholder')}
         value={botLobbyManager.availableStatus}
       />
     </div>
 
     <div class="flex flex-col gap-2">
-      <Label for="busyStatus">Busy Status</Label>
+      <Label for="busyStatus">{$t('botLobby.settings.busyStatus.title')}</Label>
       <Input
         id="busyStatus"
         onConfirm={(event) => handleStatusChange(event, 'busy')}
-        placeholder="Bot's custom status when it's busy"
+        placeholder={$t('botLobby.settings.busyStatus.placeholder')}
         value={botLobbyManager.busyStatus}
       />
     </div>
 
     <div class="flex items-center justify-between">
-      <div class="font-medium">Auto-Accept Friend Requests</div>
+      <div class="font-medium">
+        {$t('botLobby.settings.autoAcceptFriendRequests')}
+      </div>
       <Switch
         onCheckedChange={toggleAutoAccept}
         bind:checked={botLobbyManager.autoAcceptFriendRequests}
@@ -180,23 +192,23 @@
     </div>
   </div>
 
-  <Separator.Root class="bg-border h-px"/>
+  <Separator.Root class="bg-border h-px" />
 
   <div class="flex justify-end">
     <Button
       class="flex items-center gap-x-2"
       disabled={botLobbyManager.isStarting || botLobbyManager.isStopping || TaxiManager.taxiAccountIds.has(activeAccount.accountId) || isCheckingEligibility}
       loading={botLobbyManager.isStarting || botLobbyManager.isStopping || isCheckingEligibility}
-      loadingText={isCheckingEligibility ? 'Checking' : botLobbyManager.isStarting ? 'Starting' : 'Stopping'}
+      loadingText={isCheckingEligibility ? $t('botLobby.checkingEligibility') : botLobbyManager.isStarting ? $t('botLobby.starting') : $t('botLobby.stopping')}
       onclick={() => botLobbyManager.active ? stopBotLobby() : startBotLobby()}
       variant={botLobbyManager.active ? 'danger' : 'epic'}
     >
       {#if botLobbyManager.active}
-        <XIcon class="size-5"/>
-        Stop Bot Lobby
+        <XIcon class="size-5" />
+        {$t('botLobby.stop')}
       {:else}
-        <BotIcon class="size-5"/>
-        Start Bot Lobby
+        <BotIcon class="size-5" />
+        {$t('botLobby.start')}
       {/if}
     </Button>
   </div>

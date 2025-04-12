@@ -16,7 +16,7 @@
   import Button from '$components/ui/Button.svelte';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
   import MCPManager from '$lib/core/managers/mcp';
-  import { calculateVbucks } from '$lib/utils/util';
+  import { calculateVbucks, t } from '$lib/utils/util';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
 
   let selectedAccounts = $state<string[]>([]);
@@ -40,8 +40,8 @@
         status.data.vbucksAmount = calculateVbucks(queryProfile);
       } catch (error) {
         status.data.error = error instanceof EpicAPIError && error.errorCode === 'errors.com.epicgames.account.invalid_account_credentials'
-          ? 'Login session expired.'
-          : 'Unknown error';
+          ? $t('vbucksInformation.loginExpired')
+          : $t('vbucksInformation.unknownError');
       }
     }));
 
@@ -51,17 +51,21 @@
   }
 </script>
 
-<CenteredPageContent title="V-Bucks Information">
+<CenteredPageContent title={$t('vbucksInformation.page.title')}>
   <form class="flex flex-col gap-y-4" onsubmit={fetchVbucksData}>
-    <AccountCombobox disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
+    <AccountCombobox
+      disabled={isFetching}
+      type="multiple"
+      bind:selected={selectedAccounts}
+    />
 
     <Button
       disabled={!selectedAccounts?.length || isFetching}
       loading={isFetching}
-      loadingText="Loading V-Bucks Information"
+      loadingText={$t('vbucksInformation.loading')}
       variant="epic"
     >
-      Get V-Bucks Information
+      {$t('vbucksInformation.getInformation')}
     </Button>
   </form>
 
@@ -74,7 +78,11 @@
           {#if status.data.vbucksAmount != null}
             <div class="flex items-center gap-x-1">
               <p>{status.data.vbucksAmount.toLocaleString()}</p>
-              <img class="size-5" alt="V-Bucks" src="/assets/resources/currency_mtxswap.png"/>
+              <img
+                class="size-5"
+                alt="V-Bucks"
+                src="/assets/resources/currency_mtxswap.png"
+              />
             </div>
           {/if}
 

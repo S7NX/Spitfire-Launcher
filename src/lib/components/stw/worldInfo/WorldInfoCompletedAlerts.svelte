@@ -9,7 +9,7 @@
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import LookupManager from '$lib/core/managers/lookup';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored } from '$lib/utils/util';
+  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
   import MCPManager from '$lib/core/managers/mcp';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
@@ -35,10 +35,7 @@
   async function fetchCompletedAlerts(event: SubmitEvent) {
     event.preventDefault();
 
-    if (!searchQuery?.trim()) {
-      toast.error('Please enter a name or ID to search');
-      return;
-    }
+    if (!searchQuery?.trim()) return;
 
     isLoading = true;
 
@@ -75,13 +72,13 @@
         if (shouldErrorBeIgnored(error)) return;
 
         console.error(error);
-        toast.error('Couldn\'t fetch STW data of the player. Their game stats are private.');
+        toast.error($t('worldInfo.stwStatsPrivate'));
       }
     } catch (error) {
       if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error('Player not found');
+      toast.error($t('worldInfo.stwStatsPrivate'));
     } finally {
       isLoading = false;
     }
@@ -93,7 +90,7 @@
     <Input
       class="grow"
       disabled={isLoading}
-      placeholder="Search by name or account ID"
+      placeholder={$t('worldInfo.search')}
       bind:value={searchQuery}
     />
 
@@ -105,22 +102,30 @@
       variant="epic"
     >
       {#if isLoading}
-        <LoaderCircleIcon class="size-5 animate-spin"/>
+        <LoaderCircleIcon class="size-5 animate-spin" />
       {:else}
-        <SearchIcon class="size-5"/>
+        <SearchIcon class="size-5" />
       {/if}
     </Button>
   </form>
 
   {#if lookupData}
     {@const kv = [
-      { name: 'ID', value: lookupData.id },
-      { name: 'Name', value: lookupData.displayName, href: `https://fortnitedb.com/profile/${lookupData.id}` },
+      { name: $t('worldInfo.playerInfo.id'), value: lookupData.id },
       {
-        name: 'Commander level',
-        value: stwData && `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}`
+        name: $t('worldInfo.playerInfo.name'),
+        value: lookupData.displayName,
+        href: `https://fortnitedb.com/profile/${lookupData.id}`
       },
-      { name: 'Completed alerts', value: stwData?.claimedMissionAlertIds.size || 0 }
+      {
+        name: $t('worldInfo.playerInfo.commanderLevel'),
+        value: stwData &&
+          `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}`
+      },
+      {
+        name: $t('worldInfo.playerInfo.completedAlerts'),
+        value: stwData?.claimedMissionAlertIds.size || 0
+      }
     ]}
 
     <div class="space-y-4 mt-4">
@@ -130,9 +135,13 @@
             <div class="flex items-center gap-2">
               <span class="text-muted-foreground">{name}:</span>
               {#if href}
-                <a class="flex items-center gap-2 hover:underline" href={href} target="_blank">
+                <a
+                  class="flex items-center gap-2 hover:underline"
+                  {href}
+                  target="_blank"
+                >
                   {value}
-                  <ExternalLinkIcon class="size-4"/>
+                  <ExternalLinkIcon class="size-4" />
                 </a>
               {:else}
                 <span>{value}</span>
@@ -143,7 +152,11 @@
       </div>
 
       {#if claimedMisssionAlerts && stwData}
-        <WorldInfoSectionAccordion claimedMissionAlerts={stwData?.claimedMissionAlertIds} missions={claimedMisssionAlerts} showAlertClaimedBorder={false}/>
+        <WorldInfoSectionAccordion
+          claimedMissionAlerts={stwData?.claimedMissionAlertIds}
+          missions={claimedMisssionAlerts}
+          showAlertClaimedBorder={false}
+        />
       {/if}
     </div>
   {/if}

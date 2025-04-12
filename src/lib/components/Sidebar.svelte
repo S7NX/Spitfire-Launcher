@@ -1,53 +1,7 @@
 <script lang="ts" module>
-  import type { AllSettings } from '$types/settings';
   import { writable } from 'svelte/store';
 
-  type Category = {
-    name: string;
-    expanded: boolean;
-    items: { key: keyof NonNullable<AllSettings['customizableMenu']>; name: string; href: string }[];
-  };
-
   export const sidebarOpen = writable(false);
-
-  export const sidebarCategories: Category[] = [
-    {
-      name: 'Account',
-      expanded: true,
-      items: [
-        { key: 'vbucksInformation', name: 'V-Bucks', href: '/account-management/vbucks' },
-        { key: 'redeemCodes', name: 'Redeem Codes', href: '/account-management/redeem-codes' },
-        { key: 'epicGamesSettings', name: 'Epic Games Settings', href: '/account-management/epic-games-settings' },
-        { key: 'eula', name: 'EULA', href: '/account-management/eula' }
-      ]
-    },
-    {
-      name: 'BR & STW',
-      expanded: true,
-      items: [
-        { key: 'autoKick', name: 'Auto-Kick', href: '/br-stw/auto-kick' },
-        { key: 'taxiService', name: 'Taxi Service', href: '/br-stw/taxi-service' },
-        { key: 'botLobby', name: 'Bot Lobby', href: '/br-stw/bot-lobby' },
-        { key: 'customStatus', name: 'Custom Status', href: '/br-stw/custom-status' },
-        { key: 'partyManagement', name: 'Party', href: '/br-stw/party' },
-        { key: 'serverStatus', name: 'Server Status', href: '/br-stw/server-status' },
-        { key: 'itemShop', name: 'Item Shop', href: '/br-stw/item-shop' },
-        { key: 'earnedXp', name: 'Earned XP', href: '/br-stw/earned-xp' },
-        { key: 'dailyQuests', name: 'Daily Quests', href: '/br-stw/daily-quests' },
-        { key: 'stwWorldInfo', name: 'STW World Info', href: '/br-stw/stw-world-info' },
-        { key: 'lookupPlayers', name: 'Lookup Players', href: '/br-stw/lookup-players' }
-      ]
-    },
-    {
-      name: 'Authentication',
-      expanded: true,
-      items: [
-        { key: 'exchangeCode', name: 'Exchange Code', href: '/authentication/generate-exchange-code' },
-        { key: 'accessToken', name: 'Access Token', href: '/authentication/generate-access-token' },
-        { key: 'deviceAuth', name: 'Device Auth', href: '/authentication/device-auth' }
-      ]
-    }
-  ];
 </script>
 
 <script lang="ts">
@@ -56,34 +10,43 @@
   import { cubicInOut } from 'svelte/easing';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import config from '$lib/config';
-  import { cn, getStartingPage } from '$lib/utils/util';
+  import { cn, getStartingPage, t } from '$lib/utils/util';
   import Button from '$components/ui/Button.svelte';
   import { page } from '$app/state';
   import { onMount } from 'svelte';
   import { customizableMenuStore } from '$lib/stores';
+  import { SidebarCategories } from '$lib/constants/sidebar';
+  import { SvelteSet } from 'svelte/reactivity';
 
   let startingPage = $state('/');
+  let notExpandedCategories = new SvelteSet<string>();
 
-  const categories = $state(sidebarCategories);
-  const externalLinks = [
+  const externalLinks = $derived([
     {
-      name: 'Discord Server',
+      name: $t('sidebar.externalLinks.discord'),
       href: config.links.discord,
       icon: 'https://cdn.simpleicons.org/discord/A1A1AA'
     },
     {
-      name: 'GitHub Repository',
+      name: $t('sidebar.externalLinks.repository'),
       href: config.links.github,
       icon: 'https://cdn.simpleicons.org/github/A1A1AA'
     }
-  ];
+  ]);
 
-  function toggleCategory(index: number) {
-    categories[index].expanded = !categories[index].expanded;
+  function toggleCategory(id: string) {
+    const isNotExpanded = notExpandedCategories.has(id);
+    if (isNotExpanded) {
+      notExpandedCategories.add(id);
+    } else {
+      notExpandedCategories.delete(id);
+    }
   }
-  
+
   function getCategoryVisibility(name: string) {
-    return categories.find(category => category.name === name)?.items.some(item => getItemVisibility(item.key));
+    return $SidebarCategories
+      .find((category) => category.name === name)
+      ?.items.some((item) => getItemVisibility(item.key));
   }
 
   function getItemVisibility(key: string) {
@@ -91,7 +54,7 @@
   }
 
   onMount(() => {
-    getStartingPage().then(page => {
+    getStartingPage().then((page) => {
       startingPage = page;
     });
   });
@@ -113,13 +76,16 @@
     $sidebarOpen ? 'translate-x-0' : 'translate-x-full'
   )}
 >
-  <div class="flex items-center justify-center p-4 border-b border-r h-16" data-tauri-drag-region>
+  <div
+    class="flex items-center justify-center p-4 border-b border-r h-16"
+    data-tauri-drag-region
+  >
     <a class="text-xl font-bold" href={startingPage}>{config.name}</a>
   </div>
 
   <nav class="flex-1 overflow-y-auto py-4 border-r">
     <ul class="space-y-1 px-2">
-      {#each categories as category, i (category.name)}
+      {#each $SidebarCategories as category (category.key)}
         {#if getCategoryVisibility(category.name)}
           <li>
             <button
@@ -128,18 +94,18 @@
                 'flex justify-between items-center',
                 'hover:bg-accent'
               )}
-              onclick={() => toggleCategory(i)}
+              onclick={() => toggleCategory(category.key)}
             >
               <span>{category.name}</span>
               <ChevronDownIcon
                 class={cn(
                   'size-4 transition-transform duration-200',
-                  category.expanded && 'rotate-180'
+                  !notExpandedCategories.has(category.key) && 'rotate-180'
                 )}
               />
             </button>
 
-            {#if category.expanded}
+            {#if !notExpandedCategories.has(category.key)}
               <ul
                 class="mt-1 ml-4 space-y-1 border-l border-border pl-2"
                 transition:slide|local={{ duration: 200, easing: cubicInOut }}
@@ -151,7 +117,8 @@
                         class={cn(
                           'block px-3 py-1 text-sm rounded-md truncate',
                           'hover:bg-accent',
-                          page.url.pathname === item.href && 'bg-accent text-accent-foreground'
+                          page.url.pathname === item.href &&
+                            'bg-accent text-accent-foreground'
                         )}
                         href={item.href}
                         onclick={() => sidebarOpen.set(false)}
@@ -177,7 +144,11 @@
             size="sm"
             variant="ghost"
           >
-            <img class="size-4 mr-2 inline-block" alt={link.name} src={link.icon}/>
+            <img
+              class="size-4 mr-2 inline-block"
+              alt={link.name}
+              src={link.icon}
+            />
             {link.name}
           </Button>
         {/each}
@@ -187,7 +158,8 @@
         <!-- -->
       {:then version}
         <div class="text-center mt-4 text-xs text-muted-foreground">
-          <span>Version
+          <span
+          >{$t('sidebar.version')}
             <a
               class="underline underline-offset-2"
               href="{config.links.github}/releases/tag/v{version}"

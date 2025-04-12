@@ -21,6 +21,7 @@
   import { toast } from 'svelte-sonner';
   import Authentication from '$lib/core/authentication';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
+  import { t } from '$lib/utils/util';
 
   type PageState = {
     selectedAccounts?: string[];
@@ -64,10 +65,10 @@
       }
     }));
 
-    eulaStatuses = eulaStatuses.filter(status => status.data.acceptLink);
+    eulaStatuses = eulaStatuses.filter((status) => status.data.acceptLink);
 
     if (!eulaStatuses.length) {
-      toast.info('All selected accounts have already accepted the EULA');
+      toast.info($t('eula.allAccountsAlreadyAccepted'));
     }
 
     selectedAccounts = [];
@@ -76,17 +77,21 @@
   }
 </script>
 
-<CenteredPageContent title="EULA">
+<CenteredPageContent title={$t('eula.page.title')}>
   <form class="flex flex-col gap-y-4" onsubmit={checkEULA}>
-    <AccountCombobox disabled={isFetching} type="multiple" bind:selected={selectedAccounts}/>
+    <AccountCombobox
+      disabled={isFetching}
+      type="multiple"
+      bind:selected={selectedAccounts}
+    />
 
     <Button
       disabled={!selectedAccounts?.length || isFetching}
       loading={isFetching}
-      loadingText="Checking EULA"
+      loadingText={$t('eula.checking')}
       variant="epic"
     >
-      Check EULA
+      {$t('eula.check')}
     </Button>
   </form>
 
@@ -101,7 +106,7 @@
             href={status.data.acceptLink}
             target="_blank"
           >
-            <ExternalLinkIcon class="size-5"/>
+            <ExternalLinkIcon class="size-5" />
           </a>
         </div>
       {/each}

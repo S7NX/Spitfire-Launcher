@@ -2,7 +2,6 @@
   import SettingItem from '$components/settings/SettingItem.svelte';
   import ChangeNotifier from '$components/settings/ChangeNotifier.svelte';
   import SystemTray from '$lib/core/system/systemTray';
-  import { sidebarCategories } from '$components/Sidebar.svelte';
   import { allSettingsSchema, appSettingsSchema } from '$lib/validations/settings';
   import { platform } from '@tauri-apps/plugin-os';
   import { onMount } from 'svelte';
@@ -13,6 +12,8 @@
   import Select from '$components/ui/Select.svelte';
   import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
   import { toast } from 'svelte-sonner';
+  import { t } from '$lib/utils/util';
+  import { SidebarCategories } from '$lib/constants/sidebar';
 
   const currentPlatform = platform();
 
@@ -27,13 +28,19 @@
   };
 
   const startingPageOptions = appSettingsSchema.shape.startingPage._def.innerType._def.values.map((value) => ({
-    label: sidebarCategories.map((category) => category.items).flat().find((item) => item.key === value)!.name,
+    label: $SidebarCategories.map((category) => category.items).flat().find((item) => item.key === value)!.name,
     value
   }));
 
   const startingAccountOptions: SelectOption<NonNullable<NonNullable<AllSettings['app']>['startingAccount']>>[] = [
-    { label: 'First in the list', value: 'firstInTheList' },
-    { label: 'Last used', value: 'lastUsed' }
+    {
+      label: $t('settings.appSettings.startingAccount.values.firstInList'),
+      value: 'firstInTheList'
+    },
+    {
+      label: $t('settings.appSettings.startingAccount.values.lastUsed'),
+      value: 'lastUsed'
+    }
   ];
 
   onMount(async function () {
@@ -45,16 +52,24 @@
   $effect(() => {
     if (!initialSettings) return;
 
-    const settingsChanged = JSON.stringify(allSettings) !== JSON.stringify(initialSettings);
-    const currentSettingsValid = allSettingsSchema.safeParse(allSettings).success;
+    const settingsChanged =
+      JSON.stringify(allSettings) !== JSON.stringify(initialSettings);
+    const currentSettingsValid =
+      allSettingsSchema.safeParse(allSettings).success;
 
     hasChanges = !currentSettingsValid ? false : settingsChanged;
   });
 
   async function handleSave() {
-    await DataStorage.writeConfigFile<AllSettings>(SETTINGS_FILE_PATH, allSettings);
+    await DataStorage.writeConfigFile<AllSettings>(
+      SETTINGS_FILE_PATH,
+      allSettings
+    );
 
-    if (initialSettings.app?.hideToTray !== allSettings.app?.hideToTray && allSettings.app?.hideToTray != null) {
+    if (
+      initialSettings.app?.hideToTray !== allSettings.app?.hideToTray &&
+      allSettings.app?.hideToTray != null
+    ) {
       await SystemTray.setVisibility(allSettings.app.hideToTray);
     }
 
@@ -84,7 +99,7 @@
     };
 
     if (!allSettingsSchema.safeParse(newSettings).success) {
-      toast.error('You have entered an invalid value.');
+      toast.error($t('settings.appSettings.invalidValue'));
     } else {
       allSettings = newSettings;
     }
@@ -100,7 +115,7 @@
     <SettingItem
       labelFor="gamePath"
       orientation="vertical"
-      title="Custom Game Path"
+      title={$t('settings.appSettings.gamePath')}
     >
       <Input
         id="gamePath"
@@ -111,10 +126,10 @@
   {/if}
 
   <SettingItem
-    description="Checks every {allSettings?.app?.missionCheckInterval} seconds if you are in a STW mission. Used with the auto-kick feature."
+    description={$t('settings.appSettings.missionCheckInterval.description')}
     labelFor="missionCheckInterval"
     orientation="vertical"
-    title="Mission Check Interval"
+    title={$t('settings.appSettings.missionCheckInterval.title')}
   >
     <Input
       id="missionCheckInterval"
@@ -127,10 +142,10 @@
   </SettingItem>
 
   <SettingItem
-    description="Waits {allSettings?.app?.claimRewardsDelay} seconds before claiming STW mission rewards."
+    description={$t('settings.appSettings.claimRewardsDelay.description')}
     labelFor="claimRewardsDelay"
     orientation="vertical"
-    title="Delay for Claiming Rewards"
+    title={$t('settings.appSettings.claimRewardsDelay.title')}
   >
     <Input
       id="claimRewardsDelay"
@@ -143,41 +158,47 @@
   </SettingItem>
 
   <SettingItem
-    description="Select which page to show when launching the app."
+    description={$t('settings.appSettings.startingPage.description')}
     labelFor="startingPage"
     orientation="vertical"
-    title="Starting Page"
+    title={$t('settings.appSettings.startingPage.title')}
   >
     <Select
       id="startingPage"
       items={startingPageOptions}
       triggerClass="w-full"
       type="single"
-      bind:value={() => allSettings?.app?.startingPage, (value) => value && handleSettingChange(value, 'startingPage')}
+      bind:value={
+        () => allSettings?.app?.startingPage,
+        (value) => value && handleSettingChange(value, 'startingPage')
+      }
     >
       {#snippet trigger(label)}
         <p>{label}</p>
-        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
+        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto" />
       {/snippet}
     </Select>
   </SettingItem>
 
   <SettingItem
-    description="Select which account to use when launching the app."
+    description={$t('settings.appSettings.startingAccount.description')}
     labelFor="startingAccount"
     orientation="vertical"
-    title="Starting Account"
+    title={$t('settings.appSettings.startingAccount.title')}
   >
     <Select
       id="startingAccount"
       items={startingAccountOptions}
       triggerClass="w-full"
       type="single"
-      bind:value={() => allSettings?.app?.startingAccount, (value) => value && handleSettingChange(value, 'startingAccount')}
+      bind:value={
+        () => allSettings?.app?.startingAccount,
+        (value) => value && handleSettingChange(value, 'startingAccount')
+      }
     >
       {#snippet trigger(label)}
         <p>{label}</p>
-        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
+        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto" />
       {/snippet}
     </Select>
   </SettingItem>
@@ -186,7 +207,7 @@
     <SettingItem
       labelFor="hideToTray"
       orientation="horizontal"
-      title="Hide to system tray"
+      title={$t('settings.appSettings.hideToTray')}
     >
       <Switch
         id="hideToTray"
@@ -199,7 +220,7 @@
   <SettingItem
     labelFor="checkForUpdates"
     orientation="horizontal"
-    title="Check for updates"
+    title={$t('settings.appSettings.checkForUpdates')}
   >
     <Switch
       id="checkForUpdates"

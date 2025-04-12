@@ -33,7 +33,8 @@ export default [
       'svelte/no-spaces-around-equal-signs-in-attribute': 'error',
       'svelte/spaced-html-comment': ['error', 'always'],
       'svelte/sort-attributes': 'error',
-      'svelte/first-attribute-linebreak': ['error']
+      'svelte/first-attribute-linebreak': ['error'],
+      'svelte/no-at-html-tags': 'off'
     }
   },
   {

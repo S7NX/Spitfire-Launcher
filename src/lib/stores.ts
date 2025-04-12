@@ -7,6 +7,7 @@ import type { EpicOAuthData } from '$types/game/authorizations';
 import type { AutomationSetting } from '$types/settings';
 import type { AutomationAccount } from '$lib/core/managers/automation/autoKickBase';
 import type { SpitfireShop } from '$types/game/shop';
+import type { Locale } from './paraglide/runtime';
 
 export const activeAccountId = writable<string | null>();
 export const accountsStore = writable<{
@@ -38,3 +39,4 @@ export const brShopStore = writable<SpitfireShop>();
 export const accountDataStore = writable<Record<string, AccountStoreData>>({});
 export const ownedItemsStore = writable<Record<string, Set<string>>>({});
 export const customizableMenuStore = writable<Record<string, boolean>>({});
+export const language  = writable<Locale>('en');

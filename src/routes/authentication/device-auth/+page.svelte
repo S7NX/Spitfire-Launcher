@@ -19,8 +19,8 @@
   import type { DeviceAuthsSettings } from '$types/settings';
   import { onMount } from 'svelte';
   import DataStorage, { DEVICE_AUTHS_FILE_PATH } from '$lib/core/dataStorage';
-  import { accountsStore } from '$lib/stores';
-  import { getStartingPage, nonNull, shouldErrorBeIgnored } from '$lib/utils/util';
+  import { accountsStore, language } from '$lib/stores';
+  import { getStartingPage, nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
   import Account from '$lib/core/account';
   import Tooltip from '$components/ui/Tooltip.svelte';
   import { goto } from '$app/navigation';
@@ -41,11 +41,11 @@
     if (!newName) {
       const deviceAuthRemoved = deviceAuthsSettings.filter(x => x.deviceId !== deviceId);
       deviceAuthsSettings = deviceAuthRemoved;
-      event.currentTarget.textContent = 'No Name';
+      event.currentTarget.textContent = $t('deviceAuthManagement.authInfo.noName');
 
       await DataStorage.writeConfigFile(DEVICE_AUTHS_FILE_PATH, deviceAuthRemoved);
     } else {
-      let setting = deviceAuthsSettings.find(x => x.deviceId === deviceId);
+      let setting = deviceAuthsSettings.find((x) => x.deviceId === deviceId);
       if (setting) {
         setting.customName = newName;
       } else {
@@ -55,7 +55,10 @@
         });
       }
 
-      await DataStorage.writeConfigFile(DEVICE_AUTHS_FILE_PATH, deviceAuthsSettings);
+      await DataStorage.writeConfigFile(
+        DEVICE_AUTHS_FILE_PATH,
+        deviceAuthsSettings
+      );
     }
   }
 
@@ -82,7 +85,7 @@
       if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error('Failed to fetch device auths');
+      toast.error($t('deviceAuthManagement.failedToFetch'));
     } finally {
       isFetching = false;
     }
@@ -94,14 +97,14 @@
     isGenerating = true;
 
     toast.promise(DeviceAuthManager.create(activeAccount), {
-      loading: 'Generating device auth...',
+      loading: $t('deviceAuthManagement.generating'),
       success: (deviceAuth) => {
         allDeviceAuths[activeAccount.accountId] = [deviceAuth, ...deviceAuths];
-        return `Device auth generated: ${deviceAuth.deviceId}`;
+        return $t('deviceAuthManagement.generated');
       },
       error: (error) => {
         console.error(error);
-        return 'Failed to generate device auth';
+        return $t('deviceAuthManagement.failedToGenerate');
       },
       finally: () => {
         isGenerating = false;
@@ -112,13 +115,13 @@
   async function deleteDeviceAuth(deviceId: string) {
     isDeleting = true;
 
-    const toastId = toast.loading('Deleting device auth...');
+    const toastId = toast.loading($t('deviceAuthManagement.deleting'));
     const isCurrentDevice = deviceId === activeAccount.deviceId;
 
     try {
       await DeviceAuthManager.delete(activeAccount, deviceId);
       allDeviceAuths[activeAccount.accountId] = deviceAuths.filter((auth) => auth.deviceId !== deviceId);
-      toast.success(`Device auth deleted ${isCurrentDevice ? 'and logged out' : ''}`, { id: toastId });
+      toast.success(isCurrentDevice ? $t('deviceAuthManagement.deletedAndLoggedOut') : $t('deviceAuthManagement.deleted'), { id: toastId });
 
       if (isCurrentDevice) {
         await Account.logout();
@@ -129,14 +132,14 @@
       if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error('Failed to delete device auth', { id: toastId });
+      toast.error($t('deviceAuthManagement.failedToDelete'), { id: toastId });
     } finally {
       isDeleting = false;
     }
   }
 
   function formatDate(date: string) {
-    return new Date(date).toLocaleString('en-US', {
+    return new Date(date).toLocaleString($language, {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
@@ -158,14 +161,16 @@
   <div class="border rounded-md space-y-4 p-6">
     <div class="flex flex-col">
       <div class="flex items-center gap-x-3">
-        <h2 class="text-2xl font-bold">Device Auth List</h2>
+        <h2 class="text-2xl font-bold">
+          {$t('deviceAuthManagement.page.title')}
+        </h2>
 
         <PlusIcon
           class="size-8 cursor-pointer {isGenerating ? 'opacity-50 !cursor-not-allowed' : ''}"
           onclick={generateDeviceAuth}
         />
 
-        <Separator.Root class="bg-border h-8 w-px"/>
+        <Separator.Root class="bg-border h-8 w-px" />
 
         <RefreshCwIcon
           class="size-6 cursor-pointer {isFetching ? 'animate-spin opacity-50 !cursor-not-allowed' : ''}"
@@ -182,7 +187,7 @@
               <div class="flex flex-col gap-y-1">
                 <div class="flex items-center gap-2 w-fit mb-1">
                   <div class="flex items-center gap-2 group">
-                    <PencilIcon class="hidden group-hover:block size-4"/>
+                    <PencilIcon class="hidden group-hover:block size-4" />
                     <span
                       class="font-semibold outline-none hover:underline underline-offset-2"
                       contenteditable
@@ -192,12 +197,12 @@
                       spellcheck="false"
                       tabindex="0"
                     >
-                      {deviceAuthsSettings?.find(x => x.deviceId === auth.deviceId)?.customName || 'No Name'}
+                      {deviceAuthsSettings?.find(x => x.deviceId === auth.deviceId)?.customName || $t('deviceAuthManagement.authInfo.noName')}
                     </span>
                   </div>
 
                   {#if auth.deviceId === activeAccount.deviceId}
-                    <Tooltip tooltip="The launcher uses this device auth">
+                    <Tooltip tooltip={$t('deviceAuthManagement.authInfo.activeAuth')}>
                       <div class="size-2 bg-green-500 rounded-full shrink-0"></div>
                     </Tooltip>
                   {/if}
@@ -205,8 +210,8 @@
 
                 <div class="flex flex-col gap-y-2">
                   {#each [
-                    { title: 'ID', value: auth.deviceId },
-                    { title: 'User-Agent', value: auth.userAgent },
+                    { title: $t('deviceAuthManagement.authInfo.id'), value: auth.deviceId }, 
+                    { title: 'User-Agent', value: auth.userAgent }, 
                     { title: 'Secret', value: auth.secret }
                   ] as { title, value } (title)}
                     {#if value}
@@ -218,22 +223,23 @@
                   {/each}
 
                   {#each [
-                    { title: 'Created', data: auth.created },
-                    { title: 'Last Access', data: auth.lastAccess }
-                  ] as { title, data } (title)}
+                    { title: $t('deviceAuthManagement.authInfo.created'), data: auth.created },
+                    { title: $t('deviceAuthManagement.authInfo.lastAccess'), data: auth.lastAccess }
+                  ]
+                    as { title, data } (title)}
                     {#if data}
                       <div>
                         <span class="font-semibold">{title}</span>
                         <div>
-                          <span class="text-sm font-semibold">Location:</span>
+                          <span class="text-sm font-semibold">{$t('deviceAuthManagement.authInfo.location')}:</span>
                           <span class="text-sm text-muted-foreground">{data.location}</span>
                         </div>
                         <div>
-                          <span class="text-sm font-semibold">IP:</span>
+                          <span class="text-sm font-semibold">{$t('deviceAuthManagement.authInfo.ip')}:</span>
                           <span class="text-sm text-muted-foreground">{data.ipAddress}</span>
                         </div>
                         <div>
-                          <span class="text-sm font-semibold">Date:</span>
+                          <span class="text-sm font-semibold">{$t('deviceAuthManagement.authInfo.date')}:</span>
                           <span class="text-sm text-muted-foreground">{formatDate(data.dateTime)}</span>
                         </div>
                       </div>
@@ -249,7 +255,7 @@
                 size="sm"
                 variant="danger"
               >
-                <Trash2Icon class="size-5"/>
+                <Trash2Icon class="size-5" />
               </Button>
             </div>
           </div>

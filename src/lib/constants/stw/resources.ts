@@ -8,7 +8,8 @@ import type {
   DailyQuestData,
   TeamPerkData,
   GadgetData,
-  HeroData, ZoneThemeData
+  HeroData,
+  ZoneThemeData
 } from '$types/game/stw/resources';
 
 import resourcesJson from '$lib/data/resources.json';
@@ -21,6 +22,8 @@ import teamPerksJson from '$lib/data/teamPerks.json';
 import gadgetsJson from '$lib/data/gadgets.json';
 import heroesJson from '$lib/data/heroes.json';
 import zoneThemesJson from '$lib/data/zoneThemes.json';
+import { derived } from 'svelte/store';
+import { t } from '$lib/utils/util';
 
 export const RarityTypes = Object.freeze({
   Common: 'c',
@@ -57,13 +60,13 @@ export const FounderEditions = Object.freeze({
   Ultimate: 'Quest:foundersquest_getrewards_4_5'
 } as const);
 
-export const FounderEditionNames = Object.freeze({
-  [FounderEditions.Standard]: 'Standard',
-  [FounderEditions.Deluxe]: 'Deluxe',
-  [FounderEditions.SuperDeluxe]: 'Super Deluxe',
-  [FounderEditions.Limited]: 'Limited',
-  [FounderEditions.Ultimate]: 'Ultimate'
-} as const);
+export const FounderEditionNames = derived(t, ($t) => ({
+  [FounderEditions.Standard]: $t('common.stw.founderEditions.standard'),
+  [FounderEditions.Deluxe]: $t('common.stw.founderEditions.deluxe'),
+  [FounderEditions.SuperDeluxe]: $t('common.stw.founderEditions.superDeluxe'),
+  [FounderEditions.Limited]: $t('common.stw.founderEditions.limited'),
+  [FounderEditions.Ultimate]: $t('common.stw.founderEditions.ultimate')
+}));
 
 export const resources = resourcesJson as Record<string, ResourceData>;
 export const survivors = survivorsJson as Record<string, SurvivorData>;

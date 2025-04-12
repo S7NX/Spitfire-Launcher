@@ -1,0 +1,631 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "language": "Türkçe",
+  "common": {
+    "yes": "Evet",
+    "no": "Hayır",
+    "vbucks": "V-Papel",
+    "xp": "TP",
+    "stw": {
+      "xrayTickets": "X-Ray Tickets",
+      "gold": "Altın",
+      "founderEditions": {
+        "none": "Kurucu Yok",
+        "founder": "Kurucu",
+        "standard": "Standart",
+        "deluxe": "Deluxe",
+        "superDeluxe": "Super Deluxe",
+        "limited": "Limited",
+        "ultimate": "Ultimate"
+      }
+    },
+    "gameModes": {
+      "battleRoyale": "Battle Royale",
+      "creative": "Kreatif",
+      "saveTheWorld": "Dünyayı Kurtar"
+    },
+    "cancel": "İptal",
+    "confirm": "Onayla"
+  },
+  "times": {
+    "seconds": {
+      "one": "{count} saniye",
+      "other": "{count} saniye"
+    },
+    "minutes": {
+      "one": "{count} dakika",
+      "other": "{count} dakika"
+    },
+    "hours": {
+      "one": "{count} saat",
+      "other": "{count} saat"
+    },
+    "days": {
+      "one": "{count} gün",
+      "other": "{count} gün"
+    }
+  },
+  "sidebar": {
+    "externalLinks": {
+      "discord": "Discord Sunucusu",
+      "repository": "GitHub Sayfası"
+    },
+    "version": "Sürüm",
+    "categories": {
+      "account": "Hesap",
+      "brStw": "BR & STW",
+      "authentication": "Yetkilendirme"
+    },
+    "items": {
+      "vbucksInformation": "V-Papel",
+      "redeemCodes": "Kod Okut",
+      "epicGamesSettings": "Epic Games Ayarları",
+      "eula": "SKLA",
+      "autoKick": "Auto-Kick",
+      "taxiService": "Taksi Hizmeti",
+      "botLobby": "Bot Lobi",
+      "customStatus": "Özel Durum",
+      "partyManagement": "Grup Yönetimi",
+      "serverStatus": "Sunucu Durumu",
+      "itemShop": "İçerik Mağazası",
+      "earnedXp": "Kazanılan TP",
+      "dailyQuests": "Günlük Görevler",
+      "stwWorldInfo": "Görev Uyarıları",
+      "lookupPlayers": "Oyuncu Ara"
+    },
+    "worldNames": {
+      "stonewood": "Taşlıorman",
+      "plankerton": "Kalaslıevler",
+      "cannyValley": "Tekinli Vadi",
+      "twinePeaks": "Dikiz Tepeler",
+      "stormKingsDomain": "Storm King's Domain",
+      "dungeons": "Zindanlar",
+      "visitTheCrater": "Visit the Crater",
+      "blastedBadlands": "Çorak Çöl",
+      "flannelFalls": "Ilıman Diyar",
+      "frozenFjords": "Kışlık Körfez",
+      "hexsylvania": "Uğursizistan",
+      "scurvyShoals": "Kefal Kumsalı"
+    }
+  },
+  "newVersionAvailable": {
+    "title": "Yeni Sürüm Mevcut",
+    "description": "Yeni sürüm {version} mevcut. Güncellemek için aşağıdaki butona tıklayın.",
+    "download": "İndir"
+  },
+  "epicGamesSettings": {
+    "page": {
+      "title": "Epic Games Ayarları",
+      "description": "Epic Games'e giriş yapmak için aşağıdaki butona tıklayın."
+    },
+    "login": "Giriş Yap",
+    "loggingIn": "Giriş yapılıyor",
+    "openedWebsite": "Epic Games websitesi açıldı",
+    "failedToOpenWebsite": "Epic Games websitesi açılamadı"
+  },
+  "eula": {
+    "page": {
+      "title": "SKLA"
+    },
+    "check": "SKLA'yı Kontrol Et",
+    "checking": "Kontrol ediliyor",
+    "allAccountsAlreadyAccepted": "Tüm seçili hesaplar zaten SKLA'yı kabul etti"
+  },
+  "redeemCodes": {
+    "page": {
+      "title": "Kod Okut"
+    },
+    "codesPlaceholder": "Okutacağınız kodları girin ve Enter'a basın.",
+    "redeemCodes": "Kodları Okut",
+    "redeeming": "Kodlar okutuluyor...",
+    "redeemed": "Kodlar okutuldu.",
+    "redeemErrors": {
+      "notFound": "Kod bulunamadı",
+      "itemsAlreadyOwned": "İçeriklere zaten sahipsiniz",
+      "alreadyUsed": "Kod zaten kullanıldı",
+      "unknownError": "Bilinmeyen hata"
+    },
+    "loginExpired": "Oturumunuz süresi doldu. Lütfen tekrar giriş yapın."
+  },
+  "vbucksInformation": {
+    "page": {
+      "title": "V-Papel Bilgileri"
+    },
+    "getInformation": "V-Papel Bilgilerini Al",
+    "loading": "V-Papel Bilgileri Alınıyor",
+    "loginExpired": "Oturumunuz süresi doldu. Lütfen tekrar giriş yapın.",
+    "unknownError": "Bilinmeyen hata"
+  },
+  "deviceAuthManagement": {
+    "page": {
+      "title": "Device Auth Listesi"
+    },
+    "authInfo": {
+      "noName": "İsim Yok",
+      "activeAuth": "Başlatıcı bu cihazı kullanıyor",
+      "id": "Cihaz ID",
+      "created": "Oluşturulma",
+      "lastAccess": "Son Erişim",
+      "location": "Konum",
+      "ip": "IP",
+      "date": "Tarih"
+    },
+    "failedToFetch": "Device auth bilgileri alınamadı",
+    "generating": "Device auth oluşturuluyor...",
+    "generated": "Device auth oluşturuldu",
+    "failedToGenerate": "Device auth oluşturulamadı",
+    "deleting": "Device auth siliniyor...",
+    "deleted": "Device auth silindi",
+    "deletedAndLoggedOut": "Device auth silindi ve çıkış yapıldı",
+    "failedToDelete": "Device auth silinemedi"
+  },
+  "accessTokenManagement": {
+    "page": {
+      "title": "Access Token"
+    },
+    "selectTokenType": "Token türünü seçin",
+    "selectClient": "Client seçin",
+    "generate": "Access Token Oluştur",
+    "generating": "Oluşturuluyor",
+    "generated": "Oluşturuldu ve panoya kopyalandı",
+    "failedToGenerate": "Access token oluşturulamadı"
+  },
+  "exchangeCodeManagement": {
+    "page": {
+      "title": "Exchange Code",
+      "description": "Exchange code oluşturmak için aşağıdaki butona tıklayın."
+    },
+    "generate": "Exchange Code Oluştur",
+    "generating": "Oluşturuluyor",
+    "generated": "Exchange code oluşturuldu ve panoya kopyalandı",
+    "failedToGenerate": "Exchange code oluşturulamadı"
+  },
+  "autoKick": {
+    "page": {
+      "title": "Auto-Kick",
+      "description": "Dünyayı Kurtar görevleri için Auto-Kick, Auto-Claim ve Auto-Transfer özelliklerini açın."
+    },
+    "accountStatus": {
+      "active": "Aktif",
+      "loginExpired": "Oturum Sona Erdi",
+      "disconnected": "Bağlantı Kesildi"
+    },
+    "settings": {
+      "kick": "At",
+      "claim": "Ödülleri Al",
+      "transferMaterials": "Malzemeleri Transfer Et"
+    }
+  },
+  "botLobby": {
+    "page": {
+      "title": "Bot Lobi",
+      "description": "Hesabını bir bot lobi botuna dönüştür."
+    },
+    "banWarning": {
+      "title": "Uyarı",
+      "description": "Bot lobi botuna çevirdiğiniz hesap ban yiyebilir! Kendi sorumluluğunuzda kullanın."
+    },
+    "settings": {
+      "availableStatus": {
+        "title": "Müsait Durumu",
+        "placeholder": "Bot müsaitken kullanılacak özel durum",
+        "default": "Bot lobisi için kullanılabilir. Katılmak için davet gönderin!"
+      },
+      "busyStatus": {
+        "title": "Meşgul Durumu",
+        "placeholder": "Bot meşgulken kullanılacak özel durum",
+        "default": "Şu anda bir grupta. Yakında müsait olacak."
+      },
+      "autoAcceptFriendRequests": "Arkadaşlık İsteklerini Oto Kabul Et"
+    },
+    "start": "Bot Lobisini Başlat",
+    "starting": "Başlatılıyor",
+    "stop": "Bot Lobisini Durdur",
+    "stopping": "Durduruluyor",
+    "checkingEligibility": "Kontrol Ediliyor",
+    "failedToFetchProfile": "Profil verisi alınamadı",
+    "matchmakingBan": {
+      "default": "Bu hesap eşleştirmeden yasaklı.",
+      "indefinite": "Bu hesap eşleştirmeden kalıcı olarak yasaklı.",
+      "temporary": "Bu hesap eşleştirmeden {time} boyunca yasaklı."
+    },
+    "useNewAccount": "Bot lobisi başlatabilmek için yeni bir hesap kullanmalısınız.",
+    "taxiServiceActive": "Taksi hizmeti aktifken bot lobisi başlatamazsınız.",
+    "failedToStart": "Bot lobisi başlatılamadı",
+    "failedToStop": "Bot lobisi durdurulamadı"
+  },
+  "customStatus": {
+    "page": {
+      "title": "Özel Durum",
+      "description": "Hesabınızda özel durum ayarlayın."
+    },
+    "statusPlaceholder": "Özel durumunuzu buraya yazın",
+    "setStatus": "Özel Durum Ayarla",
+    "settingStatus": "Ayarlanıyor",
+    "statusSet": "Özel durum başarıyla ayarlandı",
+    "failedToSetStatus": "Özel durum ayarlanamadı",
+    "resetStatus": "Özel Durumu Sıfırla",
+    "resettingStatus": "Sıfırlanıyor",
+    "statusReset": "Özel durum başarıyla sıfırlandı",
+    "failedToResetStatus": "Özel durum sıfırlanamadı"
+  },
+  "dailyQuests": {
+    "page": {
+      "title": "Günlük Görevler"
+    },
+    "getQuests": "Günlük Görevleri Al",
+    "loading": "Görevler Alınıyor"
+  },
+  "earnedXP": {
+    "page": {
+      "title": "Kazanılan TP",
+      "description": "Battle Royale, Kreatif ve Dünyayı Kurtar'da kazandığınız TP'yi görüntüleyin."
+    },
+    "check": "Kazanılan TP'yi Al",
+    "loading": "Kazanılan TP Alınıyor"
+  },
+  "itemShop": {
+    "page": {
+      "title": "İçerik Mağazası"
+    },
+    "lastUpdated": "Son güncelleme: {date}",
+    "nextRotation": "Sıradaki yenilenme: {time}",
+    "failedtoFetch": "İçerik mağazası alınamadı. Lütfen daha sonra tekrar deneyin.",
+    "noItems": "Hiç içerik bulunamadı",
+    "selectFilter": "Filtre Seçin",
+    "filters": {
+      "all": "Hepsi",
+      "new": "Yeni",
+      "leavingSoon": "Yakında Gidiyor",
+      "longestWait": "En Uzun Bekleme"
+    },
+    "owned": "Sahipsin",
+    "purchase": "Satın Al",
+    "gift": "Hediye Et",
+    "itemInformation": {
+      "price": "Fiyat",
+      "firstSeen": "İlk Görülme",
+      "lastSeen": "Son Görülme",
+      "leavesOn": "Gitme Tarihi"
+    },
+    "notEnoughVbucks": "Yeterli V-Papel yok",
+    "noFriends": "Hiç arkadaş bulunamadı",
+    "noRemainingGifts": "Hediye hakkınız kalmadı",
+    "purchaseConfirmation": {
+      "title": "Satın Alma Onayı",
+      "description": "{name} içeriğini {price} {vbucksIcon} karşılığında satın almak istediğinize emin misiniz?"
+    },
+    "purchasing": "Satın alınıyor",
+    "purchased": "İçerik başarıyla satın alındı",
+    "needMoreVbucksToPurchase": "Bu içeriği satın almak için {amount} daha V-Papel'e ihtiyacınız var",
+    "alreadyOwned": "Bu içeriğe zaten sahipsiniz",
+    "failedToPurchase": "İçerik satın alınamadı",
+    "giftConfirmation": {
+      "title": "Hediye Onayı",
+      "description": "{name} içeriğini {price} {vbucksIcon} karşılığında hediye edeceğiniz arkadaşlarınızı seçin."
+    },
+    "selectFriends": "Arkadaşları seçin",
+    "selectedFriendCount": "{count} arkadaş seçildi",
+    "sendGift": "Hediyeyi Gönder",
+    "sentGift": "Hediye başarıyla gönderildi",
+    "reachedDailyGiftLimit": "Günlük hediye limitine ulaştınız",
+    "needMoreVbucksToGift": "Bu hediyeyi göndermek için {amount} daha V-Papel'e ihtiyacınız var",
+    "friendsMayOwnItem": "Hediyeler gönderilemedi, bir veya daha fazla arkadaşınız bu içeriğe zaten sahip olabilir.",
+    "friendsNotEligible": "Hediyeler gönderilemedi, bir veya daha fazla arkadaşınız uygun değil.",
+    "friendsOwnItemFromBundle": "Hediyeler gönderilemedi, bir veya daha fazla arkadaşınız bu paketten bir içeriğe sahip.",
+    "friendsDoNotAcceptGifts": "Hediyeler gönderilemedi, bir veya daha fazla arkadaşınız hediyeleri kabul etmiyor.",
+    "enableMFA": "Hediye gönderebilmek için hesabınızda Çok Aşamalı Doğrulamayı etkinleştirmeniz gerekiyor",
+    "failedToGift": "Hediye gönderilemedi"
+  },
+  "taxiService": {
+    "page": {
+      "title": "Taksi Hizmeti",
+      "description": "Hesabınızı bir taksiye dönüştürün ve güç seviyenizden yüksek STW görevlerini oynayın."
+    },
+    "alert": {
+      "title": "Uyarı",
+      "message": "Taksinin düzgün çalışabilmesi için \"Doldurma\" seçeneğini seçmelisiniz."
+    },
+    "settings": {
+      "powerLevel": "Güç Seviyesi",
+      "availableStatus": {
+        "title": "Müsait Durumu",
+        "placeholder": "Taksi müsaitken kullanılacak özel durum",
+        "default": "Taksi hizmeti için müsait. Katılmak için davet gönderin!"
+      },
+      "busyStatus": {
+        "title": "Meşgul Durumu",
+        "placeholder": "Taksi meşgulken kullanılacak özel durum",
+        "default": "Şu anda bir grupta. Yakında müsait olacak."
+      },
+      "autoAcceptFriendRequests": "Arkadaşlık İsteklerini Oto Kabul Et"
+    },
+    "start": "Taksi Hizmetini Başlat",
+    "starting": "Başlatılıyor",
+    "stop": "Taksi Hizmetini Durdur",
+    "stopping": "Durduruluyor",
+    "failedToStart": "Taksi hizmeti başlatılamadı",
+    "failedToStop": "Taksi hizmeti durdurulamadı",
+    "botLobbyActive": "Bot lobisi aktifken taksi hizmeti başlatamazsınız."
+  },
+  "worldInfo": {
+    "page": {
+      "title": "Dünya Bilgileri"
+    },
+    "tabs": {
+      "overview": "Genel Bakış",
+      "claimedAlerts": "Tamamlanan Uyarılar"
+    },
+    "search": "İsim veya ID ile arayın",
+    "playerNotFound": "Oyuncu bulunamadı",
+    "stwStatsPrivate": "Oyun istatistikleri gizli olduğu için oyuncunun STW verileri alınamadı.",    
+    "playerInfo": {
+      "id": "ID",
+      "name": "İsim",
+      "commanderLevel": "Komutan seviyesi",
+      "completedAlerts": "Tamamlanan uyarılar"
+    },
+    "sections": {
+      "survivors": "Efsanevi/Eşsiz Felaketzedeler",
+      "twinePeaks": "Dikiz Tepeler ⚡160",
+      "ventures": "Macera ⚡160",
+      "upgradeLlamaTokens": "Geliştirme Lama Jetonları",
+      "perkup": "Efsanevi YÜKSELTİCİ!"
+    },
+    "noMissions": "Hiç görev yok",
+    "rewards": "Ödüller",
+    "alertRewards": "Görev Uyarısı Ödülleri"
+  },
+  "lookupPlayer": {
+    "search": "İsim veya ID ile arayın",
+    "notFound": "Oyuncu bulunamadı",
+    "stwStatsPrivate": "Oyun istatistikleri gizli olduğu için oyuncunun STW verileri alınamadı.",
+    "playerInfo": {
+      "id": "ID",
+      "name": "İsim",
+      "commanderLevel": "Komutan seviyesi",
+      "boostedXp": "Takviye TP",
+      "boostCount": "{count} kez",
+      "founderEdition": "Kurucu sürümü"
+    },
+    "stwDetails": {
+      "title":  "Dünyayı Kurtar Bilgileri",
+      "players": "Oyuncular",
+      "missionInformation": {
+        "title": "Görev Bilgileri",
+        "name": "İsim",
+        "world": "Dünya",
+        "zone": "Bölge"
+      },
+      "heroLoadout": {
+        "commander": "Komutan",
+        "teamPerk": "Takım Avantajı",
+        "supportTeam": "Destek Ekibi",
+        "gadgets": "Cihazlar"
+      }
+    }
+  },
+  "serverStatus": {
+    "page": {
+      "title": "Fortnite Sunucu Durumu"
+    },
+    "statuses": {
+      "operational": "Aktif",
+      "down": "Kapalı",
+      "majorOutage": "Büyük Kesinti",
+      "partialOutage": "Kısmi Kesinti",
+      "underMaintenance": "Bakımda",
+      "degradedPerformance": "Düşük Performans",
+      "unknown": "Bilinmiyor"
+    },
+    "notification": {
+      "title": "Fortnite Sunucu Durumu",
+      "message": "Fortnite sunucuları tekrar aktif!"
+    },
+    "status": "Durum: {status}",
+    "failedToFetch": "Sunucu durumu alınamadı",
+    "lastUpdated": "Son güncelleme: {date}",
+    "refresh": "Yenile",
+    "refreshing": "Yenileniyor",
+    "notifyMe": {
+      "title": "Beni Bilgilendir",
+      "description": "Fortnite tekrar aktif olduğunda bildirim al"
+    },
+    "queue": {
+      "title": "Bekleme Sırası Aktif",
+      "description": "Tahmini bekleme süresi: {time}"
+    }
+  },
+  "partyManagement": {
+    "page": {
+      "title": "Grup Yönetimi"
+    },
+    "tabs": {
+      "stwActions": "STW Eylemleri",
+      "partyMembers": "Grup Üyeleri"
+    },
+    "stwActions": {
+      "claimRewardsAfterLeaving": "Görevden ayrıldıktan sonra ödülleri al",
+      "kickAll": "Herkesi At",
+      "leaveParty": "Gruptan Çık",
+      "claimRewards": "Ödülleri Al",
+      "notInParty": "Bir grupta değilsiniz",
+      "notLeader": "Grup lideri değilsiniz",
+      "kickedAll": "Tüm oyuncular başarıyla atıldı",
+      "failedToKickAll": "Oyuncular atılamadı",
+      "failedToKickMember": "Üye atılamadı",
+      "leftParty": "Başarıyla gruptan çıkıldı",
+      "claimedRewards": "Ödüller başarıyla alındı",
+      "failedToClaimRewards": "Ödüller alınamadı",
+      "leftParties": "Başarıyla gruplardan çıkıldı",
+      "failedToLeaveParties": "Gruplardan çıkılamadı",
+      "promotedMember": "{name} başarıyla grup lideri yapıldı",
+      "failedToPromoteMember": "Üye lider yapılamadı"
+    },
+    "partyMembers": {
+      "size": "Boyut",
+      "region": "Bölge",
+      "createdAt": "Oluşturulma",
+      "kick": "At",
+      "kicking": "Atılıyor",
+      "leaveParty": "Gruptan Çık",
+      "leavingParty": "Gruptan Çıkılıyor",
+      "promote": "Lider Yap",
+      "promoting": "Lider Yapılıyor",
+      "platform": "Platform",
+      "ownsSTW": "STW sahibi",
+      "loadout": "Dizilim",
+      "ready": "Hazır",
+      "notReady": "Hazır Değil"
+    }
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "tabs": {
+      "appSettings": "Uygulama Ayarları",
+      "customizableMenu": "Özelleştirilebilir Menü"
+    },
+    "appSettings": {
+      "invalidValue": "Geçersiz bir değer girdiniz.",
+      "gamePath": "Özel Oyun Dosya Yolu",
+      "missionCheckInterval": {
+        "title": "Görev Kontrol Aralığı",
+        "description": "STW görevinde olup olmadığınızı kontrol etmek için saniye cinsinden aralık. Auto-Kick özelliği ile kullanılır."
+      },
+      "claimRewardsDelay": {
+        "title": "Ödülleri Alma Gecikmesi",
+        "description": "STW görevinden ayrıldıktan sonra ödülleri almak için saniye cinsinden gecikme. Auto-Kick özelliği ile kullanılır."
+      },
+      "startingPage": {
+        "title": "Başlangıç Sayfası",
+        "description": "Başlatıcı başladığında gösterilecek sayfayı seçin."
+      },
+      "startingAccount": {
+        "title": "Başlangıç Hesabı",
+        "description": "Başlatıcı başladığında kullanılacak hesabı seçin.",
+        "values": {
+          "firstInList": "Listeden İlk",
+          "lastUsed": "Son Kullanılan"
+        }
+      },
+      "hideToTray": "Sistem Tepsisine Gizle",
+      "checkForUpdates": "Güncellemeleri Kontrol Et"
+    },
+    "unsavedChanges": {
+      "description": "Kaydetmediğiniz değişiklikler var",
+      "reset": "Sıfırla",
+      "save": "Kaydet"
+    }
+  },
+  "launchGame": {
+    "launch": "Oyunu Başlat",
+    "stop": "Oyunu Durdur",
+    "alreadyRunning": "Fortnite zaten çalışıyor",
+    "launching": "Fortnite başlatılıyor...",
+    "notInstalled": "Fortnite yüklü değil. Lütfen önce oyunu indirin.",
+    "launched": "Fortnite başarıyla başlatıldı",
+    "failedToLaunch": "Fortnite başlatılamadı",
+    "stopping": "Fortnite durduruluyor...",
+    "stopped": "Fortnite başarıyla durduruldu",
+    "failedToStop": "Fortnite durdurulamadı"
+  },
+  "accountManager": {
+    "noAccount": "Hesap Yok",
+    "searchAccounts": "Hesap ara...",
+    "login": "Yeni Hesap Ekle",
+    "logout": "Çıkış Yap",
+    "switching": "{name} hesabına geçiliyor...",
+    "switched": "{name} hesabına geçildi",
+    "failedToSwitch": "{name} hesabına geçilemedi",
+    "loggingOut": "{name} hesabından çıkış yapılıyor...",
+    "loggedOut": "{name} hesabından çıkış yapıldı",
+    "failedToLogout": "{name} hesabından çıkış yapılamadı",
+    "selectAccount": "Bir hesap seçin",
+    "selectAccounts": "Hesap seçin",
+    "selectedAccounts": "{count} hesap seçildi",
+    "chooseLoginMethod": "Giriş Yöntemini Seçin",
+    "back": "Geri",
+    "recommended": "Önerilen",
+    "continue": "Devam Et",
+    "verifying": "Doğrulanıyor...",
+    "loginSteps": {
+      "select": "Giriş Yöntemini Seç",
+      "login": "Giriş Yap",
+      "completed": "Tamamlandı"
+    },
+    "loginMethods": {
+      "webConfirmation": {
+        "title": "Web Onayı",
+        "description": "Epic Games web sitesiyle basit bir onay adımıyla giriş yapın.",
+        "instructions": "Aşağıdaki butona tıklayarak Epic Games web sitesini açın. Orada erişimi onayladıktan sonra, devam etmek için \"Devam Et\" butonuna tıklayın.",
+        "generatingURL": "URL oluşturuluyor...",
+        "openWebsite": "Epic Games Websitesini Aç"
+      },
+      "exchangeCode": {
+        "title": "Exchange Code",
+        "description": "Eğer varsa, exchange code ile giriş yapın.",
+        "instructions": "Exchange code'u yapıştırın ve \"Devam Et\" butonuna tıklayın.",
+        "inputPlaceholder": "Exchange code'u buraya yapıştırın"
+      }
+    },
+    "welcome": {
+      "title": "👋 Hoş Geldiniz, {name}",
+      "description": "Epic Games hesabınıza başarıyla giriş yaptınız."
+    }
+  },
+  "docs": {
+    "howToUse": "Nasıl Kullanılır",
+    "importantNotes": "Önemli Notlar",
+    "faq": "Sıkça Sorulan Sorular",
+    "autoKick": {
+      "description": "Auto-Kick sistemi, bir görev tamamlandığında oyuncuları otomatik olarak görevden atar. Ayrıca ödülleri alabilir ve depodaki malzemeleri sırt çantanıza aktarabilir.",
+      "importantNotes": {
+        "0": "Aynı görevi oynayan birden fazla hesabınız varsa, hepsini Auto-Kick sistemine eklemenize gerek yok. Sistem onları otomatik olarak atar.",
+        "1": "Ödülleri alma çalışmazsa veya bir hata olursa, ayarlardaki (sağ üst köşede bulunan) \"Ödülleri Alma Gecikmesi\" ayarını değiştirin."
+      }
+    },
+    "botLobby": {
+      "howToUse": {
+        "0": "Bot lobi botuna çevirmek istediğiniz hesaba giriş yapın. Bu hesabın hiç maç geçmişi olmamalı!",
+        "1": "Botu başlatmak için butona tıklayın.",
+        "2": "Botu grubunuza davet edin.",
+        "3": "Son olarak, sadece botlarla dolu bir maça girmek için lobide hazır verin."
+      },
+      "faq": {
+        "0": {
+          "question": "Bot lobileri hangi modlarda çalışıyor?",
+          "answer": "Bot lobileri şu anda sadece Battle Royale ve Zero Build modlarında çalışıyor."
+        },
+        "1": {
+          "question": "Zafer tacı alabilir miyim?",
+          "answer": "Hayır, alamazsınız."
+        },
+        "2": {
+          "question": "Banlanabilir miyim?",
+          "answer": "Bot lobisi botuna dönüştürdüğünüz hesap banlanabilir, fakat ana hesabınız büyük ihtimalle banlanmaz. Kendi sorumluluğunuzda kullanın."
+        },
+        "3": {
+          "question": "\"Connection Timeout\" hatası aldım",
+          "answer": "Lobi botunu yeniden başlatmayı deneyin. İşe yaramazsa, başlatıcıyı yeniden başlatın."
+        }
+      }
+    },
+    "taxiService": {
+      "howToUse": {
+        "0": "Taksiye dönüştürmek istediğiniz hesaba giriş yapın. Bu hesap ana hesabınız olmamalı!",
+        "1": "Taksi hizmetini başlatmak için düğmeye tıklayın.",
+        "2": "Taksiyi partinize davet edin.",
+        "3": "Son olarak, Takım Doldurma'yı \"Doldurma Yok\" olarak ayarlayın ve görevi başlatın."
+      },
+      "importantNotes": {
+        "0": "Takım Doldurma seçeneği \"Doldurma Yok\" olarak ayarlanmalı.",
+        "1": "Taksi botu sizi yüksek güç seviyeli görevlere götürebilir, ancak Ana Üs Savunmalarınızı tamamlamadan Dikiz Tepeler gibi dünyalara gidemezsiniz.",
+        "2": "Taksi hem normal görevlerde hem de macera görevlerinde çalışır. Ek bir ayar gerekmez."
+      }
+    },
+    "customStatus": {
+      "description": "Oyunda özel durum ayarlamanızı sağlar, adından da anlaşıldığı gibi.",
+      "status": "Özel durumunuz buraya"
+    }
+  }
+}
