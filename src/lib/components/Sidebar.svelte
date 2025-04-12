@@ -25,12 +25,12 @@
     {
       name: $t('sidebar.externalLinks.discord'),
       href: config.links.discord,
-      icon: 'https://cdn.simpleicons.org/discord/A1A1AA'
+      icon: '/assets/icons/discord.svg'
     },
     {
       name: $t('sidebar.externalLinks.repository'),
       href: config.links.github,
-      icon: 'https://cdn.simpleicons.org/github/A1A1AA'
+      icon: '/assets/icons/github.svg'
     }
   ]);
 
