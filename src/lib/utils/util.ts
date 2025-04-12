@@ -160,9 +160,12 @@ export const t = derived(language, ($language) => {
   };
 });
 
-export function changeLocale(locale: Locale) {
+export async function changeLocale(locale: Locale) {
   setLocale(locale, { reload: false });
   language.set(locale);
 
-  DataStorage.writeConfigFile<AllSettings>(SETTINGS_FILE_PATH, { app: { language: locale } }).catch(console.error);
+  const allSettings = await DataStorage.getSettingsFile();
+  allSettings.app = { ...allSettings.app, language: locale };
+
+  DataStorage.writeConfigFile<AllSettings>(SETTINGS_FILE_PATH, allSettings).catch(console.error);
 }

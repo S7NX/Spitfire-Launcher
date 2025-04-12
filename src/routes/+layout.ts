@@ -13,7 +13,7 @@ export async function load() {
   const settings = await DataStorage.getSettingsFile();
 
   if (settings.app?.language && get(language) !== settings.app?.language) {
-    changeLocale(settings.app.language);
+    await changeLocale(settings.app.language).catch(console.error);
   }
 
   const startingAccount = settings.app?.startingAccount;
