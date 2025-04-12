@@ -6,7 +6,6 @@
   import { allSettingsSchema, appSettingsSchema } from '$lib/validations/settings';
   import { platform } from '@tauri-apps/plugin-os';
   import { onMount } from 'svelte';
-  import Manifest from '$lib/core/manifest';
   import Input from '$components/ui/Input.svelte';
   import Switch from '$components/ui/Switch.svelte';
   import DataStorage, { SETTINGS_FILE_PATH, SETTINGS_INITIAL_DATA } from '$lib/core/dataStorage';
@@ -18,10 +17,8 @@
   const currentPlatform = platform();
 
   let initialSettings = $state<AllSettings>(SETTINGS_INITIAL_DATA);
-  let initialUserAgent = $state<string>();
   let hasChanges = $state(false);
 
-  let customUserAgent = $state<string>();
   let allSettings = $state<AllSettings>(SETTINGS_INITIAL_DATA);
 
   type SelectOption<T extends string> = {
@@ -40,10 +37,6 @@
   ];
 
   onMount(async function () {
-    const userAgent = await Manifest.getUserAgent();
-    initialUserAgent = userAgent;
-    customUserAgent = userAgent;
-
     const settingsData = await DataStorage.getSettingsFile(true);
     allSettings = settingsData || SETTINGS_INITIAL_DATA;
     initialSettings = JSON.parse(JSON.stringify(allSettings));
@@ -53,10 +46,9 @@
     if (!initialSettings) return;
 
     const settingsChanged = JSON.stringify(allSettings) !== JSON.stringify(initialSettings);
-    const userAgentChanged = customUserAgent !== initialUserAgent;
     const currentSettingsValid = allSettingsSchema.safeParse(allSettings).success;
 
-    hasChanges = !currentSettingsValid ? false : settingsChanged || userAgentChanged;
+    hasChanges = !currentSettingsValid ? false : settingsChanged;
   });
 
   async function handleSave() {
@@ -72,7 +64,6 @@
 
   function handleReset() {
     allSettings = JSON.parse(JSON.stringify(initialSettings));
-    customUserAgent = initialUserAgent;
     hasChanges = false;
   }
 
@@ -83,10 +74,6 @@
     const value = typeof eventOrValue === 'object'
       ? (eventOrValue.target as HTMLInputElement).value
       : eventOrValue;
-
-    if (key === 'userAgent') {
-      customUserAgent = value as string;
-    }
 
     const newSettings: AllSettings = {
       ...allSettings,
@@ -119,20 +106,6 @@
         id="gamePath"
         onConfirm={(e) => handleSettingChange(e, 'gamePath')}
         value={allSettings?.app?.gamePath}
-      />
-    </SettingItem>
-
-    <SettingItem
-      description="Only applies when Fortnite isn't installed."
-      labelFor="userAgent"
-      orientation="vertical"
-      title="Custom User-Agent"
-    >
-      <Input
-        id="userAgent"
-        onConfirm={(e) => handleSettingChange(e, 'userAgent')}
-        type="text"
-        value={customUserAgent}
       />
     </SettingItem>
   {/if}

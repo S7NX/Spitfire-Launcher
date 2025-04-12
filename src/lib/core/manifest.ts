@@ -1,6 +1,6 @@
 import { readDir, readTextFile } from '@tauri-apps/plugin-fs';
 import * as path from '@tauri-apps/api/path';
-import DataStorage from '$lib/core/dataStorage';
+import { platform } from '@tauri-apps/plugin-os';
 
 type ManifestData = {
   appVersionString: string;
@@ -15,14 +15,12 @@ let gameFileCache: ManifestData | null = null;
 
 export default class Manifest {
   static async getUserAgent() {
-    const settings = await DataStorage.getSettingsFile();
-    const customUserAgent = settings.app?.userAgent;
-
     const gameData = await Manifest.getData();
-    return gameData?.userAgent || customUserAgent || 'Fortnite/++Fortnite+Release-34.00-CL-40228973-Windows';
+    return gameData?.userAgent || 'Fortnite/++Fortnite+Release-34.30-CL-41387772-Windows';
   }
 
   static async getData() {
+    if (platform() !== 'windows') return null;
     if (gameFileCache) return gameFileCache;
 
     try {

@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 export const appSettingsSchema = z.object({
-  userAgent: z.string(),
   gamePath: z.string(),
   missionCheckInterval: z.number().positive(),
   claimRewardsDelay: z.number().positive(),
