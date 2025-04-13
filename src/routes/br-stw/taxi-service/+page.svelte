@@ -175,7 +175,7 @@
     </div>
   </div>
 
-  <Separator.Root class="bg-border h-px" />
+  <Separator.Root class="bg-border h-px"/>
 
   <div class="flex justify-end">
     <Button
@@ -189,10 +189,10 @@
       variant={taxiManager.active ? 'danger' : 'epic'}
     >
       {#if taxiManager.active}
-        <XIcon class="size-5" />
+        <XIcon class="size-5"/>
         {$t('taxiService.stop')}
       {:else}
-        <CarTaxiFrontIcon class="size-5" />
+        <CarTaxiFrontIcon class="size-5"/>
         {$t('taxiService.start')}
       {/if}
     </Button>

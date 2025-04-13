@@ -61,7 +61,7 @@
     >
       <span class="flex gap-1 items-center py-0.5">
         {#if mission.zone.iconUrl}
-          <img class="size-5" alt="World icon" src={mission.zone.iconUrl} />
+          <img class="size-5" alt="World icon" src={mission.zone.iconUrl}/>
         {:else}
           <span
             style="border-color: {mission.zone.color}; color: {mission.zone.color};"
@@ -71,18 +71,18 @@
           </span>
         {/if}
 
-        <img class="size-6" alt="Zone icon" src={mission.zone.type.imageUrl} />
+        <img class="size-6" alt="Zone icon" src={mission.zone.type.imageUrl}/>
         <span class="border shrink-0 pl-0.5 pr-2 py-1 rounded text-xs">⚡{mission.powerLevel}</span>
 
         <span class="flex gap-x-2">
           {#if mission.allRewards.length > 0}
             {#each mission.allRewards as reward, i (reward.itemId)}
               <div class="flex gap-1">
-                <img class="size-6" alt="Reward icon" src={reward.imageUrl} />
+                <img class="size-6" alt="Reward icon" src={reward.imageUrl}/>
 
                 {#if reward.quantity > 1}
                   <span class="font-bold">
-                    {reward.quantity.toLocaleString()}{'appendX' in reward ? 'x': ''}
+                    {reward.quantity.toLocaleString()}{'appendX' in reward ? 'x' : ''}
                   </span>
                 {/if}
 
@@ -112,7 +112,7 @@
       </span>
 
       <span class="inline-flex items-center justify-center">
-        <ChevronDownIcon class="size-5 transition-transform duration-200" />
+        <ChevronDownIcon class="size-5 transition-transform duration-200"/>
       </span>
     </div>
   {/snippet}
@@ -132,7 +132,7 @@
                     src="/assets/world/alert.png"
                   />
 
-                  <img class="size-6" alt="Reward icon" src={reward.imageUrl} />
+                  <img class="size-6" alt="Reward icon" src={reward.imageUrl}/>
 
                   {#if reward.quantity > 1}
                     <span class="font-medium">
@@ -150,7 +150,7 @@
           <div class="flex flex-col gap-x-1">
             {#each mission.rewards as reward (reward.itemId)}
               <div class="flex gap-1">
-                <img class="size-6" alt="Reward icon" src={reward.imageUrl} />
+                <img class="size-6" alt="Reward icon" src={reward.imageUrl}/>
 
                 {#if reward.quantity > 1}
                   <span class="font-medium">

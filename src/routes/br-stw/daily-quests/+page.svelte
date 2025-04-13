@@ -197,7 +197,7 @@
                 {#each rewards as reward (reward.name)}
                   {#if reward.amount > 0}
                     <div class="flex items-center gap-2 bg-muted/50 p-2 rounded">
-                      <img class="size-5" alt={reward.name} src={reward.icon} />
+                      <img class="size-5" alt={reward.name} src={reward.icon}/>
                       <span class="font-medium">{reward.amount.toLocaleString()}</span>
                     </div>
                   {/if}

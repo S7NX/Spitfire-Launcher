@@ -3,7 +3,7 @@
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import type { SpitfireShopItem } from '$types/game/shop';
   import { toast } from 'svelte-sonner';
-  import { accountDataStore,accountsStore, activeAccountId, ownedItemsStore} from '$lib/stores';
+  import { accountDataStore, accountsStore, activeAccountId, ownedItemsStore } from '$lib/stores';
   import MCPManager from '$lib/core/managers/mcp';
   import { calculateDiscountedShopPrice, nonNull, t } from '$lib/utils/util';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
@@ -102,7 +102,7 @@
       onclick={purchaseItem}
     >
       {#if isPurchasing}
-        <LoaderCircleIcon class="size-5 animate-spin mr-2" />
+        <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
         {$t('itemShop.purchasing')}
       {:else}
         {$t('common.confirm')}

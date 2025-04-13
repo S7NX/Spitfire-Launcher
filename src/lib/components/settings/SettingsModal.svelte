@@ -20,7 +20,7 @@
   triggerClass="p-2 rounded-md hover:bg-accent"
 >
   {#snippet trigger()}
-    <SettingsIcon class="size-6" />
+    <SettingsIcon class="size-6"/>
   {/snippet}
 
   {#snippet title()}
@@ -52,7 +52,7 @@
           {@const CategoryComponent = category.component}
 
           <div class="space-y-6 {activeTab === category.id ? 'block' : 'hidden'}">
-            <CategoryComponent />
+            <CategoryComponent/>
           </div>
         {/each}
       </ScrollArea>

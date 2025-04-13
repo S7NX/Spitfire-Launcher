@@ -63,17 +63,17 @@
       bind:value={selectedTokenType}
     >
       {#snippet trigger(label)}
-        <KeyRound class="text-muted-foreground size-5 mr-2" />
+        <KeyRound class="text-muted-foreground size-5 mr-2"/>
         <span class="text-muted-foreground">{label || $t('accessTokenManagement.selectTokenType')}</span>
-        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto" />
+        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
       {/snippet}
     </Select>
 
     <Select items={clientOptions} type="single" bind:value={selectedClient}>
       {#snippet trigger(label)}
-        <KeyRound class="text-muted-foreground size-5 mr-2" />
+        <KeyRound class="text-muted-foreground size-5 mr-2"/>
         <span class="text-muted-foreground">{label || $t('accessTokenManagement.selectClient')}</span>
-        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto" />
+        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
       {/snippet}
     </Select>
 

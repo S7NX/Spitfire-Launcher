@@ -15,7 +15,7 @@
 <DropdownMenu.Root>
   {#snippet trigger()}
     <div class="p-2 rounded-md hover:bg-accent">
-      <LanguagesIcon class="size-6" />
+      <LanguagesIcon class="size-6"/>
     </div>
   {/snippet}
 
@@ -33,7 +33,7 @@
 
       {#if $language === locale}
         <span class="ml-auto">
-          <CheckIcon class="size-4" />
+          <CheckIcon class="size-4"/>
         </span>
       {/if}
     </DropdownMenu.Item>

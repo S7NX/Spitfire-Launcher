@@ -121,7 +121,7 @@
               {#if isLoading}
                 <RefreshCwIcon class="size-6 animate-spin opacity-50 !cursor-not-allowe}"/>
               {:else}
-                <Trash2Icon class="size-4" />
+                <Trash2Icon class="size-4"/>
               {/if}
             </Button>
           </div>

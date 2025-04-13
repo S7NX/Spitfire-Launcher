@@ -87,7 +87,7 @@ export default class Authentication {
           if (accountName) toast.error(`${accountName}'s login session has expired, please log in again.`);
         }
 
-        if (error.errorCode === 'errors.com.epicgames.oauth.corrective_action_required'){
+        if (error.errorCode === 'errors.com.epicgames.oauth.corrective_action_required') {
           if (!isDoingBulkOperations) await goto('/account-management/eula', {
             state: {
               selectedAccounts: [deviceAuthData.accountId]

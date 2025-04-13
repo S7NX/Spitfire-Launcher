@@ -146,7 +146,7 @@
       </div>
     </div>
 
-    <Separator.Root class="bg-border h-px" />
+    <Separator.Root class="bg-border h-px"/>
 
     <div class="flex w-full gap-3">
       <Tooltip
@@ -159,10 +159,10 @@
           variant="epic"
         >
           {#if isItemOwned}
-            <CheckIcon class="size-5" />
+            <CheckIcon class="size-5"/>
             {$t('itemShop.owned')}
           {:else}
-            <ShoppingCartIcon class="size-5" />
+            <ShoppingCartIcon class="size-5"/>
             {$t('itemShop.purchase')}
           {/if}
         </Button>
@@ -177,7 +177,7 @@
           onclick={() => (isGiftDialogOpen = true)}
           variant="outline"
         >
-          <GiftIcon class="size-5" />
+          <GiftIcon class="size-5"/>
           {$t('itemShop.gift')}
         </Button>
       </Tooltip>
@@ -185,6 +185,6 @@
   </div>
 </Dialog>
 
-<ShopPurchaseConfirmation {isPurchasing} {item} bind:open={isAlertDialogOpen} />
+<ShopPurchaseConfirmation {isPurchasing} {item} bind:open={isAlertDialogOpen}/>
 
-<ShopGiftFriendSelection {isSendingGifts} {item} bind:open={isGiftDialogOpen} />
+<ShopGiftFriendSelection {isSendingGifts} {item} bind:open={isGiftDialogOpen}/>

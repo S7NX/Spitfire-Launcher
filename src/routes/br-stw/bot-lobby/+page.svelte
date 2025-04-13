@@ -69,8 +69,8 @@
             Date.now()
           : null;
 
-        toast.error( banExpirationMs
-          ? $t('botLobby.matchmakingBan.temporary', { time: formatRemainingDuration(banExpirationMs)})
+        toast.error(banExpirationMs
+          ? $t('botLobby.matchmakingBan.temporary', { time: formatRemainingDuration(banExpirationMs) })
           : $t('botLobby.matchmakingBan.indefinite')
         );
 
@@ -192,7 +192,7 @@
     </div>
   </div>
 
-  <Separator.Root class="bg-border h-px" />
+  <Separator.Root class="bg-border h-px"/>
 
   <div class="flex justify-end">
     <Button
@@ -204,10 +204,10 @@
       variant={botLobbyManager.active ? 'danger' : 'epic'}
     >
       {#if botLobbyManager.active}
-        <XIcon class="size-5" />
+        <XIcon class="size-5"/>
         {$t('botLobby.stop')}
       {:else}
-        <BotIcon class="size-5" />
+        <BotIcon class="size-5"/>
         {$t('botLobby.start')}
       {/if}
     </Button>

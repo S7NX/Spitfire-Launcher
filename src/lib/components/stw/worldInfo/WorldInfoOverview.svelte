@@ -36,14 +36,14 @@
       title: $t('common.vbucks'),
       missions:
         !isLoading && parsedWorldInfoArray
-          .filter((mission) =>mission.filters.some((id) => id.includes('currency_mtxswap')))
+          .filter((mission) => mission.filters.some((id) => id.includes('currency_mtxswap')))
     },
     {
       id: 'survivors',
       title: $t('stwMissionAlerts.sections.survivors'),
       missions:
         !isLoading && parsedWorldInfoArray
-          .filter((mission) =>mission.filters.some((id) => isLegendaryOrMythicSurvivor(id)))
+          .filter((mission) => mission.filters.some((id) => isLegendaryOrMythicSurvivor(id)))
     },
     {
       id: 'twinePeaks',
@@ -59,7 +59,7 @@
         !isLoading &&
           Array.from(parsedWorldInfo.entries())
             .filter(([theaterId]) =>
-              ![Worlds.Stonewood,Worlds.Plankerton,Worlds.CannyValley,Worlds.TwinePeaks].includes(theaterId)
+              ![Worlds.Stonewood, Worlds.Plankerton, Worlds.CannyValley, Worlds.TwinePeaks].includes(theaterId)
             )
             .flatMap(([, worldMissions]) => Array.from(worldMissions.values()))
             .filter((missions) => missions.powerLevel === WorldPowerLevels.ventures.Phoenix_Zone25)
@@ -69,13 +69,13 @@
       title: $t('stwMissionAlerts.sections.upgradeLlamaTokens'),
       missions:
         !isLoading && parsedWorldInfoArray
-          .filter((mission) =>  mission.filters.some((id) => id.includes('voucher_cardpack_bronze')))
+          .filter((mission) => mission.filters.some((id) => id.includes('voucher_cardpack_bronze')))
     },
     {
       id: 'perkUp',
       title: $t('stwMissionAlerts.sections.perkup'),
       missions:
-        !isLoading &&parsedWorldInfoArray
+        !isLoading && parsedWorldInfoArray
           .filter((mission) => mission.filters.some((id) => id.includes('alteration_upgrade_sr')))
     }
   ]);
@@ -85,25 +85,25 @@
       id: 'vbucks',
       name: $t('common.vbucks'),
       icon: '/assets/resources/currency_mtxswap.png',
-      amount: countMissionReward(sections.find(({ id }) => id === 'vbucks')?.missions,'currency_mtxswap')
+      amount: countMissionReward(sections.find(({ id }) => id === 'vbucks')?.missions, 'currency_mtxswap')
     },
     {
       id: 'upgradeLlamaTokens',
       name: $t('stwMissionAlerts.sections.survivors'),
       icon: '/assets/resources/voucher_generic_worker_sr.png',
-      amount: countMissionReward(sections.find(({ id }) => id === 'survivors')?.missions,isLegendaryOrMythicSurvivor)
+      amount: countMissionReward(sections.find(({ id }) => id === 'survivors')?.missions, isLegendaryOrMythicSurvivor)
     },
     {
       id: 'perkUp',
       name: $t('stwMissionAlerts.sections.twinePeaks'),
       icon: '/assets/resources/voucher_cardpack_bronze.png',
-      amount: countMissionReward(sections.find(({ id }) => id === 'upgradeLlamaTokens')?.missions,'voucher_cardpack_bronze')
+      amount: countMissionReward(sections.find(({ id }) => id === 'upgradeLlamaTokens')?.missions, 'voucher_cardpack_bronze')
     },
     {
       id: 'twinePeaks',
       name: $t('stwMissionAlerts.sections.ventures'),
       icon: '/assets/resources/reagent_alteration_upgrade_sr.png',
-      amount: countMissionReward(sections.find(({ id }) => id === 'perkUp')?.missions,'alteration_upgrade_sr')
+      amount: countMissionReward(sections.find(({ id }) => id === 'perkUp')?.missions, 'alteration_upgrade_sr')
     }
   ]);
 
@@ -129,7 +129,7 @@
     {#each overview as { id, name, icon, amount } (id)}
       <div class="flex items-center border rounded-md">
         <div class="flex items-center justify-center size-10 bg-muted-foreground/10 shrink-0">
-          <img class="size-7" alt={name} src={icon} />
+          <img class="size-7" alt={name} src={icon}/>
         </div>
         <div class="grow px-2 font-medium text-center">
           {amount.toLocaleString()}

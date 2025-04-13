@@ -32,12 +32,12 @@
         size="sm"
         variant="outline"
       >
-        <XIcon class="size-4" />
+        <XIcon class="size-4"/>
         {$t('settings.unsavedChanges.reset')}
       </Button>
 
       <Button class="flex items-center gap-2 h-8" onclick={onSave} size="sm">
-        <CheckIcon class="size-4" />
+        <CheckIcon class="size-4"/>
         {$t('settings.unsavedChanges.save')}
       </Button>
     </div>

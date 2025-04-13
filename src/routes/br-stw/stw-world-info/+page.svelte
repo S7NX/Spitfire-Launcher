@@ -13,5 +13,5 @@
 <div class="flex flex-col gap-y-2">
   <h2 class="font-bold text-2xl">{$t('stwMissionAlerts.page.title')}</h2>
 
-  <Tabs switchType="class" {tabs} />
+  <Tabs switchType="class" {tabs}/>
 </div>

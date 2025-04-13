@@ -4,4 +4,4 @@ import { default as Item } from './DropdownMenuItem.svelte';
 export const DropdownMenu = {
   Root,
   Item
-}
+};

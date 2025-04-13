@@ -79,9 +79,9 @@
         }
       }}
     />
-    <Sidebar />
+    <Sidebar/>
     <div class="flex flex-col flex-1">
-      <Header />
+      <Header/>
       <ScrollArea>
         <main class="p-4 flex-1 overflow-auto bg-background h-[calc(100vh-4rem)]"
         >
@@ -111,7 +111,7 @@
     class="flex gap-2 justify-center items-center w-fit"
     href={newVersionData?.downloadUrl}
   >
-    <ExternalLinkIcon class="size-5" />
+    <ExternalLinkIcon class="size-5"/>
     {$t('newVersionAvailable.download')}
   </Button>
 </Dialog>

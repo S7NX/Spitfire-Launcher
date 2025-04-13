@@ -138,11 +138,11 @@
     bind:value={selectedFriends}
   >
     {#snippet trigger(label)}
-      <UserIcon class="text-muted-foreground size-5 mr-2" />
+      <UserIcon class="text-muted-foreground size-5 mr-2"/>
       <span class="text-muted-foreground">
-        {!selectedFriends.length ? $t('itemShop.selectFriends') : selectedFriends.length > 1 ? $t('itemShop.selectedFriendCount', { count: selectedFriends.length }): label}
+        {!selectedFriends.length ? $t('itemShop.selectFriends') : selectedFriends.length > 1 ? $t('itemShop.selectedFriendCount', { count: selectedFriends.length }) : label}
       </span>
-      <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto" />
+      <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
     {/snippet}
   </Select>
 
@@ -161,7 +161,7 @@
       onclick={sendGifts}
       variant="epic"
     >
-      <GiftIcon class="size-5" />
+      <GiftIcon class="size-5"/>
       {$t('itemShop.sendGift')}
     </Button>
   </div>

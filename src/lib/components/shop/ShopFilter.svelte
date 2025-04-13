@@ -23,8 +23,8 @@
 
 <Select {items} type="single" bind:value={selected}>
   {#snippet trigger(label)}
-    <FilterIcon class="text-muted-foreground size-5 mr-2" />
+    <FilterIcon class="text-muted-foreground size-5 mr-2"/>
     <span class="text-muted-foreground">{label || $t('itemShop.selectFilter')}</span>
-    <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto" />
+    <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
   {/snippet}
 </Select>

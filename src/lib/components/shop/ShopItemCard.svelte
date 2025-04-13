@@ -95,4 +95,4 @@
   </div>
 </div>
 
-<ShopItemModal {item} bind:open={showItemModal} />
+<ShopItemModal {item} bind:open={showItemModal}/>

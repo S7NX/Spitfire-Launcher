@@ -131,11 +131,13 @@
   <div>
     <h1 class="text-2xl font-bold">{$t('itemShop.page.title')}</h1>
     <h2 class="text-muted-foreground font-medium">
-      {$t('itemShop.lastUpdated', { date: shopLastUpdated?.toLocaleDateString($language, {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric'
-      }) || '...'})}
+      {$t('itemShop.lastUpdated', {
+        date: shopLastUpdated?.toLocaleDateString($language, {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        }) || '...'
+      })}
     </h2>
 
     {#if remainingTime}
@@ -146,7 +148,7 @@
   </div>
 
   <div>
-    <ShopFilter bind:selected={selectedFilter} />
+    <ShopFilter bind:selected={selectedFilter}/>
   </div>
 
   <div class="mt-6">
@@ -156,13 +158,13 @@
       {:else}
         <div class="space-y-6">
           {#each Array(2) as _, index (index)}
-            <SkeletonShopSection />
+            <SkeletonShopSection/>
           {/each}
         </div>
       {/if}
     {:else if filteredItems?.length}
       {#each filteredItems as section (section.id)}
-        <ShopSection {section} />
+        <ShopSection {section}/>
       {/each}
     {:else}
       <p>{$t('itemShop.noItems')}</p>

@@ -151,11 +151,11 @@ export const t = derived(language, ($language) => {
   return function t<K extends MessageKey>(
     key: K,
     inputs?: InputsOf<K>,
-    options?: Omit<OptionsOf<K>, "locale">
+    options?: OptionsOf<K>
   ): string {
     return m[key](inputs ?? {} as any, {
       locale: $language,
-      ...options,
+      ...options
     }) as ReturnType<MessageFn<K>>;
   };
 });

@@ -7,7 +7,7 @@ type MCPStorageTransferItem = {
   itemId: string;
   quantity: number;
   toStorage: boolean;
-  newItemIdHint: '';
+  newItemIdHint: string;
 }
 
 type BuildingMaterialData = {

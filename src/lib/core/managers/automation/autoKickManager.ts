@@ -42,11 +42,9 @@ export default class AutoKickManager {
       this.missionCheckerInterval = undefined;
     }
 
-    let settings = await DataStorage.getSettingsFile();
+    const settings = await DataStorage.getSettingsFile();
 
     this.missionCheckerInterval = window.setInterval(async () => {
-      settings = await DataStorage.getSettingsFile();
-
       const automationSettings = AutoKickBase.getAccountById(this.account.accountId)?.settings;
       const isAnySettingEnabled = Object.values(automationSettings || {}).some(x => x);
       if (!automationSettings || !isAnySettingEnabled) return;
@@ -85,7 +83,7 @@ export default class AutoKickManager {
       }
 
       if (automationSettings.autoTransferMaterials) {
-        transferBuildingMaterials(this.account).catch(console.error)
+        transferBuildingMaterials(this.account).catch(console.error);
       }
 
       if (automationSettings.autoClaim) {

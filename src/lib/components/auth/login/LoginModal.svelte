@@ -199,7 +199,7 @@
 
 <Dialog hideClose={true} bind:open>
   <div class="flex flex-col">
-    <LoginSteps {currentStep} {steps} />
+    <LoginSteps {currentStep} {steps}/>
 
     <div class="mt-4 min-h-64">
       {#if currentStep === 0}
@@ -217,7 +217,7 @@
                 variant="outline"
               >
                 <div class="mb-3 rounded-full bg-muted p-3">
-                  <Icon class="size-8 text-muted-foreground" />
+                  <Icon class="size-8 text-muted-foreground"/>
                 </div>
                 <h4 class="mb-1 font-medium">{method.name}</h4>
                 <p class="text-center text-sm text-muted-foreground">
@@ -239,7 +239,7 @@
             class="mb-4 flex w-fit items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
             onclick={goToPreviousStep}
           >
-            <ArrowLeftIcon class="size-4" />
+            <ArrowLeftIcon class="size-4"/>
             {$t('accountManager.back')}
           </button>
 
@@ -260,7 +260,7 @@
                 onclick={openDeviceCodeLink}
                 variant="outline"
               >
-                <ExternalLinkIcon class="size-4" />
+                <ExternalLinkIcon class="size-4"/>
                 {$t('accountManager.loginMethods.webConfirmation.openWebsite')}
               </Button>
             </div>
@@ -317,7 +317,7 @@
           in:fade={{ duration: 200 }}
         >
           <div class="mb-4 rounded-full bg-muted p-4">
-            <CheckCircleIcon class="size-10 text-muted-foreground" />
+            <CheckCircleIcon class="size-10 text-muted-foreground"/>
           </div>
 
           <h3 class="mb-2 text-xl font-medium">

@@ -106,7 +106,7 @@
             href={status.data.acceptLink}
             target="_blank"
           >
-            <ExternalLinkIcon class="size-5" />
+            <ExternalLinkIcon class="size-5"/>
           </a>
         </div>
       {/each}

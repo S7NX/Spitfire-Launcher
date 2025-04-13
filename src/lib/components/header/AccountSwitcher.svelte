@@ -104,7 +104,7 @@
           {#each filteredAccounts as account (account.accountId)}
             <DropdownMenu.Item onclick={() => changeAccounts(account)}>
               {#if activeAccount?.accountId === account.accountId}
-                <CheckIcon class="size-5" />
+                <CheckIcon class="size-5"/>
               {/if}
 
               <span class="truncate">{account.displayName}</span>
@@ -121,7 +121,7 @@
         ]}
       >
         <DropdownMenu.Item onclick={addNewAccount}>
-          <PlusIcon class="size-4" />
+          <PlusIcon class="size-4"/>
           {$t('accountManager.login')}
         </DropdownMenu.Item>
 
@@ -130,7 +130,7 @@
             class="hover:bg-destructive hover:text-destructive-foreground"
             onclick={logout}
           >
-            <LogOutIcon class="size-4" />
+            <LogOutIcon class="size-4"/>
             {$t('accountManager.logout')}
           </DropdownMenu.Item>
         {/if}
@@ -139,4 +139,4 @@
   </DropdownMenu.Root>
 </div>
 
-<LoginModal bind:open={showLoginModal} />
+<LoginModal bind:open={showLoginModal}/>

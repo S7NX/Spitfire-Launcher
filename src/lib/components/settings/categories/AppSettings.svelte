@@ -175,7 +175,7 @@
     >
       {#snippet trigger(label)}
         <p>{label}</p>
-        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto" />
+        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
       {/snippet}
     </Select>
   </SettingItem>
@@ -198,7 +198,7 @@
     >
       {#snippet trigger(label)}
         <p>{label}</p>
-        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto" />
+        <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
       {/snippet}
     </Select>
   </SettingItem>

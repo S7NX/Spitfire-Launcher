@@ -79,11 +79,11 @@ export default class LookupManager {
         displayName: data.displayName
       };
     } else {
-      const data = (await LookupManager.searchByName(account, nameOrId))?.[0]
+      const data = (await LookupManager.searchByName(account, nameOrId))?.[0];
       return data ? {
         accountId: data.accountId,
         displayName: data.matches[0].value
-      } : null
+      } : null;
     }
   }
 }

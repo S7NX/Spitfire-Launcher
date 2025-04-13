@@ -170,7 +170,7 @@
           onclick={generateDeviceAuth}
         />
 
-        <Separator.Root class="bg-border h-8 w-px" />
+        <Separator.Root class="bg-border h-8 w-px"/>
 
         <RefreshCwIcon
           class="size-6 cursor-pointer {isFetching ? 'animate-spin opacity-50 !cursor-not-allowed' : ''}"
@@ -187,7 +187,7 @@
               <div class="flex flex-col gap-y-1">
                 <div class="flex items-center gap-2 w-fit mb-1">
                   <div class="flex items-center gap-2 group">
-                    <PencilIcon class="hidden group-hover:block size-4" />
+                    <PencilIcon class="hidden group-hover:block size-4"/>
                     <span
                       class="font-semibold outline-none hover:underline underline-offset-2"
                       contenteditable
@@ -210,8 +210,8 @@
 
                 <div class="flex flex-col gap-y-2">
                   {#each [
-                    { title: $t('deviceAuthManagement.authInfo.id'), value: auth.deviceId }, 
-                    { title: 'User-Agent', value: auth.userAgent }, 
+                    { title: $t('deviceAuthManagement.authInfo.id'), value: auth.deviceId },
+                    { title: 'User-Agent', value: auth.userAgent },
                     { title: 'Secret', value: auth.secret }
                   ] as { title, value } (title)}
                     {#if value}
@@ -255,7 +255,7 @@
                 size="sm"
                 variant="danger"
               >
-                <Trash2Icon class="size-5" />
+                <Trash2Icon class="size-5"/>
               </Button>
             </div>
           </div>

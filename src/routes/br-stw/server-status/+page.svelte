@@ -160,10 +160,10 @@
         variant="outline"
       >
         {#if isLoading}
-          <LoaderCircleIcon class="size-4 animate-spin" />
+          <LoaderCircleIcon class="size-4 animate-spin"/>
           {$t('serverStatus.refreshing')}
         {:else}
-          <RefreshCwIcon class="size-4" />
+          <RefreshCwIcon class="size-4"/>
           {$t('serverStatus.refresh')}
         {/if}
       </Button>
@@ -212,7 +212,7 @@
     />
   {/if}
 
-  <Separator.Root class="bg-border h-px" />
+  <Separator.Root class="bg-border h-px"/>
 
   {#if isLoading && !statusPageServices.length}
     <div class="space-y-4">
@@ -228,7 +228,7 @@
   {:else if statusPageServices.length > 0}
     <div class="space-y-2">
       <div class="flex items-center gap-2 text-muted-foreground">
-        <ExternalLinkIcon class="size-4" />
+        <ExternalLinkIcon class="size-4"/>
         <a
           class="text-sm font-medium hover:underline"
           href="https://status.epicgames.com"

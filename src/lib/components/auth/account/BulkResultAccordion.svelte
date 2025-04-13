@@ -12,7 +12,7 @@
   const { statuses, content: accordionContent }: Props = $props();
 </script>
 
-<Accordion 
+<Accordion
   class="border rounded-lg mt-4 group"
   items={statuses}
   openItems={statuses.length === 1 ? [0] : undefined}
