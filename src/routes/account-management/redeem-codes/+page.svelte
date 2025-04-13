@@ -1,12 +1,10 @@
 <script lang="ts" module>
   import type { BulkActionStatus } from '$types/accounts';
 
-  type CodeStatus = BulkActionStatus<
-    Array<{
-      code: string;
-      error?: string;
-    }>
-  >;
+  type CodeStatus = BulkActionStatus<Array<{
+    code: string;
+    error?: string;
+  }>>;
 
   let codesToRedeem = $state<string[]>([]);
   let isRedeeming = $state(false);

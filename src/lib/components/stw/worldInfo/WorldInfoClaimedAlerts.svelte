@@ -3,7 +3,6 @@
   import { accountsStore, worldInfoCache } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
-  import type { EpicAccountById, EpicAccountByName } from '$types/game/lookup';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import SearchIcon from 'lucide-svelte/icons/search';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';

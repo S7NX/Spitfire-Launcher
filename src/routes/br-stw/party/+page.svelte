@@ -2,7 +2,6 @@
   let isKicking = $state<boolean>();
   let isLeaving = $state<boolean>();
   let isClaiming = $state<boolean>();
-  let isDoingSomething = $derived(isKicking || isLeaving || isClaiming);
 </script>
 
 <script lang="ts">
@@ -30,6 +29,8 @@
 
   const allAccounts = $derived(nonNull($accountsStore.allAccounts));
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
+
+  let isDoingSomething = $derived(isKicking || isLeaving || isClaiming);
 
   $effect(() => {
     fetchPartyData(activeAccount);
@@ -275,7 +276,7 @@
 
 <div class="flex flex-col gap-4">
   <h1 class="text-2xl font-bold">{$t('partyManagement.page.title')}</h1>
-  <Tabs {tabs} />
+  <Tabs {tabs}/>
 </div>
 
 {#snippet STWActions()}
@@ -283,7 +284,7 @@
     <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2"
     >
       <Label for="shouldClaimRewards">{$t('partyManagement.stwActions.claimRewardsAfterLeaving')}</Label>
-      <Switch id="shouldClaimRewards" bind:checked={shouldClaimRewards} />
+      <Switch id="shouldClaimRewards" bind:checked={shouldClaimRewards}/>
     </div>
 
     <div class="flex gap-2">
@@ -303,7 +304,7 @@
       </Button>
     </div>
 
-    <Separator.Root class="bg-border h-px" />
+    <Separator.Root class="bg-border h-px"/>
 
     <div class="flex gap-2">
       <AccountCombobox
@@ -322,7 +323,7 @@
       </Button>
     </div>
 
-    <Separator.Root class="bg-border h-px" />
+    <Separator.Root class="bg-border h-px"/>
 
     <div class="flex gap-2">
       <AccountCombobox
@@ -378,7 +379,7 @@
                 <div class="absolute top-3 right-3">
                   <DropdownMenu.Root contentProps={{ class: 'w-48' }}>
                     {#snippet trigger()}
-                      <EllipsisIcon class="size-6" />
+                      <EllipsisIcon class="size-6"/>
                     {/snippet}
 
                     <!-- todo: "add friend" option -->
@@ -393,18 +394,18 @@
                       >
                         {#if canKick}
                           {#if kickingMemberIds.has(member.accountId)}
-                            <LoaderCircleIcon class="size-5 animate-spin" />
+                            <LoaderCircleIcon class="size-5 animate-spin"/>
                             {$t('partyManagement.partyMembers.kicking')}
                           {:else}
-                            <UserXIcon class="size-5" />
+                            <UserXIcon class="size-5"/>
                             {$t('partyManagement.partyMembers.kick')}
                           {/if}
                         {:else if canLeave}
                           {#if isLeaving}
-                            <LoaderCircleIcon class="size-5 animate-spin" />
+                            <LoaderCircleIcon class="size-5 animate-spin"/>
                             {$t('partyManagement.partyMembers.leavingParty')}
                           {:else}
-                            <LogOutIcon class="size-5" />
+                            <LogOutIcon class="size-5"/>
                             {$t('partyManagement.partyMembers.leaveParty')}
                           {/if}
                         {/if}
@@ -417,10 +418,10 @@
                         onclick={() => promote(member.accountId)}
                       >
                         {#if promotingMemberId === member.accountId}
-                          <LoaderCircleIcon class="size-5 animate-spin" />
+                          <LoaderCircleIcon class="size-5 animate-spin"/>
                           {$t('partyManagement.partyMembers.promoting')}
                         {:else}
-                          <CrownIcon class="size-5" />
+                          <CrownIcon class="size-5"/>
                           {$t('partyManagement.partyMembers.promote')}
                         {/if}
                       </DropdownMenu.Item>
@@ -468,7 +469,7 @@
                     </div>
                   {:else}
                     <span class="text-sm">{member.displayName}</span>
-                    <ExternalLinkIcon class="size-4 text-muted-foreground" />
+                    <ExternalLinkIcon class="size-4 text-muted-foreground"/>
                   {/if}
                 </a>
               </div>
