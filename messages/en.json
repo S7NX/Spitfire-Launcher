@@ -538,8 +538,6 @@
     "searchAccounts": "Search accounts...",
     "login": "Add New Account",
     "logout": "Logout",
-    "switching": "Switching to {name}...",
-    "switched": "Switched to {name}",
     "failedToSwitch": "Failed to switch to {name}",
     "loggingOut": "Logging out of {name}...",
     "loggedOut": "Logged out of {name}",

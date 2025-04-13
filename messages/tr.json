@@ -538,8 +538,6 @@
     "searchAccounts": "Hesap ara...",
     "login": "Yeni Hesap Ekle",
     "logout": "Çıkış Yap",
-    "switching": "{name} hesabına geçiliyor...",
-    "switched": "{name} hesabına geçildi",
     "failedToSwitch": "{name} hesabına geçilemedi",
     "loggingOut": "{name} hesabından çıkış yapılıyor...",
     "loggedOut": "{name} hesabından çıkış yapıldı",

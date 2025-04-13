@@ -35,17 +35,15 @@
     dropdownOpen = !dropdownOpen;
   }
 
-  function changeAccounts(account: AccountData) {
+  async function changeAccounts(account: AccountData) {
     dropdownOpen = false;
 
-    toast.promise(Account.changeActiveAccount(account.accountId), {
-      loading: $t('accountManager.switching', { name: account.displayName }),
-      success: $t('accountManager.switched', { name: account.displayName }),
-      error: (error) => {
-        console.error(error);
-        return $t('accountManager.failedToSwitch', { name: account.displayName });
-      }
-    });
+    try {
+      await Account.changeActiveAccount(account.accountId);
+    } catch (error) {
+      console.error(error);
+      toast.error($t('accountManager.failedToSwitch', { name: account.displayName }));
+    }
   }
 
   function addNewAccount() {
