@@ -18,8 +18,12 @@
   const activeAccount = $derived($accountsStore.activeAccount);
 
   let isAuthenticating = $state(false);
-  let isGameLaunched = $state(false);
+  let isLaunching = $state(false);
   let isGameRunning = $state(false);
+
+  $effect(() => {
+    console.log({ activeAccount, isAuthenticating, isLaunching, isGameRunning });
+  });
 
   async function launchGame() {
     await checkIsRunning();
@@ -49,7 +53,7 @@
       const launcherExchangeData = await Authentication.getExchangeCodeUsingAccessToken(launcherAccessTokenData.access_token);
 
       isAuthenticating = false;
-      isGameLaunched = true;
+      isLaunching = true;
 
       await Command.create(
         'start-fortnite',
@@ -65,9 +69,10 @@
           '-EpicPortal',
           `-epicuserid=${activeAccount!.accountId}`
         ],
-        { cwd: executableDirectory }).execute();
+        { cwd: executableDirectory }
+      ).execute();
     } catch (error) {
-      isGameLaunched = false;
+      isLaunching = false;
       isAuthenticating = false;
 
       if (shouldErrorBeIgnored(error)) {
@@ -89,7 +94,7 @@
       const result = await Command.create('kill-fortnite').execute();
       if (result.stderr) throw new Error(result.stderr);
 
-      isGameLaunched = false;
+      isLaunching = false;
       isGameRunning = false;
       toast.success($t('launchGame.stopped'), { id: toastId });
     } catch (error) {
@@ -105,8 +110,9 @@
       (process) => process.name === 'FortniteClient-Win64-Shipping.exe'
     );
 
-    if (!wasRunning && isGameRunning && isGameLaunched) {
+    if (!wasRunning && isGameRunning && isLaunching) {
       toast.success($t('launchGame.launched'));
+      isLaunching = false;
     }
   }
 
@@ -125,16 +131,16 @@
 
 <Button
   class="flex items-center justify-center shrink-0"
-  disabled={!activeAccount || isAuthenticating || (isGameLaunched && !isGameRunning)}
+  disabled={!activeAccount || isAuthenticating || (isLaunching && !isGameRunning)}
   onclick={() => (isGameRunning ? stopGame() : launchGame())}
   size="md"
   variant={isGameRunning ? 'danger' : 'epic'}
 >
   {#if isGameRunning}
     <span class="hidden xs:block">{$t('launchGame.stop')}</span>
-    <CircleStopIcon class="size-6 xs:hidden block" />
+    <CircleStopIcon class="size-6 xs:hidden block"/>
   {:else}
     <span class="hidden xs:block">{$t('launchGame.launch')}</span>
-    <GamePad2Icon class="size-6 xs:hidden block" />
+    <GamePad2Icon class="size-6 xs:hidden block"/>
   {/if}
 </Button>
