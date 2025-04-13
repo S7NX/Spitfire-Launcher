@@ -15,6 +15,7 @@ import type { ParsedModifierData, ParsedResourceData, RarityType } from '$types/
 import { ingredients, RarityNames, RarityTypes, resources, survivors, survivorsMythicLeads, traps } from '$lib/constants/stw/resources';
 import { baseGameService } from '$lib/core/services';
 import Authentication from '$lib/core/authentication';
+import { get } from 'svelte/store';
 
 type World = keyof typeof Worlds;
 
@@ -363,15 +364,15 @@ export default class WorldInfoManager {
         const [survivorId] = mythicSurvivor;
 
         data.imageUrl = `/assets/survivors/unique-leads/${survivorId}.png`;
-        data.name = `${RarityNames[RarityTypes.Mythic]} Lead`;
+        data.name = `${get(RarityNames)[RarityTypes.Mythic]} Lead`;
       } else if (survivor) {
         const [survivorId, survivorData] = survivor;
 
         data.imageUrl = `/assets/survivors/${survivorId}.png`;
-        data.name = survivorData.name || `${RarityNames[rarity.rarity]} Survivor`;
+        data.name = survivorData.name || `${get(RarityNames)[rarity.rarity]} Survivor`;
       } else {
         data.imageUrl = `/assets/resources/voucher_generic_${newKey.includes('manager') ? 'manager' : 'worker'}_${rarity.rarity}.png`;
-        data.name = `${RarityNames[rarity.rarity]} Survivor`;
+        data.name = `${get(RarityNames)[rarity.rarity]} Survivor`;
       }
 
       data.type = 'worker';
@@ -383,7 +384,7 @@ export default class WorldInfoManager {
 
     if (isHero) {
       data.imageUrl = `/assets/resources/voucher_generic_hero_${rarity.rarity}.png`;
-      data.name = `${RarityNames[rarity.rarity]} Hero`;
+      data.name = `${get(RarityNames)[rarity.rarity]} Hero`;
       data.type = 'hero';
 
       return data;
@@ -393,7 +394,7 @@ export default class WorldInfoManager {
 
     if (isDefender) {
       data.imageUrl = `/assets/resources/voucher_generic_defender_${rarity.rarity}.png`;
-      data.name = `${RarityNames[rarity.rarity]} Defender`;
+      data.name = `${get(RarityNames)[rarity.rarity]} Defender`;
       data.type = 'defender';
 
       return data;
@@ -407,11 +408,11 @@ export default class WorldInfoManager {
         const [trapId, trapData] = trap;
 
         data.imageUrl = `/assets/traps/${trapId}.png`;
-        data.name = `${RarityNames[rarity.rarity]} ${trapData.name}`;
+        data.name = `${get(RarityNames)[rarity.rarity]} ${trapData.name}`;
         data.type = 'trap';
       } else {
         data.imageUrl = `/assets/resources/voucher_generic_schematic_${rarity.rarity}.png`;
-        data.name = `${RarityNames[rarity.rarity]} Schematic`;
+        data.name = `${get(RarityNames)[rarity.rarity]} Schematic`;
       }
 
       return data;
@@ -425,7 +426,7 @@ export default class WorldInfoManager {
     const id = value.includes(':') ? value.split(':')[1] : value;
     const data = {
       type,
-      name: RarityNames[RarityTypes.Common],
+      name: get(RarityNames)[RarityTypes.Common],
       rarity: RarityTypes.Common as RarityType
     };
 
@@ -440,7 +441,7 @@ export default class WorldInfoManager {
 
     for (const rarityType of rarityTypeValues) {
       if (id.includes(`_${rarityType}`)) {
-        data.name = RarityNames[rarityType];
+        data.name = get(RarityNames)[rarityType];
         data.rarity = rarityType;
         break;
       }

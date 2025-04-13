@@ -34,14 +34,14 @@ export const RarityTypes = Object.freeze({
   Mythic: 'ur'
 } as const);
 
-export const RarityNames: Record<RarityType, string> = {
-  [RarityTypes.Common]: 'Common',
-  [RarityTypes.Uncommon]: 'Uncommon',
-  [RarityTypes.Rare]: 'Rare',
-  [RarityTypes.Epic]: 'Epic',
-  [RarityTypes.Legendary]: 'Legendary',
-  [RarityTypes.Mythic]: 'Mythic'
-};
+export const RarityNames = derived(t, ($t) => ({
+  [RarityTypes.Common]: $t('rarities.common'),
+  [RarityTypes.Uncommon]: $t('rarities.uncommon'),
+  [RarityTypes.Rare]: $t('rarities.rare'),
+  [RarityTypes.Epic]: $t('rarities.epic'),
+  [RarityTypes.Legendary]: $t('rarities.legendary'),
+  [RarityTypes.Mythic]: $t('rarities.mythic')
+}));
 
 export const RarityColors: Record<RarityType, string> = {
   [RarityTypes.Common]: '#8B9399',

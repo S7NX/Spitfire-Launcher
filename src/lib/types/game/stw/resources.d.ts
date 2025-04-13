@@ -1,5 +1,6 @@
 import type { WorldParsedMission } from '$types/game/stw/worldInfo';
 import type { RarityTypes } from '$lib/constants/stw/resources';
+import type { Locale } from '$lib/paraglide/runtime';
 
 export type RarityType = typeof RarityTypes[keyof typeof RarityTypes]
 export type ResourceType =
@@ -57,8 +58,7 @@ export type ZoneThemeData = {
   name: string
 }
 
-export type ParsedModifierData =
-  WorldParsedMission['mission']['modifiers'][number]
+export type ParsedModifierData = WorldParsedMission['mission']['modifiers'][number]
 
 export type ParsedResourceData = {
   imageUrl: string
@@ -80,7 +80,7 @@ export type ParsedResourceData = {
 }
 
 export type DailyQuestData = {
-  name: string
+  names: Record<Locale, string>
   limit: number
   rewards: {
     gold: number

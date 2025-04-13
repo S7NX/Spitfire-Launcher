@@ -1,16 +1,10 @@
 <script lang="ts" module>
   import type { BulkActionStatus } from '$types/accounts';
+  import type { DailyQuestData } from '$types/game/stw/resources';
 
-  type DailyQuest = {
+  type DailyQuest = DailyQuestData & {
     id: string;
-    name: string;
     completionProgress: number;
-    limit: number;
-    rewards: {
-      gold: number;
-      mtx: number;
-      xp: number;
-    };
   };
 
   type QuestStatus = BulkActionStatus<{
@@ -27,7 +21,7 @@
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
-  import { accountsStore, doingBulkOperations } from '$lib/stores';
+  import { accountsStore, doingBulkOperations, language } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
   import MCPManager from '$lib/core/managers/mcp';
@@ -95,7 +89,7 @@
 
       status.data.quests.push({
         id: item.id,
-        name: quest.name,
+        names: quest.names,
         completionProgress: completion,
         limit: quest.limit,
         rewards: quest.rewards
@@ -170,7 +164,7 @@
 
             <div class="bg-background border rounded-md p-4">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-                <h3 class="font-medium">{quest.name}</h3>
+                <h3 class="font-medium">{quest.names[$language]}</h3>
 
                 <div class="flex items-center gap-2">
                   <span class="font-medium">{quest.completionProgress}/{quest.limit}</span>

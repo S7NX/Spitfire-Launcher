@@ -1,6 +1,9 @@
 {
   "daily_destroyarcademachines": {
-    "name": "Daily Destroy (Arcade Machines)",
+    "names": {
+      "en": "Daily Destroy (Arcade Machines)",
+      "tr": "Günlük Yok Etme (Oyun Makineleri)"
+    },
     "limit": 3,
     "rewards": {
       "gold": 250,
@@ -9,7 +12,10 @@
     }
   },
   "daily_destroybears": {
-    "name": "Daily Destroy (Teddy Bears)",
+    "names": {
+      "en": "Daily Destroy (Teddy Bears)",
+      "tr": "Günlük Yok Etme (Oyuncak Ayı)"
+    },
     "limit": 8,
     "rewards": {
       "gold": 250,
@@ -18,7 +24,10 @@
     }
   },
   "daily_destroyfiretrucks": {
-    "name": "Daily Destroy (Fire Trucks)",
+    "names": {
+      "en": "Daily Destroy (Fire Trucks)",
+      "tr": "Günlük Yok Etme (İtfaiye Kamyonu)"
+    },
     "limit": 3,
     "rewards": {
       "gold": 250,
@@ -27,7 +36,10 @@
     }
   },
   "daily_destroygnomes": {
-    "name": "Daily Destroy (Garden Gnomes)",
+    "names": {
+      "en": "Daily Destroy (Garden Gnomes)",
+      "tr": "Günlük Yok Etme (Bahçe Cüceleri)"
+    },
     "limit": 3,
     "rewards": {
       "gold": 250,
@@ -36,7 +48,10 @@
     }
   },
   "daily_destroypropanetanks": {
-    "name": "Daily Destroy (Propane Tanks)",
+    "names": {
+      "en": "Daily Destroy (Propane Tanks)",
+      "tr": "Günlük Yok Etme (Gaz Tankları)"
+    },
     "limit": 10,
     "rewards": {
       "gold": 250,
@@ -45,7 +60,10 @@
     }
   },
   "daily_destroyseesaws": {
-    "name": "Daily Destroy (Park Seesaws)",
+    "names": {
+      "en": "Daily Destroy (Park Seesaws)",
+      "tr": "Günlük Yok Etme (Tahterevalli)"
+    },
     "limit": 6,
     "rewards": {
       "gold": 250,
@@ -54,7 +72,10 @@
     }
   },
   "daily_destroyserverracks": {
-    "name": "Daily Destroy (Server Racks)",
+    "names": {
+      "en": "Daily Destroy (Server Racks)",
+      "tr": "Günlük Yok Etme (Sunucu Kabinleri)"
+    },
     "limit": 4,
     "rewards": {
       "gold": 250,
@@ -63,7 +84,10 @@
     }
   },
   "daily_destroytransformers": {
-    "name": "Daily Destroy (Transformers)",
+    "names": {
+      "en": "Daily Destroy (Transformers)",
+      "tr": "Günlük Yok Etme (Trafolar)"
+    },
     "limit": 2,
     "rewards": {
       "gold": 250,
@@ -72,7 +96,10 @@
     }
   },
   "daily_destroytvs": {
-    "name": "Daily Destroy (TVs)",
+    "names": {
+      "en": "Daily Destroy (TVs)",
+      "tr": "Günlük Yok Etme (Televizyonlar)"
+    },
     "limit": 20,
     "rewards": {
       "gold": 250,
@@ -81,7 +108,10 @@
     }
   },
   "daily_discovery_industriallocations": {
-    "name": "Daily Scouting Industrial Construction",
+    "names": {
+      "en": "Daily Scouting Industrial Construction",
+      "tr": "Günlük Keşif Endüstriyel İnşa"
+    },
     "limit": 3,
     "rewards": {
       "gold": 250,
@@ -90,7 +120,10 @@
     }
   },
   "daily_discovery_rurallocations": {
-    "name": "Daily Scouting Rural",
+    "names": {
+      "en": "Daily Scouting Rural",
+      "tr": "Günlük Kırsal Keşifleri"
+    },
     "limit": 3,
     "rewards": {
       "gold": 250,
@@ -99,7 +132,10 @@
     }
   },
   "daily_discovery_shelters": {
-    "name": "Daily Scouting Shelters",
+    "names": {
+      "en": "Daily Scouting Shelters",
+      "tr": "Günlük Keşif Sığınakları"
+    },
     "limit": 4,
     "rewards": {
       "gold": 250,
@@ -108,7 +144,10 @@
     }
   },
   "daily_discovery_suburbanlocations": {
-    "name": "Daily Scouting Suburbia",
+    "names": {
+      "en": "Daily Scouting Suburbia",
+      "tr": "Günlük Keşif Banliyöleri"
+    },
     "limit": 10,
     "rewards": {
       "gold": 250,
@@ -117,7 +156,10 @@
     }
   },
   "daily_discovery_urbanlocations": {
-    "name": "Daily Scouting Cities",
+    "names": {
+      "en": "Daily Scouting Cities",
+      "tr": "Günlük Şehir Keşifleri"
+    },
     "limit": 8,
     "rewards": {
       "gold": 250,
@@ -126,7 +168,10 @@
     }
   },
   "daily_explorezones": {
-    "name": "Exploration Party",
+    "names": {
+      "en": "Exploration Party",
+      "tr": "Keşif Ekibi"
+    },
     "limit": 3,
     "rewards": {
       "gold": 250,
@@ -135,7 +180,10 @@
     }
   },
   "daily_high_priority": {
-    "name": "All Together Now",
+    "names": {
+      "en": "All Together Now",
+      "tr": "Şimdi Hep Beraber"
+    },
     "limit": 50,
     "rewards": {
       "gold": 250,
@@ -144,7 +192,10 @@
     }
   },
   "daily_huskextermination_anyhero": {
-    "name": "Husk Extermination (Any Hero)",
+    "names": {
+      "en": "Husk Extermination (Any Hero)",
+      "tr": "Suratsız Katliamı (Herhangi bir kahramanla)"
+    },
     "limit": 500,
     "rewards": {
       "gold": 250,
@@ -153,7 +204,10 @@
     }
   },
   "daily_huskextermination_constructor": {
-    "name": "Husk Extermination (Constructor)",
+    "names": {
+      "en": "Husk Extermination (Constructor)",
+      "tr": "Suratsız Katliamı (İnşaatçı)"
+    },
     "limit": 300,
     "rewards": {
       "gold": 250,
@@ -162,7 +216,10 @@
     }
   },
   "daily_huskextermination_melee": {
-    "name": "Husk Extermination (Melee)",
+    "names": {
+      "en": "Husk Extermination (Melee)",
+      "tr": "Suratsız Katliamı (Yakın Dövüş)"
+    },
     "limit": 300,
     "rewards": {
       "gold": 250,
@@ -171,7 +228,10 @@
     }
   },
   "daily_huskextermination_ninja": {
-    "name": "Husk Extermination (Ninja)",
+    "names": {
+      "en": "Husk Extermination (Ninja)",
+      "tr": "Suratsız Katliamı (Ninja)"
+    },
     "limit": 300,
     "rewards": {
       "gold": 250,
@@ -180,7 +240,10 @@
     }
   },
   "daily_huskextermination_outlander": {
-    "name": "Husk Extermination (Outlander)",
+    "names": {
+      "en": "Husk Extermination (Outlander)",
+      "tr": "Suratsız Katliamı (İzci)"
+    },
     "limit": 300,
     "rewards": {
       "gold": 250,
@@ -189,7 +252,10 @@
     }
   },
   "daily_huskextermination_ranged_assault": {
-    "name": "Husk Extermination (Assault Rifle)",
+    "names": {
+      "en": "Husk Extermination (Assault Rifle)",
+      "tr": "Suratsız Katliamı (Taarruz Tüfeği)"
+    },
     "limit": 300,
     "rewards": {
       "gold": 250,
@@ -198,7 +264,10 @@
     }
   },
   "daily_huskextermination_ranged_pistol": {
-    "name": "Husk Extermination (Pistol)",
+    "names": {
+      "en": "Husk Extermination (Pistol)",
+      "tr": "Suratsız Katliamı (Tabanca)"
+    },
     "limit": 300,
     "rewards": {
       "gold": 250,
@@ -207,7 +276,10 @@
     }
   },
   "daily_huskextermination_ranged_shotgun": {
-    "name": "Husk Extermination (Shotgun)",
+    "names": {
+      "en": "Husk Extermination (Shotgun)",
+      "tr": "Suratsız Katliamı (Pompalı Tüfek)"
+    },
     "limit": 300,
     "rewards": {
       "gold": 250,
@@ -216,7 +288,10 @@
     }
   },
   "daily_huskextermination_ranged_smg": {
-    "name": "Husk Extermination (SMG)",
+    "names": {
+      "en": "Husk Extermination (SMG)",
+      "tr": "Suratsız Katliamı (Hafif Makineli Tüfek)"
+    },
     "limit": 300,
     "rewards": {
       "gold": 250,
@@ -225,7 +300,10 @@
     }
   },
   "daily_huskextermination_ranged_sniper": {
-    "name": "Husk Extermination (Sniper Rifle)",
+    "names": {
+      "en": "Husk Extermination (Sniper Rifle)",
+      "tr": "Suratsız Katliamı (Keskin Nişancı Tüfeği)"
+    },
     "limit": 300,
     "rewards": {
       "gold": 250,
@@ -234,7 +312,10 @@
     }
   },
   "daily_huskextermination_soldier": {
-    "name": "Husk Extermination (Soldier)",
+    "names": {
+      "en": "Husk Extermination (Soldier)",
+      "tr": "Suratsız Katliamı (Asker)"
+    },
     "limit": 300,
     "rewards": {
       "gold": 250,
@@ -243,7 +324,10 @@
     }
   },
   "daily_huskextermination_trap": {
-    "name": "Husk Extermination (Trap)",
+    "names": {
+      "en": "Husk Extermination (Trap)",
+      "tr": "Suratsız Katliamı (Tuzak)"
+    },
     "limit": 150,
     "rewards": {
       "gold": 250,
@@ -252,7 +336,10 @@
     }
   },
   "daily_mission_buildradar": {
-    "name": "Build the Radar Tower",
+    "names": {
+      "en": "Build the Radar Tower",
+      "tr": "Radar Kulesini inşa et"
+    },
     "limit": 4,
     "rewards": {
       "gold": 250,
@@ -261,7 +348,10 @@
     }
   },
   "daily_mission_specialist_anyhero_1": {
-    "name": "Mission Specialist (Any Hero)",
+    "names": {
+      "en": "Mission Specialist (Any Hero)",
+      "tr": "Görev Uzmanı (Herhangi Bir Kahraman)"
+    },
     "limit": 3,
     "rewards": {
       "gold": 250,
@@ -270,7 +360,10 @@
     }
   },
   "daily_mission_specialist_anyhero_2": {
-    "name": "Mission Veteran (Any Hero)",
+    "names": {
+      "en": "Mission Veteran (Any Hero)",
+      "tr": "Görev Ustası (Herhangi Bir Kahraman)"
+    },
     "limit": 5,
     "rewards": {
       "gold": 410,
@@ -279,7 +372,10 @@
     }
   },
   "daily_mission_specialist_constructor": {
-    "name": "Mission Specialist (Constructor)",
+    "names": {
+      "en": "Mission Specialist (Constructor)",
+      "tr": "Görev Uzmanı (İnşaatçı)"
+    },
     "limit": 3,
     "rewards": {
       "gold": 250,
@@ -288,7 +384,10 @@
     }
   },
   "daily_mission_specialist_ninja": {
-    "name": "Mission Specialist (Ninja)",
+    "names": {
+      "en": "Mission Specialist (Ninja)",
+      "tr": "Görev Uzmanı (Ninja)"
+    },
     "limit": 3,
     "rewards": {
       "gold": 250,
@@ -297,7 +396,10 @@
     }
   },
   "daily_mission_specialist_outlander": {
-    "name": "Mission Specialist (Outlander)",
+    "names": {
+      "en": "Mission Specialist (Outlander)",
+      "tr": "Görev Uzmanı (İzci)"
+    },
     "limit": 3,
     "rewards": {
       "gold": 250,
@@ -306,7 +408,10 @@
     }
   },
   "daily_mission_specialist_soldier": {
-    "name": "Mission Specialist (Soldier)",
+    "names": {
+      "en": "Mission Specialist (Soldier)",
+      "tr": "Görev Uzmanı (Asker)"
+    },
     "limit": 3,
     "rewards": {
       "gold": 250,
@@ -315,7 +420,10 @@
     }
   },
   "daily_partyof50": {
-    "name": "Party of 25",
+    "names": {
+      "en": "Party of 25",
+      "tr": "25 Kişilik Grup"
+    },
     "limit": 25,
     "rewards": {
       "gold": 250,
@@ -324,7 +432,10 @@
     }
   },
   "daily_safes": {
-    "name": "Playing It Safe",
+    "names": {
+      "en": "Playing It Safe",
+      "tr": "Kasa Kasa Bir Hal Oldun"
+    },
     "limit": 1,
     "rewards": {
       "gold": 250,
@@ -333,7 +444,10 @@
     }
   },
   "daily_treasurechests": {
-    "name": "Lost Treasures",
+    "names": {
+      "en": "Lost Treasures",
+      "tr": "Kayıp Hazineler"
+    },
     "limit": 5,
     "rewards": {
       "gold": 250,

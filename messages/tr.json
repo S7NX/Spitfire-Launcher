@@ -27,6 +27,13 @@
     "cancel": "İptal",
     "confirm": "Onayla"
   },
+  "rarities": {
+    "common": "Yaygın",
+    "uncommon": "Sıradışı",
+    "rare": "Nadir",
+    "epic": "Efsanevi",
+    "legendary": "Efsane"
+  },
   "times": {
     "seconds": {
       "one": "{count} saniye",

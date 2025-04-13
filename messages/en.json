@@ -41,6 +41,14 @@
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
+  "rarities": {
+    "common": "Common",
+    "uncommon": "Uncommon",
+    "rare": "Rare",
+    "epic": "Epic",
+    "legendary": "Legendary",
+    "mythic": "Mythic"
+  },
   "times": {
     "seconds": {
       "one": "{count} second",
