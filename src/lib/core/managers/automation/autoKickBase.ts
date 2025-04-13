@@ -71,7 +71,7 @@ export default class AutoKickBase {
     automationStore.update(s => s.filter(a => a.accountId !== accountId));
     AutoKickBase.accounts.delete(accountId);
 
-    DataStorage.writeConfigFile<AutomationSettings>(AUTOMATION_FILE_PATH, AutoKickBase.accounts.values().toArray().map((x) => ({
+    DataStorage.writeConfigFile<AutomationSettings>(AUTOMATION_FILE_PATH, Array.from(AutoKickBase.accounts.values()).map((x) => ({
       accountId: x.account.accountId,
       ...x.settings
     }))).catch(() => null);
@@ -86,7 +86,7 @@ export default class AutoKickBase {
       ...settings
     };
 
-    const newSettings = AutoKickBase.accounts.values().toArray().map((x) => ({
+    const newSettings = Array.from(AutoKickBase.accounts.values()).map((x) => ({
       accountId: x.account.accountId,
       ...x.settings
     }));

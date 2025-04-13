@@ -25,7 +25,7 @@
 
   const parsedWorldInfo = $derived($worldInfoCache);
   const parsedWorldInfoArray = $derived(parsedWorldInfo &&
-    parsedWorldInfo.values().toArray().flatMap((worldMissions) => worldMissions.values().toArray())
+    Array.from(parsedWorldInfo.values()).flatMap((worldMissions) => Array.from(worldMissions.values()))
   );
 
   const isLoading = $derived(!$worldInfoCache || !parsedWorldInfo || !parsedWorldInfoArray);
@@ -49,7 +49,7 @@
       id: 'twinePeaks',
       title: $t('stwMissionAlerts.sections.twinePeaks'),
       missions:
-        !isLoading && parsedWorldInfo.get(Worlds.TwinePeaks)!.values().toArray()
+        !isLoading && Array.from(parsedWorldInfo.get(Worlds.TwinePeaks)!.values())
           .filter((mission) => mission.powerLevel === WorldPowerLevels[Worlds.TwinePeaks].Endgame_Zone6)
     },
     {
@@ -57,12 +57,12 @@
       title: $t('stwMissionAlerts.sections.ventures'),
       missions:
         !isLoading &&
-          parsedWorldInfo.entries().toArray()
+          Array.from(parsedWorldInfo.entries())
             .filter(([theaterId]) =>
               ![Worlds.Stonewood,Worlds.Plankerton,Worlds.CannyValley,Worlds.TwinePeaks].includes(theaterId)
             )
-            .flatMap(([, worldMissions]) => worldMissions.values().toArray())
-            .filter(  (missions) => missions.powerLevel === WorldPowerLevels.ventures.Phoenix_Zone25)
+            .flatMap(([, worldMissions]) => Array.from(worldMissions.values()))
+            .filter((missions) => missions.powerLevel === WorldPowerLevels.ventures.Phoenix_Zone25)
     },
     {
       id: 'upgradeLlamaTokens',

@@ -24,15 +24,15 @@
   }>();
 
   const claimedMisssionAlerts = $derived($worldInfoCache && stwData?.claimedMissionAlertIds.size &&
-    $worldInfoCache.values().toArray()
-      .flatMap((worldMissions) => worldMissions.values().toArray())
+    Array.from($worldInfoCache.values())
+      .flatMap((worldMissions) => Array.from(worldMissions.values()))
       .filter((mission) => mission.alert && stwData?.claimedMissionAlertIds.has(mission.alert.guid))
   );
 
   let searchQuery = $state<string>();
   let isLoading = $state(false);
 
-  async function fetchCompletedAlerts(event: SubmitEvent) {
+  async function fetchClaimedAlerts(event: SubmitEvent) {
     event.preventDefault();
 
     if (!searchQuery?.trim()) return;
@@ -81,7 +81,7 @@
 </script>
 
 <div>
-  <form class="flex items-center gap-2 w-full" onsubmit={fetchCompletedAlerts}>
+  <form class="flex items-center gap-2 w-full" onsubmit={fetchClaimedAlerts}>
     <Input
       class="grow"
       disabled={isLoading}
@@ -114,11 +114,10 @@
       },
       {
         name: $t('stwMissionAlerts.playerInfo.commanderLevel'),
-        value: stwData &&
-          `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}`
+        value: stwData && `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}`
       },
       {
-        name: $t('stwMissionAlerts.playerInfo.completedAlerts'),
+        name: $t('stwMissionAlerts.playerInfo.claimedAlerts'),
         value: stwData?.claimedMissionAlertIds.size || 0
       }
     ]}

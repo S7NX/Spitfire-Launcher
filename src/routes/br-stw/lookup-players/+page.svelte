@@ -12,6 +12,7 @@
       boostedXp: number;
       boostAmount: number;
     };
+    claimedMissionAlertIds: Set<string>;
   };
 
   type MissionPlayers = Array<{
@@ -62,6 +63,7 @@
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import WorldInfoSectionAccordion from '$components/stw/worldInfo/WorldInfoSectionAccordion.svelte';
   import Pagination from '$components/ui/Pagination.svelte';
   import { WorldNames, ZoneNames } from '$lib/constants/stw/worldInfo';
   import MatchmakingManager from '$lib/core/managers/matchmaking';
@@ -81,6 +83,12 @@
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
   const selectedHeroLoadout = $derived(loadoutData?.[heroLoadoutPage - 1]);
+
+  const claimedMisssionAlerts = $derived($worldInfoCache && stwData?.claimedMissionAlertIds.size &&
+    Array.from($worldInfoCache.values())
+      .flatMap((worldMissions) => Array.from(worldMissions.values()))
+      .filter((mission) => mission.alert && stwData?.claimedMissionAlertIds.has(mission.alert.guid))
+  );
 
   let searchQuery = $state<string>();
 
@@ -126,13 +134,18 @@
     const items = Object.entries(profile.items);
     const attributes = profile.stats.attributes;
 
+    const claimedMissionAlerts = attributes.mission_alert_redemption_record?.claimData
+      ?.sort((a, b) => new Date(b.redemptionDateUtc).getTime() - new Date(a.redemptionDateUtc).getTime())
+      .map((claimData) => claimData.missionAlertId) || [];
+
     stwData = {
       commanderLevel: {
         current: attributes.level,
         pastMaximum: attributes.rewards_claimed_post_max_level || 0
       },
       founderEdition: getFounderEdition(Object.values(profile.items)),
-      xpBoosts: getXPBoosts(Object.values(profile.items))
+      xpBoosts: getXPBoosts(Object.values(profile.items)),
+      claimedMissionAlertIds: new Set(claimedMissionAlerts)
     };
 
     loadoutData = [];
@@ -434,6 +447,18 @@
             <Pagination count={loadoutData.length} perPage={1} bind:page={heroLoadoutPage}/>
           </div>
         {/if}
+      {/if}
+
+      {#if stwData && claimedMisssionAlerts}
+        <Separator.Root class="bg-border h-px"/>
+
+        <h3 class="text-lg font-semibold text-center">{$t('lookupPlayer.claimedAlerts.title')}</h3>
+
+        <WorldInfoSectionAccordion
+          claimedMissionAlerts={stwData?.claimedMissionAlertIds}
+          missions={claimedMisssionAlerts}
+          showAlertClaimedBorder={false}
+        />
       {/if}
     </div>
   {/if}

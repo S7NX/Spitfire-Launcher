@@ -363,7 +363,7 @@
       "id": "ID",
       "name": "İsim",
       "commanderLevel": "Komutan seviyesi",
-      "completedAlerts": "Tamamlanan uyarılar"
+      "claimedAlerts": "Tamamlanan uyarılar"
     },
     "sections": {
       "survivors": "Efsanevi/Eşsiz Felaketzedeler",
@@ -403,6 +403,9 @@
         "supportTeam": "Destek Ekibi",
         "gadgets": "Cihazlar"
       }
+    },
+    "claimedAlerts": {
+      "title": "Tamamlanan Görev Uyarıları"
     }
   },
   "serverStatus": {

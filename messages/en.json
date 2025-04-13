@@ -363,7 +363,7 @@
       "id": "ID",
       "name": "Name",
       "commanderLevel": "Commander level",
-      "completedAlerts": "Completed alerts"
+      "claimedAlerts": "Completed alerts"
     },
     "sections": {
       "survivors": "Legendary/Mythic Survivors",
@@ -403,6 +403,9 @@
         "supportTeam": "Support Team",
         "gadgets": "Gadgets"
       }
+    },
+    "claimedAlerts": {
+      "title": "Claimed Mission Alerts"
     }
   },
   "serverStatus": {

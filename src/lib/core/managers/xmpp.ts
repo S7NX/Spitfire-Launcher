@@ -231,7 +231,7 @@ export default class XMPPManager {
       switch (body.type) {
         case EventNotifications.MemberStateUpdated: {
           const data = body as ServiceEventMemberStateUpdated;
-          const parties = accountPartiesStore.entries().filter(([, party]) => party.id === data.party_id).toArray();
+          const parties = Array.from(accountPartiesStore.entries()).filter(([, party]) => party.id === data.party_id);
 
           for (const [accountId, party] of parties) {
             const partyMember = party.members.find((member) => member.account_id === data.account_id);
@@ -263,7 +263,7 @@ export default class XMPPManager {
         }
         case EventNotifications.PartyUpdated: {
           const data = body as ServiceEventPartyUpdated;
-          const parties = accountPartiesStore.entries().filter(([, party]) => party.id === data.party_id).toArray();
+          const parties = Array.from(accountPartiesStore.entries()).filter(([, party]) => party.id === data.party_id);
           if (!parties.length) break;
 
           for (const [accountId, party] of parties) {
@@ -311,7 +311,7 @@ export default class XMPPManager {
 
           accountPartiesStore.delete(data.account_id);
 
-          const parties = accountPartiesStore.entries().filter(([, party]) => party.id === data.party_id).toArray();
+          const parties = Array.from(accountPartiesStore.entries()).filter(([, party]) => party.id === data.party_id);
           for (const [accountId, party] of parties) {
             party.members = party.members.filter(member => member.account_id !== data.account_id);
             party.revision = data.revision || party.revision;
@@ -323,7 +323,7 @@ export default class XMPPManager {
         }
         case EventNotifications.MemberJoined: {
           const data = body as ServiceEventMemberJoined;
-          const parties = accountPartiesStore.entries().filter(([, party]) => party.id === data.party_id).toArray();
+          const parties = Array.from(accountPartiesStore.entries()).filter(([, party]) => party.id === data.party_id);
 
           const newMember: PartyMember = {
             account_id: data.account_id,
@@ -353,7 +353,7 @@ export default class XMPPManager {
         }
         case EventNotifications.MemberNewCaptain: {
           const data = body as ServiceEventMemberNewCaptain;
-          const parties = accountPartiesStore.entries().filter(([, party]) => party.id === data.party_id).toArray();
+          const parties = Array.from(accountPartiesStore.entries()).filter(([, party]) => party.id === data.party_id);
 
           for (const [accountId, party] of parties) {
             party.members = party.members.map((member) => ({

@@ -228,7 +228,7 @@ export default class WorldInfoManager {
 
         worldInfo.set(
           theaterId as World,
-          new Map(theater.entries().toArray().sort((entryA, entryB) => {
+          new Map(Array.from(theater.entries()).sort((entryA, entryB) => {
             const [, missionA] = entryA;
             const [, missionB] = entryB;
 
