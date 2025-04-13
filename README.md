@@ -4,6 +4,8 @@ A launcher for Fortnite Battle Royale and Save the World
 
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/BurakYs/Spitfire-Launcher/total?label=Total+Downloads)
 
+![Launcher Preview](./static/launcher-preview.png)
+
 ## Table of Contents
 
 - [📥 Installation](#installation)
@@ -35,19 +37,18 @@ Settings are stored in:
 ## Features
 
 - **Customization:**
-    - Configure game path, user agent, starting page, starting account
+    - Configure launcher language, game path, starting page, starting account
 - **Bulk Actions:**
     - Redeem codes, view V-Bucks information, daily quests and more across multiple accounts
 - **Account and Game Management:**
     - Easy web confirmation or exchange code login
-    - Launch game, auto-kick for STW, custom game status
-    - Manage party, view item shop, earned XP, daily quests, STW shop, and world info
+    - Launch game, auto-kick and taxis for STW, bot lobbies and custom game status
+    - Manage party, view item shop, earned XP, daily quests, mission alerts
     - Lookup players, manage device authentications
 - **Upcoming Features:**
-    - Ghost equip, fake level, fake crown wins, fake rank
     - Hero and survivor loadout, expedition management
     - Storage and backpack management
-    - Multiple language support
+    - Friend management
 
 ## Updating
 
