@@ -44,7 +44,7 @@ export default class WorldInfoManager {
       Worlds.TwinePeaks
     ] as string[];
 
-    const worldInfo: ParsedWorldInfo = new Map();
+    const worldInfo = new Map<World, Map<string, WorldParsedMission>>();
 
     function theaterExists(theaterId: string) {
       return !!rawWorldInfo[theaterId];
@@ -430,16 +430,7 @@ export default class WorldInfoManager {
       rarity: RarityTypes.Common as RarityType
     };
 
-    const rarityTypeValues = [
-      RarityTypes.Common,
-      RarityTypes.Uncommon,
-      RarityTypes.Rare,
-      RarityTypes.Epic,
-      RarityTypes.Legendary,
-      RarityTypes.Mythic
-    ];
-
-    for (const rarityType of rarityTypeValues) {
+    for (const rarityType of Object.values(RarityTypes)) {
       if (id.includes(`_${rarityType}`)) {
         data.name = get(RarityNames)[rarityType];
         data.rarity = rarityType;

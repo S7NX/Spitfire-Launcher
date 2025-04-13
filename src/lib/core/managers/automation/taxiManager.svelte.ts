@@ -7,9 +7,8 @@ import { SvelteSet } from 'svelte/reactivity';
 import homebaseRatingMapping from '$lib/data/homebaseRatingMapping.json';
 import { accountPartiesStore } from '$lib/stores';
 import { toast } from 'svelte-sonner';
-import { evaluateCurve } from '$lib/utils/util';
+import { evaluateCurve, t } from '$lib/utils/util';
 import { get } from 'svelte/store';
-import { t } from '$lib/utils/util';
 import type { AccountData } from '$types/accounts';
 import type {
   ServiceEventFriendRequest,
@@ -43,7 +42,7 @@ export default class TaxiManager {
   public availableStatus = $state(get(t)('taxiService.settings.availableStatus.default'));
   public busyStatus = $state(get(t)('taxiService.settings.busyStatus.default'));
   public autoAcceptFriendRequests = $state(false);
-  public partyTimeoutSeconds = $state(90);
+  public partyTimeoutSeconds = $state(180);
 
   constructor(private account: AccountData) { }
 

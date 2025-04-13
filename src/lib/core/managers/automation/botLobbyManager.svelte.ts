@@ -45,7 +45,7 @@ export default class BotLobbyManager {
   public availableStatus = $state(get(t)('botLobby.settings.availableStatus.default'));
   public busyStatus = $state(get(t)('botLobby.settings.busyStatus.default'));
   public autoAcceptFriendRequests = $state(false);
-  public partyTimeoutSeconds = $state(90);
+  public partyTimeoutSeconds = $state(180);
 
   constructor(private account: AccountData) { }
 
