@@ -1,7 +1,7 @@
-import { publicAccountService } from '$lib/core/services';
+import { publicAccountService, userSearchService } from '$lib/core/services';
 import type { AccountData } from '$types/accounts';
 import Authentication from '$lib/core/authentication';
-import type { EpicAccountById, EpicAccountByName } from '$types/game/lookup';
+import type { EpicAccountById, EpicAccountByName, EpicAccountSearch } from '$types/game/lookup';
 
 export default class LookupManager {
   static async fetchById(account: AccountData, accountId: string) {
@@ -54,5 +54,36 @@ export default class LookupManager {
         }
       }
     ).json();
+  }
+
+  static async searchByName(account: AccountData, namePrefix: string) {
+    const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
+
+    return userSearchService.get<EpicAccountSearch[]>(
+      `${account.accountId}?prefix=${namePrefix.trim()}&platform=epic`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      }
+    ).json();
+  }
+
+  static async fetchByNameOrId(account: AccountData, nameOrId: string) {
+    const isAccountId = nameOrId.length === 32;
+
+    if (isAccountId) {
+      const data = await LookupManager.fetchById(account, nameOrId);
+      return {
+        accountId: data.id,
+        displayName: data.displayName
+      };
+    } else {
+      const data = (await LookupManager.searchByName(account, nameOrId))?.[0]
+      return data ? {
+        accountId: data.accountId,
+        displayName: data.matches[0].value
+      } : null
+    }
   }
 }

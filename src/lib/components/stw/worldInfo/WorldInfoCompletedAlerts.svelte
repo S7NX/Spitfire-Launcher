@@ -14,7 +14,7 @@
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
-  let lookupData = $state<EpicAccountById | EpicAccountByName>();
+  let lookupData = $state<{ accountId: string; displayName: string; }>();
   let stwData = $state<{
     commanderLevel: {
       current: number;
@@ -42,17 +42,12 @@
     lookupData = undefined;
     stwData = undefined;
 
-    const isAccountId = searchQuery.length === 32;
-
     try {
-      const internalLookupData: EpicAccountById | EpicAccountByName = isAccountId
-        ? await LookupManager.fetchById(activeAccount, searchQuery)
-        : await LookupManager.fetchByName(activeAccount, searchQuery);
+      const internalLookupData = await LookupManager.fetchByNameOrId(activeAccount, searchQuery);
+      if (!internalLookupData?.accountId) return;
 
       try {
-        if (!internalLookupData.id) return;
-
-        const queryPublicProfile = await MCPManager.queryPublicProfile(activeAccount, internalLookupData.id, 'campaign');
+        const queryPublicProfile = await MCPManager.queryPublicProfile(activeAccount, internalLookupData.accountId, 'campaign');
         const profile = queryPublicProfile.profileChanges[0].profile;
         const attributes = profile.stats.attributes;
         const doneMissionAlerts = attributes.mission_alert_redemption_record?.claimData
@@ -102,20 +97,20 @@
       variant="epic"
     >
       {#if isLoading}
-        <LoaderCircleIcon class="size-5 animate-spin" />
+        <LoaderCircleIcon class="size-5 animate-spin"/>
       {:else}
-        <SearchIcon class="size-5" />
+        <SearchIcon class="size-5"/>
       {/if}
     </Button>
   </form>
 
   {#if lookupData}
     {@const kv = [
-      { name: $t('stwMissionAlerts.playerInfo.id'), value: lookupData.id },
+      { name: $t('stwMissionAlerts.playerInfo.id'), value: lookupData.accountId },
       {
         name: $t('stwMissionAlerts.playerInfo.name'),
         value: lookupData.displayName,
-        href: `https://fortnitedb.com/profile/${lookupData.id}`
+        href: `https://fortnitedb.com/profile/${lookupData.accountId}`
       },
       {
         name: $t('stwMissionAlerts.playerInfo.commanderLevel'),
@@ -141,7 +136,7 @@
                   target="_blank"
                 >
                   {value}
-                  <ExternalLinkIcon class="size-4" />
+                  <ExternalLinkIcon class="size-4"/>
                 </a>
               {:else}
                 <span>{value}</span>

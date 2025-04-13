@@ -1,6 +1,5 @@
 <script lang="ts" module>
   import { gadgets, heroes, teamPerks } from '$lib/constants/stw/resources';
-  import type { EpicAccountById, EpicAccountByName } from '$types/game/lookup';
   import type { RarityType } from '$types/game/stw/resources';
 
   type STWData = {
@@ -54,7 +53,7 @@
 
   let isLoading = $state(false);
   let heroLoadoutPage = $state(1);
-  let lookupData = $state<(EpicAccountById | EpicAccountByName) & { avatarUrl?: string }>();
+  let lookupData = $state<{ accountId: string; displayName: string; avatarUrl?: string }>();
   let stwData = $state<STWData>();
   let missionPlayers = $state<MissionPlayers>();
   let mission = $state<MissionData>();
@@ -94,22 +93,18 @@
     resetData();
 
     try {
-      const isAccountId = searchQuery.length === 32;
-      const internalLookupData = isAccountId
-        ? await LookupManager.fetchById(activeAccount, searchQuery)
-        : await LookupManager.fetchByName(activeAccount, searchQuery);
-
-      if (!internalLookupData.id) return;
+      const internalLookupData = await LookupManager.fetchByNameOrId(activeAccount, searchQuery);
+      if (!internalLookupData?.accountId) return;
 
       try {
-        await getSTWData(internalLookupData.id);
+        await getSTWData(internalLookupData.accountId);
       } catch (error) {
         console.error(error);
         toast.error($t('lookupPlayer.stwStatsPrivate'));
       }
 
       try {
-        await getMatchmakingData(internalLookupData.id);
+        await getMatchmakingData(internalLookupData.accountId);
       } catch (error) {
         console.error(error);
       }
@@ -281,14 +276,17 @@
 
   {#if lookupData}
     {@const kv = [
-      { name: $t('lookupPlayer.playerInfo.id'), value: lookupData.id },
-      { name: $t('lookupPlayer.playerInfo.name'), value: lookupData.displayName, href: `https://fortnitedb.com/profile/${lookupData.id}` },
-      { name: $t('lookupPlayer.playerInfo.commanderLevel'), value: stwData && `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}` },
+      { name: $t('lookupPlayer.playerInfo.id'), value: lookupData.accountId },
+      { name: $t('lookupPlayer.playerInfo.name'), value: lookupData.displayName, href: `https://fortnitedb.com/profile/${lookupData.accountId}` },
+      {
+        name: $t('lookupPlayer.playerInfo.commanderLevel'),
+        value: stwData && `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}`
+      },
       {
         name: $t('lookupPlayer.playerInfo.boostedXp', { count: stwData?.xpBoosts.boostedXp }),
         value: stwData && `${stwData.xpBoosts.boostedXp.toLocaleString()} ${stwData.xpBoosts.boostAmount ? `(${$t('lookupPlayer.playerInfo.boostCount', { count: stwData.xpBoosts.boostAmount })})` : ''}`
       },
-      { name: $t('lookupPlayer.playerInfo.founderEdition'), value: stwData?.founderEdition } 
+      { name: $t('lookupPlayer.playerInfo.founderEdition'), value: stwData?.founderEdition }
     ]}
 
     <div class="space-y-4 text-sm relative border p-5 rounded-md min-w-80 xs:min-w-96">
@@ -319,7 +317,7 @@
 
       <Button
         class="absolute top-0 right-0 m-2 p-2 hidden xs:block"
-        href="https://fortnitedb.com/profile/{lookupData.id}"
+        href="https://fortnitedb.com/profile/{lookupData.accountId}"
         title="View on FortniteDB"
         variant="ghost"
       >
