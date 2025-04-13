@@ -21,10 +21,6 @@
   let isLaunching = $state(false);
   let isGameRunning = $state(false);
 
-  $effect(() => {
-    console.log({ activeAccount, isAuthenticating, isLaunching, isGameRunning });
-  });
-
   async function launchGame() {
     await checkIsRunning();
 

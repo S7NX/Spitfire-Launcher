@@ -193,7 +193,8 @@
     "settings": {
       "kick": "At",
       "claim": "Ödülleri Al",
-      "transferMaterials": "Malzemeleri Transfer Et"
+      "transferMaterials": "Malzemeleri Transfer Et",
+      "invite": "Davet Et"
     }
   },
   "botLobby": {

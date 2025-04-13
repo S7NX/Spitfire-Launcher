@@ -443,6 +443,25 @@ export default class XMPPManager {
     }
   }
 
+  waitForEvent<T extends keyof EventMap>(eventName: T, validate?: (data: EventMap[T]) => boolean, timeout = 5000) {
+    return new Promise<EventMap[T]>((resolve, reject) => {
+      const listener = (data: EventMap[T]) => {
+        if (!validate || validate(data)) {
+          clearTimeout(timeoutId);
+          this.removeEventListener(eventName, listener);
+          resolve(data);
+        }
+      };
+
+      const timeoutId = setTimeout(() => {
+        this.removeEventListener(eventName, listener);
+        reject(new Error('Timeout'));
+      }, timeout);
+
+      this.addEventListener(eventName, listener);
+    });
+  }
+
   dispatchEvent<T extends keyof EventMap>(eventName: T, data: EventMap[T]) {
     if (this.listeners[eventName]) {
       for (let i = 0; i < this.listeners[eventName].length; i++) {

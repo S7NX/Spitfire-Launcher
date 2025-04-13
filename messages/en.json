@@ -193,7 +193,8 @@
     "settings": {
       "kick": "Kick",
       "claim": "Claim Rewards",
-      "transferMaterials": "Transfer Materials"
+      "transferMaterials": "Transfer Materials",
+      "invite": "Invite"
     }
   },
   "botLobby": {

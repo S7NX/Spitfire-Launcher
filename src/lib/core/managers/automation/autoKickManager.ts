@@ -1,11 +1,15 @@
+import FriendManager from '$lib/core/managers/friend';
+import type XMPPManager from '$lib/core/managers/xmpp';
+import { getResolvedResults, sleep } from '$lib/utils/util';
 import type { AccountData } from '$types/accounts';
 import MatchmakingManager from '$lib/core/managers/matchmaking';
-import { type PartyState, PartyStates } from '$lib/constants/events';
+import { EventNotifications, type PartyState, PartyStates } from '$lib/constants/events';
 import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
 import PartyManager from '$lib/core/managers/party';
 import claimRewards from '$lib/utils/autoKick/claimRewards';
 import transferBuildingMaterials from '$lib/utils/autoKick/transferBuildingMaterials';
 import DataStorage from '$lib/core/dataStorage';
+import type { PartyData } from '$types/game/party';
 import { get } from 'svelte/store';
 import { accountsStore } from '$lib/stores';
 
@@ -23,7 +27,7 @@ export default class AutoKickManager {
     started: false
   };
 
-  constructor(private account: AccountData) {}
+  constructor(private account: AccountData, private xmpp: XMPPManager) {}
 
   initMissionCheckerIntervalTimeout(timeoutMs?: number) {
     if (this.missionCheckerIntervalInitTimeout) {
@@ -69,25 +73,39 @@ export default class AutoKickManager {
         return;
       }
 
-      if (matchmakingState.partyState !== PartyStates.PostMatchmaking
+      if (
+        matchmakingState.partyState !== PartyStates.PostMatchmaking
         || !matchmakingState.started
-        || matchmakingData.started) {
+        || matchmakingData.started
+      ) {
         this.matchmakingState.started = matchmakingData.started;
         return;
       }
 
       this.dispose();
 
+      const partyData = await PartyManager.get(this.account);
+      const party = partyData.current[0];
+
       if (automationSettings.autoKick) {
-        await this.kick();
+        await this.kick(party).catch(console.error);
       }
 
       if (automationSettings.autoTransferMaterials) {
         transferBuildingMaterials(this.account).catch(console.error);
       }
 
+      if (
+        automationSettings.autoKick
+        && automationSettings.autoInvite
+        && party.members.find(x => x.account_id === this.account.accountId)?.role === 'CAPTAIN'
+        && party.members.filter(x => x.account_id !== this.account.accountId).length
+      ) {
+        this.invite(party.members).catch(console.error);
+      }
+
       if (automationSettings.autoClaim) {
-        await claimRewards(this.account);
+        await claimRewards(this.account).catch(console.error);
       }
     }, (settings.app?.missionCheckInterval || 5) * 1000);
   }
@@ -125,11 +143,7 @@ export default class AutoKickManager {
     };
   }
 
-  private async kick() {
-    const partyData = await PartyManager.get(this.account);
-    const party = partyData.current[0];
-    if (!party) return;
-
+  private async kick(party: PartyData) {
     const { allAccounts } = get(accountsStore);
 
     const partyMemberIds = party.members.map(x => x.account_id);
@@ -154,9 +168,29 @@ export default class AutoKickManager {
 
       accountsWithNoAutoKick.push(this.account);
 
-      await Promise.allSettled(accountsWithNoAutoKick.map(async (account) => {
-        await PartyManager.leave(account, party.id);
-      }));
+      await Promise.allSettled(accountsWithNoAutoKick.map(async (account) =>
+        await PartyManager.leave(account, party.id)
+      ));
     }
+  }
+
+  private async invite(members: PartyData['members']) {
+    await this.xmpp.waitForEvent(EventNotifications.MemberJoined, (data) => data.account_id === this.account.accountId, 20000);
+    await sleep(1000);
+
+    const [partyData, friends] = await getResolvedResults([
+      PartyManager.get(this.account),
+      FriendManager.getFriends(this.account)
+    ]);
+
+    const party = partyData?.current[0];
+    if (!party || !friends?.length) return;
+
+    const partyMemberIds = members.map(x => x.account_id).filter(x => x !== this.account.accountId);
+    const friendsInParty = friends.filter((friend) => partyMemberIds.includes(friend.accountId));
+
+    await Promise.allSettled(friendsInParty.map(async (friend) => {
+      await PartyManager.invite(this.account, party.id, friend.accountId);
+    }));
   }
 }

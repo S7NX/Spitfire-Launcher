@@ -169,3 +169,7 @@ export async function changeLocale(locale: Locale) {
 
   DataStorage.writeConfigFile<AllSettings>(SETTINGS_FILE_PATH, allSettings).catch(console.error);
 }
+
+export function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

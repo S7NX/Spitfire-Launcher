@@ -141,7 +141,7 @@ export default class AutoKickBase {
       AutoKickBase.autoKickManagers.delete(account.accountId);
     }
 
-    const autoKickManager = new AutoKickManager(account);
+    const autoKickManager = new AutoKickManager(account, connection);
     AutoKickBase.autoKickManagers.set(account.accountId, autoKickManager);
 
     let partyState: PartyState;

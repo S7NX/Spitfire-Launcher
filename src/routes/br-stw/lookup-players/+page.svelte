@@ -449,7 +449,7 @@
         {/if}
       {/if}
 
-      {#if stwData && claimedMisssionAlerts}
+      {#if stwData && stwData?.claimedMissionAlertIds.size > 0 && claimedMisssionAlerts && claimedMisssionAlerts.length > 0}
         <Separator.Root class="bg-border h-px"/>
 
         <h3 class="text-lg font-semibold text-center">{$t('lookupPlayer.claimedAlerts.title')}</h3>

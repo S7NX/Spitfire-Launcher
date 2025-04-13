@@ -1,5 +1,6 @@
 import DataStorage from '$lib/core/dataStorage';
 import MCPManager from '$lib/core/managers/mcp';
+import { sleep } from '$lib/utils/util';
 import type { AccountData } from '$types/accounts';
 import type { CampaignProfile } from '$types/game/mcp';
 
@@ -8,7 +9,7 @@ export default async function claimRewards(account: AccountData, bypassDelay = f
   const delaySeconds = settings.app?.claimRewardsDelay;
 
   if (delaySeconds && !bypassDelay) {
-    await new Promise(resolve => setTimeout(resolve, delaySeconds * 1000));
+    await sleep(delaySeconds * 1000);
   }
 
   const queryProfile = await MCPManager.queryProfile(account, 'campaign');

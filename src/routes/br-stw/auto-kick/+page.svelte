@@ -6,11 +6,12 @@
   import { accountsStore, automationStore } from '$lib/stores';
   import { cn, nonNull, t } from '$lib/utils/util';
   import Switch from '$components/ui/Switch.svelte';
+  import type { AutomationSetting as AutomationSettingWithId } from '$types/settings';
   import Trash2Icon from 'lucide-svelte/icons/trash-2';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
   import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
 
-  type AutomationSetting = 'autoKick' | 'autoClaim' | 'autoTransferMaterials';
+  type AutomationSetting = keyof Omit<AutomationSettingWithId, 'accountId'>;
 
   const allAccounts = $derived(nonNull($accountsStore.allAccounts));
   const autoKickDisabledAccounts = $derived(allAccounts.filter((x) => !$automationStore.some((y) => y.accountId === x.accountId)));
@@ -34,7 +35,7 @@
     selectedAccountId = undefined;
   });
 
-  const settings: { id: AutomationSetting; label: string }[] = $derived([
+  const settings: { id: AutomationSetting; label: string; }[] = $derived([
     {
       id: 'autoKick',
       label: $t('autoKick.settings.kick')
@@ -46,6 +47,10 @@
     {
       id: 'autoTransferMaterials',
       label: $t('autoKick.settings.transferMaterials')
+    },
+    {
+      id: 'autoInvite',
+      label: $t('autoKick.settings.invite')
     }
   ]);
 
@@ -97,18 +102,12 @@
               <div
                 class={cn(
                   'size-2 rounded-full',
-                  (automationAccount.status === 'DISCONNECTED' || isLoading) &&
-                    'bg-gray-500',
+                  (automationAccount.status === 'DISCONNECTED' || isLoading) && 'bg-gray-500',
                   automationAccount.status === 'ACTIVE' && 'bg-green-500',
-                  automationAccount.status === 'INVALID_CREDENTIALS' &&
-                    'bg-red-500'
+                  automationAccount.status === 'INVALID_CREDENTIALS' && 'bg-red-500'
                 )}
               ></div>
-              <span class="font-medium"
-              >{allAccounts.find(
-                (a) => a.accountId === automationAccount.accountId
-              )?.displayName || automationAccount.accountId}</span
-              >
+              <span class="font-medium">{allAccounts.find((x) => x.accountId === automationAccount.accountId)?.displayName || automationAccount.accountId}</span>
             </div>
 
             <Button
@@ -132,7 +131,7 @@
                 <span class="text-sm mr-5">{setting.label}</span>
                 <Switch
                   checked={$automationStore.find((x) => x.accountId === automationAccount.accountId)?.[setting.id] ?? false}
-                  disabled={isLoading}
+                  disabled={isLoading || (setting.id === 'autoInvite' && !automationAccount.autoKick)}
                   onCheckedChange={(checked) => changeSetting(automationAccount.accountId, setting.id, checked)}
                 />
               </div>

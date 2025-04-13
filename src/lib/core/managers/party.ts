@@ -91,6 +91,22 @@ export default class PartyManager {
     }
   }
 
+  static async invite(account: AccountData, partyId: string, friendToInvite: string) {
+    const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
+
+    return partyService.post(
+      `parties/${partyId}/invites/${friendToInvite}?sendPing=true`,
+      {
+        json: {
+          'urn:epic:invite:platformdata_s': ''
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      }
+    ).json();
+  }
+
   static async getInviterParty(account: AccountData, senderId: string) {
     const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
 
