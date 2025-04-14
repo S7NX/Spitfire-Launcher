@@ -24,6 +24,7 @@
 
   const { children } = $props();
 
+  let hasNewVersion = $state(false);
   let newVersionData = $state<{ tag: string; downloadUrl: string }>();
 
   function disableF5(e: KeyboardEvent) {
@@ -42,11 +43,12 @@
     if (!settings.app?.checkForUpdates) return;
 
     const { owner, name } = config.repository;
-    const url = `https://api.github.com/repos/${owner}/${name}/releases/latest`;
 
     const currentVersion = await getVersion();
-    const latestVersion = await ky.get<GitHubRelease>(url).json();
+    const latestVersion = await ky.get<GitHubRelease>(`https://api.github.com/repos/${owner}/${name}/releases/latest`).json();
+
     if (latestVersion.tag_name.replace('v', '') !== currentVersion) {
+      hasNewVersion = true;
       newVersionData = {
         tag: latestVersion.tag_name.replace('v', ''),
         downloadUrl: latestVersion.html_url
@@ -73,8 +75,7 @@
         duration: 3000,
         unstyled: true,
         classes: {
-          toast:
-            'bg-secondary flex items-center px-4 py-4 border rounded-lg gap-3 min-w-96',
+          toast: 'bg-secondary flex items-center px-4 py-4 border rounded-lg gap-3 min-w-96',
           title: 'text-sm'
         }
       }}
@@ -83,8 +84,7 @@
     <div class="flex flex-col flex-1">
       <Header/>
       <ScrollArea>
-        <main class="p-4 flex-1 overflow-auto bg-background h-[calc(100vh-4rem)]"
-        >
+        <main class="p-4 flex-1 overflow-auto bg-background h-[calc(100vh-4rem)]">
           {@render children()}
         </main>
       </ScrollArea>
@@ -98,7 +98,7 @@
   {/each}
 </div>
 
-<Dialog bind:open={() => !!newVersionData, () => (newVersionData = undefined)}>
+<Dialog bind:open={hasNewVersion}>
   {#snippet title()}
     {$t('newVersionAvailable.title')}
   {/snippet}
