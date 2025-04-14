@@ -54,10 +54,6 @@ Settings are stored in:
 
 No need to uninstall. Run the setup file again to update. The app notifies when a new version is available.
 
-## Notes
-
-I built this launcher as a learning project, so the code may have some bad practices. If you want to make any improvements, I'd appreciate it.
-
 ## Contributing
 
 Contributions are welcome. If you want to help improve Spitfire Launcher, follow these steps:
