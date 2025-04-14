@@ -46,7 +46,7 @@
     description: string;
     icon: any;
     recommended?: boolean;
-  }[] = [
+  }[] = $derived([
     {
       id: 'webConfirmation',
       name: $t('accountManager.loginMethods.webConfirmation.title'),
@@ -60,7 +60,7 @@
       description: $t('accountManager.loginMethods.exchangeCode.description'),
       icon: KeyIcon
     }
-  ];
+  ]);
 
   $effect(() => {
     const isLastStep = currentStep === steps.length - 1;

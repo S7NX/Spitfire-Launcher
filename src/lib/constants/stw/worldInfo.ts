@@ -1,3 +1,6 @@
+import { t } from '$lib/utils/util';
+import { derived } from 'svelte/store';
+
 export const Worlds = Object.freeze({
   Stonewood: '33A2311D4AE64B361CCE27BC9F313C8B',
   Plankerton: 'D477605B4FA48648107B649CE97FCF27',
@@ -16,23 +19,23 @@ export const Worlds = Object.freeze({
   ScurvyShoals: '243870C643F8611F25D24287814E1DA4'
 } as const);
 
-export const WorldNames = Object.freeze({
-  [Worlds.Stonewood]: 'Stonewood',
-  [Worlds.Plankerton]: 'Plankerton',
-  [Worlds.CannyValley]: 'Canny Valley',
-  [Worlds.TwinePeaks]: 'Twine Peaks',
+export const WorldNames = derived(t, ($t) => ({
+  [Worlds.Stonewood]: $t('common.stw.worldNames.stonewood'),
+  [Worlds.Plankerton]: $t('common.stw.worldNames.plankerton'),
+  [Worlds.CannyValley]: $t('common.stw.worldNames.cannyValley'),
+  [Worlds.TwinePeaks]: $t('common.stw.worldNames.twinePeaks'),
 
-  [Worlds.StormKingsDomain]: 'Storm King\'s Domain',
+  [Worlds.StormKingsDomain]: $t('common.stw.worldNames.stormKingsDomain'),
 
-  [Worlds.Dungeons]: 'Dungeons',
-  [Worlds.VisitTheCrater]: 'Visit The Crater',
+  [Worlds.Dungeons]: $t('common.stw.worldNames.dungeons'),
+  [Worlds.VisitTheCrater]: $t('common.stw.worldNames.visitTheCrater'),
 
-  [Worlds.BlastedBadlands]: 'Blasted Badlands',
-  [Worlds.FlannelFalls]: 'Flannel Falls',
-  [Worlds.FrozenFjords]: 'Frozen Fjords',
-  [Worlds.Hexsylvania]: 'Hexsylvania',
-  [Worlds.ScurvyShoals]: 'Scurvy Shoals'
-} as const);
+  [Worlds.BlastedBadlands]: $t('common.stw.worldNames.blastedBadlands'),
+  [Worlds.FlannelFalls]: $t('common.stw.worldNames.flannelFalls'),
+  [Worlds.FrozenFjords]: $t('common.stw.worldNames.frozenFjords'),
+  [Worlds.Hexsylvania]: $t('common.stw.worldNames.hexsylvania'),
+  [Worlds.ScurvyShoals]: $t('common.stw.worldNames.scurvyShoals')
+}));
 
 export const WorldColors = Object.freeze({
   Stonewood: '#34D375',
@@ -169,32 +172,32 @@ export const ZoneCategories = Object.freeze({
   tts: ['TrapTheStorm']
 } as const);
 
-export const ZoneNames = Object.freeze({
-  atlas: 'Fight the Storm',
-  'atlas-c2': 'Fight Category 2 Storm',
-  'atlas-c3': 'Fight Category 3 Storm',
-  'atlas-c4': 'Fight Category 4 Storm',
-  dtb: 'Deliver the Bomb',
-  dte: 'Destroy the Encampments',
-  eac: 'Eliminate and Collect',
-  ets: 'Evacuate the Shelter',
-  'mini-boss': 'Mini-Boss',
-  htm: 'Hunt the Titan',
-  htr: 'Hit the Road',
-  ptp: 'Protect the Presents',
-  radar: 'Build the Radar Grid',
-  refuel: 'Refuel the Homebase',
-  rescue: 'Rescue the Survivors',
-  resupply: 'Resupply',
-  rocket: 'Launch the Rocket',
-  rtd: 'Retrieve the Data',
-  rtl: 'Ride the Lightning',
-  rts: 'Repair the Shelter',
-  stn: 'Survive the Storm',
-  'storm-shield': 'Storm Shield Defense',
-  tts: 'Trap the Storm',
-  quest: 'Quest'
-} as const);
+export const ZoneNames = derived(t, ($t) => ({
+  atlas: $t('common.stw.zoneNames.fightTheStorm'),
+  'atlas-c2': $t('common.stw.zoneNames.fightCategory2Storm'),
+  'atlas-c3': $t('common.stw.zoneNames.fightCategory3Storm'),
+  'atlas-c4': $t('common.stw.zoneNames.fightCategory4Storm'),
+  dtb: $t('common.stw.zoneNames.deliverTheBomb'),
+  dte: $t('common.stw.zoneNames.destroyTheEncampments'),
+  eac: $t('common.stw.zoneNames.eliminateAndCollect'),
+  ets: $t('common.stw.zoneNames.evacuateTheShelter'),
+  'mini-boss': $t('common.stw.zoneNames.miniBoss'),
+  htm: $t('common.stw.zoneNames.huntTheTitan'),
+  htr: $t('common.stw.zoneNames.hitTheRoad'),
+  ptp: $t('common.stw.zoneNames.protectThePresents'),
+  radar: $t('common.stw.zoneNames.buildTheRadarGrid'),
+  refuel: $t('common.stw.zoneNames.refuelTheHomebase'),
+  rescue: $t('common.stw.zoneNames.rescueTheSurvivors'),
+  resupply: $t('common.stw.zoneNames.resupply'),
+  rocket: $t('common.stw.zoneNames.launchTheRocket'),
+  rtd: $t('common.stw.zoneNames.retrieveTheData'),
+  rtl: $t('common.stw.zoneNames.rideTheLightning'),
+  rts: $t('common.stw.zoneNames.repairTheShelter'),
+  stn: $t('common.stw.zoneNames.surviveTheStorm'),
+  'storm-shield': $t('common.stw.zoneNames.stormShieldDefense'),
+  tts: $t('common.stw.zoneNames.trapTheStorm'),
+  quest: $t('common.stw.zoneNames.quest')
+} as Record<string, string>));
 
 export const GroupZones = Object.freeze([
   'atlas',

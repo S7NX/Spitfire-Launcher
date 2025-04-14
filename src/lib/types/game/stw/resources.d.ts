@@ -55,7 +55,7 @@ export type HeroData = {
 }
 
 export type ZoneThemeData = {
-  name: string
+  names: Record<Locale, string>
 }
 
 export type ParsedModifierData = WorldParsedMission['mission']['modifiers'][number]

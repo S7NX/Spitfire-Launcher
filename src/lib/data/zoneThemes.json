@@ -1,392 +1,782 @@
 {
   "bp_zt_tp_yarrr_island_c": {
-    "name": "Tropical"
+    "names": {
+      "en": "Tropical",
+      "tr": "Tropik"
+    }
   },
   "bp_zt_tp_plank_island_c": {
-    "name": "Tropical"
+    "names": {
+      "en": "Tropical",
+      "tr": "Tropik"
+    }
   },
   "bp_zt_tp_island01_c": {
-    "name": "Tropical"
+    "names": {
+      "en": "Tropical",
+      "tr": "Tropik"
+    }
   },
   "bp_tz_tp_water_c": {
-    "name": "Water"
+    "names": {
+      "en": "Water",
+      "tr": "Su"
+    }
   },
   "bp_zt_theforestwinter_c": {
-    "name": "The Forest"
+    "names": {
+      "en": "The Forest",
+      "tr": "Orman"
+    }
   },
   "bp_zt_thesuburbs_arid_c": {
-    "name": "Suburbs"
+    "names": {
+      "en": "Suburbs",
+      "tr": "Banliyö"
+    }
   },
   "bp_zt_thesuburbs_c": {
-    "name": "Suburbs"
+    "names": {
+      "en": "Suburbs",
+      "tr": "Banliyö"
+    }
   },
   "bp_zt_theforest_c": {
-    "name": "Forest"
+    "names": {
+      "en": "Forest",
+      "tr": "Orman"
+    }
   },
   "bp_zt_thegrasslands_mansion_c": {
-    "name": "The Mansion"
+    "names": {
+      "en": "The Mansion",
+      "tr": "Malikâne"
+    }
   },
   "bp_zt_thegrasslands_c": {
-    "name": "Grasslands"
+    "names": {
+      "en": "Grasslands",
+      "tr": "Çayır"
+    }
   },
   "bp_zt_theindustrialpark_arid_c": {
-    "name": "Industrial Park"
+    "names": {
+      "en": "Industrial Park",
+      "tr": "Sanayi Parkı"
+    }
   },
   "bp_zt_theindustrialpark_c": {
-    "name": "Industrial Park"
+    "names": {
+      "en": "Industrial Park",
+      "tr": "Sanayi Parkı"
+    }
   },
   "bp_zt_thedesert_c": {
-    "name": "Desert"
+    "names": {
+      "en": "Desert",
+      "tr": "Çöl"
+    }
   },
   "bp_zt_thecity_arid_c": {
-    "name": "City"
+    "names": {
+      "en": "City",
+      "tr": "Şehir"
+    }
   },
   "bp_zt_thecity_c": {
-    "name": "City"
+    "names": {
+      "en": "City",
+      "tr": "Şehir"
+    }
   },
   "bp_zt_route99_landmark_c": {
-    "name": "Thunder Route 99"
+    "names": {
+      "en": "Thunder Route 99",
+      "tr": "99 No.’lu Yıldırımyolu"
+    }
   },
   "bp_zt_route99_bunker_2_c": {
-    "name": "Thunder Route 99"
+    "names": {
+      "en": "Thunder Route 99",
+      "tr": "99 No.’lu Yıldırımyolu"
+    }
   },
   "bp_zt_route99_bunker_1_c": {
-    "name": "Thunder Route 99"
+    "names": {
+      "en": "Thunder Route 99",
+      "tr": "99 No.’lu Yıldırımyolu"
+    }
   },
   "bp_zt_route99_2_c": {
-    "name": "Thunder Route 99"
+    "names": {
+      "en": "Thunder Route 99",
+      "tr": "99 No.’lu Yıldırımyolu"
+    }
   },
   "bp_zt_route99_1_c": {
-    "name": "Thunder Route 99"
+    "names": {
+      "en": "Thunder Route 99",
+      "tr": "99 No.’lu Yıldırımyolu"
+    }
   },
   "bp_zt_observetheskies_c": {
-    "name": "Thunder Route 99"
+    "names": {
+      "en": "Thunder Route 99",
+      "tr": "99 No.’lu Yıldırımyolu"
+    }
   },
   "bp_zt_launchinglars_c": {
-    "name": "The Grasslands"
+    "names": {
+      "en": "The Grasslands",
+      "tr": "Çayır"
+    }
   },
   "bp_zt_ghosttown_highnoon_c": {
-    "name": "Ghost Town"
+    "names": {
+      "en": "Ghost Town",
+      "tr": "Hayalet Kasaba"
+    }
   },
   "bp_zt_ghosttown_b_c": {
-    "name": "Ghost Town"
+    "names": {
+      "en": "Ghost Town",
+      "tr": "Hayalet Kasaba"
+    }
   },
   "bp_zt_ghosttown_a_c": {
-    "name": "Ghost Town"
+    "names": {
+      "en": "Ghost Town",
+      "tr": "Hayalet Kasaba"
+    }
   },
   "bp_zt_dudebro_landmark_portal_c": {
-    "name": "Storm King"
+    "names": {
+      "en": "Storm King",
+      "tr": "Fırtına Kralı"
+    }
   },
   "bp_zt_dudebro_landmark_lakeside_c": {
-    "name": "Storm King"
+    "names": {
+      "en": "Storm King",
+      "tr": "Fırtına Kralı"
+    }
   },
   "bp_zt_dudebro_landmark_grasslands_c": {
-    "name": "Storm King"
+    "names": {
+      "en": "Storm King",
+      "tr": "Fırtına Kralı"
+    }
   },
   "bp_zt_dudebro_landmark_desert_c": {
-    "name": "Storm King"
+    "names": {
+      "en": "Storm King",
+      "tr": "Fırtına Kralı"
+    }
   },
   "bp_zt_dudebro_hard_c": {
-    "name": "The Portal"
+    "names": {
+      "en": "The Portal",
+      "tr": "Portal"
+    }
   },
   "bp_zt_dudebro_c": {
-    "name": "The Portal"
+    "names": {
+      "en": "The Portal",
+      "tr": "Portal"
+    }
   },
   "bp_zt_perfmem_c": {
-    "name": "PerfMem City"
+    "names": {
+      "en": "PerfMem City",
+      "tr": "Perfor-Bel Şehri"
+    }
   },
   "bp_zt_build_irwin_c": {
-    "name": "Buildasaurus Rex"
+    "names": {
+      "en": "Buildasaurus Rex",
+      "tr": "Dino-Zor, İnşa Kolay"
+    }
   },
   "bp_zt_desert_monument_c": {
-    "name": "Desert"
+    "names": {
+      "en": "Desert",
+      "tr": "Çöl"
+    }
   },
   "bp_zt_desert_deployprobe_c": {
-    "name": "Desert"
+    "names": {
+      "en": "Desert",
+      "tr": "Çöl"
+    }
   },
   "bp_zt_desert_bunker_c": {
-    "name": "Desert"
+    "names": {
+      "en": "Desert",
+      "tr": "Çöl"
+    }
   },
   "bp_zt_desert_c": {
-    "name": "Desert"
+    "names": {
+      "en": "Desert",
+      "tr": "Çöl"
+    }
   },
   "bp_zt_starlight_c": {
-    "name": "Haunted Forest"
+    "names": {
+      "en": "Haunted Forest",
+      "tr": "Perili Orman"
+    }
   },
   "bp_zt_theoutpost_pve_04_c": {
-    "name": "Twine Peaks Storm Shield"
+    "names": {
+      "en": "Twine Peaks Storm Shield",
+      "tr": "Dikiz Tepeler Fırtına Kalkanı"
+    }
   },
   "bp_zt_theoutpost_pve_03_c": {
-    "name": "Canny Valley Storm Shield"
+    "names": {
+      "en": "Canny Valley Storm Shield",
+      "tr": "Tekinli Vadi Fırtına Kalkanı"
+    }
   },
   "bp_zt_theoutpost_pve_02_c": {
-    "name": "Plankerton Storm Shield"
+    "names": {
+      "en": "Plankerton Storm Shield",
+      "tr": "Kalaslıevler Fırtına Kalkanı"
+    }
   },
   "bp_zt_theoutpost_pve_01_c": {
-    "name": "Homebase Storm Shield"
+    "names": {
+      "en": "Homebase Storm Shield",
+      "tr": "Ana Üs Fırtına Kalkanı"
+    }
   },
   "bp_zt_homebase_07_c": {
-    "name": "Your Homebase"
+    "names": {
+      "en": "Your Homebase",
+      "tr": "Ana Üs'sün"
+    }
   },
   "bp_zt_homebase_06_c": {
-    "name": "Your Homebase"
+    "names": {
+      "en": "Your Homebase",
+      "tr": "Ana Üs'sün"
+    }
   },
   "bp_zt_homebase_05_c": {
-    "name": "Your Homebase"
+    "names": {
+      "en": "Your Homebase",
+      "tr": "Ana Üs'sün"
+    }
   },
   "bp_zt_homebase_03_c": {
-    "name": "Your Homebase"
+    "names": {
+      "en": "Your Homebase",
+      "tr": "Ana Üs'sün"
+    }
   },
   "bp_zt_homebase_02_c": {
-    "name": "Your Homebase"
+    "names": {
+      "en": "Your Homebase",
+      "tr": "Ana Üs'sün"
+    }
   },
   "bp_zt_onboarding_suburban_a_c": {
-    "name": "The Suburbs"
+    "names": {
+      "en": "The Suburbs",
+      "tr": "Banliyö"
+    }
   },
   "bp_zt_buildoff_c": {
-    "name": "The Durr Burger Build-Off"
+    "names": {
+      "en": "The Durr Burger Build-Off",
+      "tr": "Durrr Burger İnşa Yarışması"
+    }
   },
   "bp_zt_mayday_twine2_c": {
-    "name": "Twine Peaks Tier 2"
+    "names": {
+      "en": "Twine Peaks Tier 2",
+      "tr": "Dikiz Tepeler 2. Aşama"
+    }
   },
   "bp_zt_mayday_twine1_c": {
-    "name": "Twine Peaks Tier 1"
+    "names": {
+      "en": "Twine Peaks Tier 1",
+      "tr": "Dikiz Tepeler 1. Aşama"
+    }
   },
   "bp_zt_mayday_plankerton2_c": {
-    "name": "Plankerton Tier 2"
+    "names": {
+      "en": "Plankerton Tier 2",
+      "tr": "Kalaslıevler 2. Aşama"
+    }
   },
   "bp_zt_mayday_plankerton1_c": {
-    "name": "Plankerton Tier 1"
+    "names": {
+      "en": "Plankerton Tier 1",
+      "tr": "Kalaslıevler 1. Aşama"
+    }
   },
   "bp_zt_mayday_endgame_c": {
-    "name": "Twine Peaks Tier 3"
+    "names": {
+      "en": "Twine Peaks Tier 3",
+      "tr": "Dikiz Tepeler 3. Aşama"
+    }
   },
   "bp_zt_mayday_canny2_c": {
-    "name": "Canny Valley Tier 2"
+    "names": {
+      "en": "Canny Valley Tier 2",
+      "tr": "Tekinli Vadi 2. Aşama"
+    }
   },
   "bp_zt_mayday_canny1_c": {
-    "name": "Canny Valley Tier 1"
+    "names": {
+      "en": "Canny Valley Tier 1",
+      "tr": "Tekinli Vadi 1. Aşama"
+    }
   },
   "bp_zt_mayday_c": {
-    "name": "Stonewood Tier"
+    "names": {
+      "en": "Stonewood Tier",
+      "tr": "Taşlıorman Aşaması"
+    }
   },
   "bp_zt_buildthebase_desert_c": {
-    "name": "Fort Setup"
+    "names": {
+      "en": "Fort Setup",
+      "tr": "Kale Kurulumu"
+    }
   },
   "bp_zt_trv_sw_c": {
-    "name": "The Swamps"
+    "names": {
+      "en": "The Swamps",
+      "tr": "Bataklık"
+    }
   },
   "bp_zt_trv_slashercamp_c": {
-    "name": "Shady Acres"
+    "names": {
+      "en": "Shady Acres",
+      "tr": "Gölgeli Arazi"
+    }
   },
   "bp_zt_trv_hf_intro_c": {
-    "name": "Haunted Forest"
+    "names": {
+      "en": "Haunted Forest",
+      "tr": "Perili Orman"
+    }
   },
   "bp_zt_trv_hf_castleb_c": {
-    "name": "Haunted Forest"
+    "names": {
+      "en": "Haunted Forest",
+      "tr": "Perili Orman"
+    }
   },
   "bp_zt_trv_hf_castle_c": {
-    "name": "Haunted Forest"
+    "names": {
+      "en": "Haunted Forest",
+      "tr": "Perili Orman"
+    }
   },
   "bp_zt_trv_hf_c": {
-    "name": "Haunted Forest"
+    "names": {
+      "en": "Haunted Forest",
+      "tr": "Perili Orman"
+    }
   },
   "bp_zt_trv_hauntedhotel_replay_c": {
-    "name": "Haunted Hotel"
+    "names": {
+      "en": "Haunted Hotel",
+      "tr": "Perili Otel"
+    }
   },
   "bp_zt_trv_hauntedhotel_aged_c": {
-    "name": "Haunted Forest"
+    "names": {
+      "en": "Haunted Forest",
+      "tr": "Perili Orman"
+    }
   },
   "bp_zt_trv_hauntedhotel_c": {
-    "name": "Haunted Hotel"
+    "names": {
+      "en": "Haunted Hotel",
+      "tr": "Perili Otel"
+    }
   },
   "bp_zt_endless_winter_c": {
-    "name": "Frostnite"
+    "names": {
+      "en": "Frostnite",
+      "tr": "Fortnite Soğukları"
+    }
   },
   "bp_zt_survival_c": {
-    "name": "Fortnite Survival Prototype"
+    "names": {
+      "en": "Fortnite Survival Prototype",
+      "tr": "Fortnite Hayatta Kalma Prototipi"
+    }
   },
   "bp_zt_criticalmission_c": {
-    "name": "Play with Others"
+    "names": {
+      "en": "Play with Others",
+      "tr": "Başkalarıyla Oyna"
+    }
   },
   "bp_zt_ad_thesuburbs_c": {
-    "name": "Autumn Suburbs"
+    "names": {
+      "en": "Autumn Suburbs",
+      "tr": "Sonbahar Banliyöleri"
+    }
   },
   "bp_zt_ad_theindustrialpark_c": {
-    "name": "Autumn Industrial Park"
+    "names": {
+      "en": "Autumn Industrial Park",
+      "tr": "Sonbahar Sanayi Parkı"
+    }
   },
   "bp_zt_ad_thecity_c": {
-    "name": "Autumn City"
+    "names": {
+      "en": "Autumn City",
+      "tr": "Sonbahar Şehri"
+    }
   },
   "bp_zt_ad_lakeside_c": {
-    "name": "Lakeside"
+    "names": {
+      "en": "Lakeside",
+      "tr": "Göl Kenarı"
+    }
   },
   "bp_zt_ad2_thegrasslands_c": {
-    "name": "Autumn Foothills"
+    "names": {
+      "en": "Autumn Foothills",
+      "tr": "Güz Etekleri"
+    }
   },
   "bp_zt_phoenix_winter_twine2_town_c": {
-    "name": "Chilly Cove"
+    "names": {
+      "en": "Chilly Cove",
+      "tr": "Kırağı Koy"
+    }
   },
   "bp_zt_phoenix_winter_twine2_arctic_c": {
-    "name": "Boreal Base"
+    "names": {
+      "en": "Boreal Base",
+      "tr": "Kutup Karargâhı"
+    }
   },
   "bp_zt_phoenix_winter_twine1_town_c": {
-    "name": "Chilly Cove"
+    "names": {
+      "en": "Chilly Cove",
+      "tr": "Kırağı Koy"
+    }
   },
   "bp_zt_phoenix_winter_twine1_arctic_c": {
-    "name": "Boreal Base"
+    "names": {
+      "en": "Boreal Base",
+      "tr": "Kutup Karargâhı"
+    }
   },
   "bp_zt_phoenix_winter_stonewood_1_town_c": {
-    "name": "Chilly Cove"
+    "names": {
+      "en": "Chilly Cove",
+      "tr": "Kırağı Koy"
+    }
   },
   "bp_zt_phoenix_winter_stonewood_1_arctic_c": {
-    "name": "Boreal Base"
+    "names": {
+      "en": "Boreal Base",
+      "tr": "Kutup Karargâhı"
+    }
   },
   "bp_zt_phoenix_winter_stonewood_0_town_c": {
-    "name": "Chilly Cove"
+    "names": {
+      "en": "Chilly Cove",
+      "tr": "Kırağı Koy"
+    }
   },
   "bp_zt_phoenix_winter_stonewood_0_arctic_c": {
-    "name": "Boreal Base"
+    "names": {
+      "en": "Boreal Base",
+      "tr": "Kutup Karargâhı"
+    }
   },
   "bp_zt_phoenix_winter_plankerton2_town_c": {
-    "name": "Chilly Cove"
+    "names": {
+      "en": "Chilly Cove",
+      "tr": "Kırağı Koy"
+    }
   },
   "bp_zt_phoenix_winter_plankerton2_arctic_c": {
-    "name": "Boreal Base"
+    "names": {
+      "en": "Boreal Base",
+      "tr": "Kutup Karargâhı"
+    }
   },
   "bp_zt_phoenix_winter_plankerton1_town_c": {
-    "name": "Chilly Cove"
+    "names": {
+      "en": "Chilly Cove",
+      "tr": "Kırağı Koy"
+    }
   },
   "bp_zt_phoenix_winter_plankerton1_arctic_c": {
-    "name": "Boreal Base"
+    "names": {
+      "en": "Boreal Base",
+      "tr": "Kutup Karargâhı"
+    }
   },
   "bp_zt_phoenix_winter_endgame_town_c": {
-    "name": "Chilly Cove"
+    "names": {
+      "en": "Chilly Cove",
+      "tr": "Kırağı Koy"
+    }
   },
   "bp_zt_phoenix_winter_endgame_arctic_c": {
-    "name": "Boreal Base"
+    "names": {
+      "en": "Boreal Base",
+      "tr": "Kutup Karargâhı"
+    }
   },
   "bp_zt_phoenix_winter_canny2_town_c": {
-    "name": "Chilly Cove"
+    "names": {
+      "en": "Chilly Cove",
+      "tr": "Kırağı Koy"
+    }
   },
   "bp_zt_phoenix_winter_canny2_arctic_c": {
-    "name": "Boreal Base"
+    "names": {
+      "en": "Boreal Base",
+      "tr": "Kutup Karargâhı"
+    }
   },
   "bp_zt_phoenix_winter_canny1_town_c": {
-    "name": "Chilly Cove"
+    "names": {
+      "en": "Chilly Cove",
+      "tr": "Kırağı Koy"
+    }
   },
   "bp_zt_phoenix_winter_canny1_arctic_c": {
-    "name": "Boreal Base"
+    "names": {
+      "en": "Boreal Base",
+      "tr": "Kutup Karargâhı"
+    }
   },
   "bp_zt_onboarding_fort_c": {
-    "name": "Onboarding Fort"
+    "names": {
+      "en": "Onboarding Fort",
+      "tr": "Eğitim Kalesi"
+    }
   },
   "bp_zt_longwayhome_c": {
-    "name": "The City"
+    "names": {
+      "en": "The City",
+      "tr": "Şehir"
+    }
   },
   "bp_zt_stabilizetherift_c": {
-    "name": "The Desert"
+    "names": {
+      "en": "The Desert",
+      "tr": "Çöl"
+    }
   },
   "bp_zt_trv_hauntedhotel_huskescape_c": {
-    "name": "Haunted Forest"
+    "names": {
+      "en": "Haunted Forest",
+      "tr": "Perili Orman"
+    }
   },
   "bp_zt_outlandish_c": {
-    "name": "Suspicious Factory"
+    "names": {
+      "en": "Suspicious Factory",
+      "tr": "Şüpheli Fabrika"
+    }
   },
   "bp_zt_plankharbor_c": {
-    "name": "Plank Harbor"
+    "names": {
+      "en": "Plank Harbor",
+      "tr": "Kalas Limanı"
+    }
   },
   "bp_zt_winter_twine2_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_winter_twine1_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_winter_stonewood_1_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_winter_stonewood_0_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_winter_plankerton2_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_winter_plankerton1_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_winter_endgame_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_winter_canny2_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_winter_canny1_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_protectthepresents_twine2_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_protectthepresents_twine1_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_protectthepresents_stonewood_0_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_protectthepresents_plankerton2_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_protectthepresents_plankerton1_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_protectthepresents_endgame_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_protectthepresents_canny2_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_protectthepresents_canny1_c": {
-    "name": "Crackshot's Neighborhood"
+    "names": {
+      "en": "Crackshot's Neighborhood",
+      "tr": "Tahta Asker'in Mahallesi"
+    }
   },
   "bp_zt_finalfrontier_c": {
-    "name": "The Desert"
+    "names": {
+      "en": "The Desert",
+      "tr": "Çöl"
+    }
   },
   "bp_zt_challengethehorde_twine_c": {
-    "name": "Tier 4"
+    "names": {
+      "en": "Tier 4",
+      "tr": "4. Aşama"
+    }
   },
   "bp_zt_challengethehorde_sw_vh_c": {
-    "name": "Tier 1"
+    "names": {
+      "en": "Tier 1",
+      "tr": "1. Aşama"
+    }
   },
   "bp_zt_challengethehorde_sw_h_c": {
-    "name": "Tier 1"
+    "names": {
+      "en": "Tier 1",
+      "tr": "1. Aşama"
+    }
   },
   "bp_zt_challengethehorde_plank_vl_c": {
-    "name": "Tier 2"
+    "names": {
+      "en": "Tier 2",
+      "tr": "2. Aşama"
+    }
   },
   "bp_zt_challengethehorde_plank_vh_c": {
-    "name": "Tier 2"
+    "names": {
+      "en": "Tier 2",
+      "tr": "2. Aşama"
+    }
   },
   "bp_zt_challengethehorde_plank_m_c": {
-    "name": "Tier 2"
+    "names": {
+      "en": "Tier 2",
+      "tr": "2. Aşama"
+    }
   },
   "bp_zt_challengethehorde_canny_vl_c": {
-    "name": "Tier 3"
+    "names": {
+      "en": "Tier 3",
+      "tr": "3. Aşama"
+    }
   },
   "bp_zt_challengethehorde_canny_vh_c": {
-    "name": "Tier 3"
+    "names": {
+      "en": "Tier 3",
+      "tr": "3. Aşama"
+    }
   },
   "bp_zt_challengethehorde_canny_m_c": {
-    "name": "Tier 3"
+    "names": {
+      "en": "Tier 3",
+      "tr": "3. Aşama"
+    }
   },
   "bp_zt_challengethehorde_challenge_minibossarmy_twine_c": {
-    "name": "Tier 4"
+    "names": {
+      "en": "Tier 4",
+      "tr": "4. Aşama"
+    }
   },
   "bp_zt_challengethehorde_challenge_minibossarmy_sw_c": {
-    "name": "Tier 1"
+    "names": {
+      "en": "Tier 1",
+      "tr": "1. Aşama"
+    }
   },
   "bp_zt_challengethehorde_challenge_minibossarmy_plank_c": {
-    "name": "Tier 2"
+    "names": {
+      "en": "Tier 2",
+      "tr": "2. Aşama"
+    }
   },
   "bp_zt_challengethehorde_challenge_minibossarmy_canny_c": {
-    "name": "Tier 3"
+    "names": {
+      "en": "Tier 3",
+      "tr": "3. Aşama"
+    }
   }
 }

@@ -1,13 +1,17 @@
 <script lang="ts" module>
-  import { gadgets, heroes, teamPerks } from '$lib/constants/stw/resources';
-  import type { RarityType } from '$types/game/stw/resources';
+  import { FounderEditions, gadgets, heroes, teamPerks } from '$lib/constants/stw/resources';
+  import { Worlds, ZoneNames } from '$lib/constants/stw/worldInfo';
+  import type { RarityType, ZoneThemeData } from '$types/game/stw/resources';
+
+  type FounderEdition = typeof FounderEditions[keyof typeof FounderEditions];
+  type World = typeof Worlds[keyof typeof Worlds];
 
   type STWData = {
     commanderLevel: {
       current: number;
       pastMaximum: number;
     };
-    founderEdition: string;
+    founderEdition: FounderEdition | null;
     xpBoosts: {
       boostedXp: number;
       boostAmount: number;
@@ -21,11 +25,11 @@
   }>;
 
   type MissionData = {
-    name: string;
+    nameId: string;
     icon: string;
     powerLevel: number;
-    zone: string;
-    world: string;
+    zone: ZoneThemeData;
+    theaterId: World;
   };
 
   type LoadoutData = {
@@ -65,9 +69,9 @@
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import WorldInfoSectionAccordion from '$components/stw/worldInfo/WorldInfoSectionAccordion.svelte';
   import Pagination from '$components/ui/Pagination.svelte';
-  import { WorldNames, ZoneNames } from '$lib/constants/stw/worldInfo';
+  import { WorldNames } from '$lib/constants/stw/worldInfo';
   import MatchmakingManager from '$lib/core/managers/matchmaking';
-  import { accountsStore, worldInfoCache } from '$lib/stores';
+  import { accountsStore, language, worldInfoCache } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
   import { Separator } from 'bits-ui';
@@ -79,7 +83,7 @@
   import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
   import type { ProfileItem } from '$types/game/mcp';
   import MCPManager from '$lib/core/managers/mcp';
-  import { FounderEditionNames, FounderEditions, RarityColors, RarityTypes, zoneThemes } from '$lib/constants/stw/resources';
+  import { FounderEditionNames, RarityColors, RarityTypes, zoneThemes } from '$lib/constants/stw/resources';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
   const selectedHeroLoadout = $derived(loadoutData?.[heroLoadoutPage - 1]);
@@ -216,11 +220,11 @@
 
       if (missionData) {
         mission = {
-          name: ZoneNames[missionData.zone.type.id!],
+          nameId: missionData.zone.type.id!,
           icon: missionData.zone.type.imageUrl!,
           powerLevel: missionData.powerLevel,
-          zone: zoneThemes[missionData.zone.theme?.split('.')[1].toLowerCase() as never]?.name,
-          world: WorldNames[zoneData.theaterId as never]
+          zone: zoneThemes[missionData.zone.theme?.split('.')[1].toLowerCase() as never],
+          theaterId: zoneData.theaterId
         };
       }
     }
@@ -232,17 +236,17 @@
     }));
   }
 
-  function getFounderEdition(items: ProfileItem[]) {
+  function getFounderEdition(items: ProfileItem[]): FounderEdition | null {
     const editions = Object.entries(FounderEditions).toReversed();
 
     for (const [, templateId] of editions) {
       const edition = items.find((item) => item.templateId === templateId);
-      if (edition) return $FounderEditionNames[templateId];
+      if (edition) return templateId;
     }
 
     return items.find((item) => item.templateId === 'Token:receivemtxcurrency')
-      ? $t('common.stw.founderEditions.founder')
-      : $t('common.stw.founderEditions.none');
+      ? FounderEditions.Standard
+      : null;
   }
 
   function getXPBoosts(items: ProfileItem[]) {
@@ -299,7 +303,12 @@
         name: $t('lookupPlayer.playerInfo.boostedXp', { count: stwData?.xpBoosts.boostedXp }),
         value: stwData && `${stwData.xpBoosts.boostedXp.toLocaleString()} ${stwData.xpBoosts.boostAmount ? `(${$t('lookupPlayer.playerInfo.boostCount', { count: stwData.xpBoosts.boostAmount })})` : ''}`
       },
-      { name: $t('lookupPlayer.playerInfo.founderEdition'), value: stwData?.founderEdition }
+      {
+        name: $t('lookupPlayer.playerInfo.founderEdition'), 
+        value: stwData?.founderEdition 
+          ? $FounderEditionNames[stwData.founderEdition]
+          : $t('common.stw.founderEditions.none')
+      }
     ]}
 
     <div class="space-y-4 text-sm relative border p-5 rounded-md min-w-80 xs:min-w-96">
@@ -364,18 +373,18 @@
 
                 <div class="flex items-center gap-1">
                   <span class="text-muted-foreground">{$t('lookupPlayer.stwDetails.missionInformation.name')}:</span>
-                  <img class="size-5" alt={mission.name} src={mission.icon}/>
-                  <span>{mission.name} ⚡{mission.powerLevel}</span>
+                  <img class="size-5" alt={$ZoneNames[mission.nameId]} src={mission.icon}/>
+                  <span>{$ZoneNames[mission.nameId]} ⚡{mission.powerLevel}</span>
                 </div>
 
                 <div class="flex items-center gap-1">
                   <span class="text-muted-foreground">{$t('lookupPlayer.stwDetails.missionInformation.world')}:</span>
-                  <span>{mission.world}</span>
+                  <span>{$WorldNames[mission.theaterId]}</span>
                 </div>
 
                 <div class="flex items-center gap-1">
                   <span class="text-muted-foreground">{$t('lookupPlayer.stwDetails.missionInformation.zone')}:</span>
-                  <span>{mission.zone}</span>
+                  <span>{mission.zone.names[$language]}</span>
                 </div>
               </div>
             {/if}

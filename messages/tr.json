@@ -17,6 +17,46 @@
         "superDeluxe": "Super Deluxe",
         "limited": "Limited",
         "ultimate": "Ultimate"
+      },
+      "worldNames": {
+        "stonewood": "Taşlıorman",
+        "plankerton": "Kalaslıevler",
+        "cannyValley": "Tekinli Vadi",
+        "twinePeaks": "Dikiz Tepeler",
+        "stormKingsDomain": "Storm King's Domain",
+        "dungeons": "Zindanlar",
+        "visitTheCrater": "Visit the Crater",
+        "blastedBadlands": "Çorak Çöl",
+        "flannelFalls": "Ilıman Diyar",
+        "frozenFjords": "Kışlık Körfez",
+        "hexsylvania": "Uğursizistan",
+        "scurvyShoals": "Kefal Kumsalı"
+      },
+      "zoneNames": {
+        "fightTheStorm": "Fırtınayla Savaş",
+        "fightCategory2Storm": "2. Kategori Fırtınayla Savaş",
+        "fightCategory3Storm": "3. Kategori Fırtınayla Savaş",
+        "fightCategory4Storm": "4. Kategori Fırtınayla Savaş",
+        "deliverTheBomb": "Bombayı Götür",
+        "destroyTheEncampments": "Kampları Yok Et",
+        "eliminateAndCollect": "Avla ve Topla",
+        "evacuateTheShelter": "Sığınağı Tahliye Et",
+        "miniBoss": "Mini-Boss",
+        "huntTheTitan": "Titan'ı Avla",
+        "hitTheRoad": "Yola Çık",
+        "protectThePresents": "Hediyeleri Koru",
+        "buildTheRadarGrid": "Radar Şebekesini İnşa Et",
+        "refuelTheHomebase": "Ana Üsse Yakıt İkmali Yap",
+        "rescueTheSurvivors": "Felaketzedeleri Kurtar",
+        "resupply": "İkmal",
+        "launchTheRocket": "Roketi Fırlat",
+        "retrieveTheData": "Verileri Al",
+        "rideTheLightning": "Yıldırım Hızıyla",
+        "repairTheShelter": "Sığınağı Onar",
+        "surviveTheStorm": "Fırtınada Hayatta Kal",
+        "stormShieldDefense": "Fırtına Kalkanı Savunması",
+        "trapTheStorm": "Fırtınayı Hapset",
+        "quest": "Görev"
       }
     },
     "gameModes": {
@@ -79,20 +119,6 @@
       "dailyQuests": "Günlük Görevler",
       "stwMissionAlerts": "STW Görev Uyarıları",
       "lookupPlayers": "Oyuncu Ara"
-    },
-    "worldNames": {
-      "stonewood": "Taşlıorman",
-      "plankerton": "Kalaslıevler",
-      "cannyValley": "Tekinli Vadi",
-      "twinePeaks": "Dikiz Tepeler",
-      "stormKingsDomain": "Storm King's Domain",
-      "dungeons": "Zindanlar",
-      "visitTheCrater": "Visit the Crater",
-      "blastedBadlands": "Çorak Çöl",
-      "flannelFalls": "Ilıman Diyar",
-      "frozenFjords": "Kışlık Körfez",
-      "hexsylvania": "Uğursizistan",
-      "scurvyShoals": "Kefal Kumsalı"
     }
   },
   "newVersionAvailable": {
