@@ -103,23 +103,6 @@
       "account": "Account",
       "brStw": "BR & STW",
       "authentication": "Authentication"
-    },
-    "items": {
-      "vbucksInformation": "V-Bucks",
-      "redeemCodes": "Redeem Codes",
-      "epicGamesSettings": "Epic Games Settings",
-      "eula": "EULA",
-      "autoKick": "Auto-Kick",
-      "taxiService": "Taxi Service",
-      "botLobby": "Bot Lobby",
-      "customStatus": "Custom Status",
-      "partyManagement": "Party Management",
-      "serverStatus": "Server Status",
-      "itemShop": "Item Shop",
-      "earnedXp": "Earned XP",
-      "dailyQuests": "Daily Quests",
-      "stwMissionAlerts": "STW Mission Alerts",
-      "lookupPlayers": "Lookup Players"
     }
   },
   "newVersionAvailable": {
@@ -412,7 +395,10 @@
     "rewards": "Rewards",
     "alertRewards": "Alert Rewards"
   },
-  "lookupPlayer": {
+  "lookupPlayers": {
+    "page": {
+      "title": "Lookup Players"
+    },
     "search": "Search by name or account ID",
     "notFound": "Player not found",
     "stwStatsPrivate": "Couldn't fetch STW data of the player. Their game stats are private.",
@@ -425,7 +411,7 @@
       "founderEdition": "Founder edition"
     },
     "stwDetails": {
-      "title":  "Save the World Details",
+      "title": "Save the World Details",
       "players": "Players",
       "missionInformation": {
         "title": "Mission Information",
@@ -446,7 +432,7 @@
   },
   "serverStatus": {
     "page": {
-      "title": "Fortnite Server Status"
+      "title": "Server Status"
     },
     "statuses": {
       "operational": "Operational",

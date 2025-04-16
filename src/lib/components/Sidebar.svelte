@@ -117,8 +117,7 @@
                         class={cn(
                           'block px-3 py-1 text-sm rounded-md truncate',
                           'hover:bg-accent',
-                          page.url.pathname === item.href &&
-                            'bg-accent text-accent-foreground'
+                          page.url.pathname === item.href && 'bg-accent text-accent-foreground'
                         )}
                         href={item.href}
                         onclick={() => sidebarOpen.set(false)}
@@ -139,9 +138,9 @@
       <div class="flex flex-col mt-4">
         {#each externalLinks as link (link.name)}
           <Button
-            class="font-medium text-muted-foreground ml-2 px-4 py-2 text-left flex items-center"
+            class="text-muted-foreground text-left text-sm mx-2 flex items-center"
             href={link.href}
-            size="sm"
+            size="md"
             variant="ghost"
           >
             <img

@@ -19,22 +19,22 @@ export const SidebarCategories = derived(t, ($t) => [
     items: [
       {
         key: 'vbucksInformation',
-        name: $t('sidebar.items.vbucksInformation'),
+        name: $t('vbucksInformation.page.title'),
         href: '/account-management/vbucks'
       },
       {
         key: 'redeemCodes',
-        name: $t('sidebar.items.redeemCodes'),
+        name: $t('redeemCodes.page.title'),
         href: '/account-management/redeem-codes'
       },
       {
         key: 'epicGamesSettings',
-        name: $t('sidebar.items.epicGamesSettings'),
+        name: $t('epicGamesSettings.page.title'),
         href: '/account-management/epic-games-settings'
       },
       {
         key: 'eula',
-        name: $t('sidebar.items.eula'),
+        name: $t('eula.page.title'),
         href: '/account-management/eula'
       }
     ]
@@ -45,57 +45,57 @@ export const SidebarCategories = derived(t, ($t) => [
     items: [
       {
         key: 'autoKick',
-        name: $t('sidebar.items.autoKick'),
+        name: $t('autoKick.page.title'),
         href: '/br-stw/auto-kick'
       },
       {
         key: 'taxiService',
-        name: $t('sidebar.items.taxiService'),
+        name: $t('taxiService.page.title'),
         href: '/br-stw/taxi-service'
       },
       {
         key: 'botLobby',
-        name: $t('sidebar.items.botLobby'),
+        name: $t('botLobby.page.title'),
         href: '/br-stw/bot-lobby'
       },
       {
         key: 'customStatus',
-        name: $t('sidebar.items.customStatus'),
+        name: $t('customStatus.page.title'),
         href: '/br-stw/custom-status'
       },
       {
         key: 'partyManagement',
-        name: $t('sidebar.items.partyManagement'),
+        name: $t('partyManagement.page.title'),
         href: '/br-stw/party'
       },
       {
         key: 'serverStatus',
-        name: $t('sidebar.items.serverStatus'),
+        name: $t('serverStatus.page.title'),
         href: '/br-stw/server-status'
       },
       {
         key: 'itemShop',
-        name: $t('sidebar.items.itemShop'),
+        name: $t('itemShop.page.title'),
         href: '/br-stw/item-shop'
       },
       {
         key: 'earnedXp',
-        name: $t('sidebar.items.earnedXp'),
+        name: $t('earnedXP.page.title'),
         href: '/br-stw/earned-xp'
       },
       {
         key: 'dailyQuests',
-        name: $t('sidebar.items.dailyQuests'),
+        name: $t('dailyQuests.page.title'),
         href: '/br-stw/daily-quests'
       },
       {
         key: 'stwWorldInfo',
-        name: $t('sidebar.items.stwMissionAlerts'),
+        name: $t('stwMissionAlerts.page.title'),
         href: '/br-stw/stw-world-info'
       },
       {
         key: 'lookupPlayers',
-        name: $t('sidebar.items.lookupPlayers'),
+        name: $t('lookupPlayers.page.title'),
         href: '/br-stw/lookup-players'
       }
     ]

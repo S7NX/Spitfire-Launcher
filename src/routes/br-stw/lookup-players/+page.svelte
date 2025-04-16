@@ -112,7 +112,7 @@
         await getSTWData(internalLookupData.accountId);
       } catch (error) {
         console.error(error);
-        toast.error($t('lookupPlayer.stwStatsPrivate'));
+        toast.error($t('lookupPlayers.stwStatsPrivate'));
       }
 
       try {
@@ -126,7 +126,7 @@
       if (shouldErrorBeIgnored(error)) return;
 
       console.error(error);
-      toast.error($t('lookupPlayer.notFound'));
+      toast.error($t('lookupPlayers.notFound'));
     } finally {
       isLoading = false;
     }
@@ -271,7 +271,7 @@
       <Input
         class="grow"
         disabled={isLoading}
-        placeholder={$t('lookupPlayer.search')}
+        placeholder={$t('lookupPlayers.search')}
         bind:value={searchQuery}
       />
 
@@ -293,18 +293,18 @@
 
   {#if lookupData}
     {@const kv = [
-      { name: $t('lookupPlayer.playerInfo.id'), value: lookupData.accountId },
-      { name: $t('lookupPlayer.playerInfo.name'), value: lookupData.displayName, href: `https://fortnitedb.com/profile/${lookupData.accountId}` },
+      { name: $t('lookupPlayers.playerInfo.id'), value: lookupData.accountId },
+      { name: $t('lookupPlayers.playerInfo.name'), value: lookupData.displayName, href: `https://fortnitedb.com/profile/${lookupData.accountId}` },
       {
-        name: $t('lookupPlayer.playerInfo.commanderLevel'),
+        name: $t('lookupPlayers.playerInfo.commanderLevel'),
         value: stwData && `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}`
       },
       {
-        name: $t('lookupPlayer.playerInfo.boostedXp', { count: stwData?.xpBoosts.boostedXp }),
-        value: stwData && `${stwData.xpBoosts.boostedXp.toLocaleString()} ${stwData.xpBoosts.boostAmount ? `(${$t('lookupPlayer.playerInfo.boostCount', { count: stwData.xpBoosts.boostAmount })})` : ''}`
+        name: $t('lookupPlayers.playerInfo.boostedXp', { count: stwData?.xpBoosts.boostedXp }),
+        value: stwData && `${stwData.xpBoosts.boostedXp.toLocaleString()} ${stwData.xpBoosts.boostAmount ? `(${$t('lookupPlayers.playerInfo.boostCount', { count: stwData.xpBoosts.boostAmount })})` : ''}`
       },
       {
-        name: $t('lookupPlayer.playerInfo.founderEdition'), 
+        name: $t('lookupPlayers.playerInfo.founderEdition'),
         value: stwData?.founderEdition 
           ? $FounderEditionNames[stwData.founderEdition]
           : $t('common.stw.founderEditions.none')
@@ -349,13 +349,13 @@
       {#if missionPlayers?.length || mission || loadoutData}
         <Separator.Root class="bg-border h-px"/>
 
-        <h3 class="text-lg font-semibold text-center">{$t('lookupPlayer.stwDetails.title')}</h3>
+        <h3 class="text-lg font-semibold text-center">{$t('lookupPlayers.stwDetails.title')}</h3>
 
         {#if missionPlayers?.length || mission}
           <div class="grid grid-cols-1 xs:grid-cols-2 gap-4">
             {#if missionPlayers?.length}
               <div>
-                <h4 class="text-lg font-semibold">{$t('lookupPlayer.stwDetails.players')}</h4>
+                <h4 class="text-lg font-semibold">{$t('lookupPlayers.stwDetails.players')}</h4>
                 {#each missionPlayers as member (member.accountId)}
                   <div class="flex items-center gap-1">
                     <span>{member.name}</span>
@@ -369,21 +369,21 @@
 
             {#if mission}
               <div>
-                <h4 class="text-lg font-semibold">{$t('lookupPlayer.stwDetails.missionInformation.title')}</h4>
+                <h4 class="text-lg font-semibold">{$t('lookupPlayers.stwDetails.missionInformation.title')}</h4>
 
                 <div class="flex items-center gap-1">
-                  <span class="text-muted-foreground">{$t('lookupPlayer.stwDetails.missionInformation.name')}:</span>
+                  <span class="text-muted-foreground">{$t('lookupPlayers.stwDetails.missionInformation.name')}:</span>
                   <img class="size-5" alt={$ZoneNames[mission.nameId]} src={mission.icon}/>
                   <span>{$ZoneNames[mission.nameId]} ⚡{mission.powerLevel}</span>
                 </div>
 
                 <div class="flex items-center gap-1">
-                  <span class="text-muted-foreground">{$t('lookupPlayer.stwDetails.missionInformation.world')}:</span>
+                  <span class="text-muted-foreground">{$t('lookupPlayers.stwDetails.missionInformation.world')}:</span>
                   <span>{$WorldNames[mission.theaterId]}</span>
                 </div>
 
                 <div class="flex items-center gap-1">
-                  <span class="text-muted-foreground">{$t('lookupPlayer.stwDetails.missionInformation.zone')}:</span>
+                  <span class="text-muted-foreground">{$t('lookupPlayers.stwDetails.missionInformation.zone')}:</span>
                   <span>{mission.zone.names[$language]}</span>
                 </div>
               </div>
@@ -401,7 +401,7 @@
               <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 place-items-center not-md:gap-4">
                 {#if selectedHeroLoadout.commander}
                   <div class="flex flex-col items-center gap-y-1">
-                    <span class="text-lg font-semibold">{$t('lookupPlayer.stwDetails.heroLoadout.commander')}</span>
+                    <span class="text-lg font-semibold">{$t('lookupPlayers.stwDetails.heroLoadout.commander')}</span>
                     <img
                       style="background-color: {RarityColors[selectedHeroLoadout.commander.rarity]}"
                       class="size-12 rounded-sm"
@@ -414,7 +414,7 @@
 
                 {#if selectedHeroLoadout.teamPerk}
                   <div class="flex flex-col items-center gap-y-1">
-                    <span class="text-lg font-semibold">{$t('lookupPlayer.stwDetails.heroLoadout.teamPerk')}</span>
+                    <span class="text-lg font-semibold">{$t('lookupPlayers.stwDetails.heroLoadout.teamPerk')}</span>
                     <img
                       class="size-12 rounded-sm"
                       alt={selectedHeroLoadout.teamPerk.name}
@@ -426,7 +426,7 @@
 
                 {#if selectedHeroLoadout.supportTeam?.length}
                   <div class="flex flex-col items-center gap-y-1">
-                    <span class="text-lg font-semibold md:hidden">{$t('lookupPlayer.stwDetails.heroLoadout.supportTeam')}</span>
+                    <span class="text-lg font-semibold md:hidden">{$t('lookupPlayers.stwDetails.heroLoadout.supportTeam')}</span>
                     <div class="grid grid-cols-3 gap-2">
                       {#each selectedHeroLoadout.supportTeam as support (support.name)}
                         <div class="flex justify-center items-center size-10" title={support.name}>
@@ -444,7 +444,7 @@
 
                 {#if selectedHeroLoadout.gadgets?.length}
                   <div class="flex flex-col items-center gap-y-1">
-                    <span class="text-lg font-semibold md:hidden">{$t('lookupPlayer.stwDetails.heroLoadout.gadgets')}</span>
+                    <span class="text-lg font-semibold md:hidden">{$t('lookupPlayers.stwDetails.heroLoadout.gadgets')}</span>
                     {#each selectedHeroLoadout.gadgets as gadget (gadget.name)}
                       <img class="size-10" alt={gadget.name} src={gadget.icon} title={gadget.name}/>
                     {/each}
@@ -461,7 +461,7 @@
       {#if stwData && stwData?.claimedMissionAlertIds.size > 0 && claimedMisssionAlerts && claimedMisssionAlerts.length > 0}
         <Separator.Root class="bg-border h-px"/>
 
-        <h3 class="text-lg font-semibold text-center">{$t('lookupPlayer.claimedAlerts.title')}</h3>
+        <h3 class="text-lg font-semibold text-center">{$t('lookupPlayers.claimedAlerts.title')}</h3>
 
         <WorldInfoSectionAccordion
           claimedMissionAlerts={stwData?.claimedMissionAlertIds}

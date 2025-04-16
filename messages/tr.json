@@ -72,7 +72,8 @@
     "uncommon": "Sıradışı",
     "rare": "Nadir",
     "epic": "Efsanevi",
-    "legendary": "Efsane"
+    "legendary": "Efsane",
+    "mythic": "Eşsiz"
   },
   "times": {
     "seconds": {
@@ -102,23 +103,6 @@
       "account": "Hesap",
       "brStw": "BR & STW",
       "authentication": "Yetkilendirme"
-    },
-    "items": {
-      "vbucksInformation": "V-Papel",
-      "redeemCodes": "Kod Okut",
-      "epicGamesSettings": "Epic Games Ayarları",
-      "eula": "SKLA",
-      "autoKick": "Auto-Kick",
-      "taxiService": "Taksi Hizmeti",
-      "botLobby": "Bot Lobi",
-      "customStatus": "Özel Durum",
-      "partyManagement": "Grup Yönetimi",
-      "serverStatus": "Sunucu Durumu",
-      "itemShop": "İçerik Mağazası",
-      "earnedXp": "Kazanılan TP",
-      "dailyQuests": "Günlük Görevler",
-      "stwMissionAlerts": "STW Görev Uyarıları",
-      "lookupPlayers": "Oyuncu Ara"
     }
   },
   "newVersionAvailable": {
@@ -393,7 +377,7 @@
     },
     "search": "İsim veya ID ile arayın",
     "playerNotFound": "Oyuncu bulunamadı",
-    "stwStatsPrivate": "Oyun istatistikleri gizli olduğu için oyuncunun STW verileri alınamadı.",    
+    "stwStatsPrivate": "Oyun istatistikleri gizli olduğu için oyuncunun STW verileri alınamadı.",
     "playerInfo": {
       "id": "ID",
       "name": "İsim",
@@ -411,7 +395,10 @@
     "rewards": "Ödüller",
     "alertRewards": "Görev Uyarısı Ödülleri"
   },
-  "lookupPlayer": {
+  "lookupPlayers": {
+    "page": {
+      "title": "Oyuncu Ara"
+    },
     "search": "İsim veya ID ile arayın",
     "notFound": "Oyuncu bulunamadı",
     "stwStatsPrivate": "Oyun istatistikleri gizli olduğu için oyuncunun STW verileri alınamadı.",
@@ -424,7 +411,7 @@
       "founderEdition": "Kurucu sürümü"
     },
     "stwDetails": {
-      "title":  "Dünyayı Kurtar Bilgileri",
+      "title": "Dünyayı Kurtar Bilgileri",
       "players": "Oyuncular",
       "missionInformation": {
         "title": "Görev Bilgileri",
@@ -445,7 +432,7 @@
   },
   "serverStatus": {
     "page": {
-      "title": "Fortnite Sunucu Durumu"
+      "title": "Sunucu Durumu"
     },
     "statuses": {
       "operational": "Aktif",
