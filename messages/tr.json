@@ -296,7 +296,8 @@
       "description": "Battle Royale, Kreatif ve Dünyayı Kurtar'da kazandığınız TP'yi görüntüleyin."
     },
     "check": "Kazanılan TP'yi Al",
-    "loading": "Kazanılan TP Alınıyor"
+    "loading": "Kazanılan TP Alınıyor",
+    "resetsAt": "Sıfırlanma tarihi: {time}"
   },
   "itemShop": {
     "page": {

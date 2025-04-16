@@ -88,6 +88,9 @@
 
     try {
       const result = await Command.create('kill-fortnite').execute();
+      Command.create('kill-eos-eac').execute().catch(() => null);
+      Command.create('kill-game-eac').execute().catch(() => null);
+
       if (result.stderr) throw new Error(result.stderr);
 
       isLaunching = false;

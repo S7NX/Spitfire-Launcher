@@ -5,6 +5,8 @@
     battleRoyale: number;
     creative: number;
     saveTheWorld: number;
+    resetDate: Date;
+    stwResetDate: Date;
   }>;
 
   let isFetching = $state(false);
@@ -13,7 +15,7 @@
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
-  import { accountsStore, doingBulkOperations } from '$lib/stores';
+  import { accountsStore, doingBulkOperations, language } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
   import { getResolvedResults, t } from '$lib/utils/util';
@@ -27,10 +29,13 @@
     doingBulkOperations.set(true);
     xpStatuses = [];
 
+    const nextSunday = getNextDayOfWeek(0);
+    const nextThursday = getNextDayOfWeek(4);
+
     const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
     await Promise.allSettled(accounts.map(async (account) => {
       const status = xpStatuses.find((status) => status.accountId === account.accountId) ||
-        { accountId: account.accountId, displayName: account.displayName, data: {} as XPStatus['data'] } satisfies XPStatus;
+        { accountId: account.accountId, displayName: account.displayName, data: { resetDate: nextSunday, stwResetDate: nextThursday } as XPStatus['data'] } satisfies XPStatus;
 
       if (!xpStatuses.includes(status)) xpStatuses = [...xpStatuses, status];
 
@@ -43,6 +48,7 @@
         const attributes = athenaProfile.profileChanges[0].profile.stats.attributes;
         status.data.creative = attributes.creative_dynamic_xp?.currentWeekXp || 0;
         status.data.battleRoyale = attributes.playtime_xp?.currentWeekXp || 0;
+        status.data.resetDate = nextSunday;
       }
 
       if (campaignProfile) {
@@ -50,6 +56,7 @@
         const xpItem = items.find((item) => item.templateId === 'Token:stw_accolade_tracker');
         if (xpItem) {
           status.data.saveTheWorld = xpItem.attributes?.weekly_xp || 0;
+          status.data.stwResetDate = nextThursday;
         }
       }
     }));
@@ -57,6 +64,18 @@
     doingBulkOperations.set(false);
     selectedAccounts = [];
     isFetching = false;
+  }
+
+  function getNextDayOfWeek(dayIndex: number) {
+    const now = new Date();
+    const currentDay = now.getDay();
+    const daysUntilTarget = (7 + dayIndex - currentDay) % 7;
+
+    const nextDay = new Date();
+    nextDay.setUTCDate(now.getDate() + (daysUntilTarget === 0 ? 7 : daysUntilTarget));
+    nextDay.setUTCHours(0, 0, 0, 0);
+
+    return nextDay;
   }
 </script>
 
@@ -87,16 +106,19 @@
       {#snippet content(status)}
         {@const gamemodes = [
           {
+            id: 'battleRoyale',
             name: $t('common.gameModes.battleRoyale'),
             value: status.data.battleRoyale || 0,
             limit: 4_000_000
           },
           {
+            id: 'creative',
             name: $t('common.gameModes.creative'),
             value: status.data.creative || 0,
             limit: 4_000_000
           },
           {
+            id: 'saveTheWorld',
             name: $t('common.gameModes.saveTheWorld'),
             value: status.data.saveTheWorld || 0,
             limit: 4_000_000
@@ -104,7 +126,9 @@
         ]}
 
         <div class="bg-muted/30 p-3 space-y-6">
-          {#each gamemodes as gamemode (gamemode.name)}
+          {#each gamemodes as gamemode (gamemode.id)}
+            {@const resetDate = gamemode.id === 'saveTheWorld' ? status.data.stwResetDate : status.data.resetDate}
+
             <div class="space-y-1">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-1.5">
@@ -124,9 +148,13 @@
 
               <div class="h-2 w-full bg-muted rounded-full overflow-hidden">
                 <div
-                  style="width: {Math.min(100,(gamemode.value / gamemode.limit) * 100)}%"
+                  style="width: {Math.min(100, (gamemode.value / gamemode.limit) * 100)}%"
                   class="h-full bg-epic"
                 ></div>
+              </div>
+
+              <div class="text-sm text-muted-foreground mt-1">
+                {$t('earnedXP.resetsAt', { time: resetDate.toLocaleString($language) })}
               </div>
             </div>
           {/each}

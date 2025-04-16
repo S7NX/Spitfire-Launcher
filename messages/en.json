@@ -297,7 +297,8 @@
       "description": "Check your XP progress from Battle Royale, Creative and Save the World."
     },
     "check": "Check Earned XP",
-    "loading": "Loading"
+    "loading": "Loading",
+    "resetsAt": "Resets at {time}"
   },
   "itemShop": {
     "page": {
