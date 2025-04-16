@@ -27,10 +27,15 @@
     value: T;
   };
 
-  const startingPageOptions = appSettingsSchema.shape.startingPage._def.innerType._def.values.map((value) => ({
-    label: $SidebarCategories.map((category) => category.items).flat().find((item) => item.key === value)!.name,
-    value
-  }));
+  const startingPageValues = appSettingsSchema.shape.startingPage._def.innerType._def.values as string[];
+  const startingPageOptions = $SidebarCategories
+    .map((category) => category.items)
+    .flat()
+    .filter((item) => startingPageValues.includes(item.key))
+    .map((item) => ({
+      label: item.name,
+      value: item.key
+    }));
 
   const startingAccountOptions: SelectOption<NonNullable<NonNullable<AllSettings['app']>['startingAccount']>>[] = [
     {
