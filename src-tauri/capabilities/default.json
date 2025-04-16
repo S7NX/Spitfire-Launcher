@@ -89,6 +89,24 @@
             "FortniteClient-Win64-Shipping.exe",
             "/F"
           ]
+        },
+        {
+          "name": "kill-eac-eos",
+          "cmd": "taskkill",
+          "args": [
+            "/F",
+            "/IM",
+            "EasyAntiCheat_EOS.exe"
+          ]
+        },
+        {
+          "name": "kill-game-eac",
+          "cmd": "taskkill",
+          "args": [
+            "/F",
+            "/IM",
+            "FortniteClient-Win64-Shipping_EAC.exe"
+          ]
         }
       ]
     },
