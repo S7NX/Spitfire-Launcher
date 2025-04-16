@@ -1,5 +1,6 @@
 import { dev } from '$app/environment';
 import config from '$lib/config';
+import SystemTray from '$lib/core/system/systemTray';
 import { accountDataFileSchema } from '$lib/validations/accounts';
 import {
   allSettingsSchema,
@@ -75,12 +76,18 @@ export default class DataStorage {
   static async getSettingsFile(bypassCache = false) {
     if (DataStorage.caches.settingsFile && !bypassCache) return DataStorage.caches.settingsFile;
 
-    return DataStorage.getFile<AllSettings>(
+    const data = await DataStorage.getFile<AllSettings>(
       SETTINGS_FILE_PATH,
       SETTINGS_INITIAL_DATA,
       allSettingsSchema,
       (data) => { DataStorage.caches.settingsFile = data; }
     );
+
+    if (data.app?.hideToTray) {
+      await SystemTray.setVisibility(true);
+    }
+
+    return data;
   }
 
   static async getDeviceAuthsFile(bypassCache = false) {

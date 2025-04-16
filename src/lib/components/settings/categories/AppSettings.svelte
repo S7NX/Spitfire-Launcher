@@ -52,23 +52,19 @@
   $effect(() => {
     if (!initialSettings) return;
 
-    const settingsChanged =
-      JSON.stringify(allSettings) !== JSON.stringify(initialSettings);
-    const currentSettingsValid =
-      allSettingsSchema.safeParse(allSettings).success;
+    const settingsChanged = JSON.stringify(allSettings) !== JSON.stringify(initialSettings);
+    const currentSettingsValid = allSettingsSchema.safeParse(allSettings).success;
 
     hasChanges = !currentSettingsValid ? false : settingsChanged;
   });
 
   async function handleSave() {
-    await DataStorage.writeConfigFile<AllSettings>(
-      SETTINGS_FILE_PATH,
-      allSettings
+    await DataStorage.writeConfigFile<AllSettings>(SETTINGS_FILE_PATH, allSettings
     );
 
     if (
-      initialSettings.app?.hideToTray !== allSettings.app?.hideToTray &&
-      allSettings.app?.hideToTray != null
+      initialSettings.app?.hideToTray !== allSettings.app?.hideToTray
+      && allSettings.app?.hideToTray != null
     ) {
       await SystemTray.setVisibility(allSettings.app.hideToTray);
     }
@@ -102,6 +98,7 @@
       toast.error($t('settings.appSettings.invalidValue'));
     } else {
       allSettings = newSettings;
+      SystemTray.setVisibility(allSettings.app?.hideToTray || false);
     }
   }
 
