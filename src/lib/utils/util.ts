@@ -121,7 +121,14 @@ export async function getResolvedResults<T extends readonly unknown[]>(
   promises: { [K in keyof T]: Promise<T[K]> }
 ): Promise<{ [K in keyof T]: T[K] | null }> {
   const results = await Promise.allSettled(promises);
-  return results.map(result => result.status === 'fulfilled' ? result.value : null) as { [K in keyof T]: T[K] | null };
+  return results.map(result => {
+    if (result.status === 'fulfilled') {
+      return result.value;
+    }
+
+    console.error(result.reason);
+    return null;
+  }) as { [K in keyof T]: T[K] | null };
 }
 
 export function evaluateCurve(keys: { Time: number, Value: number; }[], time: number) {
