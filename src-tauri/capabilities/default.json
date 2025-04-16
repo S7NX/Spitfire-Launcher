@@ -111,9 +111,7 @@
       ]
     },
     "clipboard-manager:default",
-    {
-      "identifier": "clipboard-manager:allow-write-text"
-    },
+    "clipboard-manager:allow-write-text",
     "os:default",
     "notification:default",
     "websocket:default"
