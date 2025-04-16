@@ -88,11 +88,10 @@
 
     try {
       const result = await Command.create('kill-fortnite').execute();
-      const result2 = await Command.create("kill-eac-eos").execute();
-      const result3 = await Command.create('kill-game-eac').execute();
+      Command.create('kill-eos-eac').execute().catch(() => null);
+      Command.create('kill-game-eac').execute().catch(() => null);
+
       if (result.stderr) throw new Error(result.stderr);
-      // if (result2.stderr) throw new Error(result2.stderr); // isnt always running, so commented out so launcher doesnt say it failed.
-      // if (result3.stderr) throw new Error(result3.stderr); // isnt always running, so commented out so launcher doesnt say it failed.
 
       isLaunching = false;
       isGameRunning = false;

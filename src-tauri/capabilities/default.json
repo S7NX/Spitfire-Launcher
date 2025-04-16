@@ -91,7 +91,7 @@
           ]
         },
         {
-          "name": "kill-eac-eos",
+          "name": "kill-eos-eac",
           "cmd": "taskkill",
           "args": [
             "/F",
