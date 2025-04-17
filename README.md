@@ -54,6 +54,9 @@ Settings are stored in:
 
 No need to uninstall. Run the setup file again to update. The app notifies when a new version is available.
 
+## Setting Up Locally
+See the [Setting Up Locally](docs/setting-up-locally.md) guide for instructions on how to set up your development environment.
+
 ## Contributing
 
 Contributions are welcome. If you want to help improve Spitfire Launcher, follow these steps:
