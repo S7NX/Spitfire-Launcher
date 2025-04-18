@@ -5,8 +5,6 @@
     battleRoyale: number;
     creative: number;
     saveTheWorld: number;
-    resetDate: Date;
-    stwResetDate: Date;
   }>;
 
   let isFetching = $state(false);
@@ -29,13 +27,10 @@
     doingBulkOperations.set(true);
     xpStatuses = [];
 
-    const nextSunday = getNextDayOfWeek(0);
-    const nextThursday = getNextDayOfWeek(4);
-
     const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
     await Promise.allSettled(accounts.map(async (account) => {
       const status = xpStatuses.find((status) => status.accountId === account.accountId) ||
-        { accountId: account.accountId, displayName: account.displayName, data: { resetDate: nextSunday, stwResetDate: nextThursday } as XPStatus['data'] } satisfies XPStatus;
+        { accountId: account.accountId, displayName: account.displayName, data: {} as XPStatus['data'] } satisfies XPStatus;
 
       if (!xpStatuses.includes(status)) xpStatuses = [...xpStatuses, status];
 
@@ -48,7 +43,6 @@
         const attributes = athenaProfile.profileChanges[0].profile.stats.attributes;
         status.data.creative = attributes.creative_dynamic_xp?.currentWeekXp || 0;
         status.data.battleRoyale = attributes.playtime_xp?.currentWeekXp || 0;
-        status.data.resetDate = nextSunday;
       }
 
       if (campaignProfile) {
@@ -56,7 +50,6 @@
         const xpItem = items.find((item) => item.templateId === 'Token:stw_accolade_tracker');
         if (xpItem) {
           status.data.saveTheWorld = xpItem.attributes?.weekly_xp || 0;
-          status.data.stwResetDate = nextThursday;
         }
       }
     }));
@@ -66,14 +59,14 @@
     isFetching = false;
   }
 
-  function getNextDayOfWeek(dayIndex: number) {
+  function getNextDayOfWeek(dayIndex: number, hours = 0) {
     const now = new Date();
     const currentDay = now.getDay();
     const daysUntilTarget = (7 + dayIndex - currentDay) % 7;
 
     const nextDay = new Date();
     nextDay.setUTCDate(now.getDate() + (daysUntilTarget === 0 ? 7 : daysUntilTarget));
-    nextDay.setUTCHours(0, 0, 0, 0);
+    nextDay.setUTCHours(hours, 0, 0, 0);
 
     return nextDay;
   }
@@ -127,7 +120,7 @@
 
         <div class="bg-muted/30 p-3 space-y-6">
           {#each gamemodes as gamemode (gamemode.id)}
-            {@const resetDate = gamemode.id === 'saveTheWorld' ? status.data.stwResetDate : status.data.resetDate}
+            {@const resetDate = gamemode.id === 'saveTheWorld' ? getNextDayOfWeek(4, 0) : getNextDayOfWeek(0, 13)}
 
             <div class="space-y-1">
               <div class="flex items-center justify-between">
