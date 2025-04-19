@@ -190,7 +190,7 @@ export default class TaxiManager {
   }
 
   private async handleFriendRequest(request: EpicEventFriendRequest) {
-    if (!this.autoAcceptFriendRequests || request.status === 'ACCEPTED') return;
+    if (!this.autoAcceptFriendRequests || request.status !== 'PENDING') return;
 
     await FriendManager.addFriend(this.account, request.from);
   }

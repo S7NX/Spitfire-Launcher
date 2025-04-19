@@ -330,7 +330,7 @@ export default class BotLobbyManager {
   }
 
   private async handleFriendRequest(request: EpicEventFriendRequest) {
-    if (!this.autoAcceptFriendRequests || request.status === 'PENDING') return;
+    if (!this.autoAcceptFriendRequests || request.status !== 'PENDING') return;
 
     await FriendManager.addFriend(this.account, request.from);
   }
