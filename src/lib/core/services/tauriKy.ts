@@ -30,18 +30,20 @@ const tauriKy = ky.create({
       headers.delete('x-user-agent');
     }
 
+    let textBody = request.body ? await request.text() : undefined;
+
     const response = await fetch(request.url, {
       method: request.method,
       headers,
-      body: request.body ? await request.text() : undefined
+      body: textBody
     });
 
     let data: unknown;
 
     try {
       data = await response.json();
-    } catch {
-      data = await response.text();
+    } catch (e) {
+      data = textBody;
     }
 
     if (isEpicApiError(data)) {

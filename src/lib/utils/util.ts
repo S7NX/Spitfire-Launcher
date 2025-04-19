@@ -180,3 +180,27 @@ export async function changeLocale(locale: Locale) {
 export function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+export async function processChunks<T, R>(
+  items: T[],
+  chunkSize: number,
+  processFn: (chunk: T[]) => Promise<R[]>
+): Promise<R[]> {
+  const promises = [];
+
+  for (let i = 0; i < items.length; i += chunkSize) {
+    const chunk = items.slice(i, i + chunkSize);
+    promises.push(processFn(chunk).catch(() => []));
+  }
+
+  const results = await Promise.allSettled(promises);
+  const processedResults: R[] = [];
+
+  for (const result of results) {
+    if (result.status === 'fulfilled' && result.value) {
+      processedResults.push(...result.value);
+    }
+  }
+
+  return processedResults;
+}

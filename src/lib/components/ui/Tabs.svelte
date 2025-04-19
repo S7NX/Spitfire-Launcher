@@ -3,7 +3,7 @@
   import type { Component, Snippet } from 'svelte';
 
   type Props = {
-    tabs: { id: string; name: string; component: Snippet | Component, disabled?: boolean }[];
+    tabs: { id: string; name: string; component?: Snippet | Component, disabled?: boolean }[];
     // Default is if-else, however it is slower to render than class if the tab component is too heavy
     switchType?: 'if-else' | 'class'
     activeTab?: string;
@@ -41,14 +41,16 @@
   {#each tabs as tab (tab.id)}
     {@const TabComponent = tab.component}
 
-    {#if switchType === 'if-else'}
-      {#if activeTab === tab.id}
-        <TabComponent/>
+    {#if TabComponent}
+      {#if switchType === 'if-else'}
+        {#if activeTab === tab.id}
+          <TabComponent/>
+        {/if}
+      {:else}
+        <div class={activeTab === tab.id ? 'block' : 'hidden'}>
+          <TabComponent/>
+        </div>
       {/if}
-    {:else}
-      <div class="{activeTab === tab.id ? 'block' : 'hidden'}">
-        <TabComponent/>
-      </div>
     {/if}
   {/each}
 </div>

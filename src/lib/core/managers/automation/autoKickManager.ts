@@ -3,7 +3,7 @@ import type XMPPManager from '$lib/core/managers/xmpp';
 import { getResolvedResults, sleep } from '$lib/utils/util';
 import type { AccountData } from '$types/accounts';
 import MatchmakingManager from '$lib/core/managers/matchmaking';
-import { EventNotifications, type PartyState, PartyStates } from '$lib/constants/events';
+import { EpicEvents } from '$lib/constants/events';
 import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
 import PartyManager from '$lib/core/managers/party';
 import claimRewards from '$lib/utils/autoKick/claimRewards';
@@ -14,7 +14,7 @@ import { get } from 'svelte/store';
 import { accountsStore } from '$lib/stores';
 
 type MatchmakingState = {
-  partyState: PartyState | null;
+  partyState: 'Matchmaking' | 'PostMatchmaking' | null;
   started: boolean;
 };
 
@@ -58,7 +58,7 @@ export default class AutoKickManager {
       const matchmakingState = this.matchmakingState;
 
       if (!matchmakingData) {
-        const wasInMatch = matchmakingState.partyState === PartyStates.Matchmaking || matchmakingState.partyState === PartyStates.PostMatchmaking;
+        const wasInMatch = matchmakingState.partyState === 'Matchmaking' || matchmakingState.partyState === 'PostMatchmaking';
         if (!wasInMatch) {
           this.dispose();
         }
@@ -68,13 +68,13 @@ export default class AutoKickManager {
 
       if (matchmakingData.started == null) return;
 
-      if (matchmakingData.started && matchmakingState.partyState !== PartyStates.PostMatchmaking) {
-        this.matchmakingState.partyState = PartyStates.PostMatchmaking;
+      if (matchmakingData.started && matchmakingState.partyState !== 'PostMatchmaking') {
+        this.matchmakingState.partyState = 'PostMatchmaking';
         return;
       }
 
       if (
-        matchmakingState.partyState !== PartyStates.PostMatchmaking
+        matchmakingState.partyState !== 'PostMatchmaking'
         || !matchmakingState.started
         || matchmakingData.started
       ) {
@@ -121,7 +121,7 @@ export default class AutoKickManager {
     if (matchmakingData?.started == null) return;
 
     this.matchmakingState.started = matchmakingData.started;
-    this.matchmakingState.partyState = matchmakingData.started ? PartyStates.PostMatchmaking : PartyStates.Matchmaking;
+    this.matchmakingState.partyState = matchmakingData.started ? 'PostMatchmaking' : 'Matchmaking';
 
     await this.initMissionCheckerInterval();
   }
@@ -175,7 +175,7 @@ export default class AutoKickManager {
   }
 
   private async invite(members: PartyData['members']) {
-    await this.xmpp.waitForEvent(EventNotifications.MemberJoined, (data) => data.account_id === this.account.accountId, 20000);
+    await this.xmpp.waitForEvent(EpicEvents.MemberJoined, (data) => data.account_id === this.account.accountId, 20000);
     await sleep(1000);
 
     const [partyData, friends] = await getResolvedResults([

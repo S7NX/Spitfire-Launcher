@@ -2,6 +2,8 @@
   let isKicking = $state<boolean>();
   let isLeaving = $state<boolean>();
   let isClaiming = $state<boolean>();
+  let isAddingFriend = $state<boolean>();
+  let isRemovingFriend = $state<boolean>();
 </script>
 
 <script lang="ts">
@@ -11,12 +13,16 @@
   import Label from '$components/ui/Label.svelte';
   import Switch from '$components/ui/Switch.svelte';
   import Tabs from '$components/ui/Tabs.svelte';
-  import { accountPartiesStore, accountsStore } from '$lib/stores';
+  import FriendManager from '$lib/core/managers/friend';
+  import XMPPManager from '$lib/core/managers/xmpp';
+  import { accountPartiesStore, accountsStore, friendsStore } from '$lib/stores';
   import { nonNull, t } from '$lib/utils/util';
   import claimRewards from '$lib/utils/autoKick/claimRewards';
   import { Separator } from 'bits-ui';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import LogOutIcon from 'lucide-svelte/icons/log-out';
+  import UserMinusIcon from 'lucide-svelte/icons/user-minus';
+  import UserPlusIcon from 'lucide-svelte/icons/user-plus';
   import UserXIcon from 'lucide-svelte/icons/user-x';
   import CrownIcon from 'lucide-svelte/icons/crown';
   import EllipsisIcon from 'lucide-svelte/icons/ellipsis';
@@ -34,6 +40,13 @@
 
   $effect(() => {
     fetchPartyData(activeAccount);
+    XMPPManager.create(activeAccount, 'partyManagement').then(xmpp => {
+      xmpp.connect();
+    });
+
+    if (!$friendsStore[activeAccount.accountId]) {
+      FriendManager.getSummary(activeAccount);
+    }
   });
 
   type Party = {
@@ -268,6 +281,33 @@
     }
   }
 
+  async function sendFriendRequest(memberId: string) {
+    isAddingFriend = true;
+
+    try {
+      await FriendManager.addFriend(activeAccount, memberId);
+    } catch (error) {
+      // @ts-ignore
+      console.error({ code: error.errorCode, message: error.message });
+      toast.error($t('partyManagement.partyMembers.failedToSendFriendRequest'));
+    } finally {
+      isAddingFriend = false;
+    }
+  }
+
+  async function removeFriend(memberId: string) {
+    isRemovingFriend = true;
+
+    try {
+      await FriendManager.removeFriend(activeAccount, memberId);
+    } catch (error) {
+      console.error(error);
+      toast.error($t('partyManagement.partyMembers.failedToRemoveFriend'));
+    } finally {
+      isRemovingFriend = false;
+    }
+  }
+
   function hideImageOnError(e: Event) {
     const target = e.currentTarget as HTMLImageElement;
     target.style.display = 'none';
@@ -281,8 +321,7 @@
 
 {#snippet STWActions()}
   <div class="flex flex-col gap-2">
-    <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2"
-    >
+    <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
       <Label for="shouldClaimRewards">{$t('partyManagement.stwActions.claimRewardsAfterLeaving')}</Label>
       <Switch id="shouldClaimRewards" bind:checked={shouldClaimRewards}/>
     </div>
@@ -373,16 +412,18 @@
             {@const canLeave = isRegisteredAccount && !member.isLeader}
             {@const canKick = partyLeaderAccount && partyLeaderAccount.accountId !== member.accountId}
             {@const canBePromoted = partyLeaderAccount && !member.isLeader}
+            {@const canAddFriend =(
+              !$friendsStore[activeAccount.accountId]?.friends?.has(member.accountId)
+              && !$friendsStore[activeAccount.accountId]?.outgoing?.has(member.accountId)
+            )}
 
             <div class="flex flex-col gap-3 p-4 border rounded-md w-60 relative">
               {#if canLeave || canKick || canBePromoted}
                 <div class="absolute top-3 right-3">
-                  <DropdownMenu.Root contentProps={{ class: 'w-48' }}>
+                  <DropdownMenu.Root contentProps={{ class: 'min-w-48' }}>
                     {#snippet trigger()}
                       <EllipsisIcon class="size-6"/>
                     {/snippet}
-
-                    <!-- todo: "add friend" option -->
 
                     {#if canLeave || canKick}
                       <DropdownMenu.Item
@@ -423,6 +464,31 @@
                         {:else}
                           <CrownIcon class="size-5"/>
                           {$t('partyManagement.partyMembers.promote')}
+                        {/if}
+                      </DropdownMenu.Item>
+                    {/if}
+
+                    {#if member.accountId !== activeAccount.accountId}
+                      <DropdownMenu.Item
+                        disabled={isAddingFriend || isRemovingFriend}
+                        onclick={() => canAddFriend ? sendFriendRequest(member.accountId) : removeFriend(member.accountId)}
+                      >
+                        {#if canAddFriend}
+                          {#if isAddingFriend}
+                            <LoaderCircleIcon class="size-5 animate-spin"/>
+                            {$t('partyManagement.partyMembers.sendingFriendRequest')}
+                          {:else}
+                            <UserPlusIcon class="size-5"/>
+                            {$t('partyManagement.partyMembers.sendFriendRequest')}
+                          {/if}
+                        {:else if !canAddFriend}
+                          {#if isRemovingFriend}
+                            <LoaderCircleIcon class="size-5 animate-spin"/>
+                            {$t('partyManagement.partyMembers.removingFriend')}
+                          {:else}
+                            <UserMinusIcon class="size-5"/>
+                            {$t('partyManagement.partyMembers.removeFriend')}
+                          {/if}
                         {/if}
                       </DropdownMenu.Item>
                     {/if}

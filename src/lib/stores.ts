@@ -1,3 +1,4 @@
+import type { BlockedAccountData, FriendData, IncomingFriendRequestData, OutgoingFriendRequestData } from '$types/game/friends';
 import type { PartyData } from '$types/game/party';
 import { SvelteMap } from 'svelte/reactivity';
 import { writable } from 'svelte/store';
@@ -40,3 +41,11 @@ export const accountDataStore = writable<Record<string, AccountStoreData>>({});
 export const ownedItemsStore = writable<Record<string, Set<string>>>({});
 export const customizableMenuStore = writable<Record<string, boolean>>({});
 export const language = writable<Locale>('en');
+export const friendsStore = writable<Record<string, {
+  friends: Map<string, FriendData>;
+  incoming: Map<string, IncomingFriendRequestData>;
+  outgoing: Map<string, OutgoingFriendRequestData>;
+  blocklist: Map<string, BlockedAccountData>;
+}>>({});
+export const displayNamesCache = writable<Record<string, string>>({});
+export const avatarCache = writable<Record<string, string>>({});

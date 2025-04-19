@@ -8,7 +8,7 @@ export const baseGameService = tauriKy.extend({
 });
 
 export const friendService = tauriKy.extend({
-  prefixUrl: 'https://friends-public-service-prod.ol.epicgames.com/friends/api/v1/'
+  prefixUrl: 'https://friends-public-service-prod.ol.epicgames.com/friends/api/v1'
 });
 
 export const fulfillmentService = tauriKy.extend({
@@ -52,4 +52,8 @@ export const eulaService = tauriKy.extend({
 
 export const userSearchService = tauriKy.extend({
   prefixUrl: 'https://user-search-service-prod.ol.epicgames.com/api/v1/search'
+});
+
+export const avatarService = tauriKy.extend({
+  prefixUrl: 'https://avatar-service-prod.identity.live.on.epicgames.com/v1/avatar/fortnite/ids'
 });

@@ -15,7 +15,8 @@
         outline: 'border border-input bg-transparent hover:bg-input/40',
         ghost: 'bg-transparent hover:bg-input/40',
         danger: 'bg-destructive text-destructive-foreground hover:bg-destructive/80',
-        epic: 'bg-epic text-epic-secondary hover:bg-epic/80'
+        epic: 'bg-epic text-epic-secondary hover:bg-epic/80',
+        noStyle: '!p-0 !font-normal'
       },
       size: {
         sm: 'px-2 py-1 text-sm font-normal',

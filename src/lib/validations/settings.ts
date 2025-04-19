@@ -19,6 +19,7 @@ export const deviceAuthsSettingsSchema = z.array(z.object({
 
 export const customizableMenuSettingsSchema = z.object({
   vbucksInformation: z.boolean().default(true),
+  friendManagement: z.boolean().default(true),
   redeemCodes: z.boolean().default(true),
   epicGamesSettings: z.boolean().default(true),
   eula: z.boolean().default(true),

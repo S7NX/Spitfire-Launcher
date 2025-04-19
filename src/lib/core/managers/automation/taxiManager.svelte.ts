@@ -1,4 +1,4 @@
-import { EventNotifications } from '$lib/constants/events';
+import { EpicEvents } from '$lib/constants/events';
 import BotLobbyManager from '$lib/core/managers/automation/botLobbyManager.svelte';
 import FriendManager from '$lib/core/managers/friend';
 import PartyManager from '$lib/core/managers/party';
@@ -11,14 +11,14 @@ import { evaluateCurve, t } from '$lib/utils/util';
 import { get } from 'svelte/store';
 import type { AccountData } from '$types/accounts';
 import type {
-  ServiceEventFriendRequest,
-  ServiceEventMemberJoined,
-  ServiceEventMemberKicked,
-  ServiceEventMemberLeft,
-  ServiceEventMemberNewCaptain,
-  ServiceEventMemberStateUpdated,
-  ServiceEventPartyPing,
-  ServiceEventPartyUpdated
+  EpicEventFriendRequest,
+  EpicEventMemberJoined,
+  EpicEventMemberKicked,
+  EpicEventMemberLeft,
+  EpicEventMemberNewCaptain,
+  EpicEventMemberStateUpdated,
+  EpicEventPartyPing,
+  EpicEventPartyUpdated
 } from '$types/game/events';
 
 const FORT_STATS_KEY = 'Default:FORTStats_j';
@@ -60,14 +60,14 @@ export default class TaxiManager {
       this.xmpp = await XMPPManager.create(this.account, 'taxiService');
       await this.xmpp.connect();
 
-      this.xmpp.addEventListener(EventNotifications.PartyInvite, this.handleInvite.bind(this), { signal });
-      this.xmpp.addEventListener(EventNotifications.FriendRequest, this.handleFriendRequest.bind(this), { signal });
-      this.xmpp.addEventListener(EventNotifications.MemberNewCaptain, this.handleNewCaptain.bind(this), { signal });
-      this.xmpp.addEventListener(EventNotifications.MemberJoined, this.handlePartyStateChange.bind(this), { signal });
-      this.xmpp.addEventListener(EventNotifications.MemberLeft, this.handlePartyStateChange.bind(this), { signal });
-      this.xmpp.addEventListener(EventNotifications.MemberKicked, this.handlePartyStateChange.bind(this), { signal });
-      this.xmpp.addEventListener(EventNotifications.MemberStateUpdated, this.handlePartyStateChange.bind(this), { signal });
-      this.xmpp.addEventListener(EventNotifications.PartyUpdated, this.handlePartyStateChange.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.PartyInvite, this.handleInvite.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.FriendRequest, this.handleFriendRequest.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.MemberNewCaptain, this.handleNewCaptain.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.MemberJoined, this.handlePartyStateChange.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.MemberLeft, this.handlePartyStateChange.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.MemberKicked, this.handlePartyStateChange.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.MemberStateUpdated, this.handlePartyStateChange.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.PartyUpdated, this.handlePartyStateChange.bind(this), { signal });
 
       this.setIsAvailable(true);
 
@@ -128,7 +128,7 @@ export default class TaxiManager {
     return await PartyManager.sendPatch(this.account, partyId, revision, this.getFortStats(), true);
   }
 
-  private async handleInvite(invite: ServiceEventPartyPing) {
+  private async handleInvite(invite: EpicEventPartyPing) {
     const currentParty = accountPartiesStore.get(this.account.accountId);
     if (currentParty?.members.length === 1) {
       await PartyManager.leave(this.account, currentParty.id);
@@ -157,7 +157,7 @@ export default class TaxiManager {
     }, this.partyTimeoutSeconds * 1000);
   }
 
-  private async handlePartyStateChange(event: ServiceEventMemberJoined | ServiceEventMemberLeft | ServiceEventMemberKicked | ServiceEventMemberStateUpdated | ServiceEventPartyUpdated) {
+  private async handlePartyStateChange(event: EpicEventMemberJoined | EpicEventMemberLeft | EpicEventMemberKicked | EpicEventMemberStateUpdated | EpicEventPartyUpdated) {
     if ('connection' in event && event.account_id === this.account.accountId) {
       return await PartyManager.sendPatch(this.account, event.party_id, event.revision, {}, true);
     }
@@ -183,19 +183,16 @@ export default class TaxiManager {
     }
   }
 
-  private async handleNewCaptain(data: ServiceEventMemberNewCaptain) {
+  private async handleNewCaptain(data: EpicEventMemberNewCaptain) {
     if (data.account_id === this.account.accountId) {
       await PartyManager.leave(this.account, data.party_id);
     }
   }
 
-  private async handleFriendRequest(request: ServiceEventFriendRequest) {
-    if (!this.autoAcceptFriendRequests) return;
+  private async handleFriendRequest(request: EpicEventFriendRequest) {
+    if (!this.autoAcceptFriendRequests || request.status !== 'PENDING') return;
 
-    const { payload } = request;
-    if (payload.status !== 'PENDING' || payload.direction !== 'INBOUND') return;
-
-    await FriendManager.addFriend(this.account, payload.accountId);
+    await FriendManager.addFriend(this.account, request.from);
   }
 
   private getFortStats() {

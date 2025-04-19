@@ -4,7 +4,7 @@ import { accountsStore, automationStore, doingBulkOperations } from '$lib/stores
 import type { AccountData } from '$types/accounts';
 import type { AutomationSetting, AutomationSettings } from '$types/settings';
 import XMPPManager from '$lib/core/managers/xmpp';
-import { EventNotifications, type PartyState, ServiceEvents } from '$lib/constants/events';
+import { EpicEvents, ConnectionEvents } from '$lib/constants/events';
 import AutoKickManager from '$lib/core/managers/automation/autoKickManager';
 import claimRewards from '$lib/utils/autoKick/claimRewards';
 import transferBuildingMaterials from '$lib/utils/autoKick/transferBuildingMaterials';
@@ -144,31 +144,31 @@ export default class AutoKickBase {
     const autoKickManager = new AutoKickManager(account, connection);
     AutoKickBase.autoKickManagers.set(account.accountId, autoKickManager);
 
-    let partyState: PartyState;
+    let partyState: string;
 
-    connection.addEventListener(ServiceEvents.SessionStarted, async () => {
+    connection.addEventListener(ConnectionEvents.SessionStarted, async () => {
       AutoKickBase.updateStatus(account.accountId, 'ACTIVE');
       await autoKickManager.checkMissionOnStartup();
     }, { signal });
 
-    connection.addEventListener(ServiceEvents.Disconnected, async () => {
+    connection.addEventListener(ConnectionEvents.Disconnected, async () => {
       AutoKickBase.updateStatus(account.accountId, 'DISCONNECTED');
       autoKickManager.dispose();
     }, { signal });
 
-    connection.addEventListener(EventNotifications.MemberDisconnected, async (data) => {
+    connection.addEventListener(EpicEvents.MemberDisconnected, async (data) => {
       if (data.account_id !== account.accountId) return;
 
       autoKickManager.dispose();
     }, { signal });
 
-    connection.addEventListener(EventNotifications.MemberExpired, async (data) => {
+    connection.addEventListener(EpicEvents.MemberExpired, async (data) => {
       if (data.account_id !== account.accountId) return;
 
       autoKickManager.dispose();
     }, { signal });
 
-    connection.addEventListener(EventNotifications.MemberKicked, async (data) => {
+    connection.addEventListener(EpicEvents.MemberKicked, async (data) => {
       if (data.account_id !== account.accountId) return;
 
       if (autoKickManager.matchmakingState.partyState === 'PostMatchmaking' && autoKickManager.matchmakingState.started) {
@@ -184,15 +184,15 @@ export default class AutoKickBase {
       }
     }, { signal });
 
-    connection.addEventListener(EventNotifications.MemberJoined, async (data) => {
+    connection.addEventListener(EpicEvents.MemberJoined, async (data) => {
       if (data.account_id !== account.accountId) return;
 
       AutoKickBase.updateStatus(account.accountId, 'ACTIVE');
       autoKickManager.initMissionCheckerIntervalTimeout(20000);
     }, { signal });
 
-    connection.addEventListener(EventNotifications.PartyUpdated, async (data) => {
-      const newPartyState = data.party_state_updated?.['Default:PartyState_s'] as PartyState | undefined;
+    connection.addEventListener(EpicEvents.PartyUpdated, async (data) => {
+      const newPartyState = data.party_state_updated?.['Default:PartyState_s'];
       if (!newPartyState) return;
 
       partyState = newPartyState;

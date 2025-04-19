@@ -497,6 +497,12 @@
       "leavingParty": "Gruptan Çıkılıyor",
       "promote": "Lider Yap",
       "promoting": "Lider Yapılıyor",
+      "sendFriendRequest": "Arkadaş Ekle",
+      "sendingFriendRequest": "Arkadaş Ekleniyor",
+      "failedToSendFriendRequest": "Arkadaş eklenemedi",
+      "removeFriend": "Arkadaşı Sil",
+      "removingFriend": "Arkadaş Siliniyor",
+      "failedToRemoveFriend": "Arkadaş silinemedi",
       "platform": "Platform",
       "ownsSTW": "STW sahibi",
       "loadout": "Dizilim",
@@ -595,6 +601,35 @@
       "title": "👋 Hoş Geldiniz, {name}",
       "description": "Epic Games hesabınıza başarıyla giriş yaptınız."
     }
+  },
+  "friendManagement": {
+    "page": {
+      "title": "Arkadaş Yönetimi"
+    },
+    "lists": {
+      "friends": "Arkadaşlar",
+      "incoming": "Gelen İstekler",
+      "outgoing": "Giden İstekler",
+      "blocklist": "Engelliler"
+    },
+    "failedToAdd": "Arkadaş eklenemedi veya istek kabul edilemedi",
+    "failedToRemove": "Arkadaş silinemedi veya istek reddedilemedi",
+    "failedToBlock": "Kullanıcı engellenemedi",
+    "failedToUnblock": "Kullanıcının engeli kaldırılamadı",
+    "failedToChangeNickname": "Takma ad değiştirilemedi",
+    "noFriends": "Arkadaş Yok",
+    "noIncomingRequests": "Gelen İstek Yok",
+    "noOutgoingRequests": "Giden İstek Yok",
+    "noBlockedUsers": "Engellenen Kullanıcı Yok",
+    "sendFriendRequest": "Arkadaşlık İsteği Gönder",
+    "sendingRequest": "Arkadaşlık İsteği Gönderiliyor",
+    "acceptRequest": "İsteği Kabul Et",
+    "removeFriend": "Arkadaşı Sil",
+    "cancelRequest": "İsteği İptal Et",
+    "denyRequest": "İsteği Reddet",
+    "blockUser": "Engelle",
+    "unblockUser": "Engeli Kaldır",
+    "changeNickname": "Takma Adını Değiştir"
   },
   "docs": {
     "howToUse": "Nasıl Kullanılır",

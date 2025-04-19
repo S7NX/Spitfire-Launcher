@@ -1,6 +1,4 @@
-export type EventNotification = typeof EventNotifications[keyof typeof EventNotifications]
-
-export const EventNotifications = Object.freeze({
+export const EpicEvents = Object.freeze({
   MemberConnected: 'com.epicgames.social.party.notification.v0.MEMBER_CONNECTED',
   MemberDisconnected: 'com.epicgames.social.party.notification.v0.MEMBER_DISCONNECTED',
   MemberExpired: 'com.epicgames.social.party.notification.v0.MEMBER_EXPIRED',
@@ -13,25 +11,15 @@ export const EventNotifications = Object.freeze({
   PartyUpdated: 'com.epicgames.social.party.notification.v0.PARTY_UPDATED',
   PartyInvite: 'com.epicgames.social.party.notification.v0.PING',
 
-  FriendRequest: 'com.epicgames.friends.core.apiobjects.Friend',
+  FriendRequest: 'FRIENDSHIP_REQUEST',
+  FriendRemove: 'FRIENDSHIP_REMOVE',
 
   InteractionNotification: 'com.epicgames.social.interactions.notification.v2'
 } as const);
 
-export type ServiceEvent = typeof ServiceEvents[keyof typeof ServiceEvents]
-
-export const ServiceEvents = Object.freeze({
+export const ConnectionEvents = Object.freeze({
   SessionStarted: 'session:started',
   Connected: 'connected',
   Disconnected: 'disconnected',
   Destroy: 'destroy'
-} as const);
-
-export type PartyState = typeof PartyStates[keyof typeof PartyStates]
-
-export const PartyStates = Object.freeze({
-  Matchmaking: 'Matchmaking',
-  PostMatchmaking: 'PostMatchmaking',
-  TheaterView: 'TheaterView',
-  WorldView: 'WorldView'
 } as const);
