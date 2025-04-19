@@ -27,7 +27,9 @@ export default class AvatarManager {
         if (avatar.namespace.toLowerCase() !== 'fortnite') continue;
 
         const cosmeticId = avatar.avatarId.split(':')[1];
-        cache[avatar.accountId] = `https://fortnite-api.com/images/cosmetics/br/${cosmeticId}/smallicon.png`;
+        if (cosmeticId) {
+          cache[avatar.accountId] = `https://fortnite-api.com/images/cosmetics/br/${cosmeticId}/smallicon.png`;
+        }
       }
 
       return cache;
