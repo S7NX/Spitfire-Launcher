@@ -225,8 +225,6 @@ export default class XMPPManager {
         return;
       }
 
-      console.log('xmpp', body);
-
       const { type } = body;
       if (!type) return;
 
