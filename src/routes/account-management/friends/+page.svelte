@@ -7,6 +7,7 @@
   import FriendsList from '$components/friends/FriendsList.svelte';
   import Tabs from '$components/ui/Tabs.svelte';
   import FriendManager from '$lib/core/managers/friend';
+  import XMPPManager from '$lib/core/managers/xmpp';
   import { accountsStore, friendsStore } from '$lib/stores';
   import Input from '$components/ui/Input.svelte';
   import { nonNull, t } from '$lib/utils/util';
@@ -17,6 +18,9 @@
 
   $effect(() => {
     FriendManager.getSummary(activeAccount);
+    XMPPManager.create(activeAccount, 'friendManagement').then(xmpp => {
+      xmpp.connect();
+    });
   });
 
   const tabs = $derived([

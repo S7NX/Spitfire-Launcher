@@ -1,44 +1,47 @@
 import Authentication from '$lib/core/authentication';
 import PartyManager from '$lib/core/managers/party';
-import { accountPartiesStore, accountsStore } from '$lib/stores';
-import type { AccountData } from '$types/accounts';
-import type { PartyMember } from '$types/game/party';
-import * as XMPP from 'stanza';
-import { EventNotifications, ServiceEvents } from '$lib/constants/events';
-import type {
-  ServiceEventFriendRequest,
-  ServiceEventInteractionNotification,
-  ServiceEventMemberConnected,
-  ServiceEventMemberDisconnected,
-  ServiceEventMemberExpired,
-  ServiceEventMemberJoined,
-  ServiceEventMemberKicked,
-  ServiceEventMemberLeft,
-  ServiceEventMemberNewCaptain,
-  ServiceEventMemberStateUpdated,
-  ServiceEventPartyPing,
-  ServiceEventPartyUpdated
-} from '$types/game/events';
-import type { Presence } from 'stanza/protocol';
+import { accountPartiesStore, accountsStore, friendsStore } from '$lib/stores';
+import { EpicEvents, ConnectionEvents } from '$lib/constants/events';
 import { get } from 'svelte/store';
+import * as XMPP from 'stanza';
+import type { AccountData } from '$types/accounts';
+import type { BlockedAccountData, FriendData, IncomingFriendRequestData, OutgoingFriendRequestData } from '$types/game/friends';
+import type { PartyMember } from '$types/game/party';
+import type { Presence } from 'stanza/protocol';
+import type {
+  EpicEventFriendRemoved,
+  EpicEventFriendRequest,
+  EpicEventInteractionNotification,
+  EpicEventMemberConnected,
+  EpicEventMemberDisconnected,
+  EpicEventMemberExpired,
+  EpicEventMemberJoined,
+  EpicEventMemberKicked,
+  EpicEventMemberLeft,
+  EpicEventMemberNewCaptain,
+  EpicEventMemberStateUpdated,
+  EpicEventPartyPing,
+  EpicEventPartyUpdated
+} from '$types/game/events';
 
 type EventMap = {
-  [EventNotifications.MemberConnected]: ServiceEventMemberConnected;
-  [EventNotifications.MemberDisconnected]: ServiceEventMemberDisconnected;
-  [EventNotifications.MemberExpired]: ServiceEventMemberExpired;
-  [EventNotifications.MemberJoined]: ServiceEventMemberJoined;
-  [EventNotifications.MemberKicked]: ServiceEventMemberKicked;
-  [EventNotifications.MemberLeft]: ServiceEventMemberLeft;
-  [EventNotifications.MemberStateUpdated]: ServiceEventMemberStateUpdated;
-  [EventNotifications.MemberNewCaptain]: ServiceEventMemberNewCaptain;
-  [EventNotifications.PartyUpdated]: ServiceEventPartyUpdated;
-  [EventNotifications.PartyInvite]: ServiceEventPartyPing;
-  [EventNotifications.FriendRequest]: ServiceEventFriendRequest;
-  [EventNotifications.InteractionNotification]: ServiceEventInteractionNotification;
+  [EpicEvents.MemberConnected]: EpicEventMemberConnected;
+  [EpicEvents.MemberDisconnected]: EpicEventMemberDisconnected;
+  [EpicEvents.MemberExpired]: EpicEventMemberExpired;
+  [EpicEvents.MemberJoined]: EpicEventMemberJoined;
+  [EpicEvents.MemberKicked]: EpicEventMemberKicked;
+  [EpicEvents.MemberLeft]: EpicEventMemberLeft;
+  [EpicEvents.MemberStateUpdated]: EpicEventMemberStateUpdated;
+  [EpicEvents.MemberNewCaptain]: EpicEventMemberNewCaptain;
+  [EpicEvents.PartyUpdated]: EpicEventPartyUpdated;
+  [EpicEvents.PartyInvite]: EpicEventPartyPing;
+  [EpicEvents.FriendRequest]: EpicEventFriendRequest;
+  [EpicEvents.FriendRemove]: EpicEventFriendRemoved;
+  [EpicEvents.InteractionNotification]: EpicEventInteractionNotification;
 
-  [ServiceEvents.SessionStarted]: void;
-  [ServiceEvents.Connected]: void;
-  [ServiceEvents.Disconnected]: void;
+  [ConnectionEvents.SessionStarted]: void;
+  [ConnectionEvents.Connected]: void;
+  [ConnectionEvents.Disconnected]: void;
 };
 
 type AccountOptions = {
@@ -46,7 +49,7 @@ type AccountOptions = {
   accessToken: string;
 };
 
-type Purpose = 'autoKick' | 'taxiService' | 'botLobby' | 'customStatus';
+type Purpose = 'autoKick' | 'taxiService' | 'botLobby' | 'customStatus' | 'friendManagement';
 
 export default class XMPPManager {
   private static instances: Map<string, XMPPManager> = new Map();
@@ -144,7 +147,7 @@ export default class XMPPManager {
       this.heartbeatInterval = undefined;
     }
 
-    this.dispatchEvent(ServiceEvents.Disconnected, undefined);
+    this.dispatchEvent(ConnectionEvents.Disconnected, undefined);
     this.connection?.removeAllListeners();
     this.connection?.disconnect();
     this.connection = undefined;
@@ -186,11 +189,11 @@ export default class XMPPManager {
     if (!this.connection) return;
 
     this.connection.on('session:started', () => {
-      this.dispatchEvent(ServiceEvents.SessionStarted, undefined);
+      this.dispatchEvent(ConnectionEvents.SessionStarted, undefined);
     });
 
     this.connection.on('connected', () => {
-      this.dispatchEvent(ServiceEvents.Connected, undefined);
+      this.dispatchEvent(ConnectionEvents.Connected, undefined);
 
       this.reconnectAttempts = 0;
       if (this.reconnectInterval) {
@@ -200,7 +203,7 @@ export default class XMPPManager {
     });
 
     this.connection.on('disconnected', async () => {
-      this.dispatchEvent(ServiceEvents.Disconnected, undefined);
+      this.dispatchEvent(ConnectionEvents.Disconnected, undefined);
 
       if (!this.intentionalDisconnect && !this.reconnectInterval) {
         this.reconnectInterval = window.setInterval(() => this.tryReconnect(), 5000);
@@ -222,15 +225,14 @@ export default class XMPPManager {
         return;
       }
 
+      console.log('xmpp', body);
+
       const { type } = body;
       if (!type) return;
 
-      const events = Object.values(EventNotifications);
-      if (!events.includes(type)) return;
-
       switch (body.type) {
-        case EventNotifications.MemberStateUpdated: {
-          const data = body as ServiceEventMemberStateUpdated;
+        case EpicEvents.MemberStateUpdated: {
+          const data = body as EpicEventMemberStateUpdated;
           const parties = Array.from(accountPartiesStore.entries()).filter(([, party]) => party.id === data.party_id);
 
           for (const [accountId, party] of parties) {
@@ -261,8 +263,8 @@ export default class XMPPManager {
 
           break;
         }
-        case EventNotifications.PartyUpdated: {
-          const data = body as ServiceEventPartyUpdated;
+        case EpicEvents.PartyUpdated: {
+          const data = body as EpicEventPartyUpdated;
           const parties = Array.from(accountPartiesStore.entries()).filter(([, party]) => party.id === data.party_id);
           if (!parties.length) break;
 
@@ -304,10 +306,10 @@ export default class XMPPManager {
 
           break;
         }
-        case EventNotifications.MemberExpired:
-        case EventNotifications.MemberLeft:
-        case EventNotifications.MemberKicked: {
-          const data = body as ServiceEventMemberLeft | ServiceEventMemberKicked | ServiceEventMemberExpired;
+        case EpicEvents.MemberExpired:
+        case EpicEvents.MemberLeft:
+        case EpicEvents.MemberKicked: {
+          const data = body as EpicEventMemberLeft | EpicEventMemberKicked | EpicEventMemberExpired;
 
           accountPartiesStore.delete(data.account_id);
 
@@ -321,8 +323,8 @@ export default class XMPPManager {
 
           break;
         }
-        case EventNotifications.MemberJoined: {
-          const data = body as ServiceEventMemberJoined;
+        case EpicEvents.MemberJoined: {
+          const data = body as EpicEventMemberJoined;
           const parties = Array.from(accountPartiesStore.entries()).filter(([, party]) => party.id === data.party_id);
 
           const newMember: PartyMember = {
@@ -351,8 +353,8 @@ export default class XMPPManager {
 
           break;
         }
-        case EventNotifications.MemberNewCaptain: {
-          const data = body as ServiceEventMemberNewCaptain;
+        case EpicEvents.MemberNewCaptain: {
+          const data = body as EpicEventMemberNewCaptain;
           const parties = Array.from(accountPartiesStore.entries()).filter(([, party]) => party.id === data.party_id);
 
           for (const [accountId, party] of parties) {
@@ -364,6 +366,66 @@ export default class XMPPManager {
             party.revision = data.revision || party.revision;
             accountPartiesStore.set(accountId, { ...party });
           }
+
+          break;
+        }
+        case EpicEvents.FriendRequest: {
+          const data = body as EpicEventFriendRequest;
+
+          friendsStore.update((friends) => {
+            const account = friends[data.to] || {
+              friends: new Map<string, FriendData>(),
+              incoming: new Map<string, IncomingFriendRequestData>(),
+              outgoing: new Map<string, OutgoingFriendRequestData>(),
+              blocklist: new Map<string, BlockedAccountData>()
+            };
+
+            if (data.status === 'PENDING') {
+              account.incoming.set(data.from, {
+                accountId: data.from,
+                mutual: 0,
+                favorite: false,
+                created: data.timestamp
+              });
+            } else if (data.status === 'ACCEPTED') {
+              account.friends.set(data.from, {
+                accountId: data.from,
+                mutual: 0,
+                alias: '',
+                note: '',
+                favorite: false,
+                created: data.timestamp
+              });
+            }
+
+            return {
+              ...friends,
+              [data.to]: account
+            };
+          });
+
+          break;
+        }
+        case EpicEvents.FriendRemove: {
+          const data = body as EpicEventFriendRemoved;
+
+          friendsStore.update((friends) => {
+            const account = friends[data.to] || {
+              friends: new Map<string, FriendData>(),
+              incoming: new Map<string, IncomingFriendRequestData>(),
+              outgoing: new Map<string, OutgoingFriendRequestData>(),
+              blocklist: new Map<string, BlockedAccountData>()
+            };
+
+            account.friends.delete(data.from);
+            account.incoming.delete(data.from);
+            account.outgoing.delete(data.from);
+
+            return {
+              ...friends,
+              [data.to]: account
+            };
+          });
 
           break;
         }

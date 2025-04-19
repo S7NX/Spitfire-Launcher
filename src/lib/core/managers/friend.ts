@@ -25,8 +25,11 @@ export default class FriendManager {
       return friendData;
     } catch (error) {
       if (error instanceof EpicAPIError) {
-        if (error.errorCode === 'errors.com.epicgames.friends.friendship_not_found') {
-          this.updateFriendStore(account.accountId, 'friends', friendId);
+        switch (error.errorCode) {
+          case 'errors.com.epicgames.friends.friendship_not_found': {
+            this.updateFriendStore(account.accountId, 'friends', friendId);
+            break;
+          }
         }
       }
 
@@ -67,16 +70,29 @@ export default class FriendManager {
       return data;
     } catch (error) {
       if (error instanceof EpicAPIError) {
-        if (error.errorCode === 'errors.com.epicgames.friends.duplicate_friendship') {
-          const friend = get(friendsStore)[account.accountId]?.friends.get(friendId);
-          if (!friend) this.updateFriendStore(account.accountId, 'friends', friendId, {
-            accountId: friendId,
-            alias: '',
-            note: '',
-            favorite: false,
-            created: new Date().toISOString(),
-            mutual: 0
-          });
+        switch (error.errorCode) {
+          case 'errors.com.epicgames.friends.duplicate_friendship': {
+            const friend = get(friendsStore)[account.accountId]?.friends.get(friendId);
+            if (!friend) this.updateFriendStore(account.accountId, 'friends', friendId, {
+              accountId: friendId,
+              alias: '',
+              note: '',
+              favorite: false,
+              created: new Date().toISOString(),
+              mutual: 0
+            });
+            break;
+          }
+          case 'errors.com.epicgames.friends.friend_request_already_sent': {
+            const outgoingRequest = get(friendsStore)[account.accountId]?.outgoing.get(friendId);
+            if (!outgoingRequest) this.updateFriendStore(account.accountId, 'outgoing', friendId, {
+              accountId: friendId,
+              mutual: 0,
+              favorite: false,
+              created: new Date().toISOString()
+            });
+            break;
+          }
         }
       }
 

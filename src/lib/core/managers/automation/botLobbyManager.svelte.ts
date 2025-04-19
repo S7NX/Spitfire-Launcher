@@ -1,4 +1,4 @@
-import { EventNotifications } from '$lib/constants/events';
+import { EpicEvents } from '$lib/constants/events';
 import Authentication from '$lib/core/authentication';
 import TaxiManager from '$lib/core/managers/automation/taxiManager.svelte';
 import FriendManager from '$lib/core/managers/friend';
@@ -18,11 +18,11 @@ import type { AccountData } from '$types/accounts';
 import type { MatchmakingTrackResponse } from '$types/game/matchmaking';
 import type { PartyData } from '$types/game/party';
 import type {
-  ServiceEventFriendRequest,
-  ServiceEventMemberKicked,
-  ServiceEventMemberLeft,
-  ServiceEventMemberStateUpdated,
-  ServiceEventPartyPing, ServiceEventPartyUpdated
+  EpicEventFriendRequest,
+  EpicEventMemberKicked,
+  EpicEventMemberLeft,
+  EpicEventMemberStateUpdated,
+  EpicEventPartyPing, EpicEventPartyUpdated
 } from '$types/game/events';
 
 type TicketResponse = {
@@ -63,12 +63,12 @@ export default class BotLobbyManager {
       this.xmpp = await XMPPManager.create(this.account, 'botLobby');
       await this.xmpp.connect();
 
-      this.xmpp.addEventListener(EventNotifications.PartyInvite, this.handleInvite.bind(this), { signal });
-      this.xmpp.addEventListener(EventNotifications.FriendRequest, this.handleFriendRequest.bind(this), { signal });
-      this.xmpp.addEventListener(EventNotifications.MemberLeft, this.handlePartyStateChange.bind(this), { signal });
-      this.xmpp.addEventListener(EventNotifications.MemberKicked, this.handlePartyStateChange.bind(this), { signal });
-      this.xmpp.addEventListener(EventNotifications.MemberStateUpdated, this.handlePartyStateChange.bind(this), { signal });
-      this.xmpp.addEventListener(EventNotifications.PartyUpdated, this.handlePartyStateChange.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.PartyInvite, this.handleInvite.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.FriendRequest, this.handleFriendRequest.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.MemberLeft, this.handlePartyStateChange.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.MemberKicked, this.handlePartyStateChange.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.MemberStateUpdated, this.handlePartyStateChange.bind(this), { signal });
+      this.xmpp.addEventListener(EpicEvents.PartyUpdated, this.handlePartyStateChange.bind(this), { signal });
 
       this.setIsAvailable(true);
 
@@ -245,7 +245,7 @@ export default class BotLobbyManager {
     }
   }
 
-  private async handleInvite(invite: ServiceEventPartyPing) {
+  private async handleInvite(invite: EpicEventPartyPing) {
     const currentParty = accountPartiesStore.get(this.account.accountId);
     if (currentParty?.members.length === 1) {
       await PartyManager.leave(this.account, currentParty.id);
@@ -275,7 +275,7 @@ export default class BotLobbyManager {
     await this.disconnectWebSocket();
   }
 
-  private async handlePartyStateChange(event: ServiceEventMemberLeft | ServiceEventMemberKicked | ServiceEventMemberStateUpdated | ServiceEventPartyUpdated) {
+  private async handlePartyStateChange(event: EpicEventMemberLeft | EpicEventMemberKicked | EpicEventMemberStateUpdated | EpicEventPartyUpdated) {
     const currentParty = accountPartiesStore.get(this.account.accountId);
     const isInParty = (currentParty?.members.length || 0) > 1;
 
@@ -329,12 +329,9 @@ export default class BotLobbyManager {
     }
   }
 
-  private async handleFriendRequest(request: ServiceEventFriendRequest) {
-    if (!this.autoAcceptFriendRequests) return;
+  private async handleFriendRequest(request: EpicEventFriendRequest) {
+    if (!this.autoAcceptFriendRequests || request.status === 'PENDING') return;
 
-    const { payload } = request;
-    if (payload.status !== 'PENDING' || payload.direction !== 'INBOUND') return;
-
-    await FriendManager.addFriend(this.account, payload.accountId);
+    await FriendManager.addFriend(this.account, request.from);
   }
 }
