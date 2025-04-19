@@ -23,6 +23,11 @@ export const SidebarCategories = derived(t, ($t) => [
         href: '/account-management/vbucks'
       },
       {
+        key: 'friendManagement',
+        name: $t('friendManagement.page.title'),
+        href: '/account-management/friends'
+      },
+      {
         key: 'redeemCodes',
         name: $t('redeemCodes.page.title'),
         href: '/account-management/redeem-codes'

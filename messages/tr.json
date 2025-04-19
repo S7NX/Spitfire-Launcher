@@ -596,6 +596,35 @@
       "description": "Epic Games hesabınıza başarıyla giriş yaptınız."
     }
   },
+  "friendManagement": {
+    "page": {
+      "title": "Arkadaş Yönetimi"
+    },
+    "lists": {
+      "friends": "Arkadaşlar",
+      "incoming": "Gelen İstekler",
+      "outgoing": "Giden İstekler",
+      "blocklist": "Engelliler"
+    },
+    "failedToAdd": "Arkadaş eklenemedi veya istek kabul edilemedi",
+    "failedToRemove": "Arkadaş silinemedi veya istek reddedilemedi",
+    "failedToBlock": "Kullanıcı engellenemedi",
+    "failedToUnblock": "Kullanıcının engeli kaldırılamadı",
+    "failedToChangeNickname": "Takma ad değiştirilemedi",
+    "noFriends": "Arkadaş Yok",
+    "noIncomingRequests": "Gelen İstek Yok",
+    "noOutgoingRequests": "Giden İstek Yok",
+    "noBlockedUsers": "Engellenen Kullanıcı Yok",
+    "sendFriendRequest": "Arkadaşlık İsteği Gönder",
+    "sendingRequest": "Arkadaşlık İsteği Gönderiliyor",
+    "acceptRequest": "İsteği Kabul Et",
+    "removeFriend": "Arkadaşı Sil",
+    "cancelRequest": "İsteği İptal Et",
+    "denyRequest": "İsteği Reddet",
+    "blockUser": "Engelle",
+    "unblockUser": "Engeli Kaldır",
+    "changeNickname": "Takma Adını Değiştir"
+  },
   "docs": {
     "howToUse": "Nasıl Kullanılır",
     "importantNotes": "Önemli Notlar",

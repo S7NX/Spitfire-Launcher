@@ -6,7 +6,7 @@ export const appSettingsSchema = z.object({
   gamePath: z.string(),
   missionCheckInterval: z.number().positive(),
   claimRewardsDelay: z.number().positive(),
-  startingPage: z.enum(['autoKick', 'itemShop', 'stwWorldInfo', 'taxiService', 'botLobby', 'dailyQuests']),
+  startingPage: z.enum(['autoKick', 'itemShop', 'stwWorldInfo', 'taxiService', 'botLobby', 'dailyQuests', 'friendManagement']),
   startingAccount: z.enum(['firstInTheList', 'lastUsed']),
   hideToTray: z.boolean(),
   checkForUpdates: z.boolean()
@@ -19,6 +19,7 @@ export const deviceAuthsSettingsSchema = z.array(z.object({
 
 export const customizableMenuSettingsSchema = z.object({
   vbucksInformation: z.boolean().default(true),
+  friendManagement: z.boolean().default(true),
   redeemCodes: z.boolean().default(true),
   epicGamesSettings: z.boolean().default(true),
   eula: z.boolean().default(true),

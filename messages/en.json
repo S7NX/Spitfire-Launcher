@@ -599,6 +599,35 @@
       "description": "You have successfully logged into your Epic Games account."
     }
   },
+  "friendManagement": {
+    "page": {
+      "title": "Friend Management"
+    },
+    "lists": {
+      "friends": "Friends",
+      "incoming": "Incoming Requests",
+      "outgoing": "Outgoing Requests",
+      "blocklist": "Blocklist"
+    },
+    "failedToAdd": "Failed to add friend or accept request",
+    "failedToRemove": "Failed to remove friend or deny request",
+    "failedToBlock": "Failed to block user",
+    "failedToUnblock": "Failed to unblock user",
+    "failedToChangeNickname": "Failed to change nickname",
+    "noFriends": "No Friends",
+    "noIncomingRequests": "No Incoming Requests",
+    "noOutgoingRequests": "No Outgoing Requests",
+    "noBlockedUsers": "No Blocked Users",
+    "sendFriendRequest": "Send Friend Request",
+    "sendingRequest": "Sending Friend Request",
+    "acceptRequest": "Accept Request",
+    "removeFriend": "Remove Friend",
+    "cancelRequest": "Cancel Request",
+    "denyRequest": "Deny Request",
+    "blockUser": "Block",
+    "unblockUser": "Unblock",
+    "changeNickname": "Change Nickname"
+  },
   "docs": {
     "howToUse": "How to Use",
     "importantNotes": "Important Notes",
