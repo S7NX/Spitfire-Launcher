@@ -601,7 +601,7 @@
     "noOutgoingRequests": "No Outgoing Requests",
     "noBlockedUsers": "No Blocked Users",
     "sendFriendRequest": "Send Friend Request",
-    "sendingRequest": "Sending Friend Request",
+    "sentFriendRequest": "Successfully sent friend request",
     "acceptRequest": "Accept Request",
     "removeFriend": "Remove Friend",
     "cancelRequest": "Cancel Request",

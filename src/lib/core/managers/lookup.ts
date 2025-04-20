@@ -1,4 +1,5 @@
 import { publicAccountService, userSearchService } from '$lib/core/services';
+import EpicAPIError from '$lib/exceptions/EpicAPIError';
 import { displayNamesCache } from '$lib/stores';
 import { processChunks } from '$lib/utils/util';
 import type { AccountData } from '$types/accounts';
@@ -103,10 +104,17 @@ export default class LookupManager {
       };
     } else {
       const data = (await LookupManager.searchByName(account, nameOrId))?.[0];
-      return data ? {
+      if (!data) throw new EpicAPIError({
+        errorCode: 'errors.com.epicgames.account.account_not_found',
+        errorMessage: `Sorry, we couldn't find an account for ${nameOrId}`,
+        messageVars: [nameOrId],
+        numericErrorCode: 18007
+      });
+
+      return {
         accountId: data.accountId,
         displayName: data.matches[0].value
-      } : null;
+      };
     }
   }
 }

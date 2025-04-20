@@ -2,12 +2,12 @@ import AvatarManager from '$lib/core/managers/avatar';
 import LookupManager from '$lib/core/managers/lookup';
 import { friendService } from '$lib/core/services';
 import EpicAPIError from '$lib/exceptions/EpicAPIError';
-import { friendsStore } from '$lib/stores';
+import { avatarCache, displayNamesCache, friendsStore } from '$lib/stores';
 import { processChunks } from '$lib/utils/util';
+import { get } from 'svelte/store';
 import type { AccountData } from '$types/accounts';
 import Authentication from '$lib/core/authentication';
 import type { BlockedAccountData, FriendData, FriendsSummary, IncomingFriendRequestData, OutgoingFriendRequestData } from '$types/game/friends';
-import { get } from 'svelte/store';
 
 export default class FriendManager {
   static async getFriend(account: AccountData, friendId: string) {
@@ -20,14 +20,15 @@ export default class FriendManager {
         }
       }).json();
 
-      this.updateFriendStore(account.accountId, 'friends', friendId, friendData);
+      FriendManager.updateFriendStore(account.accountId, 'friends', friendId, friendData);
+      FriendManager.cacheAccountNameAndAvatar(account, friendId);
 
       return friendData;
     } catch (error) {
       if (error instanceof EpicAPIError) {
         switch (error.errorCode) {
           case 'errors.com.epicgames.friends.friendship_not_found': {
-            this.updateFriendStore(account.accountId, 'friends', friendId);
+            FriendManager.updateFriendStore(account.accountId, 'friends', friendId);
             break;
           }
         }
@@ -49,8 +50,8 @@ export default class FriendManager {
 
       const incomingRequest = get(friendsStore)[account.accountId]?.incoming.get(friendId);
       if (incomingRequest) {
-        this.updateFriendStore(account.accountId, 'incoming', friendId);
-        this.updateFriendStore(account.accountId, 'friends', friendId, {
+        FriendManager.updateFriendStore(account.accountId, 'incoming', friendId);
+        FriendManager.updateFriendStore(account.accountId, 'friends', friendId, {
           accountId: friendId,
           alias: '',
           note: '',
@@ -59,7 +60,7 @@ export default class FriendManager {
           mutual: 0
         });
       } else {
-        this.updateFriendStore(account.accountId, 'outgoing', friendId, {
+        FriendManager.updateFriendStore(account.accountId, 'outgoing', friendId, {
           accountId: friendId,
           mutual: 0,
           favorite: false,
@@ -67,13 +68,15 @@ export default class FriendManager {
         });
       }
 
+      FriendManager.cacheAccountNameAndAvatar(account, friendId);
+
       return data;
     } catch (error) {
       if (error instanceof EpicAPIError) {
         switch (error.errorCode) {
           case 'errors.com.epicgames.friends.duplicate_friendship': {
             const friend = get(friendsStore)[account.accountId]?.friends.get(friendId);
-            if (!friend) this.updateFriendStore(account.accountId, 'friends', friendId, {
+            if (!friend) FriendManager.updateFriendStore(account.accountId, 'friends', friendId, {
               accountId: friendId,
               alias: '',
               note: '',
@@ -85,7 +88,7 @@ export default class FriendManager {
           }
           case 'errors.com.epicgames.friends.friend_request_already_sent': {
             const outgoingRequest = get(friendsStore)[account.accountId]?.outgoing.get(friendId);
-            if (!outgoingRequest) this.updateFriendStore(account.accountId, 'outgoing', friendId, {
+            if (!outgoingRequest) FriendManager.updateFriendStore(account.accountId, 'outgoing', friendId, {
               accountId: friendId,
               mutual: 0,
               favorite: false,
@@ -110,17 +113,19 @@ export default class FriendManager {
         }
       });
 
-      this.updateFriendStore(account.accountId, 'friends', friendId);
-      this.updateFriendStore(account.accountId, 'incoming', friendId);
-      this.updateFriendStore(account.accountId, 'outgoing', friendId);
+      FriendManager.updateFriendStore(account.accountId, 'friends', friendId);
+      FriendManager.updateFriendStore(account.accountId, 'incoming', friendId);
+      FriendManager.updateFriendStore(account.accountId, 'outgoing', friendId);
+
+      FriendManager.cacheAccountNameAndAvatar(account, friendId);
 
       return data;
     } catch (error) {
       if (error instanceof EpicAPIError) {
         if (error.errorCode === 'errors.com.epicgames.friends.friendship_not_found') {
-          this.updateFriendStore(account.accountId, 'friends', friendId);
-          this.updateFriendStore(account.accountId, 'incoming', friendId);
-          this.updateFriendStore(account.accountId, 'outgoing', friendId);
+          FriendManager.updateFriendStore(account.accountId, 'friends', friendId);
+          FriendManager.updateFriendStore(account.accountId, 'incoming', friendId);
+          FriendManager.updateFriendStore(account.accountId, 'outgoing', friendId);
         }
       }
 
@@ -279,13 +284,15 @@ export default class FriendManager {
       }
     }).json();
 
-    this.updateFriendStore(account.accountId, 'incoming', friendId);
-    this.updateFriendStore(account.accountId, 'outgoing', friendId);
-    this.updateFriendStore(account.accountId, 'friends', friendId);
-    this.updateFriendStore(account.accountId, 'blocklist', friendId, {
+    FriendManager.updateFriendStore(account.accountId, 'incoming', friendId);
+    FriendManager.updateFriendStore(account.accountId, 'outgoing', friendId);
+    FriendManager.updateFriendStore(account.accountId, 'friends', friendId);
+    FriendManager.updateFriendStore(account.accountId, 'blocklist', friendId, {
       accountId: friendId,
       created: new Date().toISOString()
     });
+
+    FriendManager.cacheAccountNameAndAvatar(account, friendId);
 
     return data;
   }
@@ -299,7 +306,8 @@ export default class FriendManager {
       }
     });
 
-    this.updateFriendStore(account.accountId, 'blocklist', friendId);
+    FriendManager.updateFriendStore(account.accountId, 'blocklist', friendId);
+    FriendManager.cacheAccountNameAndAvatar(account, friendId);
 
     return data;
   }
@@ -325,10 +333,12 @@ export default class FriendManager {
       mutual: 0
     };
 
-    this.updateFriendStore(account.accountId, 'friends', friendId, {
+    FriendManager.updateFriendStore(account.accountId, 'friends', friendId, {
       ...friend,
       alias: nickname
     });
+
+    FriendManager.cacheAccountNameAndAvatar(account, friendId);
 
     return data;
   }
@@ -354,8 +364,8 @@ export default class FriendManager {
     ));
 
     for (const friendId of acceptedRequests) {
-      this.updateFriendStore(account.accountId, 'incoming', friendId);
-      this.updateFriendStore(account.accountId, 'friends', friendId, {
+      FriendManager.updateFriendStore(account.accountId, 'incoming', friendId);
+      FriendManager.updateFriendStore(account.accountId, 'friends', friendId, {
         accountId: friendId,
         alias: '',
         note: '',
@@ -366,6 +376,22 @@ export default class FriendManager {
     }
 
     return acceptedRequests;
+  }
+
+  private static cacheAccountNameAndAvatar(account: AccountData, accountId: string) {
+    if (!get(displayNamesCache)[accountId]) {
+      LookupManager.fetchById(account, accountId)
+        .catch(error => {
+          console.error(error);
+        });
+    }
+
+    if (!get(avatarCache)[accountId]) {
+      AvatarManager.fetchAvatars(account, [accountId])
+        .catch(error => {
+          console.error(error);
+        });
+    }
   }
 
   private static updateFriendStore<K extends 'friends' | 'incoming' | 'outgoing' | 'blocklist'>(

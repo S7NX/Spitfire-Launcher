@@ -601,7 +601,7 @@
     "noOutgoingRequests": "Giden İstek Yok",
     "noBlockedUsers": "Engellenen Kullanıcı Yok",
     "sendFriendRequest": "Arkadaşlık İsteği Gönder",
-    "sendingRequest": "Arkadaşlık İsteği Gönderiliyor",
+    "sentFriendRequest": "Arkadaşlık isteği gönderildi",
     "acceptRequest": "İsteği Kabul Et",
     "removeFriend": "Arkadaşı Sil",
     "cancelRequest": "İsteği İptal Et",

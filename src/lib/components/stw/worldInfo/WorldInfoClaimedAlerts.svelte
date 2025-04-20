@@ -43,7 +43,6 @@
 
     try {
       const internalLookupData = await LookupManager.fetchByNameOrId(activeAccount, searchQuery);
-      if (!internalLookupData?.accountId) return;
 
       try {
         const queryPublicProfile = await MCPManager.queryPublicProfile(activeAccount, internalLookupData.accountId, 'campaign');

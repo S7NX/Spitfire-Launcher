@@ -106,19 +106,19 @@
 
     try {
       const internalLookupData = await LookupManager.fetchByNameOrId(activeAccount, searchQuery);
-      if (!internalLookupData?.accountId) return;
 
-      try {
-        await getSTWData(internalLookupData.accountId);
-      } catch (error) {
-        console.error(error);
+      const [stwDataResult, matchmakingDataResult] = await Promise.allSettled([
+        getSTWData(internalLookupData.accountId),
+        getMatchmakingData(internalLookupData.accountId)
+      ]);
+
+      if (stwDataResult.status === 'rejected') {
+        console.error(stwDataResult.reason);
         toast.error($t('lookupPlayers.stwStatsPrivate'));
       }
 
-      try {
-        await getMatchmakingData(internalLookupData.accountId);
-      } catch (error) {
-        console.error(error);
+      if (matchmakingDataResult.status === 'rejected') {
+        console.error(matchmakingDataResult.reason);
       }
 
       lookupData = internalLookupData;

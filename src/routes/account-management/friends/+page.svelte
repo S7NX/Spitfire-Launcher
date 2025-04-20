@@ -1,16 +1,22 @@
 <script lang="ts" module>
   let isLoading = $state(false);
+  let isSendingRequest = $state(false);
 </script>
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import FriendsList from '$components/friends/FriendsList.svelte';
+  import Button from '$components/ui/Button.svelte';
   import Tabs from '$components/ui/Tabs.svelte';
   import FriendManager from '$lib/core/managers/friend';
+  import LookupManager from '$lib/core/managers/lookup';
   import XMPPManager from '$lib/core/managers/xmpp';
+  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
+  import UserPlusIcon from 'lucide-svelte/icons/user-plus';
   import { accountsStore, friendsStore } from '$lib/stores';
   import Input from '$components/ui/Input.svelte';
-  import { nonNull, t } from '$lib/utils/util';
+  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
+  import { toast } from 'svelte-sonner';
 
   type ListType = 'friends' | 'incoming' | 'outgoing' | 'blocklist';
 
@@ -37,15 +43,58 @@
   function hasFriendsInList(listType: ListType) {
     return !!$friendsStore[activeAccount.accountId]?.[listType]?.size;
   }
+
+  async function searchAndAdd(event: SubmitEvent) {
+    event.preventDefault();
+
+    if (!searchQuery) return;
+
+    isSendingRequest = true;
+
+    try {
+      const lookupData = await LookupManager.fetchByNameOrId(activeAccount, searchQuery);
+
+      try {
+        await FriendManager.addFriend(activeAccount, lookupData.accountId);
+        searchQuery = '';
+        toast.success($t('friendManagement.sentFriendRequest'));
+      } catch (error) {
+        toast.error($t('friendManagement.failedToAdd'));
+      }
+    } catch (error) {
+      if (shouldErrorBeIgnored(error)) return;
+
+      console.error(error);
+      toast.error($t('lookupPlayers.notFound'));
+    } finally {
+      isSendingRequest = false;
+    }
+  }
 </script>
 
 <CenteredPageContent class="!w-full" title={$t('friendManagement.page.title')}>
-  <Input
-    class="grow"
-    disabled={isLoading}
-    placeholder={$t('lookupPlayers.search')}
-    bind:value={searchQuery}
-  />
+  <form class="flex items-center gap-2" onsubmit={searchAndAdd}>
+    <Input
+      class="grow"
+      disabled={isLoading}
+      placeholder={$t('lookupPlayers.search')}
+      bind:value={searchQuery}
+    />
+
+    <Button
+      class="p-2"
+      disabled={isLoading || isSendingRequest || !searchQuery || searchQuery.length < 3}
+      title={$t('friendManagement.sendFriendRequest')}
+      type="submit"
+      variant="epic"
+    >
+      {#if isSendingRequest}
+        <LoaderCircleIcon class="size-5 animate-spin"/>
+      {:else}
+        <UserPlusIcon class="size-5"/>
+      {/if}
+    </Button>
+  </form>
 
   <div>
     <Tabs {tabs} bind:activeTab/>

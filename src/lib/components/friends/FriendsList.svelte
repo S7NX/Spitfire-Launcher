@@ -1,7 +1,6 @@
 <script lang="ts" module>
   import { SvelteSet } from 'svelte/reactivity';
 
-  let isSendingRequest = $state(false);
   const accountsAdding = new SvelteSet<string>();
   const accountsRemoving = new SvelteSet<string>();
   const accountsBlocking = new SvelteSet<string>();
@@ -9,19 +8,18 @@
 </script>
 
 <script lang="ts">
-  import Button from '$components/ui/Button.svelte';
   import FriendManager from '$lib/core/managers/friend';
-  import LookupManager from '$lib/core/managers/lookup';
+  import { DropdownMenu } from '$components/ui/DropdownMenu';
+  import EllipsisIcon from 'lucide-svelte/icons/ellipsis';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import UserPlusIcon from 'lucide-svelte/icons/user-plus';
   import UserMinusIcon from 'lucide-svelte/icons/user-minus';
   import BanIcon from 'lucide-svelte/icons/ban';
   import ShieldMinus from 'lucide-svelte/icons/shield-minus';
   import { accountsStore, avatarCache, displayNamesCache, friendsStore } from '$lib/stores';
-  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
+  import { nonNull, t } from '$lib/utils/util';
   import type { BlockedAccountData, FriendData, IncomingFriendRequestData, OutgoingFriendRequestData } from '$types/game/friends';
   import { toast } from 'svelte-sonner';
-  import type { ClassValue } from 'svelte/elements';
 
   type Props = {
     listType: 'friends' | 'incoming' | 'outgoing' | 'blocklist';
@@ -34,7 +32,6 @@
   }: Props = $props();
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
-  const baseActionButtonClasses: ClassValue = 'rounded-md p-2 disabled:opacity-50 disabled:cursor-not-allowed';
 
   const list = $derived(Array.from($friendsStore[activeAccount.accountId]?.[listType]?.values() || [])
     .map((data: FriendData | IncomingFriendRequestData | OutgoingFriendRequestData | BlockedAccountData) => ({
@@ -52,29 +49,6 @@
       return friend.displayName.toLowerCase().includes(search) || friend.accountId.toLowerCase().includes(search);
     })
   );
-
-  async function searchAndAdd() {
-    if (!searchQuery) return;
-
-    isSendingRequest = true;
-
-    try {
-      const lookupData = await LookupManager.fetchByNameOrId(activeAccount, searchQuery);
-      if (!lookupData?.accountId) {
-        toast.error($t('lookupPlayers.notFound'));
-        return;
-      }
-
-      await acceptOrAddFriend(lookupData.accountId);
-    } catch (error) {
-      if (shouldErrorBeIgnored(error)) return;
-
-      console.error(error);
-      toast.error($t('lookupPlayers.notFound'));
-    } finally {
-      isSendingRequest = false;
-    }
-  }
 
   async function acceptOrAddFriend(id: string) {
     accountsAdding.add(id);
@@ -127,7 +101,7 @@
 
 <div class="space-y-4">
   {#if list?.length}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
       {#each list as friend (friend.accountId)}
         <div class="flex items-center justify-between p-4 rounded-md bg-accent text-accent-foreground">
           <div class="flex items-center gap-4">
@@ -139,28 +113,32 @@
             />
 
             <div class="flex flex-col">
-              <span class="font-medium">{friend.displayName}</span>
+              <span class="font-medium break-all">{friend.displayName}</span>
               {#if friend.nickname}
-                <span class="text-sm text-muted-foreground">{friend.nickname}</span>
+                <span class="text-sm text-muted-foreground break-all">{friend.nickname}</span>
               {/if}
             </div>
           </div>
 
-          <div class="flex gap-2">
+          <DropdownMenu.Root>
+            {#snippet trigger()}
+              <EllipsisIcon class="size-6 cursor-pointer"/>
+            {/snippet}
+
             {#if listType === 'friends'}
-              {@render RemoveFriendButton(friend.accountId, 'friend')}
-              {@render BlockButton(friend.accountId)}
+              {@render RemoveFriendDropdownItem(friend.accountId, 'friend')}
+              {@render BlockDropdownItem(friend.accountId)}
             {:else if listType === 'incoming'}
-              {@render AddFriendButton(friend.accountId)}
-              {@render RemoveFriendButton(friend.accountId, 'incoming')}
-              {@render BlockButton(friend.accountId)}
+              {@render AddFriendDropdownItem(friend.accountId)}
+              {@render RemoveFriendDropdownItem(friend.accountId, 'incoming')}
+              {@render BlockDropdownItem(friend.accountId)}
             {:else if listType === 'outgoing'}
-              {@render RemoveFriendButton(friend.accountId, 'outgoing')}
-              {@render BlockButton(friend.accountId)}
+              {@render RemoveFriendDropdownItem(friend.accountId, 'outgoing')}
+              {@render BlockDropdownItem(friend.accountId)}
             {:else if listType === 'blocklist'}
-              {@render UnblockButton(friend.accountId)}
+              {@render UnblockDropdownItem(friend.accountId)}
             {/if}
-          </div>
+          </DropdownMenu.Root>
         </div>
       {/each}
     </div>
@@ -181,77 +159,62 @@
           {$t('friendManagement.noBlockedUsers')}
         {/if}
       </h3>
-
-      {#if listType === 'friends' && (searchQuery?.length || 0) >= 3}
-        <Button
-          class="not-disabled:underline not-disabled:underline-offset-2 text-muted-foreground"
-          disabled={isSendingRequest}
-          loading={isSendingRequest}
-          loadingText={$t('friendManagement.sendingRequest')}
-          onclick={searchAndAdd}
-          variant="noStyle"
-        >
-          {$t('friendManagement.sendFriendRequest')}
-        </Button>
-      {/if}
     </div>
   {/if}
 </div>
 
-{#snippet AddFriendButton(friendId: string)}
-  <button
-    class="{baseActionButtonClasses} bg-green-500 text-primary hover:bg-green-500/80"
+{#snippet AddFriendDropdownItem(friendId: string)}
+  <DropdownMenu.Item
     disabled={accountsAdding.has(friendId)}
     onclick={() => acceptOrAddFriend(friendId)}
-    title={$t('friendManagement.acceptRequest')}
   >
     {#if accountsAdding.has(friendId)}
       <LoaderCircleIcon class="size-5 animate-spin"/>
     {:else}
       <UserPlusIcon class="size-5"/>
     {/if}
-  </button>
+    {$t('friendManagement.acceptRequest')}
+  </DropdownMenu.Item>
 {/snippet}
 
-{#snippet RemoveFriendButton(friendId: string, type: 'friend' | 'outgoing' | 'incoming')}
-  <button
-    class="{baseActionButtonClasses} bg-destructive text-destructive-foreground hover:bg-destructive/80"
+{#snippet RemoveFriendDropdownItem(friendId: string, type: 'friend' | 'outgoing' | 'incoming')}
+  <DropdownMenu.Item
+    disabled={accountsRemoving.has(friendId)}
     onclick={() => denyOrRemoveFriend(friendId)}
-    title={type === 'friend' ? $t('friendManagement.removeFriend') : type === 'outgoing' ? $t('friendManagement.cancelRequest') : $t('friendManagement.denyRequest')}
   >
     {#if accountsRemoving.has(friendId)}
       <LoaderCircleIcon class="size-5 animate-spin"/>
     {:else}
       <UserMinusIcon class="size-5"/>
     {/if}
-  </button>
+    {type === 'friend' ? $t('friendManagement.removeFriend') : type === 'outgoing' ? $t('friendManagement.cancelRequest') : $t('friendManagement.denyRequest')}
+  </DropdownMenu.Item>
 {/snippet}
 
-{#snippet BlockButton(accountId: string)}
-  <button
-    class="{baseActionButtonClasses} bg-destructive text-destructive-foreground hover:bg-destructive/80"
+{#snippet BlockDropdownItem(accountId: string)}
+  <DropdownMenu.Item
+    disabled={accountsBlocking.has(accountId)}
     onclick={() => blockUser(accountId)}
-    title={$t('friendManagement.blockUser')}
   >
     {#if accountsBlocking.has(accountId)}
       <LoaderCircleIcon class="size-5 animate-spin"/>
     {:else}
       <BanIcon class="size-5"/>
     {/if}
-  </button>
+    {$t('friendManagement.blockUser')}
+  </DropdownMenu.Item>
 {/snippet}
 
-{#snippet UnblockButton(accountId: string)}
-  <button
-    class="{baseActionButtonClasses} bg-green-500 text-primary hover:bg-green-500/80"
+{#snippet UnblockDropdownItem(accountId: string)}
+  <DropdownMenu.Item
     disabled={accountsUnblocking.has(accountId)}
     onclick={() => unblockUser(accountId)}
-    title={$t('friendManagement.unblockUser')}
   >
     {#if accountsUnblocking.has(accountId)}
       <LoaderCircleIcon class="size-5 animate-spin"/>
     {:else}
       <ShieldMinus class="size-5"/>
     {/if}
-  </button>
+    {$t('friendManagement.unblockUser')}
+  </DropdownMenu.Item>
 {/snippet}

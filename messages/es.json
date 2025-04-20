@@ -601,7 +601,7 @@
     "noOutgoingRequests": "Solicitudes Salientes",
     "noBlockedUsers": "Sin usuarios bloqueados",
     "sendFriendRequest": "Enviar Solicitud de Amistad",
-    "sendingRequest": "Enviando Solicitud De Amistad",
+    "sentFriendRequest": "Solicitud de amistad enviada con éxito",
     "acceptRequest": "Aceptar Solicitud",
     "removeFriend": "Eliminar Amigo",
     "cancelRequest": "Cancelar Solicitud",
