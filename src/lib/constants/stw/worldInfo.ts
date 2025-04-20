@@ -1,16 +1,16 @@
+import { missions, theaters } from '$lib/constants/stw/resources';
+import { language } from '$lib/stores';
 import { t } from '$lib/utils/util';
 import { derived } from 'svelte/store';
 
-export const Worlds = Object.freeze({
+export const Theaters = Object.freeze({
   Stonewood: '33A2311D4AE64B361CCE27BC9F313C8B',
   Plankerton: 'D477605B4FA48648107B649CE97FCF27',
   CannyValley: 'E6ECBD064B153234656CB4BDE6743870',
   TwinePeaks: 'D9A801C5444D1C74D1B7DAB5C7C12C5B',
 
-  StormKingsDomain: '0C92E7904E00C6C93406BB9C26ACD2B0',
-
   Dungeons: '394D85EF40B2BF401E6F32B587D7672B',
-  VisitTheCrater: '21726CDB473D7BD46C9643AA71DB4C6A',
+  SurviveTheHorde: 'DB73FE4C445040F5886B5FB337BC8C83',
 
   BlastedBadlands: '25D86CC64F0F3EE1831CFD9B2DF6D68C',
   FlannelFalls: 'FF97186D4741CB5F2A980BB0164081D4',
@@ -19,22 +19,20 @@ export const Worlds = Object.freeze({
   ScurvyShoals: '243870C643F8611F25D24287814E1DA4'
 } as const);
 
-export const WorldNames = derived(t, ($t) => ({
-  [Worlds.Stonewood]: $t('common.stw.worldNames.stonewood'),
-  [Worlds.Plankerton]: $t('common.stw.worldNames.plankerton'),
-  [Worlds.CannyValley]: $t('common.stw.worldNames.cannyValley'),
-  [Worlds.TwinePeaks]: $t('common.stw.worldNames.twinePeaks'),
+export const TheaterNames = derived(language, ($language) => ({
+  [Theaters.Stonewood]: theaters[Theaters.Stonewood].names[$language],
+  [Theaters.Plankerton]: theaters[Theaters.Plankerton].names[$language],
+  [Theaters.CannyValley]: theaters[Theaters.CannyValley].names[$language],
+  [Theaters.TwinePeaks]: theaters[Theaters.TwinePeaks].names[$language],
 
-  [Worlds.StormKingsDomain]: $t('common.stw.worldNames.stormKingsDomain'),
+  [Theaters.Dungeons]: theaters[Theaters.Dungeons].names[$language],
+  [Theaters.SurviveTheHorde]: theaters[Theaters.SurviveTheHorde].names[$language],
 
-  [Worlds.Dungeons]: $t('common.stw.worldNames.dungeons'),
-  [Worlds.VisitTheCrater]: $t('common.stw.worldNames.visitTheCrater'),
-
-  [Worlds.BlastedBadlands]: $t('common.stw.worldNames.blastedBadlands'),
-  [Worlds.FlannelFalls]: $t('common.stw.worldNames.flannelFalls'),
-  [Worlds.FrozenFjords]: $t('common.stw.worldNames.frozenFjords'),
-  [Worlds.Hexsylvania]: $t('common.stw.worldNames.hexsylvania'),
-  [Worlds.ScurvyShoals]: $t('common.stw.worldNames.scurvyShoals')
+  [Theaters.BlastedBadlands]: theaters[Theaters.BlastedBadlands].names[$language],
+  [Theaters.FlannelFalls]: theaters[Theaters.FlannelFalls].names[$language],
+  [Theaters.FrozenFjords]: theaters[Theaters.FrozenFjords].names[$language],
+  [Theaters.Hexsylvania]: theaters[Theaters.Hexsylvania].names[$language],
+  [Theaters.ScurvyShoals]: theaters[Theaters.ScurvyShoals].names[$language]
 }));
 
 export const WorldColors = Object.freeze({
@@ -46,10 +44,10 @@ export const WorldColors = Object.freeze({
 } as const);
 
 export const WorldColorsByTheater = Object.freeze({
-  [Worlds.Stonewood]: WorldColors.Stonewood,
-  [Worlds.Plankerton]: WorldColors.Plankerton,
-  [Worlds.CannyValley]: WorldColors.CannyValley,
-  [Worlds.TwinePeaks]: WorldColors.TwinePeaks
+  [Theaters.Stonewood]: WorldColors.Stonewood,
+  [Theaters.Plankerton]: WorldColors.Plankerton,
+  [Theaters.CannyValley]: WorldColors.CannyValley,
+  [Theaters.TwinePeaks]: WorldColors.TwinePeaks
 } as const);
 
 export const WorldLetters = Object.freeze({
@@ -61,10 +59,10 @@ export const WorldLetters = Object.freeze({
 } as const);
 
 export const WorldLettersByTheaters = Object.freeze({
-  [Worlds.Stonewood]: 'S',
-  [Worlds.Plankerton]: 'P',
-  [Worlds.CannyValley]: 'C',
-  [Worlds.TwinePeaks]: 'T'
+  [Theaters.Stonewood]: WorldLetters.Stonewood,
+  [Theaters.Plankerton]: WorldLetters.Plankerton,
+  [Theaters.CannyValley]: WorldLetters.CannyValley,
+  [Theaters.TwinePeaks]: WorldLetters.TwinePeaks
 } as const);
 
 export const WorldStormKingZones = Object.freeze({
@@ -73,7 +71,7 @@ export const WorldStormKingZones = Object.freeze({
 } as const);
 
 export const WorldPowerLevels = Object.freeze({
-  [Worlds.Stonewood]: {
+  [Theaters.Stonewood]: {
     Start_Zone1: 1,
     Start_Zone2: 3,
     Start_Zone3: 5,
@@ -81,7 +79,7 @@ export const WorldPowerLevels = Object.freeze({
     Start_Zone5: 15,
     Normal_Zone1: 19
   },
-  [Worlds.Plankerton]: {
+  [Theaters.Plankerton]: {
     Normal_Zone1: 19,
     Normal_Zone2: 23,
     Normal_Zone3: 28,
@@ -89,14 +87,14 @@ export const WorldPowerLevels = Object.freeze({
     Normal_Zone5: 40,
     Hard_Zone1: 46
   },
-  [Worlds.CannyValley]: {
+  [Theaters.CannyValley]: {
     Hard_Zone1: 46,
     Hard_Zone2: 52,
     Hard_Zone3: 58,
     Hard_Zone4: 64,
     Hard_Zone5: 70
   },
-  [Worlds.TwinePeaks]: {
+  [Theaters.TwinePeaks]: {
     Nightmare_Zone1: 76,
     Nightmare_Zone2: 82,
     Nightmare_Zone3: 88,
@@ -172,31 +170,30 @@ export const ZoneCategories = Object.freeze({
   tts: ['TrapTheStorm']
 } as const);
 
-export const ZoneNames = derived(t, ($t) => ({
-  atlas: $t('common.stw.zoneNames.fightTheStorm'),
-  'atlas-c2': $t('common.stw.zoneNames.fightCategory2Storm'),
-  'atlas-c3': $t('common.stw.zoneNames.fightCategory3Storm'),
-  'atlas-c4': $t('common.stw.zoneNames.fightCategory4Storm'),
-  dtb: $t('common.stw.zoneNames.deliverTheBomb'),
-  dte: $t('common.stw.zoneNames.destroyTheEncampments'),
-  eac: $t('common.stw.zoneNames.eliminateAndCollect'),
-  ets: $t('common.stw.zoneNames.evacuateTheShelter'),
-  'mini-boss': $t('common.stw.zoneNames.miniBoss'),
-  htm: $t('common.stw.zoneNames.huntTheTitan'),
-  htr: $t('common.stw.zoneNames.hitTheRoad'),
-  ptp: $t('common.stw.zoneNames.protectThePresents'),
-  radar: $t('common.stw.zoneNames.buildTheRadarGrid'),
-  refuel: $t('common.stw.zoneNames.refuelTheHomebase'),
-  rescue: $t('common.stw.zoneNames.rescueTheSurvivors'),
-  resupply: $t('common.stw.zoneNames.resupply'),
-  rocket: $t('common.stw.zoneNames.launchTheRocket'),
-  rtd: $t('common.stw.zoneNames.retrieveTheData'),
-  rtl: $t('common.stw.zoneNames.rideTheLightning'),
-  rts: $t('common.stw.zoneNames.repairTheShelter'),
-  stn: $t('common.stw.zoneNames.surviveTheStorm'),
-  'storm-shield': $t('common.stw.zoneNames.stormShieldDefense'),
-  tts: $t('common.stw.zoneNames.trapTheStorm'),
-  quest: $t('common.stw.zoneNames.quest')
+export const ZoneNames = derived([language, t], ([$language, $t]) => ({
+  atlas: missions.fightTheStorm.names[$language],
+  'atlas-c2': missions.fightCategory2Storm.names[$language],
+  'atlas-c3': missions.fightCategory3Storm.names[$language],
+  'atlas-c4': missions.fightCategory4Storm.names[$language],
+  dtb: missions.deliverTheBomb.names[$language],
+  dte: missions.destroyTheEncampments.names[$language],
+  eac: missions.eliminateAndCollect.names[$language],
+  ets: missions.evacuateTheShelter.names[$language],
+  htm: missions.huntTheTitan.names[$language],
+  htr: missions.hitTheRoad.names[$language],
+  ptp: missions.protectThePresents.names[$language],
+  radar: missions.buildTheRadarGrid.names[$language],
+  refuel: missions.refuelTheHomebase.names[$language],
+  rescue: missions.rescueTheSurvivors.names[$language],
+  resupply: missions.resupply.names[$language],
+  rocket: missions.launchTheRocket.names[$language],
+  rtd: missions.retrieveTheData.names[$language],
+  rtl: missions.rideTheLightning.names[$language],
+  rts: missions.repairTheShelter.names[$language],
+  stn: missions.surviveTheStorm.names[$language],
+  'storm-shield': missions.homebaseStormShield.names[$language],
+  tts: missions.trapTheStorm.names[$language],
+  quest: $t('common.quest')
 } as Record<string, string>));
 
 export const GroupZones = Object.freeze([

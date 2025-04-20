@@ -3,6 +3,8 @@
   "baseLocale": "en",
   "locales": [
     "en",
+    "es",
+    "fr",
     "tr"
   ],
   "modules": [
