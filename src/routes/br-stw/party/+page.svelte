@@ -164,11 +164,7 @@
     }
   }
 
-  async function kickMember(
-    partyId: string,
-    memberId: string,
-    kicker = partyLeaderAccount
-  ) {
+  async function kickMember(partyId: string,memberId: string,kicker = partyLeaderAccount) {
     if (!kicker) return;
 
     kickingMemberIds.add(memberId);
@@ -176,13 +172,11 @@
     try {
       await PartyManager.kick(kicker, partyId, memberId);
 
-      const account = allAccounts.find(
-        (account) => account.accountId === memberId
-      );
-      const isAutoClaimEnabled =
-        AutoKickBase.getAccountById(memberId)?.settings.autoClaim || false;
-      if (account && !isAutoClaimEnabled && shouldClaimRewards)
+      const account = allAccounts.find((account) => account.accountId === memberId);
+      const isAutoClaimEnabled = AutoKickBase.getAccountById(memberId)?.settings.autoClaim || false;
+      if (account && !isAutoClaimEnabled && shouldClaimRewards) {
         await claimRewards(account, true);
+      }
     } catch (error) {
       console.error(error);
       toast.error($t('partyManagement.stwActions.failedToKickMember'));
@@ -287,8 +281,6 @@
     try {
       await FriendManager.addFriend(activeAccount, memberId);
     } catch (error) {
-      // @ts-ignore
-      console.error({ code: error.errorCode, message: error.message });
       toast.error($t('partyManagement.partyMembers.failedToSendFriendRequest'));
     } finally {
       isAddingFriend = false;
