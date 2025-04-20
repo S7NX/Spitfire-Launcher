@@ -45,22 +45,24 @@
   {#each tabs as tab (tab.id)}
     {@const TabComponent = tab.component}
 
-    {#if switchType === 'if-else'}
-      {#if activeTab === tab.id}
-        {#if isSnippet(tab.component)}
-          {@render tab.component()}
-        {:else}
-          <TabComponent/>
+    {#if TabComponent}
+      {#if switchType === 'if-else'}
+        {#if activeTab === tab.id}
+          {#if isSnippet(tab.component)}
+            {@render tab.component()}
+          {:else}
+            <TabComponent/>
+          {/if}
         {/if}
+      {:else}
+        <div class={activeTab === tab.id ? 'block' : 'hidden'}>
+          {#if isSnippet(tab.component)}
+            {@render tab.component()}
+          {:else}
+            <TabComponent/>
+          {/if}
+        </div>
       {/if}
-    {:else}
-      <div class={activeTab === tab.id ? 'block' : 'hidden'}>
-        {#if isSnippet(tab.component)}
-          {@render tab.component()}
-        {:else}
-          <TabComponent/>
-        {/if}
-      </div>
     {/if}
   {/each}
 </div>
