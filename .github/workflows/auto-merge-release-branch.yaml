@@ -9,6 +9,10 @@ on:
 jobs:
   merge-release:
     if: github.event_name == 'workflow_dispatch' || startsWith(github.event.head_commit.message, 'Release v')
+
+    permissions:
+      contents: write
+
     runs-on: windows-latest
 
     steps:
