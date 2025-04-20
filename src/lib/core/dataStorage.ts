@@ -29,7 +29,7 @@ export const SETTINGS_INITIAL_DATA: AllSettings = {
     claimRewardsDelay: 1.5,
     missionCheckInterval: 5,
     startingPage: 'stwWorldInfo',
-    startingAccount: 'firstInTheList',
+    startingAccount: 'lastUsed',
     hideToTray: false,
     checkForUpdates: true
   },
