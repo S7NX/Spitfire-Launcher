@@ -55,7 +55,7 @@
     {/each}
 
     <textarea
-      class="grow-0 {items.length ? 'min-w-20' : 'min-w-full'} outline-none border-none resize-none overflow-hidden bg-transparent field-sizing-content text-sm"
+      class="grow-0 {items.length ? 'min-w-20' : 'min-w-full'} outline-none border-none resize-none overflow-hidden bg-transparent field-sizing-content"
       onkeydown={handleKeyDown}
       placeholder={items.length ? '' : placeholder}
       rows="1"
