@@ -43,6 +43,15 @@
       "allow": [
         {
           "path": "**/Fortnite/FortniteGame/Binaries/Win64/FortniteLauncher.exe"
+        },
+        {
+          "path": "**/Fortnite/FortniteGame/Binaries/Win64/UnrealEditorFortnite-Win64-Shipping.exe"
+        },
+        {
+          "path": "**/rocketleague/Binaries/Win64/RocketLeague.exe"
+        },
+        {
+          "path": "**/FallGuys/RunFallGuys.exe"
         }
       ]
     },
@@ -62,19 +71,19 @@
       "identifier": "shell:allow-execute",
       "allow": [
         {
-          "name": "start-fortnite",
+          "name": "start-epic-app",
           "cmd": "cmd",
           "args": [
             "/c",
             "start",
-            "FortniteLauncher.exe",
+            {
+              "validator": "FortniteLauncher\\.exe|UnrealEditorFortnite-Win64-Shipping\\.exe|RocketLeague\\.exe|RunFallGuys\\.exe"
+            },
             "-AUTH_LOGIN=unused",
             {
               "validator": "-AUTH_PASSWORD=[a-z0-9]{32}"
             },
             "-AUTH_TYPE=exchangecode",
-            "-epicapp=Fortnite",
-            "-epicenv=Prod",
             "-EpicPortal",
             {
               "validator": "-epicuserid=[a-z0-9]{32}"
@@ -82,30 +91,14 @@
           ]
         },
         {
-          "name": "kill-fortnite",
-          "cmd": "taskkill",
-          "args": [
-            "/IM",
-            "FortniteClient-Win64-Shipping.exe",
-            "/F"
-          ]
-        },
-        {
-          "name": "kill-eos-eac",
+          "name": "kill-epic-app",
           "cmd": "taskkill",
           "args": [
             "/F",
             "/IM",
-            "EasyAntiCheat_EOS.exe"
-          ]
-        },
-        {
-          "name": "kill-game-eac",
-          "cmd": "taskkill",
-          "args": [
-            "/F",
-            "/IM",
-            "FortniteClient-Win64-Shipping_EAC.exe"
+            {
+              "validator": "FortniteClient-Win64-Shipping\\.exe|EasyAntiCheat_EOS\\.exe|FortniteClient-Win64-Shipping_EAC\\.exe|UnrealEditorFortnite-Win64-Shipping\\.exe|RocketLeague\\.exe|FallGuys_client_game\\.exe"
+            }
           ]
         }
       ]

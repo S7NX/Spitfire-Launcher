@@ -23,7 +23,7 @@ const tauriKy = ky.create({
     options._authRetryCount = options._authRetryCount || 0;
 
     if (!headers.has('x-user-agent')) {
-      const userAgent = await Manifest.getUserAgent();
+      const userAgent = await Manifest.getFortniteUserAgent();
       headers.set('User-Agent', userAgent);
     } else {
       headers.set('User-Agent', request.headers.get('x-user-agent')!);

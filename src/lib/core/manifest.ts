@@ -5,29 +5,38 @@ import { platform } from '@tauri-apps/plugin-os';
 type ManifestData = {
   appVersionString: string;
   launchCommand: string;
-  userAgent: string;
+  userAgent?: string;
   installLocation: string;
   launchExecutable: string;
   executableLocation: string;
 }
 
-let gameFileCache: ManifestData | null = null;
+const appCatalogIds = {
+  fortnite: '4fe75bbc5a674f4f9b356b5c90567da5',
+  rocketLeague: '530145df28a24424923f5828cc9031a1',
+  fallGuys: '38ec4849ea4f4de6aa7b6fb0f2d278e1',
+  unrealEditorForFortnite: '1e8bda5cfbb641b9a9aea8bd62285f73'
+} as const;
+
+type AppName = keyof typeof appCatalogIds;
 
 export default class Manifest {
-  static async getUserAgent() {
-    const gameData = await Manifest.getData();
-    return gameData?.userAgent || 'Fortnite/++Fortnite+Release-34.30-CL-41387772-Windows';
+  private static fileCaches = new Map<AppName, ManifestData>();
+
+  static async getFortniteUserAgent() {
+    const gameData = await Manifest.getAppData('fortnite');
+    return gameData?.userAgent || 'Fortnite/++Fortnite+Release-34.30-CL-41588354-Windows';
   }
 
-  static async getData() {
+  static async getAppData(name: AppName) {
     if (platform() !== 'windows') return null;
-    if (gameFileCache) return gameFileCache;
+    if (Manifest.fileCaches.has(name)) return Manifest.fileCaches.get(name)!;
 
     try {
       const manifestsDirectory = 'C:\\ProgramData\\Epic\\EpicGamesLauncher\\Data\\Manifests';
       const manifestFiles = await readDir(manifestsDirectory);
 
-      let fortniteFile: ManifestData | null = null;
+      let parsedManifest: ManifestData | null = null;
 
       for (const dirEntry of manifestFiles) {
         if (dirEntry.name.endsWith('.item')) {
@@ -38,15 +47,16 @@ export default class Manifest {
             DisplayName: string;
             InstallLocation: string;
             LaunchExecutable: string;
+            CatalogItemId: string;
           };
 
           const appVersionString = file.AppVersionString?.trim();
 
-          if (file.DisplayName.toLowerCase() === 'fortnite') {
-            fortniteFile = {
+          if (file.CatalogItemId === appCatalogIds[name]) {
+            parsedManifest = {
               appVersionString: appVersionString ?? '',
               launchCommand: file.LaunchCommand?.trim() ?? '',
-              userAgent: appVersionString ? `Fortnite/${appVersionString}` : '',
+              userAgent: name === 'fortnite' && appVersionString ? `Fortnite/${appVersionString}` : '',
               installLocation: file.InstallLocation,
               launchExecutable: file.LaunchExecutable,
               executableLocation: file.InstallLocation + '\\' + file.LaunchExecutable
@@ -57,8 +67,8 @@ export default class Manifest {
         }
       }
 
-      gameFileCache = fortniteFile;
-      return fortniteFile;
+      if (parsedManifest) Manifest.fileCaches.set(name, parsedManifest);
+      return parsedManifest;
     } catch (error) {
       console.error(error);
       return null;

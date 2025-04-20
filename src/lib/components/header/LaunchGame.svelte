@@ -1,5 +1,6 @@
 <script lang="ts">
   import Button from '$components/ui/Button.svelte';
+  import { DropdownMenu } from '$components/ui/DropdownMenu';
   import { launcherAppClient2 } from '$lib/constants/clients';
   import Authentication from '$lib/core/authentication';
   import DataStorage from '$lib/core/dataStorage';
@@ -14,62 +15,77 @@
   import CircleStopIcon from 'lucide-svelte/icons/circle-stop';
   import { onMount } from 'svelte';
   import { toast } from 'svelte-sonner';
+  import { SvelteSet } from 'svelte/reactivity';
 
   const activeAccount = $derived($accountsStore.activeAccount);
 
-  let isAuthenticating = $state(false);
-  let isLaunching = $state(false);
-  let isGameRunning = $state(false);
+  const processes = [
+    { id: 'fortnite', launchExe: 'FortniteLauncher.exe', runningExe: 'FortniteClient-Win64-Shipping.exe' },
+    { id: 'unrealEditorForFortnite', launchExe: 'UnrealEditorFortnite-Win64-Shipping.exe', runningExe: 'UnrealEditorFortnite-Win64-Shipping.exe' },
+    { id: 'fallGuys', launchExe: 'RunFallGuys.exe', runningExe: 'FallGuys_client_game.exe' },
+    { id: 'rocketLeague', launchExe: 'RocketLeague.exe', runningExe: 'RocketLeague.exe' }
+  ] as const;
 
-  async function launchGame() {
-    await checkIsRunning();
+  type ProcessId = typeof processes[number]['id'];
 
-    if (isGameRunning) {
+  let authenticatingProcesses = new SvelteSet<ProcessId>();
+  let launchingProcesses = new SvelteSet<ProcessId>();
+  let runningProccesses = new SvelteSet<ProcessId>();
+
+  let isDropdownOpen = $state(false);
+  let dropdownAnchor = $state<HTMLElement>();
+
+  async function launchProcess(id: ProcessId) {
+    await checkRunningProcesses();
+
+    if (runningProccesses.has(id)) {
       toast.error($t('launchGame.alreadyRunning'));
       return;
     }
 
     const toastId = toast.loading($t('launchGame.launching'));
+    const processData = processes.find((process) => process.id === id)!;
 
     try {
-      isAuthenticating = true;
+      authenticatingProcesses.add(id);
 
       const userSettings = await DataStorage.getSettingsFile();
-      const manifestData = await Manifest.getData();
-      const executableDirectory = userSettings?.app?.gamePath || manifestData?.executableLocation.split('/').slice(0, -1).join('/').replace(/\//g, '/');
-      const gameExistsInPath = executableDirectory && await exists(await path.join(executableDirectory, 'FortniteLauncher.exe'));
-      if (!manifestData || !executableDirectory || !gameExistsInPath) {
+      const customPath = id === 'fortnite' && userSettings?.app?.gamePath;
+      const manifestData = await Manifest.getAppData(id);
+      const executableLocation = (customPath ? await path.join(customPath, 'FortniteLauncher.exe') : manifestData?.executableLocation)?.replaceAll('\\', '/');
+      const gameExistsInPath = executableLocation && await exists(executableLocation);
+      if (!manifestData || !gameExistsInPath) {
         toast.error($t('launchGame.notInstalled'), { id: toastId });
         return;
       }
+
+      const executableDirectory = executableLocation.split('/').slice(0, -1).join('/').replace(/\//g, '/');
 
       const deviceAuthResponse = await Authentication.getAccessTokenUsingDeviceAuth(activeAccount!);
       const oldExchangeData = await Authentication.getExchangeCodeUsingAccessToken(deviceAuthResponse.access_token);
       const launcherAccessTokenData = await Authentication.getAccessTokenUsingExchangeCode(oldExchangeData.code, launcherAppClient2);
       const launcherExchangeData = await Authentication.getExchangeCodeUsingAccessToken(launcherAccessTokenData.access_token);
 
-      isAuthenticating = false;
-      isLaunching = true;
+      authenticatingProcesses.delete(id);
+      launchingProcesses.add(id);
 
       await Command.create(
-        'start-fortnite',
+        'start-epic-app',
         [
           '/c',
           'start',
-          'FortniteLauncher.exe',
+          processData.launchExe,
           '-AUTH_LOGIN=unused',
           `-AUTH_PASSWORD=${launcherExchangeData.code}`,
           '-AUTH_TYPE=exchangecode',
-          '-epicapp=Fortnite',
-          '-epicenv=Prod',
           '-EpicPortal',
           `-epicuserid=${activeAccount!.accountId}`
         ],
         { cwd: executableDirectory }
       ).execute();
     } catch (error) {
-      isLaunching = false;
-      isAuthenticating = false;
+      launchingProcesses.delete(id);
+      authenticatingProcesses.delete(id);
 
       if (shouldErrorBeIgnored(error)) {
         toast.dismiss(toastId);
@@ -79,22 +95,28 @@
       console.error(error);
       toast.error($t('launchGame.failedToLaunch'), { id: toastId });
     } finally {
-      isAuthenticating = false;
+      authenticatingProcesses.delete(id);
     }
   }
 
-  async function stopGame() {
+  async function stopProcess(id: ProcessId) {
     const toastId = toast.loading($t('launchGame.stopping'));
+    const processData = processes.find((process) => process.id === id)!;
+    const baseArgs = ['taskkill', '/IM'];
 
     try {
-      const result = await Command.create('kill-fortnite').execute();
+      const result = await Command.create('kill-epic-app', [...baseArgs, processData.runningExe]).execute();
+
       if (result.stderr) throw new Error(result.stderr);
 
-      Command.create('kill-eos-eac').execute().catch(() => null);
-      Command.create('kill-game-eac').execute().catch(() => null);
+      launchingProcesses.delete(id);
+      runningProccesses.delete(id);
 
-      isLaunching = false;
-      isGameRunning = false;
+      if (runningProccesses.size === 0) {
+        Command.create('kill-epic-app', ['taskkill', '/IM', 'EasyAntiCheat_EOS.exe']).execute().catch(() => null);
+        Command.create('kill-epic-app', ['taskkill', '/IM', 'FortniteClient-Win64-Shipping_EAC.exe']).execute().catch(() => null);
+      }
+
       toast.success($t('launchGame.stopped'), { id: toastId });
     } catch (error) {
       console.error(error);
@@ -102,24 +124,32 @@
     }
   }
 
-  async function checkIsRunning() {
-    const wasRunning = isGameRunning;
-    const processes = await Process.getProcesses();
-    isGameRunning = processes.some(
-      (process) => process.name === 'FortniteClient-Win64-Shipping.exe'
-    );
+  async function launchOrStopProcess(id: ProcessId) {
+    if (runningProccesses.has(id)) {
+      await stopProcess(id);
+    } else {
+      await launchProcess(id);
+    }
+  }
 
-    if (!wasRunning && isGameRunning && isLaunching) {
-      toast.success($t('launchGame.launched'));
-      isLaunching = false;
+  async function checkRunningProcesses() {
+    for (const process of processes) {
+      const runningProcesses = await Process.getProcesses();
+      const isRunning = runningProcesses.some((p) => p.name === process.runningExe);
+
+      if (isRunning) {
+        runningProccesses.add(process.id);
+      } else {
+        runningProccesses.delete(process.id);
+      }
     }
   }
 
   onMount(() => {
-    checkIsRunning();
+    checkRunningProcesses();
 
     const interval = setInterval(() => {
-      checkIsRunning();
+      checkRunningProcesses();
     }, 5000);
 
     return () => {
@@ -128,18 +158,54 @@
   });
 </script>
 
-<Button
-  class="flex items-center justify-center shrink-0"
-  disabled={!activeAccount || isAuthenticating || (isLaunching && !isGameRunning)}
-  onclick={() => (isGameRunning ? stopGame() : launchGame())}
-  size="md"
-  variant={isGameRunning ? 'danger' : 'epic'}
->
-  {#if isGameRunning}
-    <span class="hidden xs:block">{$t('launchGame.stop')}</span>
-    <CircleStopIcon class="size-6 xs:hidden block"/>
-  {:else}
-    <span class="hidden xs:block">{$t('launchGame.launch')}</span>
-    <GamePad2Icon class="size-6 xs:hidden block"/>
-  {/if}
-</Button>
+<div bind:this={dropdownAnchor}>
+  <Button
+    class="flex items-center justify-center shrink-0"
+    disabled={!activeAccount || authenticatingProcesses.has('fortnite') || (launchingProcesses.has('fortnite') && !runningProccesses.has('fortnite'))}
+    onclick={() => launchOrStopProcess('fortnite')}
+    oncontextmenu={(e) => {
+      e.preventDefault();
+      isDropdownOpen = !isDropdownOpen;
+    }}
+    size="md"
+    variant={runningProccesses.has('fortnite') ? 'danger' : 'epic'}
+  >
+    {#if runningProccesses.has('fortnite')}
+      <span class="hidden xs:block">{$t('launchGame.stop')}</span>
+      <CircleStopIcon class="size-6 xs:hidden block"/>
+    {:else}
+      <span class="hidden xs:block">{$t('launchGame.launch')}</span>
+      <GamePad2Icon class="size-6 xs:hidden block"/>
+    {/if}
+  </Button>
+</div>
+
+<DropdownMenu.Root contentProps={{ customAnchor: dropdownAnchor }} bind:open={isDropdownOpen}>
+  {#each processes.slice(1) as { id } (id)}
+    {@const isRunning = runningProccesses.has(id)}
+    {@const isAuthenticating = authenticatingProcesses.has(id)}
+    {@const isLaunching = launchingProcesses.has(id)}
+
+    <DropdownMenu.Item
+      class="flex items-center gap-x-2"
+      disabled={!activeAccount || isAuthenticating || (isLaunching && !isRunning)}
+      onclick={() => launchOrStopProcess(id)}
+    >
+      {#if id === 'unrealEditorForFortnite'}
+        <img class="size-6" alt="Unreal Engine" src="/assets/logos/unreal-engine-white.svg"/>
+      {:else if id === 'rocketLeague'}
+        <img class="size-6" alt="Rocket League" src="/assets/logos/rocket-league.png"/>
+      {:else if id === 'fallGuys'}
+        <img class="size-6" alt="Fall Guys" src="/assets/logos/fall-guys.png"/>
+      {/if}
+
+      {#if isRunning}
+        <span class="font-medium">{$t(`launchGame.dropdown.${id}.stop` as any)}</span>
+      {:else if isLaunching}
+        <span class="font-medium">{$t('launchGame.dropdown.launching')}</span>
+      {:else}
+        <span class="font-medium">{$t(`launchGame.dropdown.${id}.launch` as any)}</span>
+      {/if}
+    </DropdownMenu.Item>
+  {/each}
+</DropdownMenu.Root>

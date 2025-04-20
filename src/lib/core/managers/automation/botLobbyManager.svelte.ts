@@ -234,7 +234,7 @@ export default class BotLobbyManager {
   }
 
   private async getFormattedUserAgent() {
-    const userAgent = await Manifest.getUserAgent();
+    const userAgent = await Manifest.getFortniteUserAgent();
     return `Fortnite/${userAgent.split('/')[1].slice(0, -8)} Windows/10`;
   }
 
