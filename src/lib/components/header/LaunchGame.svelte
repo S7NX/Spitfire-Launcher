@@ -113,8 +113,8 @@
       runningProccesses.delete(id);
 
       if (runningProccesses.size === 0) {
-        Command.create('kill-epic-app', [...baseArgs, 'EasyAntiCheat_EOS.exe']).execute().catch(() => null);
-        Command.create('kill-epic-app', [...baseArgs, 'FortniteClient-Win64-Shipping_EAC.exe']).execute().catch(() => null);
+        Command.create('kill-epic-app', [...baseArgs, 'EasyAntiCheat_EOS.exe']).execute().catch(console.error);
+        Command.create('kill-epic-app', [...baseArgs, 'FortniteClient-Win64-Shipping_EAC.exe']).execute().catch(console.error);
       }
 
       toast.success($t('launchGame.stopped'), { id: toastId });
