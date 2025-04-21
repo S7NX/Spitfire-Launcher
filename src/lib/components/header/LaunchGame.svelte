@@ -11,6 +11,7 @@
   import { path } from '@tauri-apps/api';
   import { exists } from '@tauri-apps/plugin-fs';
   import { Command } from '@tauri-apps/plugin-shell';
+  import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import GamePad2Icon from 'lucide-svelte/icons/gamepad-2';
   import CircleStopIcon from 'lucide-svelte/icons/circle-stop';
   import { onMount } from 'svelte';
@@ -160,7 +161,7 @@
 
 <div bind:this={dropdownAnchor}>
   <Button
-    class="flex items-center justify-center shrink-0"
+    class="flex items-center justify-between gap-x-2 shrink-0"
     disabled={!activeAccount || authenticatingProcesses.has('fortnite') || (launchingProcesses.has('fortnite') && !runningProccesses.has('fortnite'))}
     onclick={() => launchOrStopProcess('fortnite')}
     oncontextmenu={(e) => {
@@ -170,13 +171,26 @@
     size="md"
     variant={runningProccesses.has('fortnite') ? 'danger' : 'epic'}
   >
-    {#if runningProccesses.has('fortnite')}
-      <span class="hidden xs:block">{$t('launchGame.stop')}</span>
-      <CircleStopIcon class="size-6 xs:hidden block"/>
-    {:else}
-      <span class="hidden xs:block">{$t('launchGame.launch')}</span>
-      <GamePad2Icon class="size-6 xs:hidden block"/>
-    {/if}
+    <div>
+      {#if runningProccesses.has('fortnite')}
+        <span class="hidden xs:block">{$t('launchGame.stop')}</span>
+        <CircleStopIcon class="size-6 xs:hidden block"/>
+      {:else}
+        <span class="hidden xs:block">{$t('launchGame.launch')}</span>
+        <GamePad2Icon class="size-6 xs:hidden block"/>
+      {/if}
+    </div>
+
+    <Button
+      class="p-1 hidden xs:block"
+      onclick={(e) => {
+        e.stopPropagation();
+        isDropdownOpen = !isDropdownOpen;
+      }}
+      variant="ghost"
+    >
+      <ChevronDownIcon class="size-4 transition-all duration-200 {isDropdownOpen ? 'rotate-180' : ''}"/>
+    </Button>
   </Button>
 </div>
 
