@@ -12,7 +12,7 @@
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
-  import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
+  import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
   import MCPManager from '$lib/core/managers/mcp';

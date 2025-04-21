@@ -5,7 +5,7 @@
   import Dialog from '$components/ui/Dialog.svelte';
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
-  import LoginSteps from '$components/auth/login/LoginSteps.svelte';
+  import LoginSteps from '$components/login/LoginSteps.svelte';
   import Account from '$lib/core/account';
   import Authentication from '$lib/core/authentication';
   import DeviceAuthManager from '$lib/core/managers/deviceAuth';

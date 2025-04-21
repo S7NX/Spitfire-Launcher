@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Combobox from '$components/ui/Combobox.svelte';
+  import Combobox from '$components/ui/Combobox/Combobox.svelte';
   import UserIcon from 'lucide-svelte/icons/user';
   import { accountsStore } from '$lib/stores';
   import type { AccountData } from '$types/accounts';

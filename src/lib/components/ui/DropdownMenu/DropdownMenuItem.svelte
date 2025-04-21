@@ -7,7 +7,7 @@
     children: Snippet;
   };
 
-  let {
+  const {
     children,
     class: className,
     ...restProps

@@ -10,7 +10,7 @@
   import type { AccountData } from '$types/accounts';
   import { accountsStore } from '$lib/stores';
   import { toast } from 'svelte-sonner';
-  import LoginModal from '$components/auth/login/LoginModal.svelte';
+  import LoginModal from '$components/login/LoginModal.svelte';
   import { t } from '$lib/utils/util';
 
   type PageState = {

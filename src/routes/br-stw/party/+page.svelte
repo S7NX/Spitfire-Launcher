@@ -7,7 +7,7 @@
 </script>
 
 <script lang="ts">
-  import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
+  import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import { DropdownMenu } from '$components/ui/DropdownMenu';
   import Label from '$components/ui/Label.svelte';

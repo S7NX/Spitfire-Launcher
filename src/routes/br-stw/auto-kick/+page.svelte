@@ -9,7 +9,7 @@
   import type { AutomationSetting as AutomationSettingWithId } from '$types/settings';
   import Trash2Icon from 'lucide-svelte/icons/trash-2';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
-  import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
+  import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
 
   type AutomationSetting = keyof Omit<AutomationSettingWithId, 'accountId'>;
 

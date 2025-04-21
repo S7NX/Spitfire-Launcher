@@ -15,10 +15,10 @@
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import { accountsStore, doingBulkOperations, language } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
-  import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
+  import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import { getResolvedResults, t } from '$lib/utils/util';
   import MCPManager from '$lib/core/managers/mcp';
-  import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
+  import BulkResultAccordion from '$components/ui/Accordion/BulkResultAccordion.svelte';
 
   let selectedAccounts = $state<string[]>([]);
 

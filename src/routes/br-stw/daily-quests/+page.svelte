@@ -20,14 +20,14 @@
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
-  import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
+  import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import { accountsStore, doingBulkOperations, language } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
   import MCPManager from '$lib/core/managers/mcp';
   import { dailyQuests } from '$lib/constants/stw/resources';
   import type { FullQueryProfile } from '$types/game/mcp';
-  import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
+  import BulkResultAccordion from '$components/ui/Accordion/BulkResultAccordion.svelte';
   import { t } from '$lib/utils/util';
 
   let selectedAccounts = $state<string[]>([]);

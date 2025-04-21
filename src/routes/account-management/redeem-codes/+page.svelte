@@ -13,13 +13,13 @@
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
-  import AccountCombobox from '$components/auth/account/AccountCombobox.svelte';
+  import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import TagInput from '$components/ui/TagInput.svelte';
   import { accountsStore, doingBulkOperations } from '$lib/stores';
   import CodeManager from '$lib/core/managers/code';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
-  import BulkResultAccordion from '$components/auth/account/BulkResultAccordion.svelte';
+  import BulkResultAccordion from '$components/ui/Accordion/BulkResultAccordion.svelte';
   import { t } from '$lib/utils/util';
 
   let selectedAccounts = $state<string[]>([]);
