@@ -19,10 +19,7 @@ export default class LookupManager {
       }
     ).json();
 
-    displayNamesCache.update(cache => ({
-      ...cache,
-      [data.id]: data.displayName
-    }));
+    displayNamesCache.set(data.id, data.displayName);
 
     return data;
   }
@@ -46,16 +43,12 @@ export default class LookupManager {
       }
     );
 
-    displayNamesCache.update(cache => {
-      for (const account of accounts) {
-        const name = account.displayName || Object.values(account.externalAuths).map(x => x.externalDisplayName)?.[0];
-        if (name) {
-          cache[account.id] = name;
-        }
-      }
+    for (const account of accounts) {
+      const name = account.displayName || Object.values(account.externalAuths).map(x => x.externalDisplayName)?.[0];
+      if (!name) continue;
 
-      return cache;
-    });
+      displayNamesCache.set(account.id, name);
+    }
 
     return accounts;
   }
@@ -72,10 +65,7 @@ export default class LookupManager {
       }
     ).json();
 
-    displayNamesCache.update(cache => ({
-      ...cache,
-      [data.id]: data.displayName
-    }));
+    displayNamesCache.set(data.id, data.displayName);
 
     return data;
   }

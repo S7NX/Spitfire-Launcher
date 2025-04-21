@@ -22,18 +22,14 @@ export default class AvatarManager {
       }
     );
 
-    avatarCache.update((cache) => {
-      for (const avatar of avatarData) {
-        if (avatar.namespace.toLowerCase() !== 'fortnite') continue;
+    for (const avatar of avatarData) {
+      if (avatar.namespace.toLowerCase() !== 'fortnite') continue;
 
-        const cosmeticId = avatar.avatarId.split(':')[1];
-        if (cosmeticId) {
-          cache[avatar.accountId] = `https://fortnite-api.com/images/cosmetics/br/${cosmeticId}/smallicon.png`;
-        }
-      }
+      const cosmeticId = avatar.avatarId.split(':')[1];
+      if (!cosmeticId) continue;
 
-      return cache;
-    });
+      avatarCache.set(avatar.accountId, `https://fortnite-api.com/images/cosmetics/br/${cosmeticId}/smallicon.png`);
+    }
 
     return avatarData;
   }

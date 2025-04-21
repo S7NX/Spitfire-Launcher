@@ -47,5 +47,5 @@ export const friendsStore = writable<Record<string, {
   outgoing: Map<string, OutgoingFriendRequestData>;
   blocklist: Map<string, BlockedAccountData>;
 }>>({});
-export const displayNamesCache = writable<Record<string, string>>({});
-export const avatarCache = writable<Record<string, string>>({});
+export const displayNamesCache = new SvelteMap<string, string>();
+export const avatarCache = new SvelteMap<string, string>();

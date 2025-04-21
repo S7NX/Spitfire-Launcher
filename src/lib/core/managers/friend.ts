@@ -379,14 +379,14 @@ export default class FriendManager {
   }
 
   private static cacheAccountNameAndAvatar(account: AccountData, accountId: string) {
-    if (!get(displayNamesCache)[accountId]) {
+    if (!displayNamesCache.get(accountId)) {
       LookupManager.fetchById(account, accountId)
         .catch(error => {
           console.error(error);
         });
     }
 
-    if (!get(avatarCache)[accountId]) {
+    if (!avatarCache.get(accountId)) {
       AvatarManager.fetchAvatars(account, [accountId])
         .catch(error => {
           console.error(error);

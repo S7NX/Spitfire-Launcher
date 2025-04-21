@@ -36,9 +36,9 @@
   const list = $derived(Array.from($friendsStore[activeAccount.accountId]?.[listType]?.values() || [])
     .map((data: FriendData | IncomingFriendRequestData | OutgoingFriendRequestData | BlockedAccountData) => ({
       accountId: data.accountId,
-      displayName: $displayNamesCache[data.accountId] || data.accountId,
+      displayName: displayNamesCache.get(data.accountId) || data.accountId,
       nickname: 'alias' in data && data.alias,
-      avatarUrl: $avatarCache[data.accountId] || 'https://fortnite-api.com/images/cosmetics/br/CID_DEFAULTOUTFIT/smallicon.png',
+      avatarUrl: avatarCache.get(data.accountId) || 'https://fortnite-api.com/images/cosmetics/br/CID_DEFAULTOUTFIT/smallicon.png',
       createdAt: new Date(data.created)
     }))
     .toSorted((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
