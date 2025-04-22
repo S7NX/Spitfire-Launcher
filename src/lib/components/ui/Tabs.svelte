@@ -4,14 +4,11 @@
 
   type Props = {
     tabs: { id: string; name: string; component?: Snippet | Component, disabled?: boolean }[];
-    // Default is if-else, however it is slower to render than class if the tab component is too heavy
-    switchType?: 'if-else' | 'class'
     activeTab?: string;
   };
 
   let {
     tabs,
-    switchType = 'if-else',
     activeTab = $bindable()
   }: Props = $props();
 
@@ -46,22 +43,12 @@
     {@const TabComponent = tab.component}
 
     {#if TabComponent}
-      {#if switchType === 'if-else'}
-        {#if activeTab === tab.id}
-          {#if isSnippet(tab.component)}
-            {@render tab.component()}
-          {:else}
-            <TabComponent/>
-          {/if}
+      {#if activeTab === tab.id}
+        {#if isSnippet(tab.component)}
+          {@render tab.component()}
+        {:else}
+          <TabComponent/>
         {/if}
-      {:else}
-        <div class={activeTab === tab.id ? 'block' : 'hidden'}>
-          {#if isSnippet(tab.component)}
-            {@render tab.component()}
-          {:else}
-            <TabComponent/>
-          {/if}
-        </div>
       {/if}
     {/if}
   {/each}

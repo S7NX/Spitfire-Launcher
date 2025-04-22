@@ -332,19 +332,6 @@
     "page": {
       "title": "Alertas de Misión"
     },
-    "tabs": {
-      "overview": "Resumen",
-      "claimedAlerts": "Alertas reclamadas"
-    },
-    "search": "Buscar por nombre o ID de cuenta",
-    "playerNotFound": "Jugador no encontrado",
-    "stwStatsPrivate": "No se pudieron obtener los datos de STW del jugador. Sus estadísticas de juego son privadas.",
-    "playerInfo": {
-      "id": "ID",
-      "name": "Nombre",
-      "commanderLevel": "Nivel de Comandante",
-      "claimedAlerts": "Alertas completadas"
-    },
     "sections": {
       "survivors": "Supervivientes legendarios/míticos",
       "twinePeaks": "Cumbres Leñosas ⚡160",

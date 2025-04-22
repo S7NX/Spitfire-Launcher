@@ -332,19 +332,6 @@
     "page": {
       "title": "STW Mission Alerts"
     },
-    "tabs": {
-      "overview": "Overview",
-      "claimedAlerts": "Claimed Alerts"
-    },
-    "search": "Search by name or account ID",
-    "playerNotFound": "Player not found",
-    "stwStatsPrivate": "Couldn't fetch STW data of the player. Their game stats are private.",
-    "playerInfo": {
-      "id": "ID",
-      "name": "Name",
-      "commanderLevel": "Commander level",
-      "claimedAlerts": "Completed alerts"
-    },
     "sections": {
       "survivors": "Legendary/Mythic Survivors",
       "twinePeaks": "Twine Peaks ⚡160",

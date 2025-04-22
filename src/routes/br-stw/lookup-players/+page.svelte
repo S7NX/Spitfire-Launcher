@@ -67,7 +67,7 @@
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
-  import WorldInfoSectionAccordion from '$components/stw/worldInfo/WorldInfoSectionAccordion.svelte';
+  import WorldInfoSectionAccordion from '$components/worldInfo/WorldInfoSectionAccordion.svelte';
   import Pagination from '$components/ui/Pagination.svelte';
   import { TheaterNames } from '$lib/constants/stw/worldInfo';
   import MatchmakingManager from '$lib/core/managers/matchmaking';

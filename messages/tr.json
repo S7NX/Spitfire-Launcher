@@ -332,19 +332,6 @@
     "page": {
       "title": "STW Görev Uyarıları"
     },
-    "tabs": {
-      "overview": "Genel Bakış",
-      "claimedAlerts": "Tamamlanan Uyarılar"
-    },
-    "search": "İsim veya ID ile arayın",
-    "playerNotFound": "Oyuncu bulunamadı",
-    "stwStatsPrivate": "Oyun istatistikleri gizli olduğu için oyuncunun STW verileri alınamadı.",
-    "playerInfo": {
-      "id": "ID",
-      "name": "İsim",
-      "commanderLevel": "Komutan seviyesi",
-      "claimedAlerts": "Tamamlanan uyarılar"
-    },
     "sections": {
       "survivors": "Efsanevi/Eşsiz Felaketzedeler",
       "twinePeaks": "Dikiz Tepeler ⚡160",

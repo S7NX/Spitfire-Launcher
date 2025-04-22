@@ -332,19 +332,6 @@
     "page": {
       "title": "Alertes de mission SLM"
     },
-    "tabs": {
-      "overview": "Aperçu",
-      "claimedAlerts": "Alertes réclamées"
-    },
-    "search": "Rechercher par nom ou par identifiant de compte",
-    "playerNotFound": "Joueur introuvable ",
-    "stwStatsPrivate": "Impossible de récupérer les données SLM du joueur. Ses statistiques de jeu sont privées.",
-    "playerInfo": {
-      "id": "ID",
-      "name": "Nom",
-      "commanderLevel": "Niveau de commandant",
-      "claimedAlerts": "Alertes terminées"
-    },
     "sections": {
       "survivors": "Survivants légendaires/mythiques",
       "twinePeaks": "Pics Hardis ⚡️160",
