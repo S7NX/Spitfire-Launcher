@@ -54,7 +54,7 @@ export default class SystemTray {
           await getCurrentWindow().show();
         }
       },
-      showMenuOnLeftClick: true
+      showMenuOnLeftClick: false
     });
 
     SystemTray.trayIconId = tray.id;
