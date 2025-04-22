@@ -51,4 +51,4 @@ export type GitHubRelease = {
   zipball_url: string;
   body: string | null;
   mentions_count?: number;
-}
+};

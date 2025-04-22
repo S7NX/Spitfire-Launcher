@@ -64,7 +64,7 @@ export type TheaterData = {
 
 export type MissionData = {
   names: Record<Locale, string>;
-}
+};
 
 export type ParsedModifierData = WorldParsedMission['mission']['modifiers'][number];
 

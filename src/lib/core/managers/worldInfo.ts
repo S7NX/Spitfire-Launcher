@@ -32,9 +32,9 @@ export default class WorldInfoManager {
 
   static parseWorldInfo(worldInfoData: WorldInfoData) {
     const rawWorldInfo: Record<string, {
-      alerts: Record<string, WorldInfoData['missionAlerts'][number]['availableMissionAlerts']>
-      missions: Record<string, WorldInfoData['missions'][number]['availableMissions']>
-      zones: Record<string, Array<number>>
+      alerts: Record<string, WorldInfoData['missionAlerts'][number]['availableMissionAlerts']>;
+      missions: Record<string, WorldInfoData['missions'][number]['availableMissions']>;
+      zones: Record<string, number[]>;
     }> = {};
 
     const validWorlds = [

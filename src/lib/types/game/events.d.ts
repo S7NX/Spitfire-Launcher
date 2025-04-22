@@ -1,5 +1,5 @@
 export type EpicEventMemberConnected = {
-  ns?: 'Fortnite';
+  ns?: string;
   sent: string;
   connection: {
     id: string;
@@ -18,7 +18,7 @@ export type EpicEventMemberConnected = {
 };
 
 export type EpicEventMemberDisconnected = {
-  ns?: 'Fortnite';
+  ns?: string;
   sent: string;
   connection: {
     id: string;
@@ -39,7 +39,7 @@ export type EpicEventMemberDisconnected = {
 };
 
 export type EpicEventMemberExpired = {
-  ns?: 'Fortnite';
+  ns?: string;
   sent: string;
   revision: number;
   party_id: string;
@@ -48,7 +48,7 @@ export type EpicEventMemberExpired = {
 };
 
 export type EpicEventMemberJoined = {
-  ns?: 'Fortnite';
+  ns?: string;
   sent: string;
   connection: {
     id: string;
@@ -67,7 +67,7 @@ export type EpicEventMemberJoined = {
 };
 
 export type EpicEventMemberKicked = {
-  ns?: 'Fortnite';
+  ns?: string;
   sent: string;
   revision: number;
   party_id: string;
@@ -76,7 +76,7 @@ export type EpicEventMemberKicked = {
 };
 
 export type EpicEventMemberLeft = {
-  ns?: 'Fortnite';
+  ns?: string;
   sent: string;
   revision: number;
   party_id: string;
@@ -85,13 +85,13 @@ export type EpicEventMemberLeft = {
 };
 
 export type EpicEventMemberStateUpdated = {
-  ns?: 'Fortnite';
+  ns?: string;
   sent: string;
   revision: number;
   party_id: string;
   account_id: string;
   account_dn: string;
-  member_state_removed: Array<string>;
+  member_state_removed: string[];
   member_state_updated: Record<string, string>;
   member_state_overridden: Record<string, string>;
   joined_at: string;
@@ -99,7 +99,7 @@ export type EpicEventMemberStateUpdated = {
 };
 
 export type EpicEventMemberNewCaptain = {
-  ns?: 'Fortnite';
+  ns?: string;
   sent: string;
   revision: number;
   party_id: string;
@@ -111,11 +111,11 @@ export type EpicEventMemberNewCaptain = {
 };
 
 export type EpicEventPartyUpdated = {
-  ns?: 'Fortnite';
+  ns?: string;
   sent: string;
   party_id: string;
   captain_id: string;
-  party_state_removed: Array<string>;
+  party_state_removed: string[];
   party_state_updated: Record<string, string>;
   party_state_overridden: Record<string, string>;
   party_privacy_type: 'OPEN' | 'INVITE_AND_FORMER';
@@ -130,9 +130,9 @@ export type EpicEventPartyUpdated = {
 };
 
 export type EpicEventInteractionNotification = {
-  ns?: 'Fortnite';
+  ns?: string;
   interactions: Array<{
-    namespace?: 'Fortnite';
+    namespace?: string;
     fromAccountId: string;
     toAccountId: string;
     app: string;
@@ -156,14 +156,13 @@ export type EpicEventInteractionNotification = {
 };
 
 export type EpicEventPartyPing = {
-  ns?: 'Fortnite';
+  ns?: string;
   pinger_dn: string;
   pinger_id: string;
   expires: string;
   sent: string;
   meta: Record<string, string>;
 };
-
 
 export type EpicEventFriendRequest = {
   from: string;
@@ -177,4 +176,4 @@ export type EpicEventFriendRemoved = {
   to: string;
   reason: 'DELETED';
   timestamp: string;
-}
+};
