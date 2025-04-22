@@ -1,7 +1,7 @@
 import { partyService } from '$lib/core/services';
 import Authentication from '$lib/core/authentication';
 import EpicAPIError from '$lib/exceptions/EpicAPIError';
-import { accountPartiesStore } from '$lib/stores';
+import { accountPartiesStore, avatarCache, displayNamesCache } from '$lib/stores';
 import defaultPartyMemberMeta from '$lib/data/defaultPartyMemberMeta.json';
 import defaultPartyMeta from '$lib/data/defaultPartyMeta.json';
 import type { AccountData } from '$types/accounts';
@@ -21,7 +21,25 @@ export default class PartyManager {
     ).json();
 
     const partyData = data.current[0];
-    if (partyData) accountPartiesStore.set(account.accountId, partyData);
+    if (partyData) {
+      accountPartiesStore.set(account.accountId, partyData);
+
+      for (const member of partyData.members) {
+        const name = member.meta['urn:epic:member:dn_s'] || member.connections?.[0]?.meta?.['account_pl_dn'];
+        if (name) {
+          displayNamesCache.set(member.account_id, name);
+        }
+
+        const loadoutJ = member.meta['Default:AthenaCosmeticLoadout_j'];
+        if (loadoutJ) {
+          const loadout = JSON.parse(loadoutJ).AthenaCosmeticLoadout;
+          const equippedCharacterId = loadout?.characterPrimaryAssetId?.split(':')[1];
+          if (equippedCharacterId) {
+            avatarCache.set(member.account_id, `https://fortnite-api.com/images/cosmetics/br/${equippedCharacterId}/smallicon.png`);
+          }
+        }
+      }
+    }
 
     return data;
   }

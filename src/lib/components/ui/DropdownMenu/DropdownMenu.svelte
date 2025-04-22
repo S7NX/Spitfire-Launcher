@@ -26,20 +26,21 @@
   {#if trigger}
     <DropdownMenu.Trigger
       class={cn(
-        'transition-colors',
+        'inline-flex items-center justify-center transition-colors',
         'focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98]',
-        'inline-flex items-center justify-center',
         triggerClass
       )}
     >
       {@render trigger()}
     </DropdownMenu.Trigger>
   {/if}
+
   <DropdownMenu.Portal>
     <DropdownMenu.Content
       {...contentProps}
       class={cn(
-        'focus-override border-muted bg-background shadow-popover outline-hidden w-60 rounded-xl border px-1 py-1.5',
+        'border-muted bg-background shadow-popover outline-hidden rounded-md border px-1 py-1.5',
+        'w-[var(--bits-dropdown-menu-anchor-width)] min-w-60 max-h-[var(--bits-dropdown-menu-content-available-height)] overflow-hidden',
         contentProps?.class
       )}
       forceMount={true}

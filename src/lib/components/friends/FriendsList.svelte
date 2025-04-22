@@ -38,7 +38,7 @@
       accountId: data.accountId,
       displayName: displayNamesCache.get(data.accountId) || data.accountId,
       nickname: 'alias' in data && data.alias,
-      avatarUrl: avatarCache.get(data.accountId) || 'https://fortnite-api.com/images/cosmetics/br/CID_DEFAULTOUTFIT/smallicon.png',
+      avatarUrl: avatarCache.get(data.accountId) || '/assets/misc/defaultOutfitIcon.png',
       createdAt: new Date(data.created)
     }))
     .toSorted((a, b) => b.createdAt.getTime() - a.createdAt.getTime())

@@ -268,7 +268,9 @@
     <form class="flex items-center gap-2 w-full" onsubmit={lookupPlayer}>
       <Input
         class="grow"
+        autofocus={true}
         disabled={isLoading}
+        nameAutocomplete={true}
         placeholder={$t('lookupPlayers.search')}
         bind:value={searchQuery}
       />

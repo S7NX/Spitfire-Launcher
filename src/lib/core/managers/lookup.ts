@@ -73,7 +73,7 @@ export default class LookupManager {
   static async searchByName(account: AccountData, namePrefix: string) {
     const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
 
-    return userSearchService.get<EpicAccountSearch[]>(
+    const data = await userSearchService.get<EpicAccountSearch[]>(
       `${account.accountId}?prefix=${namePrefix.trim()}&platform=epic`,
       {
         headers: {
@@ -81,6 +81,15 @@ export default class LookupManager {
         }
       }
     ).json();
+
+    for (const account of data) {
+      const name = account.matches[0]?.value;
+      if (!name) continue;
+
+      displayNamesCache.set(account.accountId, name);
+    }
+
+    return data;
   }
 
   static async fetchByNameOrId(account: AccountData, nameOrId: string) {
