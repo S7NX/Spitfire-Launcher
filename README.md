@@ -4,7 +4,7 @@ A launcher for Fortnite Battle Royale and Save the World
 
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/BurakYs/Spitfire-Launcher/total?label=Total+Downloads)
 
-![Launcher Preview](./static/launcher-preview.png)
+![Launcher Preview](assets/launcher-preview.png)
 
 ## Table of Contents
 
