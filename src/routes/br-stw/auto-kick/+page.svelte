@@ -72,8 +72,8 @@
     <Alert
       color="yellow"
       icon={AlertTriangleIcon}
-      message="Auto-Kick may not work properly on mobile. If you send the launcher to the background or turn off your screen, the connections will disconnect."
-      title="Warning"
+      message={$t('autoKick.mobileIncompatibilityWarning.description')}
+      title={$t('autoKick.mobileIncompatibilityWarning.title')}
     />
   {/if}
   
