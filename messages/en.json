@@ -163,6 +163,10 @@
       "title": "Auto-Kick",
       "description": "Toggle auto-kick, auto-claim, and auto-transfer materials for Save the World missions."
     },
+    "mobileIncompatibilityWarning": {
+      "title": "Warning",
+      "description": "Auto-Kick may not work properly on mobile. If you send the launcher to the background or turn off your screen, the connections will disconnect."
+    },
     "accountStatus": {
       "active": "Active",
       "loginExpired": "Login Expired",
@@ -376,6 +380,10 @@
     },
     "claimedAlerts": {
       "title": "Claimed Mission Alerts"
+    },
+    "dailyQuests": {
+      "title": "Daily Quests",
+      "rewards": "Rewards"
     }
   },
   "serverStatus": {

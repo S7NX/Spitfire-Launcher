@@ -1,8 +1,6 @@
-import { redirect } from '@sveltejs/kit';
 import DataStorage from '$lib/core/dataStorage';
 import { accountsStore, activeAccountId, customizableMenuStore, language } from '$lib/stores';
-import { page } from '$app/state';
-import { changeLocale, getStartingPage } from '$lib/utils/util';
+import { changeLocale } from '$lib/utils/util';
 import { get } from 'svelte/store';
 
 export const prerender = true;
@@ -38,13 +36,5 @@ export async function load() {
 
   if (settings.customizableMenu) {
     customizableMenuStore.set(settings.customizableMenu);
-  }
-
-  if (page.url.pathname === '/') {
-    const pagePath = await getStartingPage();
-    if (pagePath) {
-      page.url.pathname = pagePath;
-      redirect(307, pagePath);
-    }
   }
 }

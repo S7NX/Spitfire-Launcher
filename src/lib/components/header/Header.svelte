@@ -30,28 +30,31 @@
 </script>
 
 <header
-  class="h-16 bg-surface-alt border-b border-border flex items-center justify-end px-4 select-none sticky top-0 z-10"
-  data-tauri-drag-region>
+  class="h-16 bg-surface-alt border-b border-border flex items-center justify-between md:justify-end px-4 select-none sticky top-0 z-10"
+  data-tauri-drag-region
+>
+  <SidebarBurger/>
 
-  <div class="flex items-center space-x-2">
-    {#if currentPlatform === 'windows'}
-      <LaunchGame/>
-    {/if}
+  <div class="flex items-center gap-x-2">
+    <div class="flex items-center gap-x-2">
+      {#if currentPlatform === 'windows'}
+        <LaunchGame/>
+      {/if}
 
-    <AccountSwitcher/>
-    <SettingsModal/>
-    <LanguageSwitcher/>
-    <SidebarBurger/>
-  </div>
-
-  {#if !isMobile}
-    <div class="flex items-center space-x-2 not-sm:hidden">
-      <button class="p-2 hover:bg-accent rounded transition-colors duration-200" onclick={minimizeOrHide}>
-        <MinusIcon/>
-      </button>
-      <button class="p-2 hover:bg-red-500/80 hover:text-white rounded transition-colors duration-200" onclick={close}>
-        <XIcon/>
-      </button>
+      <AccountSwitcher/>
+      <SettingsModal/>
+      <LanguageSwitcher/>
     </div>
-  {/if}
+
+    {#if !isMobile}
+      <div class="flex items-center space-x-2 not-sm:hidden">
+        <button class="p-2 hover:bg-accent rounded transition-colors duration-200" onclick={minimizeOrHide}>
+          <MinusIcon/>
+        </button>
+        <button class="p-2 hover:bg-red-500/80 hover:text-white rounded transition-colors duration-200" onclick={close}>
+          <XIcon/>
+        </button>
+      </div>
+    {/if}
+  </div>
 </header>

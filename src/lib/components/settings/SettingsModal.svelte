@@ -46,14 +46,14 @@
       </div>
     </div>
 
-    <div class="flex-1 p-1 sm:p-4 max-h-96 overflow-y-auto">
+    <div class="flex-1 p-1 sm:p-4 max-h-96 not-xs:max-h-128 overflow-y-auto">
       <ScrollArea>
         {#each categories as category (category.id)}
           {@const CategoryComponent = category.component}
 
-          <div class="space-y-6 {activeTab === category.id ? 'block' : 'hidden'}">
+          {#if activeTab === category.id}
             <CategoryComponent/>
-          </div>
+          {/if}
         {/each}
       </ScrollArea>
     </div>

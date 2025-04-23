@@ -76,7 +76,7 @@
   <DropdownMenu.Root bind:open={dropdownOpen}>
     {#snippet trigger()}
       <Button
-        class="border-input gap-2 h-10 border max-w-36 xs:max-w-40 truncate flex justify-center items-center"
+        class="flex justify-center items-center gap-x-2 border-input h-10 border max-w-48 truncate"
         onclick={toggleDropdown}
         variant="accent"
       >

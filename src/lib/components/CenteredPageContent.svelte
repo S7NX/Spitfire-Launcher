@@ -23,10 +23,10 @@
   const DocsComponent = docsComponent as Snippet | undefined;
 </script>
 
-<div class="flex items-center justify-center min-h-full">
+<div class="flex items-center justify-center min-h-full max-w-[calc(100dvw-2rem)]">
   <div
     class={cn(
-      'flex flex-col gap-4 xxs:w-80 xs:w-96 p-5 border rounded-md',
+      'flex flex-col gap-4 max-w-full xxs:w-80 xs:w-96 p-5 border rounded-md',
       className
     )}
   >

@@ -8,6 +8,7 @@
 </script>
 
 <script lang="ts">
+  import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import Button from '$components/ui/Button.svelte';
   import { Separator } from 'bits-ui';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
@@ -157,110 +158,105 @@
   });
 </script>
 
-<div class="flex flex-col p-6 gap-8 max-w-2xl mx-auto bg-background rounded-lg">
-  <div class="border rounded-md space-y-4 p-6">
-    <div class="flex flex-col">
-      <div class="flex items-center gap-x-3">
-        <h2 class="text-2xl font-bold">
-          {$t('deviceAuthManagement.page.title')}
-        </h2>
+<CenteredPageContent class="!w-112">
+  {#snippet title()}
+    <h2 class="text-2xl font-bold">
+      {$t('deviceAuthManagement.page.title')}
+    </h2>
 
-        <PlusIcon
-          class="size-8 cursor-pointer {isGenerating ? 'opacity-50 !cursor-not-allowed' : ''}"
-          onclick={generateDeviceAuth}
-        />
+    <PlusIcon
+      class="ml-1 size-8 cursor-pointer {isGenerating ? 'opacity-50 !cursor-not-allowed' : ''}"
+      onclick={generateDeviceAuth}
+    />
 
-        <Separator.Root class="bg-border h-8 w-px"/>
+    <Separator.Root class="bg-border h-8 w-px"/>
 
-        <RefreshCwIcon
-          class="size-6 cursor-pointer {isFetching ? 'animate-spin opacity-50 !cursor-not-allowed' : ''}"
-          onclick={() => fetchDeviceAuths(true)}
-        />
-      </div>
-    </div>
+    <RefreshCwIcon
+      class="ml-1.5 size-6 cursor-pointer {isFetching ? 'animate-spin opacity-50 !cursor-not-allowed' : ''}"
+      onclick={() => fetchDeviceAuths(true)}
+    />
+  {/snippet}
 
-    {#if !isFetching}
-      <div class="space-y-4">
-        {#each deviceAuths as auth (auth.deviceId)}
-          <div class="border border-input rounded-md p-4">
-            <div class="flex justify-between items-start">
-              <div class="flex flex-col gap-y-1">
-                <div class="flex items-center gap-2 w-fit mb-1">
-                  <div class="flex items-center gap-2 group">
-                    <PencilIcon class="hidden group-hover:block size-4"/>
-                    <span
-                      class="font-semibold outline-none hover:underline underline-offset-2"
-                      contenteditable
-                      onblur={(event) => saveDeviceName(event, auth.deviceId)}
-                      onkeydown={(event) => event.key === 'Enter' && event.preventDefault()}
-                      role="textbox"
-                      spellcheck="false"
-                      tabindex="0"
-                    >
-                      {deviceAuthsSettings?.find(x => x.deviceId === auth.deviceId)?.customName || $t('deviceAuthManagement.authInfo.noName')}
-                    </span>
-                  </div>
-
-                  {#if auth.deviceId === activeAccount.deviceId}
-                    <Tooltip tooltip={$t('deviceAuthManagement.authInfo.activeAuth')}>
-                      <div class="size-2 bg-green-500 rounded-full shrink-0"></div>
-                    </Tooltip>
-                  {/if}
+  {#if !isFetching}
+    <div class="space-y-4">
+      {#each deviceAuths as auth (auth.deviceId)}
+        <div class="border border-input rounded-md p-4">
+          <div class="flex justify-between items-start">
+            <div class="flex flex-col gap-y-1">
+              <div class="flex items-center gap-2 w-fit mb-1">
+                <div class="flex items-center gap-2 group">
+                  <PencilIcon class="hidden group-hover:block size-4"/>
+                  <span
+                    class="font-semibold outline-none hover:underline underline-offset-2"
+                    contenteditable
+                    onblur={(event) => saveDeviceName(event, auth.deviceId)}
+                    onkeydown={(event) => event.key === 'Enter' && event.preventDefault()}
+                    role="textbox"
+                    spellcheck="false"
+                    tabindex="0"
+                  >
+                    {deviceAuthsSettings?.find(x => x.deviceId === auth.deviceId)?.customName || $t('deviceAuthManagement.authInfo.noName')}
+                  </span>
                 </div>
 
-                <div class="flex flex-col gap-y-2">
-                  {#each [
-                    { title: $t('deviceAuthManagement.authInfo.id'), value: auth.deviceId },
-                    { title: 'User-Agent', value: auth.userAgent },
-                    { title: 'Secret', value: auth.secret }
-                  ] as { title, value } (title)}
-                    {#if value}
-                      <span class="text-sm flex flex-col">
-                        <span class="font-semibold">{title}</span>
-                        <span class="text-muted-foreground">{value}</span>
-                      </span>
-                    {/if}
-                  {/each}
-
-                  {#each [
-                    { title: $t('deviceAuthManagement.authInfo.created'), data: auth.created },
-                    { title: $t('deviceAuthManagement.authInfo.lastAccess'), data: auth.lastAccess }
-                  ]
-                    as { title, data } (title)}
-                    {#if data}
-                      <div>
-                        <span class="font-semibold">{title}</span>
-                        <div>
-                          <span class="text-sm font-semibold">{$t('deviceAuthManagement.authInfo.location')}:</span>
-                          <span class="text-sm text-muted-foreground">{data.location}</span>
-                        </div>
-                        <div>
-                          <span class="text-sm font-semibold">{$t('deviceAuthManagement.authInfo.ip')}:</span>
-                          <span class="text-sm text-muted-foreground">{data.ipAddress}</span>
-                        </div>
-                        <div>
-                          <span class="text-sm font-semibold">{$t('deviceAuthManagement.authInfo.date')}:</span>
-                          <span class="text-sm text-muted-foreground">{formatDate(data.dateTime)}</span>
-                        </div>
-                      </div>
-                    {/if}
-                  {/each}
-                </div>
+                {#if auth.deviceId === activeAccount.deviceId}
+                  <Tooltip tooltip={$t('deviceAuthManagement.authInfo.activeAuth')}>
+                    <div class="size-2 bg-green-500 rounded-full shrink-0"></div>
+                  </Tooltip>
+                {/if}
               </div>
 
-              <Button
-                class="p-2 flex"
-                disabled={isDeleting}
-                onclick={() => deleteDeviceAuth(auth.deviceId)}
-                size="sm"
-                variant="danger"
-              >
-                <Trash2Icon class="size-5"/>
-              </Button>
+              <div class="flex flex-col gap-y-2">
+                {#each [
+                  { title: $t('deviceAuthManagement.authInfo.id'), value: auth.deviceId },
+                  { title: 'User-Agent', value: auth.userAgent },
+                  { title: 'Secret', value: auth.secret }
+                ] as { title, value } (title)}
+                  {#if value}
+                    <div class="text-sm flex flex-col">
+                      <span class="font-semibold">{title}</span>
+                      <span class="text-muted-foreground">{value}</span>
+                    </div>
+                  {/if}
+                {/each}
+
+                {#each [
+                  { title: $t('deviceAuthManagement.authInfo.created'), data: auth.created },
+                  { title: $t('deviceAuthManagement.authInfo.lastAccess'), data: auth.lastAccess }
+                ] as { title, data } (title)}
+                  {#if data}
+                    <div>
+                      <span class="font-semibold">{title}</span>
+                      <div>
+                        <span class="text-sm font-semibold">{$t('deviceAuthManagement.authInfo.location')}:</span>
+                        <span class="text-sm text-muted-foreground">{data.location}</span>
+                      </div>
+                      <div>
+                        <span class="text-sm font-semibold">{$t('deviceAuthManagement.authInfo.ip')}:</span>
+                        <span class="text-sm text-muted-foreground">{data.ipAddress}</span>
+                      </div>
+                      <div>
+                        <span class="text-sm font-semibold">{$t('deviceAuthManagement.authInfo.date')}:</span>
+                        <span class="text-sm text-muted-foreground">{formatDate(data.dateTime)}</span>
+                      </div>
+                    </div>
+                  {/if}
+                {/each}
+              </div>
             </div>
+
+            <Button
+              class="p-2 flex"
+              disabled={isDeleting}
+              onclick={() => deleteDeviceAuth(auth.deviceId)}
+              size="sm"
+              variant="danger"
+            >
+              <Trash2Icon class="size-5"/>
+            </Button>
           </div>
-        {/each}
-      </div>
-    {/if}
-  </div>
-</div>
+        </div>
+      {/each}
+    </div>
+  {/if}
+</CenteredPageContent>

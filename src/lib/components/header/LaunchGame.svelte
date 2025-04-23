@@ -159,7 +159,7 @@
   });
 </script>
 
-<div bind:this={dropdownAnchor}>
+<div bind:this={dropdownAnchor} class="shrink-0">
   <Button
     class="flex items-center justify-between gap-x-2 shrink-0"
     disabled={!activeAccount || authenticatingProcesses.has('fortnite') || (launchingProcesses.has('fortnite') && !runningProccesses.has('fortnite'))}

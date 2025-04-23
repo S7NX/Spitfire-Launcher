@@ -4,6 +4,9 @@
   import Sidebar from '$components/Sidebar.svelte';
   import Header from '$components/header/Header.svelte';
   import ScrollArea from '$components/ui/ScrollArea.svelte';
+  import AvatarManager from '$lib/core/managers/avatar';
+  import FriendManager from '$lib/core/managers/friend';
+  import LookupManager from '$lib/core/managers/lookup';
   import { getVersion } from '@tauri-apps/api/app';
   import { Toaster } from 'svelte-sonner';
   import { onMount } from 'svelte';
@@ -16,7 +19,7 @@
   import DataStorage from '$lib/core/dataStorage';
   import { Tooltip } from 'bits-ui';
   import WorldInfoManager from '$lib/core/managers/worldInfo';
-  import { worldInfoCache } from '$lib/stores';
+  import { accountsStore, worldInfoCache } from '$lib/stores';
   import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
   import { page } from '$app/state';
   import { locales, localizeHref } from '$lib/paraglide/runtime';
@@ -24,6 +27,7 @@
 
   const { children } = $props();
 
+  const { activeAccount, allAccounts } = $derived($accountsStore);
   let hasNewVersion = $state(false);
   let newVersionData = $state<{ tag: string; downloadUrl: string }>();
 
@@ -62,12 +66,15 @@
     Promise.allSettled([
       AutoKickBase.loadAccounts(),
       handleWorldInfo(),
-      checkForUpdates()
+      checkForUpdates(),
+      activeAccount && FriendManager.getSummary(activeAccount),
+      activeAccount && LookupManager.fetchByIds(activeAccount, allAccounts.map(account => account.accountId)),
+      activeAccount && AvatarManager.fetchAvatars(activeAccount, allAccounts.map(account => account.accountId))
     ]);
   });
 </script>
 
-<div class="min-h-[100dvh] flex flex-row">
+<div class="flex min-h-[100dvh]">
   <Tooltip.Provider>
     <Toaster
       position="bottom-center"
@@ -84,7 +91,7 @@
     <div class="flex flex-col flex-1">
       <Header/>
       <ScrollArea>
-        <main class="p-4 flex-1 overflow-auto bg-background h-[calc(100vh-4rem)]">
+        <main class="p-4 flex-1 overflow-auto bg-background h-[calc(100dvh-4rem)]">
           {@render children()}
         </main>
       </ScrollArea>

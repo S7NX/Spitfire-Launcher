@@ -1,12 +1,15 @@
 <script lang="ts">
   import AutoKickTutorial from '$components/docs/tutorials/AutoKick.svelte';
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import Alert from '$components/ui/Alert.svelte';
   import Button from '$components/ui/Button.svelte';
   import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
   import { accountsStore, automationStore } from '$lib/stores';
   import { cn, nonNull, t } from '$lib/utils/util';
   import Switch from '$components/ui/Switch.svelte';
   import type { AutomationSetting as AutomationSettingWithId } from '$types/settings';
+  import { platform } from '@tauri-apps/plugin-os';
+  import AlertTriangleIcon from 'lucide-svelte/icons/alert-triangle';
   import Trash2Icon from 'lucide-svelte/icons/trash-2';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
   import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
@@ -15,7 +18,7 @@
 
   const allAccounts = $derived(nonNull($accountsStore.allAccounts));
   const autoKickDisabledAccounts = $derived(allAccounts.filter((x) => !$automationStore.some((y) => y.accountId === x.accountId)));
-
+  const currentPlatform = platform();
   let selectedAccountId = $state<string>();
 
   $effect(() => {
@@ -65,8 +68,16 @@
   docsComponent={AutoKickTutorial}
   title={$t('autoKick.page.title')}
 >
-  <div class="flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2 text-muted-foreground text-sm"
-  >
+  {#if currentPlatform === 'android' || currentPlatform === 'ios'}
+    <Alert
+      color="yellow"
+      icon={AlertTriangleIcon}
+      message="Auto-Kick may not work properly on mobile. If you send the launcher to the background or turn off your screen, the connections will disconnect."
+      title="Warning"
+    />
+  {/if}
+  
+  <div class="flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2 text-muted-foreground text-sm">
     <div class="flex items-center gap-x-2">
       <div class="size-2 rounded-full bg-green-500"></div>
       <span>{$t('autoKick.accountStatus.active')}</span>

@@ -70,10 +70,10 @@
 
 <aside
   class={cn(
-    'w-54 h-screen bg-surface-alt flex flex-col overflow-hidden select-none',
-    'fixed inset-y-0 right-0 z-50 transition-transform duration-300 ease-in-out',
+    'w-60 xs:w-54 h-screen bg-surface-alt flex flex-col overflow-hidden select-none',
+    'fixed inset-y-0 left-0 z-50 transition-transform duration-300 ease-in-out',
     'md:sticky md:top-0 md:translate-x-0',
-    $sidebarOpen ? 'translate-x-0' : 'translate-x-full'
+    $sidebarOpen ? 'translate-x-0' : '-translate-x-full'
   )}
 >
   <div
@@ -84,7 +84,7 @@
   </div>
 
   <nav class="flex-1 overflow-y-auto py-4 border-r">
-    <ul class="space-y-1 px-2">
+    <ul class="space-y-1.5 px-2">
       {#each $SidebarCategories as category (category.key)}
         {#if getCategoryVisibility(category.name)}
           <li>

@@ -15,6 +15,7 @@ import type { AllSettings, AutomationSettings, BotLobbySettings, CustomizableMen
 import { path } from '@tauri-apps/api';
 import { dataDir } from '@tauri-apps/api/path';
 import { exists, mkdir, readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
+import { platform } from '@tauri-apps/plugin-os';
 import type { ZodSchema } from 'zod';
 
 export const ACCOUNTS_FILE_PATH = dev ? 'accounts-dev.json' : 'accounts.json';
@@ -180,7 +181,7 @@ export default class DataStorage {
   private static async getDataDirectory() {
     if (DataStorage.caches.dataDirectory) return DataStorage.caches.dataDirectory;
 
-    const dataDirectory = await path.join(await dataDir(), config.identifier);
+    const dataDirectory = platform() === 'android' ? await dataDir() : await path.join(await dataDir(), config.identifier);
 
     if (!(await exists(dataDirectory))) {
       await mkdir(dataDirectory, { recursive: true });

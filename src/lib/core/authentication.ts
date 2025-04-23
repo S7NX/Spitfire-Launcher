@@ -135,11 +135,11 @@ export default class Authentication {
     }).json();
   }
 
-  static getAccessTokenUsingExchangeCode(exchange_code: string, clientCredentials: ClientCredentials = defaultClient, tokenType: EpicTokenType = 'eg1') {
+  static getAccessTokenUsingExchangeCode(exchangeCode: string, clientCredentials: ClientCredentials = defaultClient, tokenType: EpicTokenType = 'eg1') {
     return oauthService.post<EpicExchangeCodeLoginData>('token', {
       body: new URLSearchParams({
         grant_type: 'exchange_code',
-        exchange_code,
+        exchange_code: exchangeCode.replace(/[|`'"]/g, ''),
         token_type: tokenType
       }).toString(),
       headers: {

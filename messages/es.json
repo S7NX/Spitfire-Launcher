@@ -163,6 +163,10 @@
       "title": "Auto-Expulsar",
       "description": "Activa los materiales Auto-Expulsar, Auto-Reclamar, y Auto-Transferir para misiones Salvar el Mundo."
     },
+    "mobileIncompatibilityWarning": {
+      "title": "Advertencia",
+      "description": "Si envías el launcher al segundo plano o apagas la pantalla, Auto-Kick puede no funcionar correctamente."
+    },
     "accountStatus": {
       "active": "Activar",
       "loginExpired": "Sesión Caducada",
@@ -376,6 +380,10 @@
     },
     "claimedAlerts": {
       "title": "Alertas de misión reclamadas"
+    },
+    "dailyQuests": {
+      "title": "Misiones Diarias",
+      "rewards": "Recompensas"
     }
   },
   "serverStatus": {

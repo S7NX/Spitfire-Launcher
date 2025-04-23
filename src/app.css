@@ -121,10 +121,10 @@
     ::before,
     ::backdrop,
     ::file-selector-button {
-        @apply border-border scroll-smooth;
+        @apply border-border scroll-smooth touch-manipulation !overflow-x-hidden;
 
         ::-webkit-scrollbar {
-            width: 0.25rem;
+            @apply w-1;
         }
 
         ::-webkit-scrollbar-thumb {
@@ -132,7 +132,7 @@
         }
 
         ::-webkit-scrollbar-track {
-            background-color: transparent;
+            @apply bg-transparent;
         }
     }
 
@@ -147,6 +147,11 @@
 
     button {
         @apply cursor-pointer;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        @apply text-muted-foreground;
     }
 
     .skeleton-loader {

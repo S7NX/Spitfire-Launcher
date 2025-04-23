@@ -163,6 +163,10 @@
       "title": "Auto-Kick",
       "description": "Active/désactive l'expulsion automatique, la réclamation automatique et le transfert automatique de matériaux pour les missions Sauver le monde."
     },
+    "mobileIncompatibilityWarning": {
+      "title": "Avertissement",
+      "description": "Si vous mettez le launcher en arrière-plan ou éteignez l’écran, Auto-Kick pourrait ne pas fonctionner correctement."
+    },
     "accountStatus": {
       "active": "Actif",
       "loginExpired": "Connexion expirée",
@@ -376,6 +380,10 @@
     },
     "claimedAlerts": {
       "title": "Alertes de mission réclamées"
+    },
+    "dailyQuests": {
+      "title": "Quêtes quotidiennes",
+      "rewards": "Récompenses"
     }
   },
   "serverStatus": {

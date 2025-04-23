@@ -11,7 +11,6 @@
     title?: string | Snippet;
     description?: string | Snippet;
     contentProps?: WithoutChild<Dialog.ContentProps>;
-    hideClose?: boolean;
   };
 
   let {
@@ -22,7 +21,6 @@
     contentProps,
     title,
     description,
-    hideClose,
     ...restProps
   }: Props = $props();
 </script>
@@ -50,7 +48,7 @@
     <Dialog.Content
       {...contentProps}
       class={cn(
-        'rounded-xl bg-background shadow-popover overflow-y-auto max-h-[calc(100vh-2rem)]',
+        'rounded-xl bg-background shadow-popover overflow-y-auto max-h-[calc(100dvh-2rem)]',
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
         'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -85,16 +83,14 @@
 
       {@render children?.()}
 
-      {#if !hideClose}
-        <Dialog.Close
-          class={cn(
-            'absolute right-5 top-5 rounded-md active:scale-[0.98]',
-            'focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2'
-          )}
-        >
-          <XIcon class="text-foreground size-5"/>
-        </Dialog.Close>
-      {/if}
+      <Dialog.Close
+        class={cn(
+          'absolute right-3 top-3 rounded-md active:scale-[0.98]',
+          'focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2'
+        )}
+      >
+        <XIcon class="text-foreground size-5"/>
+      </Dialog.Close>
     </Dialog.Content>
   </Dialog.Portal>
 </Dialog.Root>

@@ -197,7 +197,7 @@
   }
 </script>
 
-<Dialog hideClose={true} bind:open>
+<Dialog contentProps={{ class: 'overflow-hidden' }} bind:open>
   <div class="flex flex-col">
     <LoginSteps {currentStep} {steps}/>
 
@@ -287,7 +287,7 @@
               {$t('accountManager.loginMethods.exchangeCode.instructions')}
             </p>
 
-            <form class="space-y-4" onsubmit={handleExchangeCodeSubmit}>
+            <form class="flex flex-col gap-y-4" onsubmit={handleExchangeCodeSubmit}>
               <Input
                 class="mb-4"
                 disabled={isLoggingIn}

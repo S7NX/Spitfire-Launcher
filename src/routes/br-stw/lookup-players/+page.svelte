@@ -1,10 +1,9 @@
 <script lang="ts" module>
+  import type { DailyQuest } from '$components/lookupPlayers/DailyQuestAccordion.svelte';
+  import type { LoadoutData, MissionData, MissionPlayers } from '$components/lookupPlayers/STWDetails.svelte';
   import { FounderEditions, gadgets, heroes, teamPerks } from '$lib/constants/stw/resources';
-  import { Theaters, ZoneNames } from '$lib/constants/stw/worldInfo';
-  import type { RarityType, ZoneThemeData } from '$types/game/stw/resources';
 
   type FounderEdition = typeof FounderEditions[keyof typeof FounderEditions];
-  type Theater = typeof Theaters[keyof typeof Theaters];
 
   type STWData = {
     commanderLevel: {
@@ -19,59 +18,24 @@
     claimedMissionAlertIds: Set<string>;
   };
 
-  type MissionPlayers = Array<{
-    accountId: string;
-    name: string;
-  }>;
-
-  type MissionData = {
-    nameId?: string;
-    icon?: string;
-    powerLevel?: number;
-    zone?: ZoneThemeData;
-    theaterId: Theater;
-  };
-
-  type LoadoutData = {
-    guid: string;
-    selected?: boolean;
-    index: number;
-    commander?: {
-      name: string;
-      icon: string;
-      rarity: RarityType;
-    };
-    teamPerk?: {
-      name: string;
-      icon: string;
-    };
-    supportTeam?: Array<{
-      name: string;
-      icon: string;
-      rarity: RarityType;
-    }>;
-    gadgets?: Array<{
-      name: string;
-      icon: string;
-    }>;
-  };
-
   let isLoading = $state(false);
   let heroLoadoutPage = $state(1);
-  let lookupData = $state<{ accountId: string; displayName: string; avatarUrl?: string }>();
+  let lookupData = $state<{ accountId: string; displayName: string; }>();
   let stwData = $state<STWData>();
-  let missionPlayers = $state<MissionPlayers>();
+  let missionPlayers = $state<MissionPlayers>([]);
   let mission = $state<MissionData>();
-  let loadoutData = $state<LoadoutData[]>();
+  let loadoutData = $state<LoadoutData[]>([]);
+  let dailyQuests = $state<DailyQuest[]>([]);
 </script>
 
 <script lang="ts">
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import DailyQuestAccordion from '$components/lookupPlayers/DailyQuestAccordion.svelte';
+  import STWDetails from '$components/lookupPlayers/STWDetails.svelte';
   import WorldInfoSectionAccordion from '$components/worldInfo/WorldInfoSectionAccordion.svelte';
-  import Pagination from '$components/ui/Pagination.svelte';
-  import { TheaterNames } from '$lib/constants/stw/worldInfo';
   import MatchmakingManager from '$lib/core/managers/matchmaking';
-  import { accountsStore, language, worldInfoCache } from '$lib/stores';
+  import { accountsStore, avatarCache, language, worldInfoCache } from '$lib/stores';
+  import { dailyQuests as dailyQuestsResource } from '$lib/constants/stw/resources';
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
   import { Separator } from 'bits-ui';
@@ -81,13 +45,11 @@
   import LookupManager from '$lib/core/managers/lookup';
   import { toast } from 'svelte-sonner';
   import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
-  import type { ProfileItem } from '$types/game/mcp';
+  import type { CampaignProfile, ProfileItem } from '$types/game/mcp';
   import MCPManager from '$lib/core/managers/mcp';
-  import { FounderEditionNames, RarityColors, RarityTypes, zoneThemes } from '$lib/constants/stw/resources';
+  import { FounderEditionNames, RarityTypes, zoneThemes } from '$lib/constants/stw/resources';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
-  const selectedHeroLoadout = $derived(loadoutData?.[heroLoadoutPage - 1]);
-
   const claimedMisssionAlerts = $derived($worldInfoCache && stwData?.claimedMissionAlertIds.size &&
     Array.from($worldInfoCache.values())
       .flatMap((worldMissions) => Array.from(worldMissions.values()))
@@ -155,58 +117,85 @@
     loadoutData = [];
 
     for (const [itemGuid, itemData] of items) {
-      if (itemData.attributes.loadout_index == null) continue;
+      if (itemData.attributes.loadout_index != null) {
+        handleLockerItem(profile, itemGuid, itemData);
+      }
 
-      const isSelectedLoadout = attributes.selected_hero_loadout === itemGuid;
-      const selectedCommander = profile.items[itemData.attributes.crew_members.commanderslot];
-      const heroId = selectedCommander?.templateId.replace('Hero:', '').split('_').slice(0, -2).join('_').toLowerCase();
-      const teamPerkId = profile.items[itemData.attributes.team_perk]?.templateId.split('_')[1];
+      if (itemData.templateId.startsWith('Quest:') && itemData.attributes.quest_state === 'Active') {
+        handleQuestItem(profile, itemGuid, itemData);
+      }
+    }
+  }
 
-      const supportTeam = Object.entries(itemData.attributes.crew_members)
-        .filter(([key]) => key.startsWith('followerslot'))
-        .map(([, value]) => profile.items[value as string]?.templateId)
-        .filter(x => !!x);
+  function handleLockerItem(profile: CampaignProfile, itemId: string, itemData: ProfileItem) {
+    const profileAttributes = profile.stats.attributes;
 
-      if (isSelectedLoadout) heroLoadoutPage = itemData.attributes.loadout_index + 1;
+    const isSelectedLoadout = profileAttributes.selected_hero_loadout === itemId;
+    const selectedCommander = profile.items[itemData.attributes.crew_members.commanderslot];
+    const heroId = selectedCommander?.templateId.replace('Hero:', '').split('_').slice(0, -2).join('_').toLowerCase();
+    const teamPerkId = profile.items[itemData.attributes.team_perk]?.templateId.split('_')[1];
 
-      loadoutData.push({
-        guid: itemGuid,
-        selected: isSelectedLoadout,
-        index: itemData.attributes.loadout_index,
-        commander: heroes[heroId] ? {
+    const supportTeam = Object.entries(itemData.attributes.crew_members)
+      .filter(([key]) => key.startsWith('followerslot'))
+      .map(([, value]) => profile.items[value as string]?.templateId)
+      .filter(x => !!x);
+
+    if (isSelectedLoadout) heroLoadoutPage = itemData.attributes.loadout_index + 1;
+
+    loadoutData.push({
+      guid: itemId,
+      selected: isSelectedLoadout,
+      index: itemData.attributes.loadout_index,
+      commander: heroes[heroId] ? {
+        name: heroes[heroId].name,
+        icon: `/assets/heroes/${heroId}.png`,
+        rarity: Object.values(RarityTypes).find((rarity) => selectedCommander.templateId.toLowerCase().includes(`_${rarity}_`))!
+      } : undefined,
+      teamPerk: teamPerkId && teamPerks[teamPerkId] ? {
+        name: teamPerks[teamPerkId].name,
+        icon: `/assets/perks/${teamPerks[teamPerkId].icon}`
+      } : undefined,
+      supportTeam: supportTeam.map((id) => {
+        const heroId = id.replace('Hero:', '').split('_').slice(0, -2).join('_').toLowerCase();
+        const rarity = Object.values(RarityTypes).find((rarity) => id.toLowerCase().includes(`_${rarity}_`))!;
+
+        return {
           name: heroes[heroId].name,
           icon: `/assets/heroes/${heroId}.png`,
-          rarity: Object.values(RarityTypes).find((rarity) => selectedCommander.templateId.toLowerCase().includes(`_${rarity}_`))!
-        } : undefined,
-        teamPerk: teamPerkId && teamPerks[teamPerkId] ? {
-          name: teamPerks[teamPerkId].name,
-          icon: `/assets/perks/${teamPerks[teamPerkId].icon}`
-        } : undefined,
-        supportTeam: supportTeam.map((id) => {
-          const heroId = id.replace('Hero:', '').split('_').slice(0, -2).join('_').toLowerCase();
-          const rarity = Object.values(RarityTypes).find((rarity) => id.toLowerCase().includes(`_${rarity}_`))!;
+          rarity
+        };
+      }),
+      gadgets: itemData.attributes.gadgets
+        ?.sort((a: any, b: any) => a.slot_index - b.slot_index)
+        .filter((gadget: any) => gadgets[gadget.gadget.split('_').at(-1)])
+        .map((data: any) => {
+          const id = data.gadget.split('_').at(-1);
 
           return {
-            name: heroes[heroId].name,
-            icon: `/assets/heroes/${heroId}.png`,
-            rarity
+            name: gadgets[id].name,
+            icon: `/assets/gadgets/${gadgets[id].icon}`
           };
-        }),
-        gadgets: itemData.attributes.gadgets
-          ?.sort((a: any, b: any) => a.slot_index - b.slot_index)
-          .filter((gadget: any) => gadgets[gadget.gadget.split('_').at(-1)])
-          .map((data: any) => {
-            const id = data.gadget.split('_').at(-1);
-
-            return {
-              name: gadgets[id].name,
-              icon: `/assets/gadgets/${gadgets[id].icon}`
-            };
-          })
-      });
-    }
+        })
+    });
 
     loadoutData = loadoutData.sort((a, b) => a.index - b.index);
+  }
+
+  function handleQuestItem(profile: CampaignProfile, itemId: string, itemData: ProfileItem) {
+    const quest = dailyQuestsResource[itemData.templateId.split(':')[1].toLowerCase()];
+    if (!quest) return;
+
+    const hasFounder = Object.values(profile.items).some((item) => item.templateId === 'Token:receivemtxcurrency');
+
+    const completionKey = Object.keys(itemData.attributes).find((attr) => attr.includes('completion'))!;
+    const completionProgress = itemData.attributes[completionKey] || 0;
+
+    dailyQuests.push({
+      ...quest,
+      id: itemId,
+      completionProgress,
+      hasFounder
+    });
   }
 
   async function getMatchmakingData(accountId: string) {
@@ -256,9 +245,10 @@
   function resetData() {
     lookupData = undefined;
     stwData = undefined;
-    missionPlayers = undefined;
+    missionPlayers = [];
     mission = undefined;
-    loadoutData = undefined;
+    loadoutData = [];
+    dailyQuests = [];
     heroLoadoutPage = 1;
   }
 </script>
@@ -313,8 +303,8 @@
 
     <div class="space-y-4 text-sm relative border p-5 rounded-md min-w-80 xs:min-w-96">
       <div class="flex gap-4 items-start">
-        {#if lookupData?.avatarUrl}
-          <img class="hidden xs:block size-20 rounded-md self-center" alt={lookupData.displayName} src={lookupData.avatarUrl}/>
+        {#if avatarCache.has(lookupData.accountId)}
+          <img class="hidden xs:block size-20 rounded-md self-center" alt={lookupData.displayName} src={avatarCache.get(lookupData.accountId)}/>
         {/if}
 
         <div class="flex-1">
@@ -337,131 +327,10 @@
         </div>
       </div>
 
-      <Button
-        class="absolute top-0 right-0 m-2 p-2 hidden xs:block"
-        href="https://fortnitedb.com/profile/{lookupData.accountId}"
-        title="View on FortniteDB"
-        variant="ghost"
-      >
-        <img class="size-12" alt="FortniteDB" src="/assets/logos/fortnitedb.png"/>
-      </Button>
-
-      {#if missionPlayers?.length || mission || loadoutData}
-        <Separator.Root class="bg-border h-px"/>
-
-        <h3 class="text-lg font-semibold text-center">{$t('lookupPlayers.stwDetails.title')}</h3>
-
-        {#if missionPlayers?.length || mission}
-          <div class="grid grid-cols-1 xs:grid-cols-2 gap-4">
-            {#if missionPlayers?.length}
-              <div>
-                <h4 class="text-lg font-semibold">{$t('lookupPlayers.stwDetails.players')}</h4>
-                {#each missionPlayers as member (member.accountId)}
-                  <div class="flex items-center gap-1">
-                    <span>{member.name}</span>
-                    <a class="text-muted-foreground" href="https://fortnitedb.com/profile/{member.accountId}" target="_blank">
-                      <ExternalLinkIcon class="size-4"/>
-                    </a>
-                  </div>
-                {/each}
-              </div>
-            {/if}
-
-            {#if mission}
-              <div>
-                <h4 class="text-lg font-semibold">{$t('lookupPlayers.stwDetails.missionInformation.title')}</h4>
-
-                {#if mission.nameId}
-                  <div class="flex items-center gap-1">
-                    <span class="text-muted-foreground">{$t('lookupPlayers.stwDetails.missionInformation.name')}:</span>
-                    <img class="size-5" alt={$ZoneNames[mission.nameId]} src={mission.icon}/>
-                    <span>{$ZoneNames[mission.nameId]} ⚡{mission.powerLevel}</span>
-                  </div>
-                {/if}
-
-                <div class="flex items-center gap-1">
-                  <span class="text-muted-foreground">{$t('lookupPlayers.stwDetails.missionInformation.world')}:</span>
-                  <span>{$TheaterNames[mission.theaterId]}</span>
-                </div>
-
-                {#if mission.zone}
-                  <div class="flex items-center gap-1">
-                    <span class="text-muted-foreground">{$t('lookupPlayers.stwDetails.missionInformation.zone')}:</span>
-                    <span>{mission.zone?.names[$language]}</span>
-                  </div>
-                {/if}
-              </div>
-            {/if}
-          </div>
-        {/if}
-
-        {#if selectedHeroLoadout && loadoutData?.length}
-          {#if missionPlayers?.length || mission}
-            <Separator.Root class="bg-border h-px"/>
-          {/if}
-
-          <div class="flex flex-col items-center gap-4">
-            {#if selectedHeroLoadout}
-              <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 place-items-center not-md:gap-4">
-                {#if selectedHeroLoadout.commander}
-                  <div class="flex flex-col items-center gap-y-1">
-                    <span class="text-lg font-semibold">{$t('lookupPlayers.stwDetails.heroLoadout.commander')}</span>
-                    <img
-                      style="background-color: {RarityColors[selectedHeroLoadout.commander.rarity]}"
-                      class="size-12 rounded-sm"
-                      alt={selectedHeroLoadout.commander.name}
-                      src={selectedHeroLoadout.commander.icon}
-                      title={selectedHeroLoadout.commander.name}
-                    />
-                  </div>
-                {/if}
-
-                {#if selectedHeroLoadout.teamPerk}
-                  <div class="flex flex-col items-center gap-y-1">
-                    <span class="text-lg font-semibold">{$t('lookupPlayers.stwDetails.heroLoadout.teamPerk')}</span>
-                    <img
-                      class="size-12 rounded-sm"
-                      alt={selectedHeroLoadout.teamPerk.name}
-                      src={selectedHeroLoadout.teamPerk.icon}
-                      title={selectedHeroLoadout.teamPerk.name}
-                    />
-                  </div>
-                {/if}
-
-                {#if selectedHeroLoadout.supportTeam?.length}
-                  <div class="flex flex-col items-center gap-y-1">
-                    <span class="text-lg font-semibold md:hidden">{$t('lookupPlayers.stwDetails.heroLoadout.supportTeam')}</span>
-                    <div class="grid grid-cols-3 gap-2">
-                      {#each selectedHeroLoadout.supportTeam as support (support.name)}
-                        <div class="flex justify-center items-center size-10" title={support.name}>
-                          <img
-                            style="background-color: {RarityColors[support.rarity]}"
-                            class="rounded-md"
-                            alt={support.name}
-                            src={support.icon}
-                          />
-                        </div>
-                      {/each}
-                    </div>
-                  </div>
-                {/if}
-
-                {#if selectedHeroLoadout.gadgets?.length}
-                  <div class="flex flex-col items-center gap-y-1">
-                    <span class="text-lg font-semibold md:hidden">{$t('lookupPlayers.stwDetails.heroLoadout.gadgets')}</span>
-                    {#each selectedHeroLoadout.gadgets as gadget (gadget.name)}
-                      <img class="size-10" alt={gadget.name} src={gadget.icon} title={gadget.name}/>
-                    {/each}
-                  </div>
-                {/if}
-              </div>
-            {/if}
-
-            <Pagination count={loadoutData.length} perPage={1} bind:page={heroLoadoutPage}/>
-          </div>
-        {/if}
+      {#if stwData}
+        <STWDetails {heroLoadoutPage} {loadoutData} {mission} {missionPlayers}/>
       {/if}
-
+      
       {#if stwData && stwData?.claimedMissionAlertIds.size > 0 && claimedMisssionAlerts && claimedMisssionAlerts.length > 0}
         <Separator.Root class="bg-border h-px"/>
 
@@ -472,6 +341,14 @@
           missions={claimedMisssionAlerts}
           showAlertClaimedBorder={false}
         />
+      {/if}
+
+      {#if stwData && dailyQuests.length > 0}
+        <Separator.Root class="bg-border h-px"/>
+
+        <h3 class="text-lg font-semibold text-center">{$t('lookupPlayers.dailyQuests.title')}</h3>
+
+        <DailyQuestAccordion {dailyQuests}/>
       {/if}
     </div>
   {/if}

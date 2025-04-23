@@ -24,6 +24,9 @@ A launcher for Fortnite Battle Royale and Save the World
 
 Download the latest release from the [releases](https://github.com/BurakYs/Spitfire-Launcher/releases) page.
 
+- **Windows:** `Spitfire.Launcher_x.x.x_x64-setup.exe`
+- **Android:** `app-universal-release.apk`
+
 ## Good to Know
 
 On first install, a blue SmartScreen warning may appear. This is because the app is unsigned, as code signing is expensive. You can click on "Run Anyway" and continue the
@@ -31,8 +34,8 @@ installation.
 
 Settings are stored in:
 
-- **Windows:** `C:\Users\USERNAME_HERE\AppData\Roaming\spitfire-launcher`
-- **Other platforms:** `{dataDir}\spitfire-launcher`
+- **Windows:** `C:/Users/USERNAME_HERE/AppData/Roaming/spitfire-launcher`
+- **Android:** `/data/user/0/com.spitfire_launcher.app` (Not accessible without root)
 
 ## Features
 
@@ -43,12 +46,11 @@ Settings are stored in:
 - **Account and Game Management:**
     - Easy web confirmation or exchange code login
     - Launch game, auto-kick and taxis for STW, bot lobbies and custom game status
-    - Manage party, view item shop, earned XP, daily quests, mission alerts
+    - Manage friends and party, view item shop, earned XP, daily quests, mission alerts
     - Lookup players, manage device authentications
 - **Upcoming Features:**
     - Hero and survivor loadout, expedition management
     - Storage and backpack management
-    - Friend management
 
 ## Updating
 

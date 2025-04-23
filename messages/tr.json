@@ -163,6 +163,10 @@
       "title": "Auto-Kick",
       "description": "Dünyayı Kurtar görevleri için Auto-Kick, Auto-Claim ve Auto-Transfer özelliklerini açın."
     },
+    "mobileIncompatibilityWarning": {
+      "title": "Uyarı",
+      "description": "Launcher’ı arka plana alırsanız veya ekranı kapatırsanız, Auto-Kick düzgün çalışmayabilir."
+    },
     "accountStatus": {
       "active": "Aktif",
       "loginExpired": "Oturum Sona Erdi",
@@ -376,6 +380,10 @@
     },
     "claimedAlerts": {
       "title": "Tamamlanan Görev Uyarıları"
+    },
+    "dailyQuests": {
+      "title": "Günlük Görevler",
+      "rewards": "Ödüller"
     }
   },
   "serverStatus": {

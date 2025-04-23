@@ -85,12 +85,12 @@
       if (!quest) continue;
 
       const completionKey = Object.keys(item.attributes).find((attr) => attr.includes('completion'))!;
-      const completion = item.attributes[completionKey] || 0;
+      const completionProgress = item.attributes[completionKey] || 0;
 
       status.data.quests.push({
         id: item.id,
         names: quest.names,
-        completionProgress: completion,
+        completionProgress,
         limit: quest.limit,
         rewards: quest.rewards
       });

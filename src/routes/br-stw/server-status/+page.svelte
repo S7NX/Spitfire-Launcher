@@ -243,8 +243,8 @@
           <div class="bg-muted/30 p-4 rounded-lg">
             <div class="flex justify-between items-center">
               <div class="flex items-center gap-3 truncate">
-                <div class="size-3 rounded-full bg-{getStatusData(service.status) .color}-500"></div>
-                <span class="font-medium truncate">{service.name}</span>
+                <div class="size-3 rounded-full bg-{getStatusData(service.status).color}-500"></div>
+                <span class="font-medium truncate not-xs:text-sm">{service.name}</span>
               </div>
               <div class="text-sm">
                 {getStatusData(service.status).text}
