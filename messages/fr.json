@@ -141,7 +141,7 @@
     "page": {
       "title": "Jeton d'accès"
     },
-    "selectTokenType": "Sélectionnez le type de jeton",
+    "selectTokenType": "Sélectionne le type de jeton",
     "selectClient": "Sélectionner un client",
     "generate": "Générer un jeton d'accès",
     "generating": "Génération",
@@ -165,7 +165,7 @@
     },
     "mobileIncompatibilityWarning": {
       "title": "Avertissement",
-      "description": "Si vous mettez le launcher en arrière-plan ou éteignez l’écran, Auto-Kick pourrait ne pas fonctionner correctement."
+      "description": "L'expulsion automatique peut ne pas fonctionner correctement sur mobile. Si tu mets le lanceur en arrière-plan ou éteins ton écran, les connexions seront interrompues."
     },
     "accountStatus": {
       "active": "Actif",
@@ -236,7 +236,7 @@
     "page": {
       "title": "Quêtes quotidiennes"
     },
-    "getQuests": "Obtiens des quêtes quotidiennes",
+    "getQuests": "Obtenir des quêtes quotidiennes",
     "loading": "Chargement des quêtes"
   },
   "earnedXP": {
@@ -246,7 +246,7 @@
     },
     "check": "Vérifier l'EXP gagné",
     "loading": "Chargement",
-    "resetsAt": "Se réinitialise à {time}"
+    "resetsAt": "Se réinitialise le {time}"
   },
   "itemShop": {
     "page": {
@@ -281,7 +281,7 @@
     },
     "purchasing": "Achat",
     "purchased": "Article acheté avec succès",
-    "needMoreVbucksToPurchase": "Vous avez besoin de {amount} V-Bucks pour acheter cet article",
+    "needMoreVbucksToPurchase": "Tu as besoin de {amount} V-Bucks pour acheter cet article",
     "alreadyOwned": "Tu possèdes déjà cet article",
     "failedToPurchase": "Échec de l'achat de l'article",
     "giftConfirmation": {
@@ -304,7 +304,7 @@
   "taxiService": {
     "page": {
       "title": "Service de taxi",
-      "description": "Transforme ton compte en taxi et joue à des missions STW supérieures à ton niveau de puissance."
+      "description": "Transforme ton compte en taxi et joue à des missions SLM supérieures à ton niveau de puissance."
     },
     "alert": {
       "title": "Avertissement",
@@ -340,7 +340,7 @@
       "survivors": "Survivants légendaires/mythiques",
       "twinePeaks": "Pics Hardis ⚡️160",
       "ventures": "Aventures ⚡️140",
-      "upgradeLlamaTokens": "Mettre à niveau les jetons de lama",
+      "upgradeLlamaTokens": "Jetons de mise à niveau de lama",
       "perkup": "Décuplateur légendaire"
     },
     "noMissions": "Aucune mission disponible",
@@ -429,7 +429,7 @@
       "claimRewardsAfterLeaving": "Réclame des récompenses après avoir quitté la mission",
       "kickAll": "Expulser tout le monde",
       "leaveParty": "Quitter le groupe",
-      "claimRewards": "Réclame des récompenses",
+      "claimRewards": "Réclamer les récompenses",
       "notInParty": "Tu n'es pas dans un groupe",
       "notLeader": "Tu n'es pas le chef du groupe",
       "kickedAll": "Tous les joueurs ont été expulsés avec succès",
@@ -509,7 +509,7 @@
     "stop": "Arrêter le jeu",
     "alreadyRunning": "Ce jeu est déjà en cours d'exécution",
     "launching": "Lancement du jeu...",
-    "notInstalled": "Ce jeu n'est pas installé. Veuillez l'installer d'abord.",
+    "notInstalled": "Ce jeu n'est pas installé. Veuille l'installer d'abord.",
     "launched": "Jeu lancé avec succès",
     "failedToLaunch": "Échec du lancement du jeu",
     "stopping": "Arrêt du jeu...",
@@ -613,7 +613,7 @@
     "autoKick": {
       "description": "L'Auto-Kick est un système qui renvoie automatiquement les joueurs d'une mission une fois qu'ils l'ont terminée. Il peut également réclamer des récompenses et transférer des matériaux de ta réserve à ton sac à dos.",
       "importantNotes": {
-        "0": "Si tu as plusieurs comptes jouant la même mission, tu n'as pas besoin de les ajouter tous au système d'exclusion automatique. Le système les éliminera automatiquement.",
+        "0": "Si tu as plusieurs comptes jouant la même mission, tu n'as pas besoin de les ajouter tous au système d'exclusion automatique. Le système les expulsera automatiquement.",
         "1": "Si la réclamation de récompenses ne fonctionne pas ou s'il y a un bug, règle le \"délai de réclamation de récompenses\" dans les paramètres (situés dans le coin supérieur droit)."
       }
     },
