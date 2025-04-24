@@ -121,7 +121,7 @@
     ::before,
     ::backdrop,
     ::file-selector-button {
-        @apply border-border scroll-smooth touch-manipulation !overflow-x-hidden;
+        @apply border-border scroll-smooth touch-manipulation;
 
         ::-webkit-scrollbar {
             @apply w-1;
@@ -142,7 +142,7 @@
     }
 
     body {
-        @apply bg-background text-foreground;
+        @apply bg-background text-foreground !overflow-x-hidden;
     }
 
     button {
