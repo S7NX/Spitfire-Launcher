@@ -1,4 +1,4 @@
-import { EpicEvents } from '$lib/constants/events';
+import { ConnectionEvents, EpicEvents } from '$lib/constants/events';
 import Authentication from '$lib/core/authentication';
 import TaxiManager from '$lib/core/managers/automation/taxiManager.svelte';
 import FriendManager from '$lib/core/managers/friend';
@@ -69,6 +69,9 @@ export default class BotLobbyManager {
       this.xmpp.addEventListener(EpicEvents.MemberKicked, this.handlePartyStateChange.bind(this), { signal });
       this.xmpp.addEventListener(EpicEvents.MemberStateUpdated, this.handlePartyStateChange.bind(this), { signal });
       this.xmpp.addEventListener(EpicEvents.PartyUpdated, this.handlePartyStateChange.bind(this), { signal });
+      this.xmpp.addEventListener(ConnectionEvents.Disconnected, () => {
+        this.stop();
+      }, { signal });
 
       this.setIsAvailable(true);
 
