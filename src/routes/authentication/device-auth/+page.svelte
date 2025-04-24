@@ -180,7 +180,7 @@
   {#if !isFetching}
     <div class="space-y-4">
       {#each deviceAuths as auth (auth.deviceId)}
-        <div class="border border-input rounded-md p-4">
+        <div class="border border-input rounded-md p-4 relative">
           <div class="flex justify-between items-start">
             <div class="flex flex-col gap-y-1">
               <div class="flex items-center gap-2 w-fit mb-1">
@@ -246,7 +246,7 @@
             </div>
 
             <Button
-              class="p-2 flex"
+              class="absolute top-4 right-4 p-2"
               disabled={isDeleting}
               onclick={() => deleteDeviceAuth(auth.deviceId)}
               size="sm"
