@@ -86,7 +86,11 @@ const tauriKy = ky.create({
       }
     }
 
-    return new Response(data ? JSON.stringify(data) : null, response);
+    return new Response(data ? JSON.stringify(data) : null, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers
+    });
   },
   retry: 0,
   timeout: 30000

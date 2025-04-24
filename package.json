@@ -59,7 +59,8 @@
       "esbuild"
     ],
     "patchedDependencies": {
-      "stanza": "patches/stanza.patch"
+      "stanza": "patches/stanza.patch",
+      "@tauri-apps/plugin-http": "patches/@tauri-apps__plugin-http.patch"
     }
   }
 }
