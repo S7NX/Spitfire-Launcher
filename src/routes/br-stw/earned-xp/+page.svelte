@@ -73,6 +73,7 @@
 </script>
 
 <CenteredPageContent
+  class="not-xs:!w-full"
   description={$t('earnedXP.page.description')}
   title={$t('earnedXP.page.title')}
 >
@@ -135,7 +136,10 @@
 
                 <div class="text-sm">
                   <span class="font-medium">{gamemode.value.toLocaleString()}</span>
-                  <span class="text-muted-foreground">/ {gamemode.limit.toLocaleString()}</span>
+                  <span class="text-muted-foreground">/ {new Intl.NumberFormat($language, {
+                    notation: 'compact',
+                    compactDisplay: 'short'
+                  }).format(gamemode.limit)}</span>
                 </div>
               </div>
 
