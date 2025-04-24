@@ -597,6 +597,7 @@
     "noBlockedUsers": "Engellenen Kullanıcı Yok",
     "sendFriendRequest": "Arkadaşlık İsteği Gönder",
     "sentFriendRequest": "Arkadaşlık isteği gönderildi",
+    "copyId": "ID'yi Kopyala",
     "acceptRequest": "İsteği Kabul Et",
     "removeFriend": "Arkadaşı Sil",
     "cancelRequest": "İsteği İptal Et",

@@ -10,6 +10,8 @@
 <script lang="ts">
   import FriendManager from '$lib/core/managers/friend';
   import { DropdownMenu } from '$components/ui/DropdownMenu';
+  import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+  import { CopyIcon } from 'lucide-svelte';
   import EllipsisIcon from 'lucide-svelte/icons/ellipsis';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import UserPlusIcon from 'lucide-svelte/icons/user-plus';
@@ -125,6 +127,8 @@
               <EllipsisIcon class="size-6 cursor-pointer"/>
             {/snippet}
 
+            {@render CopyIdDropdownItem(friend.accountId)}
+
             {#if listType === 'friends'}
               {@render RemoveFriendDropdownItem(friend.accountId, 'friend')}
               {@render BlockDropdownItem(friend.accountId)}
@@ -162,6 +166,13 @@
     </div>
   {/if}
 </div>
+
+{#snippet CopyIdDropdownItem(friendId: string)}
+  <DropdownMenu.Item onclick={() => writeText(friendId)}>
+    <CopyIcon class="size-5"/>
+    {$t('friendManagement.copyId')}
+  </DropdownMenu.Item>
+{/snippet}
 
 {#snippet AddFriendDropdownItem(friendId: string)}
   <DropdownMenu.Item

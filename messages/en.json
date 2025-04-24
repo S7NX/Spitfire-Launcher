@@ -597,6 +597,7 @@
     "noBlockedUsers": "No Blocked Users",
     "sendFriendRequest": "Send Friend Request",
     "sentFriendRequest": "Successfully sent friend request",
+    "copyId": "Copy ID",
     "acceptRequest": "Accept Request",
     "removeFriend": "Remove Friend",
     "cancelRequest": "Cancel Request",

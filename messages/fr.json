@@ -597,6 +597,7 @@
     "noBlockedUsers": "Aucun utilisateur bloqué",
     "sendFriendRequest": "Envoyer une demande d'ami",
     "sentFriendRequest": "Demande d'ami envoyée avec succès",
+    "copyId": "Copier l'ID",
     "acceptRequest": "Accepter la demande",
     "removeFriend": "Supprimer un ami",
     "cancelRequest": "Annuler la demande",
