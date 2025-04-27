@@ -291,7 +291,8 @@
       },
       {
         name: $t('lookupPlayers.playerInfo.boostedXp', { count: stwData?.xpBoosts.boostedXp }),
-        value: stwData && `${stwData.xpBoosts.boostedXp.toLocaleString()} ${stwData.xpBoosts.boostAmount ? `(${$t('lookupPlayers.playerInfo.boostCount', { count: stwData.xpBoosts.boostAmount })})` : ''}`
+        value: stwData &&
+          `${stwData.xpBoosts.boostedXp.toLocaleString($language)} ${stwData.xpBoosts.boostAmount ? `(${$t('lookupPlayers.playerInfo.boostCount', { count: stwData.xpBoosts.boostAmount })})` : ''}`
       },
       {
         name: $t('lookupPlayers.playerInfo.founderEdition'),
@@ -330,7 +331,7 @@
       {#if stwData}
         <STWDetails {heroLoadoutPage} {loadoutData} {mission} {missionPlayers}/>
       {/if}
-      
+
       {#if stwData && stwData?.claimedMissionAlertIds.size > 0 && claimedMisssionAlerts && claimedMisssionAlerts.length > 0}
         <Separator.Root class="bg-border h-px"/>
 
