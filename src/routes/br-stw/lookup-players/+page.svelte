@@ -204,12 +204,13 @@
 
     const zoneData = matchmakingData.attributes.ZONEINSTANCEID_s && JSON.parse(matchmakingData.attributes.ZONEINSTANCEID_s);
     if (zoneData) {
-      const theaterData = $worldInfoCache?.get(zoneData?.theaterId);
-      const missionData = theaterData?.get(zoneData?.theaterMissionId);
+      const theaterData = $worldInfoCache?.get(zoneData.theaterId);
+      const missionData = theaterData?.get(zoneData.theaterMissionId);
+      const isStormShield = zoneData.zoneThemeClass.includes('TheOutpost');
 
       mission = {
-        nameId: missionData?.zone.type.id,
-        icon: missionData?.zone.type.imageUrl,
+        nameId: isStormShield ? 'storm-shield' : missionData?.zone.type.id,
+        icon: isStormShield ? '/assets/world/storm-shield.png' : missionData?.zone.type.imageUrl,
         powerLevel: missionData?.powerLevel,
         zone: zoneThemes[missionData?.zone.theme?.split('.')[1].toLowerCase() as never],
         theaterId: zoneData.theaterId
