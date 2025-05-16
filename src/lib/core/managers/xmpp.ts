@@ -49,7 +49,7 @@ type AccountOptions = {
   accessToken: string;
 };
 
-type Purpose = 'autoKick' | 'taxiService' | 'botLobby' | 'customStatus' | 'partyManagement' | 'friendManagement';
+type Purpose = 'autoKick' | 'taxiService' | 'customStatus' | 'partyManagement' | 'friendManagement';
 
 export default class XMPPManager {
   private static instances: Map<string, XMPPManager> = new Map();
@@ -147,14 +147,14 @@ export default class XMPPManager {
       this.heartbeatInterval = undefined;
     }
 
-    this.dispatchEvent(ConnectionEvents.Disconnected, undefined);
-    this.connection?.removeAllListeners();
     this.connection?.disconnect();
-    this.connection = undefined;
+    this.connection?.removeAllListeners();
     this.listeners = {};
+    this.connection = undefined;
 
-    XMPPManager.instances.delete(this.account.accountId);
+    XMPPManager.instances.delete(this.account?.accountId);
     this.account = undefined!;
+    this.dispatchEvent(ConnectionEvents.Disconnected, undefined);
   }
 
   get accountId() {
@@ -524,7 +524,7 @@ export default class XMPPManager {
 
   dispatchEvent<T extends keyof EventMap>(eventName: T, data: EventMap[T]) {
     if (this.listeners[eventName]) {
-      for (let i = 0; i < this.listeners[eventName].length; i++) {
+      for (let i = 0; i < this.listeners[eventName]?.length; i++) {
         this.listeners[eventName][i](data);
       }
     }

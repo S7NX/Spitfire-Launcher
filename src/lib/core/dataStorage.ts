@@ -5,13 +5,12 @@ import { accountDataFileSchema } from '$lib/validations/accounts';
 import {
   allSettingsSchema,
   automationSettingsSchema,
-  botLobbySettingsSchema,
   customizableMenuSettingsSchema,
   deviceAuthsSettingsSchema,
   taxiSettingsSchema
 } from '$lib/validations/settings';
 import type { AccountDataFile } from '$types/accounts';
-import type { AllSettings, AutomationSettings, BotLobbySettings, CustomizableMenuSettings, DeviceAuthsSettings, TaxiSettings } from '$types/settings';
+import type { AllSettings, AutomationSettings, CustomizableMenuSettings, DeviceAuthsSettings, TaxiSettings } from '$types/settings';
 import { path } from '@tauri-apps/api';
 import { dataDir } from '@tauri-apps/api/path';
 import { exists, mkdir, readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
@@ -49,9 +48,6 @@ export const AUTOMATION_INITIAL_DATA: AutomationSettings = [];
 export const TAXI_FILE_PATH = dev ? 'taxi-dev.json' : 'taxi.json';
 export const TAXI_INITIAL_DATA: TaxiSettings = [];
 
-export const BOT_LOBBY_FILE_PATH = dev ? 'bot-lobby-dev.json' : 'bot-lobby.json';
-export const BOT_LOBBY_INITIAL_DATA: BotLobbySettings = [];
-
 export default class DataStorage {
   private static caches: {
     dataDirectory?: string;
@@ -60,7 +56,6 @@ export default class DataStorage {
     deviceAuthsFile?: DeviceAuthsSettings;
     automationFile?: AutomationSettings;
     taxiFile?: TaxiSettings;
-    botLobbyFile?: BotLobbySettings;
   } = {};
 
   static async getAccountsFile(bypassCache = false) {
@@ -124,17 +119,6 @@ export default class DataStorage {
     );
   }
 
-  static async getBotLobbyFile(bypassCache = false) {
-    if (DataStorage.caches.botLobbyFile && !bypassCache) return DataStorage.caches.botLobbyFile;
-
-    return DataStorage.getFile<BotLobbySettings>(
-      BOT_LOBBY_FILE_PATH,
-      BOT_LOBBY_INITIAL_DATA,
-      botLobbySettingsSchema,
-      (data) => { DataStorage.caches.botLobbyFile = data; }
-    );
-  }
-
   private static async getFile<T>(
     filePath: string,
     initialData: T,
@@ -161,18 +145,22 @@ export default class DataStorage {
 
     const newData: unknown = !Array.isArray(data) && currentData && typeof currentData === 'object' && !Array.isArray(currentData) ? Object.assign(currentData, data) : data;
 
-    if (pathString === ACCOUNTS_FILE_PATH) {
-      DataStorage.caches.accountsFile = newData as AccountDataFile;
-    } else if (pathString === SETTINGS_FILE_PATH) {
-      DataStorage.caches.settingsFile = newData as AllSettings;
-    } else if (pathString === AUTOMATION_FILE_PATH) {
-      DataStorage.caches.automationFile = newData as AutomationSettings;
-    } else if (pathString === TAXI_FILE_PATH) {
-      DataStorage.caches.taxiFile = newData as TaxiSettings;
-    } else if (pathString === DEVICE_AUTHS_FILE_PATH) {
-      DataStorage.caches.deviceAuthsFile = newData as DeviceAuthsSettings;
-    } else if (pathString === BOT_LOBBY_FILE_PATH) {
-      DataStorage.caches.botLobbyFile = newData as BotLobbySettings;
+    switch (pathString) {
+      case ACCOUNTS_FILE_PATH:
+        DataStorage.caches.accountsFile = newData as AccountDataFile;
+        break;
+      case SETTINGS_FILE_PATH:
+        DataStorage.caches.settingsFile = newData as AllSettings;
+        break;
+      case AUTOMATION_FILE_PATH:
+        DataStorage.caches.automationFile = newData as AutomationSettings;
+        break;
+      case TAXI_FILE_PATH:
+        DataStorage.caches.taxiFile = newData as TaxiSettings;
+        break;
+      case DEVICE_AUTHS_FILE_PATH:
+        DataStorage.caches.deviceAuthsFile = newData as DeviceAuthsSettings;
+        break;
     }
 
     await writeTextFile(configFilePath, JSON.stringify(newData, null, 4));

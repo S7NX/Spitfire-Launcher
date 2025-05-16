@@ -6,7 +6,7 @@ export const appSettingsSchema = z.object({
   gamePath: z.string(),
   missionCheckInterval: z.number().positive(),
   claimRewardsDelay: z.number().positive(),
-  startingPage: z.enum(['autoKick', 'itemShop', 'stwWorldInfo', 'taxiService', 'botLobby', 'dailyQuests']),
+  startingPage: z.enum(['autoKick', 'itemShop', 'stwWorldInfo', 'taxiService', 'dailyQuests']),
   startingAccount: z.enum(['firstInTheList', 'lastUsed']),
   hideToTray: z.boolean(),
   checkForUpdates: z.boolean()
@@ -26,7 +26,6 @@ export const customizableMenuSettingsSchema = z.object({
 
   autoKick: z.boolean().default(true),
   taxiService: z.boolean().default(true),
-  botLobby: z.boolean().default(true),
   customStatus: z.boolean().default(true),
   partyManagement: z.boolean().default(true),
   serverStatus: z.boolean().default(true),
@@ -63,11 +62,3 @@ export const taxiSettingSchema = z.object({
 });
 
 export const taxiSettingsSchema = z.array(taxiSettingSchema);
-
-export const botLobbySettingSchema = z.object({
-  accountId: z.string(),
-  availableStatus: z.string().optional(),
-  busyStatus: z.string().optional()
-});
-
-export const botLobbySettingsSchema = z.array(botLobbySettingSchema);
