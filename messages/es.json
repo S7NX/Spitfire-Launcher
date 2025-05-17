@@ -179,6 +179,44 @@
       "invite": "Invitar"
     }
   },
+  "botLobby": {
+    "page": {
+      "title": "Bot Lobby",
+      "description": "Convierte tu cuenta en bot lobby."
+    },
+    "banWarning": {
+      "title": "Advertencia",
+      "description": "¡La cuenta que te conviertes en un bot del lobby puede ser prohibida! Úsalo bajo tu propio riesgo."
+    },
+    "settings": {
+      "availableStatus": {
+        "title": "Estado disponible",
+        "placeholder": "El estado personalizado del bot cuando está disponible",
+        "default": "Disponible para el lobby del bot. ¡Envía una invitación de grupo!"
+      },
+      "busyStatus": {
+        "title": "Estado ocupado",
+        "placeholder": "El estado personalizado del bot cuando está ocupado",
+        "default": "Actualmente en un grupo. Estará disponible pronto."
+      },
+      "autoAcceptFriendRequests": "Aceptar solicitudes de amistad auto"
+    },
+    "start": "Iniciar Bot Lobby",
+    "starting": "Iniciando",
+    "stop": "Finalizar Bot Lobby",
+    "stopping": "Deteniéndose",
+    "checkingEligibility": "Comprobando",
+    "failedToFetchProfile": "Error al recuperar los datos del perfil",
+    "matchmakingBan": {
+      "default": "Esta cuenta está prohibida, para poder encontrar partidas.",
+      "indefinite": "Esta cuenta está indefinidamente prohibida de emparejamiento.",
+      "temporary": "Esta cuenta está prohibida de emparejamiento durante {time}."
+    },
+    "useNewAccount": "Debes usar una cuenta nueva sin historial de coincidencias para iniciar un lobby bot.",
+    "taxiServiceActive": "No puedes iniciar el lobby del bot mientras el servicio de taxi está activo.",
+    "failedToStart": "Error al iniciar el Bot Lobby",
+    "failedToStop": "Error al detener el Bot Lobby"
+  },
   "customStatus": {
     "page": {
       "title": "Estado personalizado",
@@ -291,7 +329,8 @@
     "stop": "Detener servicio Taxi",
     "stopping": "Deteniendo",
     "failedToStart": "No se pudo iniciar el servicio de taxi",
-    "failedToStop": "No se pudo detener el servicio de taxi"
+    "failedToStop": "No se pudo detener el servicio de taxi",
+    "botLobbyActive": "No puedes iniciar el servicio de taxi mientras el bot lobby esté activo."
   },
   "stwMissionAlerts": {
     "page": {
@@ -576,6 +615,32 @@
       "importantNotes": {
         "0": "Si tiene varias cuentas jugando la misma misión, no necesita añadirlas todas al sistema Auto-Expulsar. El sistema los expulsará automáticamente.",
         "1": "Si reclamar recompensas no funciona o hay un error, ajusta el \"Retraso de Recompensas de Reclamación\" en la configuración (encontrado en la esquina superior derecha)."
+      }
+    },
+    "botLobby": {
+      "howToUse": {
+        "0": "Inicia sesión en una cuenta que quieres convertir en un lobby bot. ¡Esta cuenta no debería tener ningún historial de partidas!",
+        "1": "Comienza el bot haciendo clic en el botón.",
+        "2": "Invita al bot a tu grupo.",
+        "3": "Por último, prepárate en el vestíbulo para entrar en una partida llena de bots."
+      },
+      "faq": {
+        "0": {
+          "question": "¿En qué modos funcionan los lobbies de bots?",
+          "answer": "Los lobbies de bots actualmente solo funcionan en modos de Battle y Cero Construcción"
+        },
+        "1": {
+          "question": "¿Puedo obtener las coronas de la victoria?",
+          "answer": "No, no puedes. "
+        },
+        "2": {
+          "question": "¿Puedo ser baneado?",
+          "answer": "La cuenta que te conviertes en un bot del lobby puede ser prohibido, pero lo más probable es que tu cuenta principal no. Úsalo bajo tu propio riesgo."
+        },
+        "3": {
+          "question": "Ocurrió un error diciendo \"Tiempo de espera de conexión\"",
+          "answer": "Intenta reiniciar el bot del lobby. Si eso no funciona, reinicia el launcher."
+        }
       }
     },
     "taxiService": {

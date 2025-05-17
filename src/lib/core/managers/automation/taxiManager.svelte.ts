@@ -1,10 +1,12 @@
 import { ConnectionEvents, EpicEvents } from '$lib/constants/events';
+import BotLobbyManager from '$lib/core/managers/automation/botLobbyManager.svelte';
 import FriendManager from '$lib/core/managers/friend';
 import PartyManager from '$lib/core/managers/party';
 import XMPPManager from '$lib/core/managers/xmpp';
 import { SvelteSet } from 'svelte/reactivity';
 import homebaseRatingMapping from '$lib/data/homebaseRatingMapping.json';
 import { accountPartiesStore } from '$lib/stores';
+import { toast } from 'svelte-sonner';
 import { evaluateCurve, t } from '$lib/utils/util';
 import { get } from 'svelte/store';
 import type { AccountData } from '$types/accounts';
@@ -45,6 +47,11 @@ export default class TaxiManager {
   constructor(private account: AccountData) { }
 
   async start() {
+    if (BotLobbyManager.botLobbyAccountIds.has(this.account.accountId)) {
+      toast.error(get(t)('taxiService.botLobbyActive'));
+      return;
+    }
+
     this.isStarting = true;
     this.abortController = new AbortController();
     const { signal } = this.abortController;

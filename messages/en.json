@@ -179,6 +179,44 @@
       "invite": "Invite"
     }
   },
+  "botLobby": {
+    "page": {
+      "title": "Bot Lobby",
+      "description": "Turn your account into a bot lobby bot."
+    },
+    "banWarning": {
+      "title": "Warning",
+      "description": "The account you turn into a bot lobby bot can get banned! Use at your own risk."
+    },
+    "settings": {
+      "availableStatus": {
+        "title": "Available Status",
+        "placeholder": "The custom status of the bot when it's available",
+        "default": "Available for bot lobby. Send party invite to join!"
+      },
+      "busyStatus": {
+        "title": "Busy Status",
+        "placeholder": "The custom status of the bot when it's busy",
+        "default": "Currently in a party. Will be available soon."
+      },
+      "autoAcceptFriendRequests": "Auto Accept Friend Requests"
+    },
+    "start": "Start Bot Lobby",
+    "starting": "Starting",
+    "stop": "Stop Bot Lobby",
+    "stopping": "Stopping",
+    "checkingEligibility": "Checking",
+    "failedToFetchProfile": "Failed to fetch profile data",
+    "matchmakingBan": {
+      "default": "This account is banned from matchmaking.",
+      "indefinite": "This account is indefinitely banned from matchmaking.",
+      "temporary": "This account is banned from matchmaking for {time}."
+    },
+    "useNewAccount": "You must use a fresh account with no match history to start a bot lobby.",
+    "taxiServiceActive": "You can't start bot lobby while taxi service is active.",
+    "failedToStart": "Failed to start bot lobby",
+    "failedToStop": "Failed to stop bot lobby"
+  },
   "customStatus": {
     "page": {
       "title": "Custom Status",
@@ -291,7 +329,8 @@
     "stop": "Stop Taxi Service",
     "stopping": "Stopping",
     "failedToStart": "Failed to start the taxi service",
-    "failedToStop": "Failed to stop the taxi service"
+    "failedToStop": "Failed to stop the taxi service",
+    "botLobbyActive": "You can't start taxi service while bot lobby is active."
   },
   "stwMissionAlerts": {
     "page": {
@@ -576,6 +615,32 @@
       "importantNotes": {
         "0": "If you have multiple accounts playing the same mission, you don't need to add all of them to the Auto-Kick system. The system will automatically kick them.",
         "1": "If claiming rewards doesn't work or there is a bug, adjust the \"Claiming Rewards Delay\" in the settings (found in the top right corner)."
+      }
+    },
+    "botLobby": {
+      "howToUse": {
+        "0": "Login to an account that you want to turn into a lobby bot. This account shouldn't have any match history!",
+        "1": "Start the bot by clicking the button.",
+        "2": "Invite the bot to your party.",
+        "3": "Finally, ready up in the lobby to enter a match full of bots."
+      },
+      "faq": {
+        "0": {
+          "question": "In which modes do bot lobbies work?",
+          "answer": "Bot lobbies currently work in only Battle Royale and Zero Build modes."
+        },
+        "1": {
+          "question": "Can I get victory crowns?",
+          "answer": "No, you can't."
+        },
+        "2": {
+          "question": "Can I get banned?",
+          "answer": "The account you turn into a bot lobby bot can get banned, but your main account most likely won't. Use at your own risk."
+        },
+        "3": {
+          "question": "I got an error saying \"Connection Timeout\"",
+          "answer": "Try restarting the lobby bot. If that doesn't work, restart the launcher."
+        }
       }
     },
     "taxiService": {

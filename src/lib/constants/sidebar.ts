@@ -59,6 +59,11 @@ export const SidebarCategories = derived(t, ($t) => [
         href: '/br-stw/taxi-service'
       },
       {
+        key: 'botLobby',
+        name: $t('botLobby.page.title'),
+        href: '/br-stw/bot-lobby'
+      },
+      {
         key: 'customStatus',
         name: $t('customStatus.page.title'),
         href: '/br-stw/custom-status'

@@ -179,6 +179,44 @@
       "invite": "Davet Et"
     }
   },
+  "botLobby": {
+    "page": {
+      "title": "Bot Lobi",
+      "description": "Hesabını bir bot lobi botuna dönüştür."
+    },
+    "banWarning": {
+      "title": "Uyarı",
+      "description": "Bot lobi botuna çevirdiğiniz hesap ban yiyebilir! Kendi sorumluluğunuzda kullanın."
+    },
+    "settings": {
+      "availableStatus": {
+        "title": "Müsait Durumu",
+        "placeholder": "Bot müsaitken kullanılacak özel durum",
+        "default": "Bot lobisi için kullanılabilir. Katılmak için davet gönderin!"
+      },
+      "busyStatus": {
+        "title": "Meşgul Durumu",
+        "placeholder": "Bot meşgulken kullanılacak özel durum",
+        "default": "Şu anda bir grupta. Yakında müsait olacak."
+      },
+      "autoAcceptFriendRequests": "Arkadaşlık İsteklerini Oto Kabul Et"
+    },
+    "start": "Bot Lobisini Başlat",
+    "starting": "Başlatılıyor",
+    "stop": "Bot Lobisini Durdur",
+    "stopping": "Durduruluyor",
+    "checkingEligibility": "Kontrol Ediliyor",
+    "failedToFetchProfile": "Profil verisi alınamadı",
+    "matchmakingBan": {
+      "default": "Bu hesap eşleştirmeden yasaklı.",
+      "indefinite": "Bu hesap eşleştirmeden kalıcı olarak yasaklı.",
+      "temporary": "Bu hesap eşleştirmeden {time} boyunca yasaklı."
+    },
+    "useNewAccount": "Bot lobisi başlatabilmek için yeni bir hesap kullanmalısınız.",
+    "taxiServiceActive": "Taksi hizmeti aktifken bot lobisi başlatamazsınız.",
+    "failedToStart": "Bot lobisi başlatılamadı",
+    "failedToStop": "Bot lobisi durdurulamadı"
+  },
   "customStatus": {
     "page": {
       "title": "Özel Durum",
@@ -291,7 +329,8 @@
     "stop": "Taksi Hizmetini Durdur",
     "stopping": "Durduruluyor",
     "failedToStart": "Taksi hizmeti başlatılamadı",
-    "failedToStop": "Taksi hizmeti durdurulamadı"
+    "failedToStop": "Taksi hizmeti durdurulamadı",
+    "botLobbyActive": "Bot lobisi aktifken taksi hizmeti başlatamazsınız."
   },
   "stwMissionAlerts": {
     "page": {
@@ -576,6 +615,32 @@
       "importantNotes": {
         "0": "Aynı görevi oynayan birden fazla hesabınız varsa, hepsini Auto-Kick sistemine eklemenize gerek yok. Sistem onları otomatik olarak atar.",
         "1": "Ödülleri alma çalışmazsa veya bir hata olursa, ayarlardaki (sağ üst köşede bulunan) \"Ödülleri Alma Gecikmesi\" ayarını değiştirin."
+      }
+    },
+    "botLobby": {
+      "howToUse": {
+        "0": "Bot lobi botuna çevirmek istediğiniz hesaba giriş yapın. Bu hesabın hiç maç geçmişi olmamalı!",
+        "1": "Botu başlatmak için butona tıklayın.",
+        "2": "Botu grubunuza davet edin.",
+        "3": "Son olarak, sadece botlarla dolu bir maça girmek için lobide hazır verin."
+      },
+      "faq": {
+        "0": {
+          "question": "Bot lobileri hangi modlarda çalışıyor?",
+          "answer": "Bot lobileri şu anda sadece Battle Royale ve Zero Build modlarında çalışıyor."
+        },
+        "1": {
+          "question": "Zafer tacı alabilir miyim?",
+          "answer": "Hayır, alamazsınız."
+        },
+        "2": {
+          "question": "Banlanabilir miyim?",
+          "answer": "Bot lobisi botuna dönüştürdüğünüz hesap banlanabilir, fakat ana hesabınız büyük ihtimalle banlanmaz. Kendi sorumluluğunuzda kullanın."
+        },
+        "3": {
+          "question": "\"Connection Timeout\" hatası aldım",
+          "answer": "Lobi botunu yeniden başlatmayı deneyin. İşe yaramazsa, başlatıcıyı yeniden başlatın."
+        }
       }
     },
     "taxiService": {
