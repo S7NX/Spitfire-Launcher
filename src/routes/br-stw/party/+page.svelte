@@ -10,6 +10,7 @@
   import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import { DropdownMenu } from '$components/ui/DropdownMenu';
+  import ExternalLink from '$components/ui/ExternalLink.svelte';
   import Label from '$components/ui/Label.svelte';
   import Switch from '$components/ui/Switch.svelte';
   import Tabs from '$components/ui/Tabs.svelte';
@@ -509,10 +510,9 @@
                   {/if}
                 </div>
 
-                <a
+                <ExternalLink
                   class="flex items-center gap-2 font-medium hover:underline"
                   href="https://fortnitedb.com/profile/{member.accountId}"
-                  target="_blank"
                 >
                   {#if member.platformSpecificName}
                     <div class="flex flex-col">
@@ -529,7 +529,7 @@
                     <span class="text-sm">{member.displayName}</span>
                     <ExternalLinkIcon class="size-4 text-muted-foreground"/>
                   {/if}
-                </a>
+                </ExternalLink>
               </div>
 
               <div class="flex-1 flex flex-col gap-4 text-sm">

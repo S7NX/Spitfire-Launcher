@@ -113,27 +113,27 @@
 
         --surface-alt: 240 5% 10%;
     }
-}
 
-@layer base {
     *,
     ::after,
     ::before,
     ::backdrop,
     ::file-selector-button {
-        @apply border-border scroll-smooth touch-manipulation;
+        border-color: hsl(var(--border));
+        scroll-behavior: smooth;
+        touch-action: manipulation;
+    }
 
-        ::-webkit-scrollbar {
-            @apply w-1;
-        }
+    *::-webkit-scrollbar {
+        width: 0.25rem;
+    }
 
-        ::-webkit-scrollbar-thumb {
-            background-color: hsl(0 0% 15%);
-        }
+    *::-webkit-scrollbar-thumb {
+        background-color: hsl(0 0% 15%);
+    }
 
-        ::-webkit-scrollbar-track {
-            @apply bg-transparent;
-        }
+    *::-webkit-scrollbar-track {
+        background-color: transparent;
     }
 
     input::-webkit-outer-spin-button,
@@ -142,19 +142,32 @@
     }
 
     body {
-        @apply bg-background text-foreground !overflow-x-hidden;
+        background-color: hsl(var(--background));
+        color: hsl(var(--foreground));
+        overflow-x: hidden !important;
     }
 
     button {
-        @apply cursor-pointer;
+        cursor: pointer;
     }
 
     input::placeholder,
     textarea::placeholder {
-        @apply text-muted-foreground;
+        color: hsl(var(--muted-foreground));
     }
 
+    a:hover {
+        cursor: pointer;
+    }
+}
+
+@layer components {
     .skeleton-loader {
-        @apply bg-gradient-to-r from-muted via-secondary to-surface-alt bg-[length:200%_100%] animate-pulse;
+        background-image: linear-gradient(to right,
+        hsl(var(--muted)),
+        hsl(var(--secondary)),
+        hsl(var(--surface-alt)));
+        background-size: 200% 100%;
+        animation: pulse 1.5s ease-in-out infinite;
     }
 }

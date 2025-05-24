@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ExternalLink from '$components/ui/ExternalLink.svelte';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { tv, type VariantProps } from 'tailwind-variants';
   import { cn } from '$lib/utils/util';
@@ -64,14 +65,13 @@
 {/snippet}
 
 {#if href}
-  <a
+  <ExternalLink
     class={allClasses}
     {href}
-    target="_blank"
     {...restProps}
   >
     {@render Content()}
-  </a>
+  </ExternalLink>
 {:else}
   <button
     class={allClasses}

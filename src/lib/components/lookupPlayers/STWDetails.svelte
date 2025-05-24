@@ -43,6 +43,7 @@
 </script>
 
 <script lang="ts">
+  import ExternalLink from '$components/ui/ExternalLink.svelte';
   import Pagination from '$components/ui/Pagination.svelte';
   import { RarityColors } from '$lib/constants/stw/resources';
   import { TheaterNames, ZoneNames } from '$lib/constants/stw/worldInfo';
@@ -75,9 +76,9 @@
           {#each missionPlayers as member (member.accountId)}
             <div class="flex items-center gap-1">
               <span>{member.name}</span>
-              <a class="text-muted-foreground" href="https://fortnitedb.com/profile/{member.accountId}" target="_blank">
+              <ExternalLink class="text-muted-foreground" href="https://fortnitedb.com/profile/{member.accountId}">
                 <ExternalLinkIcon class="size-4"/>
-              </a>
+              </ExternalLink>
             </div>
           {/each}
         </div>

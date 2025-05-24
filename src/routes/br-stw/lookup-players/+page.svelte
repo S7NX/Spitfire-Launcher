@@ -32,6 +32,7 @@
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import DailyQuestAccordion from '$components/lookupPlayers/DailyQuestAccordion.svelte';
   import STWDetails from '$components/lookupPlayers/STWDetails.svelte';
+  import ExternalLink from '$components/ui/ExternalLink.svelte';
   import WorldInfoSectionAccordion from '$components/worldInfo/WorldInfoSectionAccordion.svelte';
   import MatchmakingManager from '$lib/core/managers/matchmaking';
   import { accountsStore, avatarCache, language, worldInfoCache } from '$lib/stores';
@@ -314,11 +315,11 @@
             {#if value != null}
               <div class="flex items-center gap-1">
                 {#if href}
-                  <a class="flex items-center gap-1" href={href} target="_blank">
+                  <ExternalLink class="flex items-center gap-1" href={href}>
                     <span class="text-muted-foreground">{name}:</span>
                     <span>{value}</span>
                     <ExternalLinkIcon class="size-4 text-muted-foreground"/>
-                  </a>
+                  </ExternalLink>
                 {:else}
                   <span class="text-muted-foreground">{name}:</span>
                   <span>{value}</span>

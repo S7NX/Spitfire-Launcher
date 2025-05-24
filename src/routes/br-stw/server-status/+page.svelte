@@ -29,6 +29,7 @@
 </script>
 
 <script lang="ts">
+  import ExternalLink from '$components/ui/ExternalLink.svelte';
   import Switch from '$components/ui/Switch.svelte';
   import Tooltip from '$components/ui/Tooltip.svelte';
   import StatusCard from '$components/ui/StatusCard.svelte';
@@ -229,13 +230,12 @@
     <div class="space-y-2">
       <div class="flex items-center gap-2 text-muted-foreground">
         <ExternalLinkIcon class="size-4"/>
-        <a
+        <ExternalLink
           class="text-sm font-medium hover:underline"
           href="https://status.epicgames.com"
-          target="_blank"
         >
           status.epicgames.com
-        </a>
+        </ExternalLink>
       </div>
 
       <div class="space-y-3">

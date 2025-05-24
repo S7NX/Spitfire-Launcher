@@ -5,6 +5,7 @@
 </script>
 
 <script lang="ts">
+  import ExternalLink from '$components/ui/ExternalLink.svelte';
   import { getVersion } from '@tauri-apps/api/app';
   import { slide } from 'svelte/transition';
   import { cubicInOut } from 'svelte/easing';
@@ -157,15 +158,14 @@
         <!-- -->
       {:then version}
         <div class="text-center mt-4 text-xs text-muted-foreground">
-          <span
-          >{$t('sidebar.version')}
-            <a
+          <span>
+            {$t('sidebar.version')}
+            <ExternalLink
               class="underline underline-offset-2"
               href="{config.links.github}/releases/tag/v{version}"
-              target="_blank"
             >
               v{version}
-            </a>
+            </ExternalLink>
           </span>
         </div>
       {/await}

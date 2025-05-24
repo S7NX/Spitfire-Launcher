@@ -14,6 +14,7 @@
   import CenteredPageContent from '$components/CenteredPageContent.svelte';
   import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
+  import ExternalLink from '$components/ui/ExternalLink.svelte';
   import { launcherAppClient2 } from '$lib/constants/clients';
   import EULAManager from '$lib/core/managers/eula';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
@@ -101,13 +102,12 @@
         <div class="flex items-center justify-between px-3 py-2 bg-muted border rounded-lg">
           <span class="font-semibold truncate">{status.displayName}</span>
 
-          <a
+          <ExternalLink
             class="hover:bg-muted-foreground/10 flex size-8 items-center justify-center rounded-md"
             href={status.data.acceptLink}
-            target="_blank"
           >
             <ExternalLinkIcon class="size-5"/>
-          </a>
+          </ExternalLink>
         </div>
       {/each}
     </div>
