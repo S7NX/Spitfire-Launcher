@@ -8,6 +8,7 @@
   import FriendManager from '$lib/core/managers/friend';
   import LookupManager from '$lib/core/managers/lookup';
   import { getVersion } from '@tauri-apps/api/app';
+  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { Toaster } from 'svelte-sonner';
   import { onMount } from 'svelte';
   import ky from 'ky';
@@ -86,7 +87,11 @@
           title: 'text-sm'
         }
       }}
-    />
+    >
+      {#snippet loadingIcon()}
+        <LoaderCircleIcon class="animate-spin size-5"/>
+      {/snippet}
+    </Toaster>
     <Sidebar/>
     <div class="flex flex-col flex-1">
       <Header/>
