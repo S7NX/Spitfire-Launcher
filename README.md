@@ -25,7 +25,7 @@ A launcher for Fortnite Battle Royale and Save the World
 Download the latest release from the [releases](https://github.com/BurakYs/Spitfire-Launcher/releases) page.
 
 - **Windows:** `Spitfire.Launcher_x.x.x_x64-setup.exe`
-- **Android:** `app-universal-release.apk`
+- **Android:** `Spitfire.Launcher_x.x.x.apk`
 
 ## Good to Know
 
