@@ -207,6 +207,7 @@
           <h3 class="mb-4 text-lg font-medium">
             {$t('accountManager.chooseLoginMethod')}
           </h3>
+
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {#each loginMethods as method (method.id)}
               {@const Icon = method.icon}
@@ -244,14 +245,14 @@
           </button>
 
           {#if selectedMethod === 'webConfirmation'}
-            <h3 class="mb-4 text-lg font-medium">
+            <h3 class="text-lg font-medium">
               {$t('accountManager.loginMethods.webConfirmation.title')}
             </h3>
-            <div class="mb-6 rounded-lg">
-              <p class="mb-4 text-sm">
-                {$t('accountManager.loginMethods.webConfirmation.instructions')}
-              </p>
+            <p class="mb-4 text-sm text-muted-foreground">
+              {$t('accountManager.loginMethods.webConfirmation.instructions')}
+            </p>
 
+            <div class="mb-6 rounded-lg">
               <Button
                 class="flex justify-center items-center gap-x-2 w-full"
                 disabled={!deviceCodeData?.verificationUrl}
@@ -280,24 +281,26 @@
               </Button>
             {/if}
           {:else if selectedMethod === 'exchangeCode'}
-            <h3 class="mb-4 text-lg font-medium">
+            <h3 class="text-lg font-medium">
               {$t('accountManager.loginMethods.exchangeCode.title')}
             </h3>
             <p class="mb-4 text-sm text-muted-foreground">
               {$t('accountManager.loginMethods.exchangeCode.instructions')}
             </p>
 
-            <form class="flex flex-col gap-y-4" onsubmit={handleExchangeCodeSubmit}>
+            <form class="flex flex-col gap-y-4 flex-1 justify-between h-full" onsubmit={handleExchangeCodeSubmit}>
               <Input
-                class="mb-4"
+                autofocus={true}
                 disabled={isLoggingIn}
                 placeholder={$t('accountManager.loginMethods.exchangeCode.inputPlaceholder')}
                 type="text"
                 bind:value={exchangeCode}
               />
 
+              <div class="flex-1"></div>
+
               <Button
-                class="w-full flex items-center justify-center gap-2"
+                class="w-full flex items-center justify-center gap-2 mt-auto"
                 disabled={!exchangeCode?.trim() ||
                   exchangeCode?.trim().length < 32 ||
                   isLoggingIn}
