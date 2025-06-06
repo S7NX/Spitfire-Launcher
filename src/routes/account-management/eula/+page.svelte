@@ -11,7 +11,7 @@
 
 <script lang="ts">
   import { page } from '$app/state';
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import ExternalLink from '$components/ui/ExternalLink.svelte';
@@ -28,6 +28,7 @@
     selectedAccounts?: string[];
   };
 
+  // eslint-disable-next-line svelte/prefer-writable-derived -- We assign this state later
   let selectedAccounts = $state<string[]>([]);
 
   $effect(() => {
@@ -78,7 +79,7 @@
   }
 </script>
 
-<CenteredPageContent title={$t('eula.page.title')}>
+<PageContent small={true} title={$t('eula.page.title')}>
   <form class="flex flex-col gap-y-4" onsubmit={checkEULA}>
     <AccountCombobox
       disabled={isFetching}
@@ -104,7 +105,7 @@
 
           <ExternalLink
             class="hover:bg-muted-foreground/10 flex size-8 items-center justify-center rounded-md"
-            href={status.data.acceptLink}
+            href={status.data.acceptLink!}
           >
             <ExternalLinkIcon class="size-5"/>
           </ExternalLink>
@@ -112,4 +113,4 @@
       {/each}
     </div>
   {/if}
-</CenteredPageContent>
+</PageContent>

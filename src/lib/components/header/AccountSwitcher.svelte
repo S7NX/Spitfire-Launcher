@@ -5,14 +5,14 @@
   import PlusIcon from 'lucide-svelte/icons/plus';
   import LogOutIcon from 'lucide-svelte/icons/log-out';
   import CheckIcon from 'lucide-svelte/icons/check';
-  import Button from '$components/ui/Button.svelte';
   import { DropdownMenu } from '$components/ui/DropdownMenu';
   import Account from '$lib/core/account';
   import type { AccountData } from '$types/accounts';
   import { accountsStore, avatarCache } from '$lib/stores';
+  import { onMount } from 'svelte';
   import { toast } from 'svelte-sonner';
   import LoginModal from '$components/login/LoginModal.svelte';
-  import { t } from '$lib/utils/util';
+  import { cn, t } from '$lib/utils/util';
 
   type PageState = {
     showLoginModal?: boolean;
@@ -22,7 +22,10 @@
 
   let dropdownOpen = $state(false);
   let searchTerm = $state<string>();
+  // eslint-disable-next-line svelte/prefer-writable-derived -- We assign this state later
   let showLoginModal = $state(false);
+  let vpWidth = $state(0);
+  let dropdownSide: 'top' | 'right' = $derived(vpWidth < 640 ? 'top' : 'right');
 
   $effect(() => {
     showLoginModal = (page.state as PageState).showLoginModal || false;
@@ -32,8 +35,8 @@
     ? allAccounts.filter(account => account.displayName.toLowerCase().includes(searchTerm!.toLowerCase()))
     : allAccounts);
 
-  function toggleDropdown() {
-    dropdownOpen = !dropdownOpen;
+  function closeDropdown() {
+    dropdownOpen = false;
   }
 
   async function changeAccounts(account: AccountData) {
@@ -54,14 +57,14 @@
   async function logout() {
     const accountName = activeAccount!.displayName || activeAccount!.accountId;
 
-    toast.promise(Account.logout(), {
-      loading: $t('accountManager.loggingOut', { name: accountName }),
-      success: $t('accountManager.loggedOut', { name: accountName }),
-      error: (error) => {
-        console.error(error);
-        return $t('accountManager.failedToLogout', { name: accountName });
-      }
-    });
+    const toastId = toast.loading($t('accountManager.loggingOut', { name: accountName }));
+    try {
+      await Account.logout();
+      toast.success($t('accountManager.loggedOut', { name: accountName }), { id: toastId });
+    } catch (error) {
+      console.error(error);
+      toast.error($t('accountManager.failedToLogout', { name: accountName }), { id: toastId });
+    }
   }
 
   function handleKeyPress(event: KeyboardEvent) {
@@ -71,19 +74,43 @@
       dropdownOpen = false;
     }
   }
+
+  onMount(() => {
+    vpWidth = window.innerWidth;
+
+    function handleResize() {
+      vpWidth = window.innerWidth;
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 </script>
 
 <div class="relative">
-  <DropdownMenu.Root bind:open={dropdownOpen}>
+  <DropdownMenu.Root
+    contentProps={{ side: dropdownSide }}
+    triggerClass="block w-full duration-0"
+    bind:open={dropdownOpen}
+  >
     {#snippet trigger()}
-      <Button
-        class="flex justify-center items-center gap-x-2 border-input h-10 border max-w-48 truncate"
-        onclick={toggleDropdown}
-        variant="accent"
-      >
-        <span class="truncate">{activeAccount?.displayName || $t('accountManager.noAccount')}</span>
-        <ChevronDownIcon class="size-5 transition-transform duration-200 {dropdownOpen ? 'rotate-180' : ''}"/>
-      </Button>
+      <button class="flex items-center gap-3 px-3 py-2 rounded-md w-full transition-colors hover:bg-accent" onclick={closeDropdown}>
+        <img
+          class="size-8 rounded-full"
+          alt={activeAccount?.displayName}
+          src={(activeAccount && avatarCache.get(activeAccount.accountId)) || '/assets/misc/defaultOutfitIcon.png'}
+        />
+        <span class="font-medium truncate">{activeAccount?.displayName || $t('accountManager.noAccount')}</span>
+        <ChevronDownIcon
+          class={cn(
+            'size-7 ml-auto transition-transform duration-200  hover:bg-muted rounded-md p-1',
+            dropdownOpen ? dropdownSide === 'right' ? '-rotate-90' : 'rotate-180' : ''
+          )}
+        />
+      </button>
     {/snippet}
 
     <div class="p-2">
@@ -104,7 +131,7 @@
             {@const fallbackAvatar = '/assets/misc/defaultOutfitIcon.png'}
             {@const avatar = avatarCache.get(account.accountId) || fallbackAvatar}
 
-            <DropdownMenu.Item onclick={() => changeAccounts(account)}>
+            <DropdownMenu.Item class="duration-0" onclick={() => changeAccounts(account)}>
               <Avatar
                 alt={account.displayName}
                 fallback={fallbackAvatar}
@@ -125,8 +152,8 @@
       <div
         class={[
           'space-y-1',
-          { 'pt-2': allAccounts.length },
-          { 'border-t border-border': filteredAccounts.length }
+          { 'pt-2': !!allAccounts.length },
+          { 'border-t border-border': !!filteredAccounts.length }
         ]}
       >
         <DropdownMenu.Item onclick={addNewAccount}>

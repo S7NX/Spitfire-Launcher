@@ -103,7 +103,7 @@
 
 <div class="space-y-4">
   {#if list?.length}
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
       {#each list as friend (friend.accountId)}
         <div class="flex items-center justify-between p-4 rounded-md bg-accent text-accent-foreground">
           <div class="flex items-center gap-4">

@@ -1,6 +1,6 @@
 <script lang="ts">
   import AutoKickTutorial from '$components/docs/tutorials/AutoKick.svelte';
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import Alert from '$components/ui/Alert.svelte';
   import Button from '$components/ui/Button.svelte';
   import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
@@ -62,8 +62,8 @@
   }
 </script>
 
-<CenteredPageContent
-  class="max-w-128 !w-full @container"
+<PageContent
+  class="@container"
   description={$t('autoKick.page.description')}
   docsComponent={AutoKickTutorial}
   title={$t('autoKick.page.title')}
@@ -102,8 +102,7 @@
   />
 
   {#if $automationStore.length}
-    <div class="grid grid-cols-1 place-items-center @md:grid-cols-2 @lg:grid-cols-3 gap-4"
-    >
+    <div class="grid grid-cols-1 place-items-center @md:grid-cols-2 @lg:grid-cols-3 gap-4">
       {#each $automationStore as automationAccount (automationAccount.accountId)}
         {@const isLoading = automationAccount.status === 'LOADING'}
 
@@ -156,4 +155,4 @@
       {/each}
     </div>
   {/if}
-</CenteredPageContent>
+</PageContent>

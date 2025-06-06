@@ -29,7 +29,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import DailyQuestAccordion from '$components/lookupPlayers/DailyQuestAccordion.svelte';
   import STWDetails from '$components/lookupPlayers/STWDetails.svelte';
   import ExternalLink from '$components/ui/ExternalLink.svelte';
@@ -255,33 +255,31 @@
   }
 </script>
 
-<div class="flex flex-col items-center justify-center min-h-full space-y-4">
-  <CenteredPageContent>
-    <form class="flex items-center gap-2 w-full" onsubmit={lookupPlayer}>
-      <Input
-        class="grow"
-        autofocus={true}
-        disabled={isLoading}
-        nameAutocomplete={true}
-        placeholder={$t('lookupPlayers.search')}
-        bind:value={searchQuery}
-      />
+<div class="flex flex-col items-center justify-center min-w-full min-h-full space-y-4">
+  <form class="flex items-center gap-2 w-80" onsubmit={lookupPlayer}>
+    <Input
+      class="grow"
+      autofocus={true}
+      disabled={isLoading}
+      nameAutocomplete={true}
+      placeholder={$t('lookupPlayers.search')}
+      bind:value={searchQuery}
+    />
 
-      <Button
-        class="flex items-center justify-center size-9"
-        disabled={isLoading || !searchQuery || searchQuery.length < 3}
-        size="sm"
-        type="submit"
-        variant="epic"
-      >
-        {#if isLoading}
-          <LoaderCircleIcon class="size-5 animate-spin"/>
-        {:else}
-          <SearchIcon class="size-5"/>
-        {/if}
-      </Button>
-    </form>
-  </CenteredPageContent>
+    <Button
+      class="flex items-center justify-center size-9"
+      disabled={isLoading || !searchQuery || searchQuery.length < 3}
+      size="sm"
+      type="submit"
+      variant="epic"
+    >
+      {#if isLoading}
+        <LoaderCircleIcon class="size-5 animate-spin"/>
+      {:else}
+        <SearchIcon class="size-5"/>
+      {/if}
+    </Button>
+  </form>
 
   {#if lookupData}
     {@const kv = [
@@ -304,7 +302,7 @@
       }
     ]}
 
-    <div class="space-y-4 text-sm relative border p-5 rounded-md min-w-80 xs:min-w-96">
+    <div class="space-y-4 text-sm relative border p-5 rounded-md min-w-72 sm:min-w-80 xs:min-w-96">
       <div class="flex gap-4 items-start">
         {#if avatarCache.has(lookupData.accountId)}
           <img class="hidden xs:block size-20 rounded-md self-center" alt={lookupData.displayName} src={avatarCache.get(lookupData.accountId)}/>

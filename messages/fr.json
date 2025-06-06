@@ -165,7 +165,7 @@
     },
     "mobileIncompatibilityWarning": {
       "title": "Avertissement",
-      "description": "L'expulsion automatique peut ne pas fonctionner correctement sur mobile. Si tu mets le lanceur en arrière-plan ou éteins ton écran, les connexions seront interrompues."
+      "description": "Si tu mets le lanceur en arrière-plan ou éteins ton écran, l'expulsion automatique peut ne pas fonctionner correctement."
     },
     "accountStatus": {
       "active": "Actif",
@@ -227,7 +227,7 @@
     "settingStatus": "Statut de réglage",
     "statusSet": "Statut personnalisé défini avec succès",
     "failedToSetStatus": "Échec de la définition du statut",
-    "resetStatus": "Réinitialiser le statut ",
+    "resetStatus": "Réinitialiser le statut",
     "resettingStatus": "Réinitialisation du statut",
     "statusReset": "Le statut personnalisé a été réinitialisé avec succès",
     "failedToResetStatus": "Échec de la réinitialisation du statut personnalisé"
@@ -250,10 +250,11 @@
   },
   "itemShop": {
     "page": {
-      "title": "Boutique d'objets "
+      "title": "Boutique d'objets"
     },
     "lastUpdated": "Dernière mise à jour : {date}",
-    "nextRotation": "Prochaine rotation dans {time} ",
+    "nextRotation": "Prochaine rotation dans {time}",
+    "searchPlaceholder": "Rechercher des objets...",
     "failedtoFetch": "Impossible de récupérer les objets de la boutique. Veuille réessayer ultérieurement.",
     "noItems": "Aucun objet trouvé",
     "selectFilter": "Sélectionne un filtre",
@@ -293,7 +294,7 @@
     "sendGift": "Envoyer un cadeau",
     "sentGift": "Cadeau envoyé avec succès",
     "reachedDailyGiftLimit": "Tu as atteint la limite de cadeaux quotidiens",
-    "needMoreVbucksToGift": "Tu as besoin de {amount} V-Bucks pour offrir cet article ",
+    "needMoreVbucksToGift": "Tu as besoin de {amount} V-Bucks pour offrir cet article",
     "friendsMayOwnItem": "Impossible d'envoyer des cadeaux, un ou plusieurs amis possèdent peut-être déjà cet article.",
     "friendsNotEligible": "Impossible d'envoyer des cadeaux, un ou plusieurs amis ne sont pas éligibles.",
     "friendsOwnItemFromBundle": "Impossible d'envoyer des cadeaux, un ou plusieurs amis possèdent un article de ce lot.",
@@ -518,8 +519,8 @@
     "dropdown": {
       "launching": "Lancement...",
       "unrealEditorForFortnite": {
-        "launch": "Lancer Unreal Editor",
-        "stop": "Arrêter Unreal Editor"
+        "launch": "Lancer UEFN",
+        "stop": "Arrêter UEFN"
       },
       "rocketLeague": {
         "launch": "Lancer Rocket League",

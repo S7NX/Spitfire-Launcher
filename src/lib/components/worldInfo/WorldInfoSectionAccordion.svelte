@@ -52,7 +52,7 @@
   }
 </script>
 
-<Accordion class="mt-1" items={parsedMissions} type="multiple">
+<Accordion items={parsedMissions} rootClass="grid sm:grid-cols-2 gap-1" type="multiple">
   {#snippet trigger(mission)}
     <div
       class={cn(

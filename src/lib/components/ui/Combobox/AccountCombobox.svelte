@@ -89,6 +89,7 @@
   inputProps={{ class: className }}
   {items}
   placeholder={selectedAccounts}
+  triggerClass="bg-surface-alt"
   {type}
   bind:value={selected as never}
 />

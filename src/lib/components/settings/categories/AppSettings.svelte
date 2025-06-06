@@ -122,7 +122,9 @@
       <Input
         id="gamePath"
         onConfirm={(e) => handleSettingChange(e, 'gamePath')}
+        placeholder="C:/Program Files/.../FortniteGame/Binaries/Win64"
         value={allSettings?.app?.gamePath}
+        variant="outline"
       />
     </SettingItem>
   {/if}
@@ -140,6 +142,7 @@
       onConfirm={(e) => handleSettingChange(convertToNumber(e), 'missionCheckInterval')}
       type="number"
       value={allSettings?.app?.missionCheckInterval}
+      variant="outline"
     />
   </SettingItem>
 
@@ -156,6 +159,7 @@
       onConfirm={(e) => handleSettingChange(convertToNumber(e), 'claimRewardsDelay')}
       type="number"
       value={allSettings?.app?.claimRewardsDelay}
+      variant="outline"
     />
   </SettingItem>
 

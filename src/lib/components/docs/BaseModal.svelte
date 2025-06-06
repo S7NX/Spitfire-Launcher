@@ -12,7 +12,7 @@
 
 <Dialog>
   {#snippet trigger()}
-    <HelpCircleIcon class="text-muted-foreground hover:text-foreground transition-colors size-5"/>
+    <HelpCircleIcon class="text-muted-foreground hover:text-foreground transition-colors size-6"/>
   {/snippet}
 
   <div class="prose dark:prose-invert prose-sm">

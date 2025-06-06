@@ -6,12 +6,14 @@
   import CheckIcon from 'lucide-svelte/icons/check';
   import SearchIcon from 'lucide-svelte/icons/search';
   import { cn } from '$lib/utils/util';
+  import type { ClassValue } from 'svelte/elements';
 
   type Item = { value: string; label: string };
 
   type Props = Combobox.RootProps & {
     items: Item[];
     placeholder?: string;
+    triggerClass: ClassValue;
     inputProps?: WithoutChildrenOrChild<Combobox.InputProps>;
     contentProps?: WithoutChildrenOrChild<Combobox.ContentProps>;
     icon: any;
@@ -23,6 +25,7 @@
     placeholder,
     value = $bindable(),
     open = $bindable(false),
+    triggerClass,
     inputProps,
     contentProps,
     icon,
@@ -48,11 +51,16 @@
 
 <Combobox.Root onOpenChange={handleOpenChange} type={type as never} bind:value={value as never} bind:open {...restProps}>
   {@const Icon = icon}
-  <Combobox.Trigger class="flex w-full items-center peer disabled:cursor-not-allowed disabled:opacity-50">
+  <Combobox.Trigger
+    class={cn(
+      'flex w-full items-center peer disabled:cursor-not-allowed disabled:opacity-50 rounded-lg bg-transparent',
+      triggerClass
+    )}
+  >
     <div
       bind:this={customAnchor}
       class={cn(
-        'rounded-lg bg-background inline-flex items-center text-muted-foreground w-full truncate border px-2 transition-colors h-11',
+        'rounded-lg inline-flex bg-transparent items-center text-muted-foreground w-full truncate border px-2 transition-colors h-11',
         'focus:ring-foreground focus:ring-offset-background focus:outline-hidden focus:ring-2 focus:ring-offset-2'
       )}
     >

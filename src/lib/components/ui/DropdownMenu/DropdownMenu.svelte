@@ -39,7 +39,7 @@
     <DropdownMenu.Content
       {...contentProps}
       class={cn(
-        'border-muted bg-background shadow-popover outline-hidden rounded-lg border p-1',
+        'border-muted bg-background shadow-popover outline-hidden rounded-lg border p-1 z-50',
         'w-[var(--bits-dropdown-menu-anchor-width)] min-w-60 max-h-[var(--bits-dropdown-menu-content-available-height)] overflow-hidden',
         contentProps?.class
       )}

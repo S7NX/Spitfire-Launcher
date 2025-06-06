@@ -3,7 +3,6 @@
   import 'webrtc-adapter';
   import Sidebar from '$components/Sidebar.svelte';
   import Header from '$components/header/Header.svelte';
-  import ScrollArea from '$components/ui/ScrollArea.svelte';
   import AvatarManager from '$lib/core/managers/avatar';
   import FriendManager from '$lib/core/managers/friend';
   import LookupManager from '$lib/core/managers/lookup';
@@ -83,7 +82,7 @@
         duration: 3000,
         unstyled: true,
         classes: {
-          toast: 'bg-secondary flex items-center px-4 py-4 border rounded-lg gap-3 min-w-96',
+          toast: 'bg-secondary flex items-center px-4 py-4 border rounded-lg gap-3 min-w-80',
           title: 'text-sm'
         }
       }}
@@ -95,11 +94,11 @@
     <Sidebar/>
     <div class="flex flex-col flex-1">
       <Header/>
-      <ScrollArea>
-        <main class="p-4 flex-1 overflow-auto bg-background h-[calc(100dvh-4rem)]">
+      <div>
+        <main class="px-5 py-5 xs:px-10 sm:py-10 sm:px-20 flex-1 overflow-auto bg-background h-[calc(100dvh-4rem)]">
           {@render children()}
         </main>
-      </ScrollArea>
+      </div>
     </div>
   </Tooltip.Provider>
 </div>

@@ -165,7 +165,7 @@
     },
     "mobileIncompatibilityWarning": {
       "title": "Uyarı",
-      "description": "Launcher’ı arka plana alırsanız veya ekranı kapatırsanız, Auto-Kick düzgün çalışmayabilir."
+      "description": "Başlatıcıyı arka plana alırsanız veya ekranı kapatırsanız, Auto-Kick düzgün çalışmayabilir."
     },
     "accountStatus": {
       "active": "Aktif",
@@ -254,6 +254,7 @@
     },
     "lastUpdated": "Son güncelleme: {date}",
     "nextRotation": "Sıradaki yenilenme: {time}",
+    "searchPlaceholder": "İçerik ara...",
     "failedtoFetch": "İçerik mağazası alınamadı. Lütfen daha sonra tekrar deneyin.",
     "noItems": "Hiç içerik bulunamadı",
     "selectFilter": "Filtre Seçin",
@@ -518,8 +519,8 @@
     "dropdown": {
       "launching": "Başlatılıyor...",
       "unrealEditorForFortnite": {
-        "launch": "Unreal Editor'ü Başlat",
-        "stop": "Unreal Editor'ü Durdur"
+        "launch": "UEFN'yi Başlat",
+        "stop": "UEFN'yi Durdur"
       },
       "rocketLeague": {
         "launch": "Rocket League'i Başlat",

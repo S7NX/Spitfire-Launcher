@@ -4,7 +4,6 @@
   import CustomizableMenu from '$components/settings/categories/CustomizableMenu.svelte';
   import SettingsIcon from 'lucide-svelte/icons/settings';
   import { cn, t } from '$lib/utils/util';
-  import ScrollArea from '$components/ui/ScrollArea.svelte';
 
   const categories = $derived([
     { id: 'appSettings', name: $t('settings.tabs.appSettings'), component: AppSettings },
@@ -16,7 +15,7 @@
 </script>
 
 <Dialog
-  contentProps={{ class: '!max-w-[calc(100%-4rem)] sm:!max-w-160' }}
+  contentProps={{ class: '!max-w-[calc(100%-2rem)] sm:!max-w-180  not-xs:w-full' }}
   triggerClass="p-2 rounded-md hover:bg-accent"
 >
   {#snippet trigger()}
@@ -46,8 +45,8 @@
       </div>
     </div>
 
-    <div class="flex-1 p-1 sm:p-4 max-h-96 not-xs:max-h-128 overflow-y-auto">
-      <ScrollArea>
+    <div class="flex-1 p-1 sm:p-4 max-h-114 not-xs:max-h-128 overflow-y-auto">
+      <div>
         {#each categories as category (category.id)}
           {@const CategoryComponent = category.component}
 
@@ -55,7 +54,7 @@
             <CategoryComponent/>
           {/if}
         {/each}
-      </ScrollArea>
+      </div>
     </div>
   </div>
 </Dialog>

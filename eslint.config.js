@@ -2,7 +2,7 @@ import { includeIgnoreFile } from '@eslint/compat';
 import svelte from 'eslint-plugin-svelte';
 import tsEslint from 'typescript-eslint';
 import { fileURLToPath } from 'node:url';
-import stylistic from '@stylistic/eslint-plugin-ts';
+import stylistic from '@stylistic/eslint-plugin';
 import svelteConfig from './svelte.config.js';
 
 const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));

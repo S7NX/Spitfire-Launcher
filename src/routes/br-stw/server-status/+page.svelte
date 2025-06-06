@@ -41,7 +41,7 @@
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import { onMount } from 'svelte';
   import { toast } from 'svelte-sonner';
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import Button from '$components/ui/Button.svelte';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
@@ -146,10 +146,10 @@
   });
 </script>
 
-<CenteredPageContent class="!w-112" title={$t('serverStatus.page.title')}>
+<PageContent class="mt-2" title={$t('serverStatus.page.title')}>
   <div class="flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <p class="text-sm">
+      <p class="text-sm text-muted-foreground">
         {$t('serverStatus.lastUpdated', { date: lastUpdated ? lastUpdated.toLocaleTimeString() : '...' })}
       </p>
 
@@ -255,4 +255,4 @@
       </div>
     </div>
   {/if}
-</CenteredPageContent>
+</PageContent>

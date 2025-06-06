@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
@@ -55,7 +55,7 @@
   }
 </script>
 
-<CenteredPageContent title={$t('accessTokenManagement.page.title')}>
+<PageContent small={true} title={$t('accessTokenManagement.page.title')}>
   <form class="flex flex-col gap-y-4" onsubmit={generateAccessToken}>
     <Select
       items={tokenTypeOptions}
@@ -86,4 +86,4 @@
       {$t('accessTokenManagement.generate')}
     </Button>
   </form>
-</CenteredPageContent>
+</PageContent>

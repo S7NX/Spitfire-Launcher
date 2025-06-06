@@ -14,12 +14,18 @@
 
   type Props = {
     selected: SpitfireShopFilter;
+    disabled?: boolean;
   };
 
   let { selected = $bindable() }: Props = $props();
 </script>
 
-<Select items={filters} type="single" bind:value={selected}>
+<Select
+  items={filters}
+  triggerClass="bg-surface-alt"
+  type="single"
+  bind:value={selected}
+>
   {#snippet trigger(label)}
     <FilterIcon class="text-muted-foreground size-5 mr-2"/>
     <span class="text-muted-foreground">{label || $t('itemShop.selectFilter')}</span>

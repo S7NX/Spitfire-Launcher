@@ -3,7 +3,6 @@
   import { getCurrentWindow } from '@tauri-apps/api/window';
   import { platform } from '@tauri-apps/plugin-os';
   import LaunchGame from '$components/header/LaunchGame.svelte';
-  import AccountSwitcher from '$components/header/AccountSwitcher.svelte';
   import SettingsModal from '$components/settings/SettingsModal.svelte';
   import SidebarBurger from '$components/header/SidebarBurger.svelte';
   import LanguageSwitcher from '$components/header/LanguageSwitcher.svelte';
@@ -41,7 +40,6 @@
         <LaunchGame/>
       {/if}
 
-      <AccountSwitcher/>
       <SettingsModal/>
       <LanguageSwitcher/>
     </div>

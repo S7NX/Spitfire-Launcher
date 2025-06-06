@@ -165,7 +165,7 @@
     },
     "mobileIncompatibilityWarning": {
       "title": "Advertencia",
-      "description": "Si envías el launcher al segundo plano o apagas la pantalla, Auto-Kick puede no funcionar correctamente."
+      "description": "Si envías el launcher a segundo plano o apagas la pantalla, la expulsión automática puede no funcionar correctamente."
     },
     "accountStatus": {
       "active": "Activar",
@@ -254,6 +254,7 @@
     },
     "lastUpdated": "Última actualización: {date}",
     "nextRotation": "Siguiente rotación en {time}",
+    "searchPlaceholder": "Buscar objetos...",
     "failedtoFetch": "Error al recuperar los elementos de la tienda. Inténtalo de nuevo más tarde.",
     "noItems": "No se han encontrado objetos",
     "selectFilter": "Seleccionar filtro",
@@ -518,8 +519,8 @@
     "dropdown": {
       "launching": "Iniciando...",
       "unrealEditorForFortnite": {
-        "launch": "Iniciar Unreal Editor",
-        "stop": "Detener Unreal Editor"
+        "launch": "Iniciar UEFN",
+        "stop": "Detener UEFN"
       },
       "rocketLeague": {
         "launch": "Iniciar Rocket League",

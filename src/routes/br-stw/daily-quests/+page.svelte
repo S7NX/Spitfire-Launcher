@@ -19,7 +19,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import { accountsStore, doingBulkOperations, language } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
@@ -120,7 +120,7 @@
   }
 </script>
 
-<CenteredPageContent class="!w-112" title={$t('dailyQuests.page.title')}>
+<PageContent small={true} title={$t('dailyQuests.page.title')}>
   <AccountCombobox
     disabled={isFetching}
     type="multiple"
@@ -203,4 +203,4 @@
       {/snippet}
     </BulkResultAccordion>
   {/if}
-</CenteredPageContent>
+</PageContent>

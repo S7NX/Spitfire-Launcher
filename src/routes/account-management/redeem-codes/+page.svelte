@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import TagInput from '$components/ui/TagInput.svelte';
@@ -107,7 +107,7 @@
   }
 </script>
 
-<CenteredPageContent title={$t('redeemCodes.page.title')}>
+<PageContent small={true} title={$t('redeemCodes.page.title')}>
   <form class="flex flex-col gap-2 w-full" onsubmit={redeemCodes}>
     <AccountCombobox
       disabled={isRedeeming}
@@ -147,4 +147,4 @@
       {/snippet}
     </BulkResultAccordion>
   {/if}
-</CenteredPageContent>
+</PageContent>

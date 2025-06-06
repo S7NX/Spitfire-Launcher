@@ -7,7 +7,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import CustomStatusTutorial from '$components/docs/tutorials/CustomStatus.svelte';
   import BotLobbyManager from '$lib/core/managers/automation/botLobbyManager.svelte';
   import TaxiManager from '$lib/core/managers/automation/taxiManager.svelte';
@@ -69,9 +69,10 @@
   }
 </script>
 
-<CenteredPageContent
+<PageContent
   description={$t('customStatus.page.description')}
   docsComponent={CustomStatusTutorial}
+  small={true}
   title={$t('customStatus.page.title')}
 >
   <form class="flex flex-col gap-y-4" onsubmit={setCustomStatus}>
@@ -104,4 +105,4 @@
       </Button>
     {/if}
   </form>
-</CenteredPageContent>
+</PageContent>

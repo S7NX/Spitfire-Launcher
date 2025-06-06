@@ -6,7 +6,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import Alert from '$components/ui/Alert.svelte';
   import Label from '$components/ui/Label.svelte';
   import DataStorage, { TAXI_FILE_PATH } from '$lib/core/dataStorage';
@@ -118,8 +118,7 @@
   });
 </script>
 
-<CenteredPageContent
-  class="!w-112"
+<PageContent
   description={$t('taxiService.page.description')}
   docsComponent={TaxiServiceTutorial}
   title={$t('taxiService.page.title')}
@@ -197,4 +196,4 @@
       {/if}
     </Button>
   </div>
-</CenteredPageContent>
+</PageContent>

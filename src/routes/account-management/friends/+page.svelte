@@ -4,7 +4,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import FriendsList from '$components/friends/FriendsList.svelte';
   import Button from '$components/ui/Button.svelte';
   import Tabs from '$components/ui/Tabs.svelte';
@@ -72,7 +72,7 @@
   }
 </script>
 
-<CenteredPageContent class="!w-full" title={$t('friendManagement.page.title')}>
+<PageContent title={$t('friendManagement.page.title')}>
   <form class="flex items-center gap-2" onsubmit={searchAndAdd}>
     <Input
       class="grow"
@@ -102,4 +102,4 @@
     <Tabs {tabs} bind:activeTab/>
     <FriendsList listType={activeTab} bind:searchQuery/>
   </div>
-</CenteredPageContent>
+</PageContent>

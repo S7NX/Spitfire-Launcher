@@ -11,15 +11,15 @@
 
   const inputVariants = tv({
     base: cn(
-      'w-full px-4 py-2 text-sm rounded-md transition-all border border-input appearance-none peer',
+      'w-full px-4 py-2 text-sm rounded-md transition-all border border-input appearance-none h-10 peer',
       'disabled:cursor-not-allowed disabled:opacity-50',
       'focus:ring-offset-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-foreground'
     ),
     variants: {
       variant: {
-        primary: 'bg-background text-background-foreground',
+        primary: 'bg-surface-alt text-background-foreground',
         secondary: 'bg-secondary text-secondary-foreground',
-        outline: 'bg-transparent text-input-foreground border-input',
+        outline: 'bg-transparent text-input-foreground',
         ghost: 'bg-transparent text-input-foreground border-none'
       }
     },
@@ -48,6 +48,7 @@
   const initialValue = value || '';
 
   let inputElement = $state<HTMLInputElement>();
+  // eslint-disable-next-line svelte/prefer-writable-derived -- We assign this state later
   let dropdownVisible = $state(false);
   let selectedItemId = $state<string>();
   let debounceTimeout = $state<number | undefined>();
@@ -121,7 +122,56 @@
   }
 </script>
 
-<div class="relative w-full" use:outsideClick={{ handler: handleOutsideClick }}>
+{#if nameAutocomplete}
+  <div class="relative w-full" use:outsideClick={{ handler: handleOutsideClick }}>
+    <input
+      {...restProps}
+      bind:this={inputElement}
+      class={cn(inputVariants({ variant }), className)}
+      autocomplete="off"
+      {onblur}
+      onfocus={handleFocus}
+      oninput={handleInput}
+      spellcheck="false"
+      bind:value
+    />
+
+    {#if dropdownVisible}
+      <div
+        class="absolute left-0 right-0 top-full mt-2 z-50 border border-muted bg-background shadow-popover rounded-md px-1 py-1.5 max-h-48 overflow-y-auto"
+        transition:slide={{ duration: 150, easing: cubicInOut }}
+      >
+        {#each autocompleteData as [accountId, name] (accountId)}
+          {@const fallbackAvatar = '/assets/misc/defaultOutfitIcon.png'}
+          {@const avatar = avatarCache.get(accountId) || fallbackAvatar}
+
+          <button
+            class={cn(
+              'flex items-center gap-2 w-full text-left px-4 py-2 text-sm truncate rounded-md',
+              'hover:bg-accent hover:cursor-pointer transition-colors',
+              className
+            )}
+            onclick={() => {
+              value = name;
+              selectedItemId = accountId;
+              inputElement?.focus();
+            }}
+            type="button"
+          >
+            <Avatar
+              alt={name}
+              fallback={fallbackAvatar}
+              imageClass="size-6"
+              src={avatar}
+            />
+
+            <span class="text-sm">{name}</span>
+          </button>
+        {/each}
+      </div>
+    {/if}
+  </div>
+{:else}
   <input
     {...restProps}
     bind:this={inputElement}
@@ -133,39 +183,4 @@
     spellcheck="false"
     bind:value
   />
-
-  {#if dropdownVisible}
-    <div
-      class="absolute left-0 right-0 top-full mt-2 z-50 border border-muted bg-background shadow-popover rounded-md px-1 py-1.5 max-h-48 overflow-y-auto"
-      transition:slide={{ duration: 150, easing: cubicInOut }}
-    >
-      {#each autocompleteData as [accountId, name] (accountId)}
-        {@const fallbackAvatar = '/assets/misc/defaultOutfitIcon.png'}
-        {@const avatar = avatarCache.get(accountId) || fallbackAvatar}
-
-        <button
-          class={cn(
-            'flex items-center gap-2 w-full text-left px-4 py-2 text-sm truncate rounded-md',
-            'hover:bg-accent hover:cursor-pointer transition-colors',
-            className
-          )}
-          onclick={() => {
-            value = name;
-            selectedItemId = accountId;
-            inputElement?.focus();
-          }}
-          type="button"
-        >
-          <Avatar
-            alt={name}
-            fallback={fallbackAvatar}
-            imageClass="size-6"
-            src={avatar}
-          />
-
-          <span class="text-sm">{name}</span>
-        </button>
-      {/each}
-    </div>
-  {/if}
-</div>
+{/if}

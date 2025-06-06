@@ -1,12 +1,14 @@
 <script lang="ts">
+  import PageContent from '$components/PageContent.svelte';
   import ShopFilter from '$components/shop/ShopFilter.svelte';
   import ShopSection from '$components/shop/ShopSection.svelte';
   import SkeletonShopSection from '$components/shop/SkeletonShopSection.svelte';
+  import Input from '$components/ui/Input.svelte';
   import FriendManager from '$lib/core/managers/friend';
   import LookupManager from '$lib/core/managers/lookup';
   import MCPManager from '$lib/core/managers/mcp';
   import ShopManager from '$lib/core/managers/shop';
-  import { accountDataStore, accountsStore, brShopStore, language, ownedItemsStore } from '$lib/stores';
+  import { accountDataStore, accountsStore, brShopStore, ownedItemsStore } from '$lib/stores';
   import { calculateVbucks, formatRemainingDuration, getResolvedResults, t } from '$lib/utils/util';
   import type { AccountStoreData } from '$types/accounts';
   import type { SpitfireShopFilter, SpitfireShopSection } from '$types/game/shop';
@@ -18,43 +20,49 @@
     fetchAccountData();
   });
 
-  let nextResetTime = $state(new Date(new Date().setUTCHours(0, 0, 0, 0) + 24 * 60 * 60 * 1000));
   let remainingTime = $state<number>();
-  let shopLastUpdated = $state<Date>();
   let shopSections = $state<SpitfireShopSection[] | null>(null);
   let errorOccurred = $state(false);
+  let searchQuery = $state<string>('');
   let selectedFilter = $state<SpitfireShopFilter>('all');
 
   const filteredItems = $derived.by(() => {
     if (!shopSections) return null;
 
-    if (!selectedFilter || selectedFilter === 'all') return shopSections;
+    if (!selectedFilter || selectedFilter === 'all') return shopSections.filter(filterSection);
 
     if (selectedFilter === 'new')
       return shopSections.map((section) => ({
         ...section,
         items: section.items.filter((item) => !item.dates.lastSeen)
-      })).filter((section) => section.items.length > 0);
+      })).filter(filterSection);
 
     if (selectedFilter === 'leavingSoon')
       return shopSections.map((section) => ({
         ...section,
         items: section.items.filter((item) => item.dates.out && new Date(item.dates.out).getTime() - Date.now() < 3 * 24 * 60 * 60 * 1000)
-      })).filter((section) => section.items.length > 0);
+      })).filter(filterSection);
 
     if (selectedFilter === 'longestWait')
       return shopSections.map((section) => ({
         ...section,
         items: section.items.filter((item) => item.dates.lastSeen && Date.now() - new Date(item.dates.lastSeen).getTime() > 120 * 24 * 60 * 60 * 1000)
-      })).filter((section) => section.items.length > 0);
+      })).filter(filterSection);
   });
 
+  function filterSection(section: SpitfireShopSection) {
+    const search = searchQuery.toLowerCase();
+    return section.items.length > 0 && section.items.some((item) => {
+      const itemName = item.name?.toLowerCase();
+      return itemName?.includes(search) || item.id?.toLowerCase()?.includes(search) || item.offerId.toLowerCase()?.includes(search);
+    });
+  }
+
   async function fetchShop(force?: boolean) {
+    shopSections = null;
+
     try {
       const shopResponse = (!force && $brShopStore) || await ShopManager.fetch();
-
-      nextResetTime = new Date(new Date().setUTCHours(0, 0, 0, 0) + 24 * 60 * 60 * 1000);
-      shopLastUpdated = new Date(shopResponse.lastUpdated);
       shopSections = ShopManager.groupBySections(shopResponse.offers);
     } catch (error) {
       console.error(error);
@@ -106,52 +114,65 @@
       }));
     }
 
-    if (commonCoreProfile || friendList) accountDataStore.update((accounts) => {
-      accounts[activeAccount.accountId] = accountData;
-      return accounts;
-    });
+    if (commonCoreProfile || friendList) {
+      accountDataStore.update((accounts) => {
+        accounts[activeAccount.accountId] = accountData;
+        return accounts;
+      });
+    }
   }
 
-  onMount(async () => {
-    remainingTime = nextResetTime.getTime() - Date.now();
+  function getResetDate() {
+    const now = new Date();
+    const year = now.getUTCFullYear();
+    const month = now.getUTCMonth();
+    const day = now.getUTCDate();
 
-    await fetchShop();
+    return new Date(Date.UTC(year, month, day + 1));
+  }
 
-    setInterval(() => {
-      remainingTime = nextResetTime.getTime() - Date.now();
+  onMount(() => {
+    remainingTime = getResetDate().getTime() - Date.now();
 
-      if (Date.now() > nextResetTime.getTime()) {
-        fetchShop(true);
-      }
-    }, 1000);
+    let intervalId: number;
+    let isFetching = false;
+
+    fetchShop().then(() => {
+      intervalId = window.setInterval(() => {
+        const nextResetDate = getResetDate();
+        remainingTime = nextResetDate.getTime() - Date.now();
+
+        if (Date.now() > nextResetDate.getTime() && !isFetching) {
+          isFetching = false;
+          fetchShop(true).then(() => {
+            isFetching = true;
+          });
+        }
+      }, 1000);
+    });
+
+    return () => {
+      clearInterval(intervalId);
+    };
   });
 </script>
 
-<div class="flex flex-col gap-y-2">
-  <div>
-    <h1 class="text-2xl font-bold">{$t('itemShop.page.title')}</h1>
-    <h2 class="text-muted-foreground font-medium">
-      {$t('itemShop.lastUpdated', {
-        date: shopLastUpdated?.toLocaleDateString($language, {
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric'
-        }) || '...'
-      })}
-    </h2>
-
-    {#if remainingTime}
-      <h2 class="text-muted-foreground font-medium">
-        {$t('itemShop.nextRotation', { time: formatRemainingDuration(remainingTime) })}
-      </h2>
-    {/if}
-  </div>
-
-  <div>
+<PageContent
+  class="mt-2"
+  description={remainingTime ? $t('itemShop.nextRotation', { time: formatRemainingDuration(remainingTime) }) : undefined}
+  title={$t('itemShop.page.title')}
+>
+  <div class="flex not-xs:flex-col items-center gap-2">
+    <Input
+      class="w-64"
+      placeholder={$t('itemShop.searchPlaceholder')}
+      type="search"
+      bind:value={searchQuery}
+    />
     <ShopFilter bind:selected={selectedFilter}/>
   </div>
 
-  <div class="mt-6">
+  <div class="mt-4">
     {#if !filteredItems}
       {#if errorOccurred}
         <p class="text-red-500">{$t('itemShop.failedtoFetch')}</p>
@@ -170,4 +191,4 @@
       <p>{$t('itemShop.noItems')}</p>
     {/if}
   </div>
-</div>
+</PageContent>

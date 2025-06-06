@@ -11,7 +11,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import { accountsStore, doingBulkOperations, language } from '$lib/stores';
@@ -51,7 +51,7 @@
   }
 </script>
 
-<CenteredPageContent title={$t('vbucksInformation.page.title')}>
+<PageContent small={true} title={$t('vbucksInformation.page.title')}>
   <form class="flex flex-col gap-y-4" onsubmit={fetchVbucksData}>
     <AccountCombobox
       disabled={isFetching}
@@ -93,4 +93,4 @@
       {/each}
     </div>
   {/if}
-</CenteredPageContent>
+</PageContent>

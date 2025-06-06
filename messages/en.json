@@ -165,7 +165,7 @@
     },
     "mobileIncompatibilityWarning": {
       "title": "Warning",
-      "description": "Auto-Kick may not work properly on mobile. If you send the launcher to the background or turn off your screen, the connections will disconnect."
+      "description": "If you send the launcher to the background or turn off your screen, Auto-Kick may not work correctly."
     },
     "accountStatus": {
       "active": "Active",
@@ -254,6 +254,7 @@
     },
     "lastUpdated": "Last updated: {date}",
     "nextRotation": "Next rotation in {time}",
+    "searchPlaceholder": "Search items...",
     "failedtoFetch": "Failed to fetch item shop items. Please try again later.",
     "noItems": "No items found",
     "selectFilter": "Select a filter",
@@ -518,8 +519,8 @@
     "dropdown": {
       "launching": "Launching...",
       "unrealEditorForFortnite": {
-        "launch": "Launch Unreal Editor",
-        "stop": "Stop Unreal Editor"
+        "launch": "Launch UEFN",
+        "stop": "Stop UEFN"
       },
       "rocketLeague": {
         "launch": "Launch Rocket League",

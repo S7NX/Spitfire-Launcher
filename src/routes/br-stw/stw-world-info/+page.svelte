@@ -3,6 +3,7 @@
 </script>
 
 <script lang="ts">
+  import PageContent from '$components/PageContent.svelte';
   import MCPManager from '$lib/core/managers/mcp';
   import type { WorldParsedMission } from '$types/game/stw/worldInfo';
   import WorldInfoSectionAccordion from '$components/worldInfo/WorldInfoSectionAccordion.svelte';
@@ -124,9 +125,7 @@
   }
 </script>
 
-<div class="flex flex-col gap-y-4">
-  <h2 class="font-bold text-2xl">{$t('stwMissionAlerts.page.title')}</h2>
-
+<PageContent title={$t('stwMissionAlerts.page.title')}>
   <div class="flex flex-col">
     <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-4 p-4 pt-0 bg-muted/5">
       {#each overview as { id, name, icon, amount } (id)}
@@ -163,4 +162,4 @@
       {/each}
     </div>
   </div>
-</div>
+</PageContent>

@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
@@ -33,8 +33,9 @@
   }
 </script>
 
-<CenteredPageContent
+<PageContent
   description={$t('exchangeCodeManagement.page.description')}
+  small={true}
   title={$t('exchangeCodeManagement.page.title')}
 >
   <Button
@@ -46,4 +47,4 @@
   >
     {$t('exchangeCodeManagement.generate')}
   </Button>
-</CenteredPageContent>
+</PageContent>

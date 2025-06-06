@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
   import { accountsStore } from '$lib/stores';
@@ -21,7 +21,7 @@
       const { code: exchangeCode } = await Authentication.getExchangeCodeUsingAccessToken(accessToken);
 
       await openUrl(`https://www.epicgames.com/id/exchange?exchangeCode=${exchangeCode}`);
-      toast.success('Opened Epic Games website');
+      toast.success($t('epicGamesSettings.openedWebsite'));
     } catch (error) {
       if (shouldErrorBeIgnored(error)) return;
 
@@ -33,7 +33,7 @@
   }
 </script>
 
-<CenteredPageContent description={$t('epicGamesSettings.page.description')} title={$t('epicGamesSettings.page.title')}>
+<PageContent description={$t('epicGamesSettings.page.description')} small={true} title={$t('epicGamesSettings.page.title')}>
   <Button
     class="flex justify-center items-center gap-x-2"
     disabled={isLoggingIn}
@@ -44,4 +44,4 @@
   >
     {$t('epicGamesSettings.login')}
   </Button>
-</CenteredPageContent>
+</PageContent>

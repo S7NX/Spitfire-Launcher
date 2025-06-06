@@ -1,6 +1,7 @@
 <script generics="T" lang="ts">
   import { Accordion, type WithoutChildrenOrChild } from 'bits-ui';
   import type { Snippet } from 'svelte';
+  import type { ClassValue } from 'svelte/elements';
 
   type Props = WithoutChildrenOrChild<Accordion.ItemProps> & {
     type: 'single' | 'multiple';
@@ -8,12 +9,13 @@
     openItems?: number[];
     trigger: Snippet<[T]>;
     content: Snippet<[T]>;
+    rootClass?: ClassValue
   };
 
-  let { type, items, openItems, trigger, content, ...restProps }: Props = $props();
+  let { type, items, openItems, rootClass, trigger, content, ...restProps }: Props = $props();
 </script>
 
-<Accordion.Root type={type as never} value={openItems?.map(i => `item-${i}`)}>
+<Accordion.Root class={rootClass} type={type as never} value={openItems?.map(i => `item-${i}`)}>
   {#each items as item, index (index.toString())}
     <Accordion.Item
       value="item-{index}"

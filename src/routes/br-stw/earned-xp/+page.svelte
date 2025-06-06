@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import { accountsStore, doingBulkOperations, language } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
@@ -72,9 +72,9 @@
   }
 </script>
 
-<CenteredPageContent
-  class="not-xs:!w-full"
+<PageContent
   description={$t('earnedXP.page.description')}
+  small={true}
   title={$t('earnedXP.page.title')}
 >
   <form class="flex flex-col gap-y-4" onsubmit={fetchXPData}>
@@ -159,4 +159,4 @@
       {/snippet}
     </BulkResultAccordion>
   {/if}
-</CenteredPageContent>
+</PageContent>

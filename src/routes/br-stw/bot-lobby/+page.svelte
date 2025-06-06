@@ -6,7 +6,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import Alert from '$components/ui/Alert.svelte';
   import Button from '$components/ui/Button.svelte';
   import TaxiManager from '$lib/core/managers/automation/taxiManager.svelte';
@@ -147,8 +147,7 @@
   });
 </script>
 
-<CenteredPageContent
-  class="!w-112"
+<PageContent
   description={$t('botLobby.page.description')}
   docsComponent={BotLobbyTutorial}
   title={$t('botLobby.page.title')}
@@ -212,4 +211,4 @@
       {/if}
     </Button>
   </div>
-</CenteredPageContent>
+</PageContent>

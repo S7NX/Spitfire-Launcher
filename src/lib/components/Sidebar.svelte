@@ -5,14 +5,16 @@
 </script>
 
 <script lang="ts">
+  import AccountSwitcher from '$components/header/AccountSwitcher.svelte';
+  import Button from '$components/ui/Button.svelte';
   import ExternalLink from '$components/ui/ExternalLink.svelte';
   import { getVersion } from '@tauri-apps/api/app';
+  import { Separator } from 'bits-ui';
   import { slide } from 'svelte/transition';
   import { cubicInOut } from 'svelte/easing';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import config from '$lib/config';
   import { cn, getStartingPage, t } from '$lib/utils/util';
-  import Button from '$components/ui/Button.svelte';
   import { page } from '$app/state';
   import { onMount } from 'svelte';
   import { customizableMenuStore } from '$lib/stores';
@@ -44,7 +46,7 @@
     }
   }
 
-  function getCategoryVisibility(name: string) {
+  function isCategoryVisible(name: string) {
     return $SidebarCategories
       .find((category) => category.name === name)
       ?.items.some((item) => getItemVisibility(item.key));
@@ -62,7 +64,7 @@
 </script>
 
 <div
-  class="fixed inset-0 bg-black/50 z-40 md:hidden {$sidebarOpen ? 'block' : 'hidden'}"
+  class="fixed inset-0 bg-black/50 z-40 lg:hidden {$sidebarOpen ? 'block' : 'hidden'}"
   onclick={() => sidebarOpen.set(false)}
   onkeydown={(e) => e.key === 'Escape' && sidebarOpen.set(false)}
   role="button"
@@ -71,9 +73,9 @@
 
 <aside
   class={cn(
-    'w-60 xs:w-54 h-screen bg-surface-alt flex flex-col overflow-hidden select-none',
+    'w-60 sm:w-72 h-screen bg-surface-alt flex flex-col overflow-hidden select-none',
     'fixed inset-y-0 left-0 z-50 transition-transform duration-300 ease-in-out',
-    'md:sticky md:top-0 md:translate-x-0',
+    'lg:sticky lg:top-0 lg:translate-x-0',
     $sidebarOpen ? 'translate-x-0' : '-translate-x-full'
   )}
 >
@@ -81,13 +83,13 @@
     class="flex items-center justify-center p-4 border-b border-r h-16"
     data-tauri-drag-region
   >
-    <a class="text-xl font-bold" href={startingPage}>{config.name}</a>
+    <a class="not-xs:text-xl text-2xl font-bold" href={startingPage}>{config.name}</a>
   </div>
 
   <nav class="flex-1 overflow-y-auto py-4 border-r">
     <ul class="space-y-1.5 px-2">
       {#each $SidebarCategories as category (category.key)}
-        {#if getCategoryVisibility(category.name)}
+        {#if isCategoryVisible(category.name)}
           <li>
             <button
               class={cn(
@@ -134,41 +136,44 @@
         {/if}
       {/each}
     </ul>
+  </nav>
 
-    <div class="border-t mt-4">
-      <div class="flex flex-col mt-4">
+  <div class="border-t space-y-2 p-4">
+    <AccountSwitcher/>
+
+    <footer class="flex items-center justify-center gap-4 border-t pt-2.5">
+      <div class="flex items-center gap-3">
         {#each externalLinks as link (link.name)}
           <Button
-            class="text-muted-foreground text-left text-sm mx-2 flex items-center"
+            class="text-muted-foreground text-left text-sm p-0 flex items-center"
             href={link.href}
             size="md"
             variant="ghost"
           >
             <img
-              class="size-4 mr-2 inline-block"
+              class="size-5"
               alt={link.name}
               src={link.icon}
             />
-            {link.name}
           </Button>
         {/each}
       </div>
 
+      <Separator.Root class="bg-border h-4 w-px" orientation="vertical"/>
+
       {#await getVersion()}
         <!-- -->
       {:then version}
-        <div class="text-center mt-4 text-xs text-muted-foreground">
-          <span>
-            {$t('sidebar.version')}
-            <ExternalLink
-              class="underline underline-offset-2"
-              href="{config.links.github}/releases/tag/v{version}"
-            >
-              v{version}
-            </ExternalLink>
-          </span>
+        <div class="text-xs text-muted-foreground">
+          {$t('sidebar.version')}
+          <ExternalLink
+            class="underline underline-offset-2"
+            href="{config.links.github}/releases/tag/v{version}"
+          >
+            v{version}
+          </ExternalLink>
         </div>
       {/await}
-    </div>
-  </nav>
+    </footer>
+  </div>
 </aside>

@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-  import CenteredPageContent from '$components/CenteredPageContent.svelte';
+  import PageContent from '$components/PageContent.svelte';
   import Button from '$components/ui/Button.svelte';
   import { Separator } from 'bits-ui';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
@@ -96,20 +96,19 @@
 
     isGenerating = true;
 
-    toast.promise(DeviceAuthManager.create(activeAccount), {
-      loading: $t('deviceAuthManagement.generating'),
-      success: (deviceAuth) => {
-        allDeviceAuths[activeAccount.accountId] = [deviceAuth, ...deviceAuths];
-        return $t('deviceAuthManagement.generated');
-      },
-      error: (error) => {
-        console.error(error);
-        return $t('deviceAuthManagement.failedToGenerate');
-      },
-      finally: () => {
-        isGenerating = false;
-      }
-    });
+    const toastId = toast.loading($t('deviceAuthManagement.generating'));
+    try {
+      const deviceAuth = await DeviceAuthManager.create(activeAccount);
+      allDeviceAuths[activeAccount.accountId] = [deviceAuth, ...deviceAuths];
+      toast.success($t('deviceAuthManagement.generated'), { id: toastId });
+    } catch (error) {
+      toast.error($t('deviceAuthManagement.failedToGenerate'), { id: toastId });
+
+      if (shouldErrorBeIgnored(error)) return;
+      console.error(error);
+    } finally {
+      isGenerating = false;
+    }
   }
 
   async function deleteDeviceAuth(deviceId: string) {
@@ -157,29 +156,29 @@
   });
 </script>
 
-<CenteredPageContent class="!w-112">
+<PageContent>
   {#snippet title()}
-    <h2 class="text-2xl font-bold">
+    <h2 class="text-4xl font-bold">
       {$t('deviceAuthManagement.page.title')}
     </h2>
 
     <PlusIcon
-      class="ml-1 size-8 cursor-pointer {isGenerating ? 'opacity-50 !cursor-not-allowed' : ''}"
+      class="ml-1 size-10 cursor-pointer {isGenerating ? 'opacity-50 !cursor-not-allowed' : ''}"
       onclick={generateDeviceAuth}
     />
 
-    <Separator.Root class="bg-border h-8 w-px"/>
+    <Separator.Root class="bg-border h-10 w-px"/>
 
     <RefreshCwIcon
-      class="ml-1.5 size-6 cursor-pointer {isFetching ? 'animate-spin opacity-50 !cursor-not-allowed' : ''}"
+      class="ml-1.5 size-8 cursor-pointer {isFetching ? 'animate-spin opacity-50 !cursor-not-allowed' : ''}"
       onclick={() => fetchDeviceAuths(true)}
     />
   {/snippet}
 
   {#if !isFetching}
-    <div class="space-y-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 place-items-center gap-4">
       {#each deviceAuths as auth (auth.deviceId)}
-        <div class="border border-input rounded-md p-4 relative">
+        <div class="border border-input rounded-md p-4 relative w-fit h-full">
           <div class="flex justify-between items-start">
             <div class="flex flex-col gap-y-1">
               <div class="flex items-center gap-2 w-fit mb-1">
@@ -255,4 +254,4 @@
       {/each}
     </div>
   {/if}
-</CenteredPageContent>
+</PageContent>

@@ -7,6 +7,7 @@
 </script>
 
 <script lang="ts">
+  import PageContent from '$components/PageContent.svelte';
   import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import { DropdownMenu } from '$components/ui/DropdownMenu';
@@ -165,7 +166,7 @@
     }
   }
 
-  async function kickMember(partyId: string,memberId: string,kicker = partyLeaderAccount) {
+  async function kickMember(partyId: string, memberId: string, kicker = partyLeaderAccount) {
     if (!kicker) return;
 
     kickingMemberIds.add(memberId);
@@ -307,10 +308,12 @@
   }
 </script>
 
-<div class="flex flex-col gap-4">
-  <h1 class="text-2xl font-bold">{$t('partyManagement.page.title')}</h1>
+<PageContent
+  class="mt-2"
+  title={$t('partyManagement.page.title')}
+>
   <Tabs {tabs}/>
-</div>
+</PageContent>
 
 {#snippet STWActions()}
   <div class="flex flex-col gap-2">
@@ -399,13 +402,13 @@
 
     {#if partyMembers}
       <div class="space-y-2">
-        <div class="flex flex-wrap justify-between gap-4">
+        <div class="grid gap-4 max-[40rem]:place-items-center  min-[40rem]:grid-cols-2 min-[75rem]:grid-cols-3">
           {#each partyMembers as member (member.accountId)}
             {@const isRegisteredAccount = allAccounts.some(account => account.accountId === member.accountId)}
             {@const canLeave = isRegisteredAccount && !member.isLeader}
             {@const canKick = partyLeaderAccount && partyLeaderAccount.accountId !== member.accountId}
             {@const canBePromoted = partyLeaderAccount && !member.isLeader}
-            {@const canAddFriend =(
+            {@const canAddFriend = (
               !$friendsStore[activeAccount.accountId]?.friends?.has(member.accountId)
               && !$friendsStore[activeAccount.accountId]?.outgoing?.has(member.accountId)
             )}
