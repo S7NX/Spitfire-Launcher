@@ -49,7 +49,7 @@ type AccountOptions = {
   accessToken: string;
 };
 
-type Purpose = 'autoKick' | 'taxiService' | 'botLobby' | 'customStatus' | 'partyManagement' | 'friendManagement';
+type Purpose = 'autoKick' | 'taxiService' | 'customStatus' | 'partyManagement' | 'friendManagement';
 
 export default class XMPPManager {
   private static instances: Map<string, XMPPManager> = new Map();

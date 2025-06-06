@@ -8,9 +8,7 @@ import {
   customizableMenuSettingsSchema,
   deviceAuthsSettingsSchema,
   taxiSettingSchema,
-  taxiSettingsSchema,
-  botLobbySettingSchema,
-  botLobbySettingsSchema,
+  taxiSettingsSchema
 } from '$lib/validations/settings';
 
 export type AppSettings = z.infer<typeof appSettingsSchema>;
@@ -21,5 +19,3 @@ export type AutomationSetting = z.infer<typeof automationSettingSchema>;
 export type AutomationSettings = z.infer<typeof automationSettingsSchema>;
 export type TaxiSetting = z.infer<typeof taxiSettingSchema>;
 export type TaxiSettings = z.infer<typeof taxiSettingsSchema>;
-export type BotLobbySetting = z.infer<typeof botLobbySettingSchema>;
-export type BotLobbySettings = z.infer<typeof botLobbySettingsSchema>;

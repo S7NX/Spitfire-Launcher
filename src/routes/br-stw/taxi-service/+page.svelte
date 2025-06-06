@@ -10,7 +10,6 @@
   import Alert from '$components/ui/Alert.svelte';
   import Label from '$components/ui/Label.svelte';
   import DataStorage, { TAXI_FILE_PATH } from '$lib/core/dataStorage';
-  import BotLobbyManager from '$lib/core/managers/automation/botLobbyManager.svelte';
   import { accountPartiesStore, accountsStore } from '$lib/stores';
   import { nonNull, t } from '$lib/utils/util';
   import type { TaxiSettings } from '$types/settings';
@@ -179,7 +178,7 @@
   <div class="flex justify-end">
     <Button
       class="flex items-center gap-x-2"
-      disabled={taxiManager.isStarting || taxiManager.isStopping || BotLobbyManager.botLobbyAccountIds.has(activeAccount.accountId)}
+      disabled={taxiManager.isStarting || taxiManager.isStopping}
       loading={taxiManager.isStarting || taxiManager.isStopping}
       loadingText={taxiManager.isStarting
         ? $t('taxiService.starting')

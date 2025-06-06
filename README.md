@@ -45,7 +45,7 @@ Settings are stored in:
     - Redeem codes, view V-Bucks information, daily quests and more across multiple accounts
 - **Account and Game Management:**
     - Easy web confirmation or exchange code login
-    - Launch game, auto-kick and taxis for STW, bot lobbies and custom game status
+    - Launch game, auto-kick and taxis for STW and custom game status
     - Manage friends and party, view item shop, earned XP, daily quests, mission alerts
     - Lookup players, manage device authentications
 - **Upcoming Features:**

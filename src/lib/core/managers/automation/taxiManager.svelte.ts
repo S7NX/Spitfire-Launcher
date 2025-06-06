@@ -1,5 +1,4 @@
 import { ConnectionEvents, EpicEvents } from '$lib/constants/events';
-import BotLobbyManager from '$lib/core/managers/automation/botLobbyManager.svelte';
 import FriendManager from '$lib/core/managers/friend';
 import PartyManager from '$lib/core/managers/party';
 import XMPPManager from '$lib/core/managers/xmpp';
@@ -47,11 +46,6 @@ export default class TaxiManager {
   constructor(private account: AccountData) { }
 
   async start() {
-    if (BotLobbyManager.botLobbyAccountIds.has(this.account.accountId)) {
-      toast.error(get(t)('taxiService.botLobbyActive'));
-      return;
-    }
-
     this.isStarting = true;
     this.abortController = new AbortController();
     const { signal } = this.abortController;

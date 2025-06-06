@@ -9,7 +9,6 @@
 <script lang="ts">
   import PageContent from '$components/PageContent.svelte';
   import CustomStatusTutorial from '$components/docs/tutorials/CustomStatus.svelte';
-  import BotLobbyManager from '$lib/core/managers/automation/botLobbyManager.svelte';
   import TaxiManager from '$lib/core/managers/automation/taxiManager.svelte';
   import { accountsStore } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
@@ -19,7 +18,7 @@
   import XMPPManager from '$lib/core/managers/xmpp';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
-  const isCustomStatusInUse = $derived(TaxiManager.taxiAccountIds.has(activeAccount.accountId) || BotLobbyManager.botLobbyAccountIds.has(activeAccount.accountId));
+  const isCustomStatusInUse = $derived(TaxiManager.taxiAccountIds.has(activeAccount.accountId));
   let customStatus = $state<string>();
 
   async function setCustomStatus(event: SubmitEvent) {
