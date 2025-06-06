@@ -9,6 +9,7 @@
   import { accountsStore } from '$lib/stores';
   import { nonNull, t } from '$lib/utils/util';
   import type { DeviceCodeLoginData, EpicOAuthData } from '$types/game/authorizations';
+  import { readText } from '@tauri-apps/plugin-clipboard-manager';
   import { openUrl } from '@tauri-apps/plugin-opener';
   import ArrowLeftIcon from 'lucide-svelte/icons/arrow-left';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
@@ -31,6 +32,7 @@
   const allAccounts = $derived(nonNull($accountsStore.allAccounts));
 
   let exchangeCode = $state<string>();
+  let exchangeForm = $state<HTMLFormElement>();
   let isLoggingIn = $state(false);
   let deviceCodeVerifyButtonDisabled = $state(true);
   let deviceCodeData = $state<{ code: string; verificationUrl: string }>();
@@ -44,6 +46,25 @@
       }, 5000);
     }
   });
+
+  $effect(() => {
+    async function exchangeCodeFromClipboard() {
+      const clipboardText = (await readText()).replace(/["'`|]/g, '').trim();
+      const matchesExchange = /^[a-z0-9]{32}$/.test(clipboardText);
+      if (!matchesExchange) return;
+
+      exchangeCode = clipboardText;
+
+      setTimeout(() => {
+        exchangeForm?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      }, 100);
+    }
+
+    if (selectedMethod === 'exchangeCode') {
+      exchangeCodeFromClipboard();
+    }
+  });
+
 
   async function handleExchangeCodeSubmit(event: SubmitEvent) {
     event.preventDefault();
@@ -186,7 +207,7 @@
       {$t('accountManager.loginMethods.exchangeCode.instructions')}
     </p>
 
-    <form class="flex flex-col gap-y-4 flex-1 justify-between h-full" onsubmit={handleExchangeCodeSubmit}>
+    <form bind:this={exchangeForm} class="flex flex-col gap-y-4 flex-1 justify-between h-full" onsubmit={handleExchangeCodeSubmit}>
       <Input
         autofocus={true}
         disabled={isLoggingIn}
