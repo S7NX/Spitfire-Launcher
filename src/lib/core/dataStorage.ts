@@ -145,16 +145,22 @@ export default class DataStorage {
 
     const newData: unknown = !Array.isArray(data) && currentData && typeof currentData === 'object' && !Array.isArray(currentData) ? Object.assign(currentData, data) : data;
 
-    if (pathString === ACCOUNTS_FILE_PATH) {
-      DataStorage.caches.accountsFile = newData as AccountDataFile;
-    } else if (pathString === SETTINGS_FILE_PATH) {
-      DataStorage.caches.settingsFile = newData as AllSettings;
-    } else if (pathString === AUTOMATION_FILE_PATH) {
-      DataStorage.caches.automationFile = newData as AutomationSettings;
-    } else if (pathString === TAXI_FILE_PATH) {
-      DataStorage.caches.taxiFile = newData as TaxiSettings;
-    } else if (pathString === DEVICE_AUTHS_FILE_PATH) {
-      DataStorage.caches.deviceAuthsFile = newData as DeviceAuthsSettings;
+    switch (pathString) {
+      case ACCOUNTS_FILE_PATH:
+        DataStorage.caches.accountsFile = newData as AccountDataFile;
+        break;
+      case SETTINGS_FILE_PATH:
+        DataStorage.caches.settingsFile = newData as AllSettings;
+        break;
+      case AUTOMATION_FILE_PATH:
+        DataStorage.caches.automationFile = newData as AutomationSettings;
+        break;
+      case TAXI_FILE_PATH:
+        DataStorage.caches.taxiFile = newData as TaxiSettings;
+        break;
+      case DEVICE_AUTHS_FILE_PATH:
+        DataStorage.caches.deviceAuthsFile = newData as DeviceAuthsSettings;
+        break;
     }
 
     await writeTextFile(configFilePath, JSON.stringify(newData, null, 4));
