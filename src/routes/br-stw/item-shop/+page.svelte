@@ -29,34 +29,49 @@
   const filteredItems = $derived.by(() => {
     if (!shopSections) return null;
 
-    if (!selectedFilter || selectedFilter === 'all') return shopSections.filter(filterSection);
+    let result: SpitfireShopSection[] = [];
 
-    if (selectedFilter === 'new')
-      return shopSections.map((section) => ({
-        ...section,
-        items: section.items.filter((item) => !item.dates.lastSeen)
-      })).filter(filterSection);
+    switch (selectedFilter || 'all') {
+      case 'all':
+        result = shopSections;
+        break;
+      case 'new':
+        result = shopSections.map((section) => ({
+          ...section,
+          items: section.items.filter((item) => !item.dates.lastSeen)
+        }));
+        break;
+      case 'leavingSoon':
+        result = shopSections.map((section) => ({
+          ...section,
+          items: section.items.filter((item) => item.dates.out && new Date(item.dates.out).getTime() - Date.now() < 3 * 24 * 60 * 60 * 1000)
+        }));
+        break;
+      case 'longestWait':
+        result = shopSections.map((section) => ({
+          ...section,
+          items: section.items.filter((item) => item.dates.lastSeen && Date.now() - new Date(item.dates.lastSeen).getTime() > 120 * 24 * 60 * 60 * 1000)
+        }));
+        break;
+    }
 
-    if (selectedFilter === 'leavingSoon')
-      return shopSections.map((section) => ({
-        ...section,
-        items: section.items.filter((item) => item.dates.out && new Date(item.dates.out).getTime() - Date.now() < 3 * 24 * 60 * 60 * 1000)
-      })).filter(filterSection);
+    return result.map(section => {
+      const search = searchQuery.toLowerCase().trim();
+      if (!search) return section;
 
-    if (selectedFilter === 'longestWait')
-      return shopSections.map((section) => ({
+      const filteredItems = section.items.filter((item) => {
+        const itemName = item.name?.toLowerCase();
+        return itemName?.includes(search)
+          || item.id?.toLowerCase()?.includes(search)
+          || item.offerId.toLowerCase()?.includes(search);
+      });
+
+      return {
         ...section,
-        items: section.items.filter((item) => item.dates.lastSeen && Date.now() - new Date(item.dates.lastSeen).getTime() > 120 * 24 * 60 * 60 * 1000)
-      })).filter(filterSection);
+        items: filteredItems
+      };
+    }).filter(x => x.items.length > 0);
   });
-
-  function filterSection(section: SpitfireShopSection) {
-    const search = searchQuery.toLowerCase();
-    return section.items.length > 0 && section.items.some((item) => {
-      const itemName = item.name?.toLowerCase();
-      return itemName?.includes(search) || item.id?.toLowerCase()?.includes(search) || item.offerId.toLowerCase()?.includes(search);
-    });
-  }
 
   async function fetchShop(force?: boolean) {
     shopSections = null;
