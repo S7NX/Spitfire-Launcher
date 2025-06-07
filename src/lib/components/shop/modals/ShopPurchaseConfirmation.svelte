@@ -81,11 +81,11 @@
 
 <AlertDialog.Root title={$t('itemShop.purchaseConfirmation.title')} bind:open>
   {#snippet description()}
-    <p class="flex items-center gap-1">
+    <p class="flex flex-wrap items-center gap-1 break-words whitespace-normal">
       {@html $t('itemShop.purchaseConfirmation.description', {
-        name: `<span class="font-semibold shrink-0">${item.name}</span>`,
-        price: `<span class="font-semibold shrink-0">${$discountedPrice.toLocaleString($language)}</span>`,
-        vbucksIcon: '<img class="size-5 shrink-0" alt="V-Bucks" src="/assets/resources/currency_mtxswap.png"/>'
+        name: `<span class="font-semibold">${item.name}</span>`,
+        price: `<span class="font-semibold">${$discountedPrice.toLocaleString($language)}</span>`,
+        vbucksIcon: '<img class="size-5 inline-block" alt="V-Bucks" src="/assets/resources/currency_mtxswap.png"/>'
       })}
     </p>
   {/snippet}
