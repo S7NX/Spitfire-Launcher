@@ -22,13 +22,13 @@
 
 <Select
   items={filters}
-  triggerClass="bg-surface-alt"
+  triggerClass="bg-surface-alt not-xs:min-w-44 not-xs:ml-auto"
   type="single"
   bind:value={selected}
 >
   {#snippet trigger(label)}
     <FilterIcon class="text-muted-foreground size-5 mr-2"/>
-    <span class="text-muted-foreground">{label || $t('itemShop.selectFilter')}</span>
+    <span class="text-muted-foreground truncate">{label || $t('itemShop.selectFilter')}</span>
     <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
   {/snippet}
 </Select>

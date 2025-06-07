@@ -179,7 +179,7 @@
 >
   <div class="flex not-xs:flex-col items-center gap-2">
     <Input
-      class="w-64"
+      class="max-w-64 not-xs:max-w-full w-full"
       placeholder={$t('itemShop.searchPlaceholder')}
       type="search"
       bind:value={searchQuery}
