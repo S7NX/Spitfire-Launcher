@@ -120,6 +120,7 @@
           onkeydown={handleKeyPress}
           onkeyup={handleKeyPress}
           placeholder={$t('accountManager.searchAccounts')}
+          tabindex="-1"
           type="text"
           bind:value={searchTerm}
         />
