@@ -76,7 +76,6 @@
   <form class="flex items-center gap-2" onsubmit={searchAndAdd}>
     <Input
       class="grow"
-      autofocus={true}
       disabled={isLoading}
       nameAutocomplete={true}
       placeholder={$t('lookupPlayers.search')}
