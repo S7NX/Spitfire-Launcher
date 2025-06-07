@@ -45,7 +45,7 @@
     </div>
 
     {#if !isMobile}
-      <div class="flex items-center space-x-2 not-sm:hidden">
+      <div class="flex items-center space-x-2 max-sm:hidden">
         <button class="p-2 hover:bg-accent rounded transition-colors duration-200" onclick={minimizeOrHide}>
           <MinusIcon/>
         </button>

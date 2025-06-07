@@ -22,7 +22,7 @@
 
 <Select
   items={filters}
-  triggerClass="bg-surface-alt not-xs:min-w-44 not-xs:ml-auto"
+  triggerClass="bg-surface-alt max-xs:min-w-44 max-xs:ml-auto"
   type="single"
   bind:value={selected}
 >

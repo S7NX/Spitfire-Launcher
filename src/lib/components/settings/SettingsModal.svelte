@@ -15,7 +15,7 @@
 </script>
 
 <Dialog
-  contentProps={{ class: '!max-w-[calc(100%-2rem)] sm:!max-w-180  not-xs:w-full' }}
+  contentProps={{ class: '!max-w-[calc(100%-2rem)] sm:!max-w-180  max-xs:w-full' }}
   triggerClass="p-2 rounded-md hover:bg-accent"
 >
   {#snippet trigger()}
@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <div class="flex-1 p-1 sm:p-4 max-h-114 not-xs:max-h-128 overflow-y-auto">
+    <div class="flex-1 p-1 sm:p-4 max-h-114 max-xs:max-h-128 overflow-y-auto">
       <div>
         {#each categories as category (category.id)}
           {@const CategoryComponent = category.component}

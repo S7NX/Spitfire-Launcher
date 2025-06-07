@@ -177,9 +177,9 @@
   description={remainingTime ? $t('itemShop.nextRotation', { time: formatRemainingDuration(remainingTime) }) : undefined}
   title={$t('itemShop.page.title')}
 >
-  <div class="flex not-xs:flex-col items-center gap-2">
+  <div class="flex max-xs:flex-col items-center gap-2">
     <Input
-      class="max-w-64 not-xs:max-w-full w-full"
+      class="max-w-64 max-xs:max-w-full w-full"
       placeholder={$t('itemShop.searchPlaceholder')}
       type="search"
       bind:value={searchQuery}

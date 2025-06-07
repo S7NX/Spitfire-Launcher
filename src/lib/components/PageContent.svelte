@@ -30,7 +30,7 @@
       {#if title}
         <div class="flex items-center gap-2">
           {#if typeof title === 'string'}
-            <h2 class="not-xs:text-3xl text-4xl font-bold">{title}</h2>
+            <h2 class="max-xs:text-3xl text-4xl font-bold">{title}</h2>
           {:else}
             {@render title()}
           {/if}

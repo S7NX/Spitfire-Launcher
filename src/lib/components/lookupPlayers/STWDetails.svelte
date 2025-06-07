@@ -119,7 +119,7 @@
 
     <div class="flex flex-col items-center gap-4">
       {#if selectedHeroLoadout}
-        <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 place-items-center not-md:gap-4">
+        <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 place-items-center max-md:gap-4">
           {#if selectedHeroLoadout.commander}
             <div class="flex flex-col items-center gap-y-1">
               <span class="text-lg font-semibold">{$t('lookupPlayers.stwDetails.heroLoadout.commander')}</span>
