@@ -59,6 +59,7 @@
   <form class="flex flex-col gap-y-4" onsubmit={generateAccessToken}>
     <Select
       items={tokenTypeOptions}
+      triggerClass="bg-surface-alt"
       type="single"
       bind:value={selectedTokenType}
     >
@@ -69,7 +70,12 @@
       {/snippet}
     </Select>
 
-    <Select items={clientOptions} type="single" bind:value={selectedClient}>
+    <Select
+      items={clientOptions}
+      triggerClass="bg-surface-alt"
+      type="single"
+      bind:value={selectedClient}
+    >
       {#snippet trigger(label)}
         <KeyRound class="text-muted-foreground size-5 mr-2"/>
         <span class="text-muted-foreground">{label || $t('accessTokenManagement.selectClient')}</span>
