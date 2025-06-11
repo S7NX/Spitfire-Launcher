@@ -38,7 +38,7 @@
       case 'new':
         result = shopSections.map((section) => ({
           ...section,
-          items: section.items.filter((item) => !item.dates.lastSeen)
+          items: section.items.filter((item) => !item.dates.lastSeen || item.shopHistory.length < 2)
         }));
         break;
       case 'leavingSoon':
@@ -158,9 +158,9 @@
         remainingTime = nextResetDate.getTime() - Date.now();
 
         if (Date.now() > nextResetDate.getTime() && !isFetching) {
-          isFetching = false;
+          isFetching = true;
           fetchShop(true).then(() => {
-            isFetching = true;
+            isFetching = false;
           });
         }
       }, 1000);
