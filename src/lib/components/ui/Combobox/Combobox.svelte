@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Combobox, type WithoutChildrenOrChild } from 'bits-ui';
+  import { t } from '$lib/utils/util';
   import ChevronsDownIcon from 'lucide-svelte/icons/chevrons-down';
   import ChevronsUpIcon from 'lucide-svelte/icons/chevrons-up';
   import ChevronsUpDownIcon from 'lucide-svelte/icons/chevrons-up-down';
@@ -13,22 +14,27 @@
   type Props = Combobox.RootProps & {
     items: Item[];
     placeholder?: string;
-    triggerClass: ClassValue;
+    maxSelections?: number;
+    triggerClass?: ClassValue;
     inputProps?: WithoutChildrenOrChild<Combobox.InputProps>;
     contentProps?: WithoutChildrenOrChild<Combobox.ContentProps>;
     icon: any;
+    // Temporary prop until a new bits-ui release. Without this the search input inside the combobox doesn't work
+    isGiftFriendSelection?: boolean
   };
 
   let {
     type,
     items,
     placeholder,
+    maxSelections = Number.POSITIVE_INFINITY,
     value = $bindable(),
     open = $bindable(false),
     triggerClass,
     inputProps,
     contentProps,
-    icon,
+    icon: Icon = SearchIcon,
+    isGiftFriendSelection = false,
     ...restProps
   }: Props = $props();
 
@@ -50,10 +56,9 @@
 </script>
 
 <Combobox.Root onOpenChange={handleOpenChange} type={type as never} bind:value={value as never} bind:open {...restProps}>
-  {@const Icon = icon}
   <Combobox.Trigger
     class={cn(
-      'flex w-full items-center peer disabled:cursor-not-allowed disabled:opacity-50 rounded-lg bg-transparent',
+      'flex w-full items-center peer disabled:cursor-not-allowed disabled:opacity-50 rounded-lg bg-surface-alt',
       triggerClass
     )}
   >
@@ -65,7 +70,19 @@
       )}
     >
       <Icon class="size-5"/>
-      <span class="ml-2">{placeholder || 'Select items'}</span>
+      {#if isGiftFriendSelection}
+        <Combobox.Input
+          {placeholder}
+          {...inputProps}
+          class={cn(
+            'w-full focus:outline-none ml-2',
+            inputProps?.class
+          )}
+          oninput={handleInput}
+        />
+      {:else}
+        <span class="ml-2">{placeholder || $t('combobox.selectItems')}</span>
+      {/if}
       <ChevronsUpDownIcon class="text-muted-foreground size-5 ml-auto"/>
     </div>
   </Combobox.Trigger>
@@ -83,27 +100,31 @@
       sideOffset={10}
       {...contentProps}
     >
-      <Combobox.ScrollUpButton class="flex w-full items-center justify-center">
-        <ChevronsUpIcon class="size-3"/>
-      </Combobox.ScrollUpButton>
-
-      <Combobox.Viewport class="flex flex-col p-1">
+      {#if !isGiftFriendSelection}
         <div class="flex items-center border-b mb-1 p-2 gap-2">
           <SearchIcon class="text-muted-foreground size-5"/>
           <Combobox.Input
-            placeholder="Search..."
+            placeholder={$t('combobox.search')}
             {...inputProps}
             class={cn(
               'w-full text-sm bg-transparent grow focus:outline-none',
               inputProps?.class
             )}
+            onclick={(e) => e.stopPropagation()}
             oninput={handleInput}
           />
         </div>
+      {/if}
 
+      <Combobox.ScrollUpButton class="flex w-full items-center justify-center">
+        <ChevronsUpIcon class="size-3"/>
+      </Combobox.ScrollUpButton>
+
+      <Combobox.Viewport class="p-1">
         {#each filteredItems as item, i (i + item.value)}
           <Combobox.Item
             class="rounded-md outline-hidden flex h-10 w-full select-none items-center pl-3 text-sm cursor-pointer truncate data-highlighted:bg-muted data-disabled:opacity-50 data-disabled:cursor-default"
+            disabled={item.disabled || (type === 'multiple' && (value?.length ||0) >= maxSelections && !value?.includes(item.value))}
             label={item.label}
             value={item.value}
           >
@@ -118,7 +139,7 @@
           </Combobox.Item>
         {:else}
           <span class="block px-5 py-2 text-sm text-muted-foreground">
-            No results found
+            {$t('combobox.noResults')}
           </span>
         {/each}
       </Combobox.Viewport>

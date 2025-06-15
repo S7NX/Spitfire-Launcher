@@ -1,9 +1,9 @@
 <script lang="ts">
+  import { AlertDialog } from '$components/ui/AlertDialog';
+  import Combobox from '$components/ui/Combobox/Combobox.svelte';
   import Dialog from '$components/ui/Dialog.svelte';
-  import Select from '$components/ui/Select.svelte';
-  import Button from '$components/ui/Button.svelte';
+  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import UserIcon from 'lucide-svelte/icons/user';
-  import ChevronsUpAndDownIcon from 'lucide-svelte/icons/chevrons-up-down';
   import GiftIcon from 'lucide-svelte/icons/gift';
   import { accountDataStore, accountsStore, language } from '$lib/stores';
   import { nonNull, t } from '$lib/utils/util';
@@ -113,56 +113,63 @@
   }
 </script>
 
-<Dialog
-  contentProps={{ class: 'w-96 space-y-4' }}
-  title={$t('itemShop.giftConfirmation.title')}
-  bind:open
->
+<Dialog title={$t('itemShop.giftConfirmation.title')} bind:open>
   {#snippet description()}
-    {@html $t('itemShop.giftConfirmation.description', {
-      name: `<span class="font-semibold shrink-0">${item.name}</span>`,
-      price: `<span class="font-semibold shrink-0">${(item.price.final * (selectedFriends.length || 1)).toLocaleString($language)}</span>`,
-      vbucksIcon: '<img class="inline-block size-5 align-middle shrink-0" alt="V-Bucks" src="/assets/resources/currency_mtxswap.png"/>'
-    })}
+    <p class="flex flex-wrap items-center gap-1 break-words whitespace-normal">
+      {@html $t('itemShop.giftConfirmation.description', {
+        name: `<span class="font-semibold">${item.name}</span>`,
+        price: `<span class="font-semibold">${(item.price.final * (selectedFriends.length || 1)).toLocaleString($language)}</span>`,
+        vbucksIcon: '<img class="size-5 inline-block" alt="V-Bucks" src="/assets/resources/currency_mtxswap.png"/>'
+      })}
+    </p>
   {/snippet}
 
-  <Select
+  <Combobox
+    contentProps={{
+      side: 'bottom',
+      avoidCollisions: false
+    }}
     disabled={!friends?.length}
+    icon={UserIcon}
+    isGiftFriendSelection={true}
     items={friends.map((friend) => ({
       label: friend.displayName,
       value: friend.accountId
     }))}
     maxSelections={remainingGifts}
-    triggerClass="w-full"
+    placeholder={
+      !selectedFriends.length
+        ? $t('itemShop.selectFriends')
+        : selectedFriends.length > 1
+          ? $t('itemShop.selectedFriendCount', { count: selectedFriends.length })
+          :friends.find((f) => f.accountId === selectedFriends[0])?.displayName
+    }
     type="multiple"
     bind:value={selectedFriends}
   >
-    {#snippet trigger(label)}
-      <UserIcon class="text-muted-foreground size-5 mr-2"/>
-      <span class="text-muted-foreground">
-        {!selectedFriends.length ? $t('itemShop.selectFriends') : selectedFriends.length > 1 ? $t('itemShop.selectedFriendCount', { count: selectedFriends.length }) : label}
-      </span>
-      <ChevronsUpAndDownIcon class="text-muted-foreground size-5 ml-auto"/>
-    {/snippet}
-  </Select>
+  </Combobox>
 
-  <div class="flex justify-end gap-1">
-    <Button onclick={() => (open = false)} variant="outline">
+  <div class="flex w-full items-center justify-center gap-2 mt-4">
+    <AlertDialog.Button buttonType="cancel" onclick={() => (open = false)}>
       {$t('common.cancel')}
-    </Button>
+    </AlertDialog.Button>
 
-    <Button
-      class="flex justify-center items-center gap-x-2"
+    <AlertDialog.Button
+      class="gap-x-2"
+      buttonColor="epic"
+      buttonType="action"
       disabled={!selectedFriends.length ||
         isSendingGifts ||
         ownedVbucks < item.price.final * (selectedFriends.length || 1)}
-      loading={isSendingGifts}
-      loadingText="Sending"
       onclick={sendGifts}
-      variant="epic"
     >
-      <GiftIcon class="size-5"/>
-      {$t('itemShop.sendGift')}
-    </Button>
+      {#if isSendingGifts}
+        <LoaderCircleIcon class="size-5 animate-spin"/>
+        {$t('itemShop.sendingGift')}
+      {:else}
+        <GiftIcon class="size-5"/>
+        {$t('itemShop.sendGift')}
+      {/if}
+    </AlertDialog.Button>
   </div>
 </Dialog>

@@ -71,6 +71,11 @@
     "description": "La versión {version} está disponible. Haga clic en el botón de abajo para actualizar.",
     "download": "Descargar"
   },
+  "combobox": {
+    "search": "Buscar...",
+    "selectItems": "Seleccionar elementos",
+    "noResults": "No se encontraron resultados"
+  },
   "epicGamesSettings": {
     "page": {
       "title": "Configuración de Epic Games",
@@ -254,6 +259,7 @@
     "selectFriends": "Seleccionar amigos",
     "selectedFriendCount": "{count} amigos seleccionados",
     "sendGift": "Enviar regalo",
+    "sendingGift": "Enviando regalo",
     "sentGift": "Regalo enviado correctamente",
     "reachedDailyGiftLimit": "Has alcanzado el límite diario de regalos",
     "needMoreVbucksToGift": "Necesitas {amount} Pavos más para regalar este objeto",

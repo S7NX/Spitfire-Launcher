@@ -66,6 +66,11 @@
       "authentication": "Authentification"
     }
   },
+  "combobox": {
+    "search": "Rechercher...",
+    "selectItems": "Sélectionner des éléments",
+    "noResults": "Aucun résultat trouvé"
+  },
   "newVersionAvailable": {
     "title": "Nouvelle version disponible",
     "description": "La version {version} est disponible. Clique sur le bouton ci-dessous pour mettre à jour.",
@@ -254,6 +259,7 @@
     "selectFriends": "Sélectionne des amis",
     "selectedFriendCount": "{count} amis sélectionnés",
     "sendGift": "Envoyer un cadeau",
+    "sendingGift": "Envoi du cadeau",
     "sentGift": "Cadeau envoyé avec succès",
     "reachedDailyGiftLimit": "Tu as atteint la limite de cadeaux quotidiens",
     "needMoreVbucksToGift": "Tu as besoin de {amount} V-Bucks pour offrir cet article",

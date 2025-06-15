@@ -14,14 +14,14 @@
     class?: ClassValue;
   } & (
     | {
-    type: 'single';
-    selected?: string;
-  }
+      type: 'single';
+      selected?: string;
+    }
     | {
-    type: 'multiple';
-    selected?: string[];
-  }
-    );
+      type: 'multiple';
+      selected?: string[];
+    }
+  );
 
   let {
     customList,
@@ -84,15 +84,15 @@
 </script>
 
 <Combobox
+  contentProps={{
+    side: 'bottom',
+    avoidCollisions: false
+  }}
   disabled={disabled || !accountList.length}
   icon={UserIcon}
   inputProps={{ class: className }}
   {items}
   placeholder={selectedAccounts}
   {type}
-  contentProps={{
-      side: 'bottom',
-      avoidCollisions: false
-    }}
   bind:value={selected as never}
 />

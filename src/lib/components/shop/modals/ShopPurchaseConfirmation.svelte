@@ -1,5 +1,6 @@
 <script lang="ts">
   import { AlertDialog } from '$components/ui/AlertDialog';
+  import Dialog from '$components/ui/Dialog.svelte';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import type { SpitfireShopItem } from '$types/game/shop';
   import { toast } from 'svelte-sonner';
@@ -79,7 +80,7 @@
   }
 </script>
 
-<AlertDialog.Root title={$t('itemShop.purchaseConfirmation.title')} bind:open>
+<Dialog title={$t('itemShop.purchaseConfirmation.title')} bind:open>
   {#snippet description()}
     <p class="flex flex-wrap items-center gap-1 break-words whitespace-normal">
       {@html $t('itemShop.purchaseConfirmation.description', {
@@ -109,4 +110,4 @@
       {/if}
     </AlertDialog.Button>
   </div>
-</AlertDialog.Root>
+</Dialog>

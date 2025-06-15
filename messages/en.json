@@ -71,6 +71,11 @@
     "description": "Version {version} is available. Click the button below to update.",
     "download": "Download"
   },
+  "combobox": {
+    "search": "Search...",
+    "selectItems": "Select items",
+    "noResults": "No results found"
+  },
   "epicGamesSettings": {
     "page": {
       "title": "Epic Games Settings",
@@ -254,6 +259,7 @@
     "selectFriends": "Select friends",
     "selectedFriendCount": "{count} friends selected",
     "sendGift": "Send Gift",
+    "sendingGift": "Sending Gift",
     "sentGift": "Successfully sent gift",
     "reachedDailyGiftLimit": "You have reached the daily gift limit",
     "needMoreVbucksToGift": "You need {amount} more V-Bucks to gift this item",

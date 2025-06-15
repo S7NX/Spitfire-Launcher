@@ -73,11 +73,11 @@
     }).filter(x => x.items.length > 0);
   });
 
-  async function fetchShop(force?: boolean) {
+  async function fetchShop(isNewDay?: boolean) {
     shopSections = null;
 
     try {
-      const shopResponse = (!force && $brShopStore) || await ShopManager.fetch();
+      const shopResponse = (!isNewDay && $brShopStore) || await ShopManager.fetch();
       shopSections = ShopManager.groupBySections(shopResponse.offers);
     } catch (error) {
       console.error(error);
@@ -119,14 +119,14 @@
     }
 
     if (friendList) {
-      const accountsData = await LookupManager.fetchByIds(
-        activeAccount,
-        friendList.map((friend) => friend.accountId)
-      );
-      accountData.friends = accountsData.map((account) => ({
-        displayName: account.displayName,
-        accountId: account.id
-      }));
+      const accountsData = await LookupManager.fetchByIds(activeAccount, friendList.map((friend) => friend.accountId));
+
+      accountData.friends = accountsData
+        .sort((a, b) => a.displayName.localeCompare(b.displayName))
+        .map((account) => ({
+          displayName: account.displayName,
+          accountId: account.id
+        }));
     }
 
     if (commonCoreProfile || friendList) {

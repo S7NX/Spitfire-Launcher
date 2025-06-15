@@ -71,6 +71,11 @@
     "description": "Yeni sürüm {version} mevcut. Güncellemek için aşağıdaki butona tıklayın.",
     "download": "İndir"
   },
+  "combobox": {
+    "search": "Ara...",
+    "selectItems": "Öğeleri seçin",
+    "noResults": "Sonuç bulunamadı"
+  },
   "epicGamesSettings": {
     "page": {
       "title": "Epic Games Ayarları",
@@ -254,6 +259,7 @@
     "selectFriends": "Arkadaşları seçin",
     "selectedFriendCount": "{count} arkadaş seçildi",
     "sendGift": "Hediyeyi Gönder",
+    "sendingGift": "Hediye Gönderiliyor",
     "sentGift": "Hediye başarıyla gönderildi",
     "reachedDailyGiftLimit": "Günlük hediye limitine ulaştınız",
     "needMoreVbucksToGift": "Bu hediyeyi göndermek için {amount} daha V-Papel'e ihtiyacınız var",
