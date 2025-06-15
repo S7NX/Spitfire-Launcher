@@ -82,7 +82,7 @@
         duration: 3000,
         unstyled: true,
         classes: {
-          toast: 'bg-secondary flex items-center px-4 py-4 border rounded-lg gap-3 min-w-80',
+          toast: 'bg-secondary flex items-center px-4 py-4 border rounded-lg gap-3 min-w-96 max-xs:min-w-80',
           title: 'text-sm'
         }
       }}
