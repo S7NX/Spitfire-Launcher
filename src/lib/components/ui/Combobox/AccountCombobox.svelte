@@ -14,14 +14,14 @@
     class?: ClassValue;
   } & (
     | {
-      type: 'single';
-      selected?: string;
-    }
+    type: 'single';
+    selected?: string;
+  }
     | {
-      type: 'multiple';
-      selected?: string[];
-    }
-  );
+    type: 'multiple';
+    selected?: string[];
+  }
+    );
 
   let {
     customList,
@@ -89,7 +89,10 @@
   inputProps={{ class: className }}
   {items}
   placeholder={selectedAccounts}
-  triggerClass="bg-surface-alt"
   {type}
+  contentProps={{
+      side: 'bottom',
+      avoidCollisions: false
+    }}
   bind:value={selected as never}
 />
