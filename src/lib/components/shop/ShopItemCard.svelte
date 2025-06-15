@@ -48,7 +48,7 @@
 >
   {#if imageUrl}
     <img
-      class="absolute inset-0 w-full h-full pointer- events-none select-none object-cover"
+      class="absolute inset-0 size-full select-none object-cover"
       alt={displayName}
       draggable="false"
       loading="lazy"
