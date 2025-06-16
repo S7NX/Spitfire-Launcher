@@ -115,7 +115,7 @@
             id: 'saveTheWorld',
             name: $t('common.gameModes.saveTheWorld'),
             value: status.data.saveTheWorld || 0,
-            limit: 4_000_000
+            limit: 3_400_000
           }
         ]}
 
