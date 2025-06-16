@@ -1,4 +1,5 @@
 import { oauthService } from '$lib/core/services';
+import Mutex from '$lib/utils/mutex';
 import type {
   DeviceAuthData,
   EpicDeviceAuthLoginData,
@@ -16,24 +17,38 @@ import { toast } from 'svelte-sonner';
 import Account from '$lib/core/account';
 import { goto } from '$app/navigation';
 
+const tokenMutexes = new Map<string, Mutex>();
+
 export default class Authentication {
   static async verifyOrRefreshAccessToken(
     deviceAuthData: DeviceAuthData,
     accessToken?: string,
     bypassCache = false
   ) {
-    const cache = Authentication.getAccessTokenFromCache(deviceAuthData.accountId);
-    accessToken ??= cache?.access_token;
+    let mutex = tokenMutexes.get(deviceAuthData.accountId);
+    if (!mutex) {
+      mutex = new Mutex();
+      tokenMutexes.set(deviceAuthData.accountId, mutex);
+    }
 
-    if (!accessToken) return (await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false)).access_token;
-
-    if (!bypassCache && cache)
-      return cache.access_token;
+    const unlock = await mutex.lock();
 
     try {
-      return (await this.verifyAccessToken(accessToken)).access_token;
-    } catch (error) {
-      return (await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false)).access_token;
+      const cache = Authentication.getAccessTokenFromCache(deviceAuthData.accountId);
+      accessToken ??= cache?.access_token;
+
+      if (!accessToken) return (await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false)).access_token;
+
+      if (!bypassCache && cache)
+        return cache.access_token;
+
+      try {
+        return (await this.verifyAccessToken(accessToken)).access_token;
+      } catch (error) {
+        return (await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false)).access_token;
+      }
+    } finally {
+      unlock();
     }
   }
 
