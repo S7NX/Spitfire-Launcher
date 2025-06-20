@@ -1,4 +1,5 @@
 import DataStorage, { ACCOUNTS_FILE_PATH } from '$lib/core/dataStorage';
+import AvatarManager from '$lib/core/managers/avatar';
 import { get } from 'svelte/store';
 import { accountsStore, activeAccountId } from '$lib/stores';
 import type { AccountData, AccountDataFile } from '$types/accounts';
@@ -27,6 +28,8 @@ export default class Account {
       activeAccountId: setActive ? account.accountId : get(activeAccountId) || undefined,
       accounts: allAccounts
     });
+
+    AvatarManager.fetchAvatars(account, [account.accountId]).catch(console.error);
   }
 
   static async logout(accountId?: string) {
