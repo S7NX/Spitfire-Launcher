@@ -1,9 +1,18 @@
 <script lang="ts" module>
+  import { SvelteSet } from 'svelte/reactivity';
+
   let isKicking = $state<boolean>();
   let isLeaving = $state<boolean>();
   let isClaiming = $state<boolean>();
   let isAddingFriend = $state<boolean>();
   let isRemovingFriend = $state<boolean>();
+
+  let shouldClaimRewards = $state<boolean>(false);
+  let kickAllSelectedAccount = $state<string>();
+  let leavePartySelectedAccounts = $state<string[]>();
+  let claimRewardsPartySelectedAccounts = $state<string[]>();
+  let kickingMemberIds = new SvelteSet<string>();
+  let promotingMemberId = $state<string>();
 </script>
 
 <script lang="ts">
@@ -30,7 +39,6 @@
   import EllipsisIcon from 'lucide-svelte/icons/ellipsis';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import PartyManager from '$lib/core/managers/party';
-  import { SvelteSet } from 'svelte/reactivity';
   import { toast } from 'svelte-sonner';
   import type { AccountData } from '$types/accounts';
   import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
@@ -116,13 +124,6 @@
   );
   const partyLeaderAccount = $derived(allAccounts.find(account => partyMembers?.some(member => member.accountId === account.accountId && member.isLeader)));
 
-  let shouldClaimRewards = $state<boolean>(false);
-  let kickAllSelectedAccount = $state<string>();
-  let leavePartySelectedAccounts = $state<string[]>();
-  let claimRewardsPartySelectedAccounts = $state<string[]>();
-  let kickingMemberIds = new SvelteSet<string>();
-  let promotingMemberId = $state<string>();
-
   const tabs = $derived([
     { id: 'stwActions', name: $t('partyManagement.tabs.stwActions'), component: STWActions },
     { id: 'partyMembers', name: $t('partyManagement.tabs.partyMembers'), component: PartyMembers, disabled: !partyData && !partyMembers?.length }
@@ -161,7 +162,6 @@
       console.error(error);
       toast.error($t('partyManagement.stwActions.failedToKickAll'));
     } finally {
-      kickAllSelectedAccount = undefined;
       isKicking = false;
     }
   }
@@ -240,10 +240,8 @@
     } finally {
       if (claimOnly) {
         isClaiming = false;
-        claimRewardsPartySelectedAccounts = [];
       } else {
         isLeaving = false;
-        leavePartySelectedAccounts = [];
       }
     }
   }

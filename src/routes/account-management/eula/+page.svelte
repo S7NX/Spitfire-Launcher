@@ -5,6 +5,8 @@
     acceptLink?: string;
   }>;
 
+  // eslint-disable-next-line svelte/prefer-writable-derived -- We assign this state later
+  let selectedAccounts = $state<string[]>([]);
   let isFetching = $state(false);
   let eulaStatuses = $state<EULAStatus[]>([]);
 </script>
@@ -27,9 +29,6 @@
   type PageState = {
     selectedAccounts?: string[];
   };
-
-  // eslint-disable-next-line svelte/prefer-writable-derived -- We assign this state later
-  let selectedAccounts = $state<string[]>([]);
 
   $effect(() => {
     selectedAccounts = (page.state as PageState).selectedAccounts || [];
@@ -73,7 +72,6 @@
       toast.info($t('eula.allAccountsAlreadyAccepted'));
     }
 
-    selectedAccounts = [];
     doingBulkOperations.set(false);
     isFetching = false;
   }

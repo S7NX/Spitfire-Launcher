@@ -6,6 +6,7 @@
     error?: string;
   }>>;
 
+  let selectedAccounts = $state<string[]>([]);
   let codesToRedeem = $state<string[]>([]);
   let isRedeeming = $state(false);
   let codeStatuses = $state<CodeStatus[]>([]);
@@ -21,8 +22,6 @@
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
   import BulkResultAccordion from '$components/ui/Accordion/BulkResultAccordion.svelte';
   import { t } from '$lib/utils/util';
-
-  let selectedAccounts = $state<string[]>([]);
 
   const humanizedErrors: Record<string, string> = {
     'errors.com.epicgames.coderedemption.code_not_found': $t('redeemCodes.redeemErrors.notFound'),
@@ -101,7 +100,6 @@
     });
 
     codesToRedeem = [];
-    selectedAccounts = [];
     doingBulkOperations.set(false);
     isRedeeming = false;
   }

@@ -7,6 +7,7 @@
     saveTheWorld: number;
   }>;
 
+  let selectedAccounts = $state<string[]>([]);
   let isFetching = $state(false);
   let xpStatuses = $state<XPStatus[]>([]);
 </script>
@@ -19,8 +20,6 @@
   import { getResolvedResults, t } from '$lib/utils/util';
   import MCPManager from '$lib/core/managers/mcp';
   import BulkResultAccordion from '$components/ui/Accordion/BulkResultAccordion.svelte';
-
-  let selectedAccounts = $state<string[]>([]);
 
   async function fetchXPData() {
     isFetching = true;
@@ -55,7 +54,6 @@
     }));
 
     doingBulkOperations.set(false);
-    selectedAccounts = [];
     isFetching = false;
   }
 

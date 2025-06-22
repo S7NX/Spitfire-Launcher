@@ -6,6 +6,7 @@
     error?: string;
   }>;
 
+  let selectedAccounts = $state<string[]>([]);
   let isFetching = $state(false);
   let vbucksStatuses = $state<VbucksStatus[]>([]);
 </script>
@@ -18,8 +19,6 @@
   import MCPManager from '$lib/core/managers/mcp';
   import { calculateVbucks, t } from '$lib/utils/util';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
-
-  let selectedAccounts = $state<string[]>([]);
 
   async function fetchVbucksData(event: SubmitEvent) {
     event.preventDefault();
@@ -45,7 +44,6 @@
       }
     }));
 
-    selectedAccounts = [];
     doingBulkOperations.set(false);
     isFetching = false;
   }

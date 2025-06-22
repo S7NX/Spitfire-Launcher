@@ -12,6 +12,7 @@
     quests: DailyQuest[];
   }>;
 
+  let selectedAccounts = $state<string[]>([]);
   let isFetching = $state(false);
   let canReroll = $state<Record<string, boolean>>({});
   let questStatuses = $state<QuestStatus[]>([]);
@@ -29,8 +30,6 @@
   import type { FullQueryProfile } from '$types/game/mcp';
   import BulkResultAccordion from '$components/ui/Accordion/BulkResultAccordion.svelte';
   import { t } from '$lib/utils/util';
-
-  let selectedAccounts = $state<string[]>([]);
 
   async function fetchDailyQuests() {
     isFetching = true;
@@ -63,7 +62,6 @@
       }
     }));
 
-    selectedAccounts = [];
     doingBulkOperations.set(false);
     isFetching = false;
   }
