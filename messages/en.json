@@ -465,11 +465,6 @@
       },
       "hideToTray": "Hide to System Tray",
       "checkForUpdates": "Check for Updates"
-    },
-    "unsavedChanges": {
-      "description": "You have unsaved changes",
-      "reset": "Reset",
-      "save": "Save"
     }
   },
   "launchGame": {

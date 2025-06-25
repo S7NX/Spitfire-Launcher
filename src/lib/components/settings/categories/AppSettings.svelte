@@ -1,6 +1,5 @@
 <script lang="ts">
   import SettingItem from '$components/settings/SettingItem.svelte';
-  import ChangeNotifier from '$components/settings/ChangeNotifier.svelte';
   import SystemTray from '$lib/core/system/systemTray';
   import { allSettingsSchema, appSettingsSchema } from '$lib/validations/settings';
   import { platform } from '@tauri-apps/plugin-os';
@@ -16,9 +15,6 @@
   import { SidebarCategories } from '$lib/constants/sidebar';
 
   const currentPlatform = platform();
-
-  let initialSettings = $state<AllSettings>(SETTINGS_INITIAL_DATA);
-  let hasChanges = $state(false);
 
   let allSettings = $state<AllSettings>(SETTINGS_INITIAL_DATA);
 
@@ -48,42 +44,9 @@
     }
   ];
 
-  onMount(async function () {
-    const settingsData = await DataStorage.getSettingsFile(true);
-    allSettings = settingsData || SETTINGS_INITIAL_DATA;
-    initialSettings = JSON.parse(JSON.stringify(allSettings));
-  });
-
-  $effect(() => {
-    if (!initialSettings) return;
-
-    const settingsChanged = JSON.stringify(allSettings) !== JSON.stringify(initialSettings);
-    const currentSettingsValid = allSettingsSchema.safeParse(allSettings).success;
-
-    hasChanges = !currentSettingsValid ? false : settingsChanged;
-  });
-
-  async function handleSave() {
-    await DataStorage.writeConfigFile<AllSettings>(SETTINGS_FILE_PATH, allSettings
-    );
-
-    if (
-      initialSettings.app?.hideToTray !== allSettings.app?.hideToTray
-      && allSettings.app?.hideToTray != null
-    ) {
-      await SystemTray.setVisibility(allSettings.app.hideToTray);
-    }
-
-    initialSettings = JSON.parse(JSON.stringify(allSettings));
-    hasChanges = false;
-  }
-
-  function handleReset() {
-    allSettings = JSON.parse(JSON.stringify(initialSettings));
-    hasChanges = false;
-  }
-
-  function handleSettingChange<K extends keyof NonNullable<AllSettings['app']>, V extends string | number | boolean = string | number | boolean>(
+  type SettingKey = keyof NonNullable<AllSettings['app']>;
+  type SettingValue = string | number | boolean;
+  function handleSettingChange<K extends SettingKey, V extends SettingValue = SettingValue>(
     eventOrValue: Event | V,
     key: K
   ) {
@@ -100,16 +63,22 @@
     };
 
     if (!allSettingsSchema.safeParse(newSettings).success) {
-      toast.error($t('settings.appSettings.invalidValue'));
-    } else {
-      allSettings = newSettings;
-      SystemTray.setVisibility(allSettings.app?.hideToTray || false);
+      return toast.error($t('settings.appSettings.invalidValue'));
     }
+
+    allSettings = newSettings;
+    SystemTray.setVisibility(allSettings.app?.hideToTray || false);
+    DataStorage.writeConfigFile<AllSettings>(SETTINGS_FILE_PATH, allSettings);
   }
 
   function convertToNumber(event: Event) {
     return Number.parseFloat((event.target as HTMLInputElement).value);
   }
+
+  onMount(async function () {
+    const settingsData = await DataStorage.getSettingsFile(true);
+    allSettings = settingsData || SETTINGS_INITIAL_DATA;
+  });
 </script>
 
 <div class="space-y-6">
@@ -235,9 +204,3 @@
     />
   </SettingItem>
 </div>
-
-<ChangeNotifier
-  onReset={handleReset}
-  onSave={handleSave}
-  visible={hasChanges}
-/>

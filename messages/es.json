@@ -465,11 +465,6 @@
       },
       "hideToTray": "Ocultar en la bandeja del sistema",
       "checkForUpdates": "Buscar actualizaciones"
-    },
-    "unsavedChanges": {
-      "description": "Tienes cambios sin guardar",
-      "reset": "Restablecer",
-      "save": "Guardar"
     }
   },
   "launchGame": {

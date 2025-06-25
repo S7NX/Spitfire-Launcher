@@ -465,11 +465,6 @@
       },
       "hideToTray": "Masquer dans la barre d'état système",
       "checkForUpdates": "Vérifier les mises à jour"
-    },
-    "unsavedChanges": {
-      "description": "Tu as des modifications non enregistrées",
-      "reset": "Réinitialiser",
-      "save": "Sauvegarder"
     }
   },
   "launchGame": {

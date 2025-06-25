@@ -465,11 +465,6 @@
       },
       "hideToTray": "Sistem Tepsisine Gizle",
       "checkForUpdates": "Güncellemeleri Kontrol Et"
-    },
-    "unsavedChanges": {
-      "description": "Kaydetmediğiniz değişiklikler var",
-      "reset": "Sıfırla",
-      "save": "Kaydet"
     }
   },
   "launchGame": {
