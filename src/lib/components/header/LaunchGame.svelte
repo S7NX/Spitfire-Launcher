@@ -10,6 +10,7 @@
   import { shouldErrorBeIgnored, t } from '$lib/utils/util';
   import { path } from '@tauri-apps/api';
   import { exists } from '@tauri-apps/plugin-fs';
+  import { platform } from '@tauri-apps/plugin-os';
   import { Command } from '@tauri-apps/plugin-shell';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import GamePad2Icon from 'lucide-svelte/icons/gamepad-2';
@@ -148,6 +149,8 @@
   }
 
   onMount(() => {
+    if (platform() !== 'windows') return;
+
     checkRunningProcesses();
 
     const interval = setInterval(() => {
