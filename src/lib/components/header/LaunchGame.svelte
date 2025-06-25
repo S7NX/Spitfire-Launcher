@@ -134,8 +134,9 @@
   }
 
   async function checkRunningProcesses() {
+    const runningProcesses = await Process.getProcesses();
+
     for (const process of processes) {
-      const runningProcesses = await Process.getProcesses();
       const isRunning = runningProcesses.some((p) => p.name === process.runningExe);
 
       if (isRunning) {
