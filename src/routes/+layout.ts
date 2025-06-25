@@ -1,6 +1,8 @@
 import DataStorage from '$lib/core/dataStorage';
 import { accountsStore, activeAccountId, customizableMenuStore, language } from '$lib/stores';
 import { changeLocale } from '$lib/utils/util';
+import { baseLocale, locales } from '$lib/paraglide/runtime';
+import { invoke } from '@tauri-apps/api/core';
 import { get } from 'svelte/store';
 
 export const prerender = true;
@@ -10,8 +12,15 @@ export async function load() {
   const accountsFile = await DataStorage.getAccountsFile();
   const settings = await DataStorage.getSettingsFile();
 
-  if (settings.app?.language && get(language) !== settings.app?.language) {
-    await changeLocale(settings.app.language).catch(console.error);
+  const systemLocale = await invoke<string>('get_locale');
+  let locale = settings.app?.language || systemLocale || baseLocale;
+
+  if (!locales.includes(locale as any)) {
+    locale = baseLocale;
+  }
+
+  if (get(language) !== locale) {
+    await changeLocale(locale as typeof locales[number]).catch(console.error);
   }
 
   const startingAccount = settings.app?.startingAccount;

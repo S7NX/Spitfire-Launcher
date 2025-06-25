@@ -13,6 +13,13 @@ fn get_processes() -> Vec<String> {
         .collect()
 }
 
+#[tauri::command]
+fn get_locale() -> String {
+    sys_locale::get_locale()
+        .and_then(|locale| locale.split(['_', '-']).next().map(|s| s.to_string()))
+        .unwrap_or_else(|| "en".to_string())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let mut builder = tauri::Builder::default();
@@ -28,7 +35,7 @@ pub fn run() {
     }
 
     builder
-        .invoke_handler(generate_handler![get_processes])
+        .invoke_handler(generate_handler![get_processes,get_locale])
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_fs::init())

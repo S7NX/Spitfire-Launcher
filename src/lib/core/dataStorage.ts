@@ -25,7 +25,7 @@ export const ACCOUNTS_INITIAL_DATA: AccountDataFile = {
 export const SETTINGS_FILE_PATH = dev ? 'settings-dev.json' : 'settings.json';
 export const SETTINGS_INITIAL_DATA: AllSettings = {
   app: {
-    language: 'en',
+    language: null,
     claimRewardsDelay: 1.5,
     missionCheckInterval: 5,
     startingPage: 'stwWorldInfo',
