@@ -10,7 +10,6 @@
   import { shouldErrorBeIgnored, t } from '$lib/utils/util';
   import { path } from '@tauri-apps/api';
   import { exists } from '@tauri-apps/plugin-fs';
-  import { platform } from '@tauri-apps/plugin-os';
   import { Command } from '@tauri-apps/plugin-shell';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import GamePad2Icon from 'lucide-svelte/icons/gamepad-2';
@@ -21,11 +20,13 @@
 
   const activeAccount = $derived($accountsStore.activeAccount);
 
+  // launcherExe is the executable used to launch the game
+  // mainExe is the actual game executable
   const processes = [
-    { id: 'fortnite', launchExe: 'FortniteLauncher.exe', runningExe: 'FortniteClient-Win64-Shipping.exe' },
-    { id: 'unrealEditorForFortnite', launchExe: 'UnrealEditorFortnite-Win64-Shipping.exe', runningExe: 'UnrealEditorFortnite-Win64-Shipping.exe' },
-    { id: 'fallGuys', launchExe: 'RunFallGuys.exe', runningExe: 'FallGuys_client_game.exe' },
-    { id: 'rocketLeague', launchExe: 'RocketLeague.exe', runningExe: 'RocketLeague.exe' }
+    { id: 'fortnite', launcherExe: 'FortniteLauncher.exe', mainExe: 'FortniteClient-Win64-Shipping.exe' },
+    { id: 'unrealEditorForFortnite', launcherExe: 'UnrealEditorFortnite-Win64-Shipping.exe', mainExe: 'UnrealEditorFortnite-Win64-Shipping.exe' },
+    { id: 'fallGuys', launcherExe: 'RunFallGuys.exe', mainExe: 'FallGuys_client_game.exe' },
+    { id: 'rocketLeague', launcherExe: 'RocketLeague.exe', mainExe: 'RocketLeague.exe' }
   ] as const;
 
   type ProcessId = typeof processes[number]['id'];
@@ -76,7 +77,7 @@
         [
           '/c',
           'start',
-          processData.launchExe,
+          processData.launcherExe,
           '-AUTH_LOGIN=unused',
           `-AUTH_PASSWORD=${launcherExchangeData.code}`,
           '-AUTH_TYPE=exchangecode',
@@ -107,8 +108,7 @@
     const baseArgs = ['taskkill', '/IM'];
 
     try {
-      const result = await Command.create('kill-epic-app', [...baseArgs, processData.runningExe]).execute();
-
+      const result = await Command.create('kill-epic-app', [...baseArgs, processData.mainExe]).execute();
       if (result.stderr) throw new Error(result.stderr);
 
       launchingProcesses.delete(id);
@@ -138,7 +138,7 @@
     const runningProcesses = await Process.getProcesses();
 
     for (const process of processes) {
-      const isRunning = runningProcesses.some((p) => p.name === process.runningExe);
+      const isRunning = runningProcesses.some((p) => p.name === process.mainExe);
 
       if (isRunning) {
         runningProccesses.add(process.id);
@@ -149,8 +149,6 @@
   }
 
   onMount(() => {
-    if (platform() !== 'windows') return;
-
     checkRunningProcesses();
 
     const interval = setInterval(() => {
