@@ -59,7 +59,7 @@
 
     const toastId = toast.loading($t('accountManager.loggingOut', { name: accountName }));
     try {
-      await Account.logout();
+      await Account.logout(activeAccount!.accountId);
       toast.success($t('accountManager.loggedOut', { name: accountName }), { id: toastId });
     } catch (error) {
       console.error(error);

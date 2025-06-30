@@ -1,5 +1,6 @@
 import DataStorage, { ACCOUNTS_FILE_PATH } from '$lib/core/dataStorage';
 import AvatarManager from '$lib/core/managers/avatar';
+import XMPPManager from '$lib/core/managers/xmpp';
 import { get } from 'svelte/store';
 import { accountsStore, activeAccountId } from '$lib/stores';
 import type { AccountData, AccountDataFile } from '$types/accounts';
@@ -32,15 +33,14 @@ export default class Account {
     AvatarManager.fetchAvatars(account, [account.accountId]).catch(console.error);
   }
 
-  static async logout(accountId?: string) {
-    const targetAccountId = accountId || get(activeAccountId);
+  static async logout(accountId: string) {
     const oldAccounts = get(accountsStore).allAccounts;
-    const oldActiveAccount = oldAccounts.find(account => account.accountId === targetAccountId);
+    const oldActiveAccount = oldAccounts.find(account => account.accountId === accountId);
 
-    const newAccounts = oldAccounts.filter(account => account.accountId !== targetAccountId);
+    const newAccounts = oldAccounts.filter(account => account.accountId !== accountId);
 
     let newAccountId = get(activeAccountId);
-    if (targetAccountId === newAccountId) {
+    if (accountId === newAccountId) {
       newAccountId = newAccounts[0]?.accountId || null;
       await Account.changeActiveAccount(newAccountId);
     }
@@ -55,7 +55,8 @@ export default class Account {
       allAccounts: newAccounts
     });
 
-    if (targetAccountId) AutoKickBase.removeAccount(targetAccountId);
+    AutoKickBase.removeAccount(accountId);
+    XMPPManager.instances.get(accountId)?.disconnect()
 
     if (oldActiveAccount?.deviceId)
       DeviceAuthManager.delete(oldActiveAccount, oldActiveAccount.deviceId).catch(console.error);

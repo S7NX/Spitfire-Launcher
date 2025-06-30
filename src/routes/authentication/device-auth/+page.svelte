@@ -123,7 +123,7 @@
       toast.success(isCurrentDevice ? $t('deviceAuthManagement.deletedAndLoggedOut') : $t('deviceAuthManagement.deleted'), { id: toastId });
 
       if (isCurrentDevice) {
-        await Account.logout();
+        await Account.logout(activeAccount.accountId);
         allDeviceAuths[activeAccount.accountId] = [];
         await goto(await getStartingPage());
       }
