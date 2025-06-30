@@ -56,7 +56,7 @@
 </script>
 
 <PageContent small={true} title={$t('accessTokenManagement.page.title')}>
-  <form class="flex flex-col gap-y-4" onsubmit={generateAccessToken}>
+  <form class="flex flex-col gap-y-2" onsubmit={generateAccessToken}>
     <Select
       items={tokenTypeOptions}
       triggerClass="bg-surface-alt"
@@ -84,10 +84,12 @@
     </Select>
 
     <Button
+      class="mt-2"
       disabled={generatingAccessToken || !selectedTokenType || !selectedClient}
       loading={generatingAccessToken}
       loadingText={$t('accessTokenManagement.generating')}
       variant="epic"
+      type="submit"
     >
       {$t('accessTokenManagement.generate')}
     </Button>

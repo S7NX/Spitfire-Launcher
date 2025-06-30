@@ -78,7 +78,7 @@
 </script>
 
 <PageContent small={true} title={$t('eula.page.title')}>
-  <form class="flex flex-col gap-y-4" onsubmit={checkEULA}>
+  <form class="flex flex-col gap-y-2" onsubmit={checkEULA}>
     <AccountCombobox
       disabled={isFetching}
       type="multiple"
@@ -86,10 +86,12 @@
     />
 
     <Button
+      class="mt-2"
       disabled={!selectedAccounts?.length || isFetching}
       loading={isFetching}
       loadingText={$t('eula.checking')}
       variant="epic"
+      type="submit"
     >
       {$t('eula.check')}
     </Button>

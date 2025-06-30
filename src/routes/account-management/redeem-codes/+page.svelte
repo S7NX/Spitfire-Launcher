@@ -106,7 +106,7 @@
 </script>
 
 <PageContent small={true} title={$t('redeemCodes.page.title')}>
-  <form class="flex flex-col gap-2 w-full" onsubmit={redeemCodes}>
+  <form class="flex flex-col gap-y-2" onsubmit={redeemCodes}>
     <AccountCombobox
       disabled={isRedeeming}
       type="multiple"
@@ -124,6 +124,7 @@
       loading={isRedeeming}
       loadingText={$t('redeemCodes.redeeming')}
       variant="epic"
+      type="submit"
     >
       {$t('redeemCodes.redeemCodes')}
     </Button>

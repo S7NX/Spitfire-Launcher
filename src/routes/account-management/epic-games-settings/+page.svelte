@@ -33,9 +33,12 @@
   }
 </script>
 
-<PageContent description={$t('epicGamesSettings.page.description')} small={true} title={$t('epicGamesSettings.page.title')}>
+<PageContent
+  description={$t('epicGamesSettings.page.description')}
+  small={true}
+  title={$t('epicGamesSettings.page.title')}
+>
   <Button
-    class="flex justify-center items-center gap-x-2"
     disabled={isLoggingIn}
     loading={isLoggingIn}
     loadingText={$t('epicGamesSettings.loggingIn')}

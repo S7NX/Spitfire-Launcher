@@ -73,7 +73,7 @@
 </script>
 
 <PageContent title={$t('friendManagement.page.title')}>
-  <form class="flex items-center gap-2" onsubmit={searchAndAdd}>
+  <form class="flex items-center gap-x-2" onsubmit={searchAndAdd}>
     <Input
       class="grow"
       disabled={isLoading}

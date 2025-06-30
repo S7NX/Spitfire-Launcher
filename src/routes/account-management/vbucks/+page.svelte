@@ -50,7 +50,7 @@
 </script>
 
 <PageContent small={true} title={$t('vbucksInformation.page.title')}>
-  <form class="flex flex-col gap-y-4" onsubmit={fetchVbucksData}>
+  <form class="flex flex-col gap-y-2" onsubmit={fetchVbucksData}>
     <AccountCombobox
       disabled={isFetching}
       type="multiple"
@@ -58,10 +58,12 @@
     />
 
     <Button
+      class="mt-2"
       disabled={!selectedAccounts?.length || isFetching}
       loading={isFetching}
       loadingText={$t('vbucksInformation.loading')}
       variant="epic"
+      type="submit"
     >
       {$t('vbucksInformation.getInformation')}
     </Button>
