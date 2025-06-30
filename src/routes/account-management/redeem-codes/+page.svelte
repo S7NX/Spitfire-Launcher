@@ -17,11 +17,11 @@
   import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
   import TagInput from '$components/ui/TagInput.svelte';
-  import { accountsStore, doingBulkOperations } from '$lib/stores';
+  import { doingBulkOperations } from '$lib/stores';
   import CodeManager from '$lib/core/managers/code';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
   import BulkResultAccordion from '$components/ui/Accordion/BulkResultAccordion.svelte';
-  import { t } from '$lib/utils/util';
+  import { getAccountsFromSelection, t } from '$lib/utils/util';
 
   const humanizedErrors: Record<string, string> = {
     'errors.com.epicgames.coderedemption.code_not_found': $t('redeemCodes.redeemErrors.notFound'),
@@ -40,27 +40,19 @@
     const nonExistentCodes: string[] = [];
     const invalidCredentialsAccounts: string[] = [];
 
-    const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
+    const accounts = getAccountsFromSelection(selectedAccounts);
     await Promise.allSettled(accounts.map(async (account) => {
+      const status: CodeStatus = { accountId: account.accountId, displayName: account.displayName, data: [] };
+      codeStatuses.push(status);
+
       await Promise.allSettled(codesToRedeem.map(async (code) => {
-        const status = codeStatuses.find((status) => status.accountId === account.accountId)
-          || { accountId: account.accountId, displayName: account.displayName, data: [] } satisfies CodeStatus;
-
-        if (!codeStatuses.includes(status)) codeStatuses = [...codeStatuses, status];
-
         if (nonExistentCodes.includes(code)) {
-          status.data.push({
-            code,
-            error: $t('redeemCodes.redeemErrors.notFound')
-          });
+          status.data.push({ code, error: $t('redeemCodes.redeemErrors.notFound') });
           return;
         }
 
         if (invalidCredentialsAccounts.includes(account.accountId)) {
-          status.data.push({
-            code,
-            error: $t('redeemCodes.loginExpired')
-          });
+          status.data.push({ code, error: $t('redeemCodes.loginExpired') });
           return;
         }
 
@@ -91,13 +83,10 @@
       }));
     }));
 
-    codeStatuses = codeStatuses.map((status) => {
+    for (const status of codeStatuses) {
       const successCount = status.data.filter(({ error }) => !error).length;
-      return {
-        ...status,
-        displayName: `${status.displayName} - ${successCount}/${status.data.length}`
-      };
-    });
+      status.displayName = `${status.displayName} - ${successCount}/${status.data.length}`;
+    }
 
     codesToRedeem = [];
     doingBulkOperations.set(false);

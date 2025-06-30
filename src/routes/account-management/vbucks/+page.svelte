@@ -1,23 +1,23 @@
 <script lang="ts" module>
   import type { BulkActionStatus } from '$types/accounts';
 
-  type VbucksStatus = BulkActionStatus<{
+  type VBucksStatus = BulkActionStatus<{
     vbucksAmount?: number;
     error?: string;
   }>;
 
   let selectedAccounts = $state<string[]>([]);
   let isFetching = $state(false);
-  let vbucksStatuses = $state<VbucksStatus[]>([]);
+  let vbucksStatuses = $state<VBucksStatus[]>([]);
 </script>
 
 <script lang="ts">
   import PageContent from '$components/PageContent.svelte';
   import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
   import Button from '$components/ui/Button.svelte';
-  import { accountsStore, doingBulkOperations, language } from '$lib/stores';
+  import { doingBulkOperations, language } from '$lib/stores';
   import MCPManager from '$lib/core/managers/mcp';
-  import { calculateVbucks, t } from '$lib/utils/util';
+  import { calculateVbucks, getAccountsFromSelection, t } from '$lib/utils/util';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
 
   async function fetchVbucksData(event: SubmitEvent) {
@@ -27,12 +27,10 @@
     doingBulkOperations.set(true);
     vbucksStatuses = [];
 
-    const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
+    const accounts = getAccountsFromSelection(selectedAccounts);
     await Promise.allSettled(accounts.map(async (account) => {
-      const status = vbucksStatuses.find((status) => status.accountId === account.accountId)
-        || { accountId: account.accountId, displayName: account.displayName, data: { vbucksAmount: 0 } } satisfies VbucksStatus;
-
-      if (!vbucksStatuses.includes(status)) vbucksStatuses = [...vbucksStatuses, status];
+      const status: VBucksStatus = { accountId: account.accountId, displayName: account.displayName, data: { vbucksAmount: 0 } };
+      vbucksStatuses.push(status);
 
       try {
         const queryProfile = await MCPManager.queryProfile(account, 'common_core');

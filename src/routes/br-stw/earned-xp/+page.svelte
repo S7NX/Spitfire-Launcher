@@ -14,10 +14,10 @@
 
 <script lang="ts">
   import PageContent from '$components/PageContent.svelte';
-  import { accountsStore, doingBulkOperations, language } from '$lib/stores';
+  import { doingBulkOperations, language } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
   import AccountCombobox from '$components/ui/Combobox/AccountCombobox.svelte';
-  import { getResolvedResults, t } from '$lib/utils/util';
+  import { getAccountsFromSelection, getResolvedResults, t } from '$lib/utils/util';
   import MCPManager from '$lib/core/managers/mcp';
   import BulkResultAccordion from '$components/ui/Accordion/BulkResultAccordion.svelte';
 
@@ -26,12 +26,10 @@
     doingBulkOperations.set(true);
     xpStatuses = [];
 
-    const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
+    const accounts = getAccountsFromSelection(selectedAccounts)
     await Promise.allSettled(accounts.map(async (account) => {
-      const status = xpStatuses.find((status) => status.accountId === account.accountId) ||
-        { accountId: account.accountId, displayName: account.displayName, data: {} as XPStatus['data'] } satisfies XPStatus;
-
-      if (!xpStatuses.includes(status)) xpStatuses = [...xpStatuses, status];
+      const status: XPStatus = { accountId: account.accountId, displayName: account.displayName, data: { battleRoyale: 0, saveTheWorld: 0, creative: 0 } };
+      xpStatuses.push(status);
 
       const [athenaProfile, campaignProfile] = await getResolvedResults([
         MCPManager.queryProfile(account, 'athena'),

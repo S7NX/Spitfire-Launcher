@@ -24,7 +24,7 @@
   import { toast } from 'svelte-sonner';
   import Authentication from '$lib/core/authentication';
   import EpicAPIError from '$lib/exceptions/EpicAPIError';
-  import { t } from '$lib/utils/util';
+  import { getAccountsFromSelection, t } from '$lib/utils/util';
 
   type PageState = {
     selectedAccounts?: string[];
@@ -41,12 +41,10 @@
     doingBulkOperations.set(true);
     eulaStatuses = [];
 
-    const accounts = selectedAccounts.map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId)).filter(x => !!x);
+    const accounts = getAccountsFromSelection(selectedAccounts);
     await Promise.allSettled(accounts.map(async (account) => {
-      const status = eulaStatuses.find((status) => status.accountId === account.accountId)
-        || { accountId: account.accountId, displayName: account.displayName, data: {} } satisfies EULAStatus;
-
-      if (!eulaStatuses.includes(status)) eulaStatuses = [...eulaStatuses, status];
+      const status: EULAStatus = { accountId: account.accountId, displayName: account.displayName, data: {} };
+      eulaStatuses.push(status);
 
       try {
         // TODO:  Fastest way I could find. Might change later

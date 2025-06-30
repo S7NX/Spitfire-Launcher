@@ -29,26 +29,16 @@
   import { dailyQuests } from '$lib/constants/stw/resources';
   import type { FullQueryProfile } from '$types/game/mcp';
   import BulkResultAccordion from '$components/ui/Accordion/BulkResultAccordion.svelte';
-  import { t } from '$lib/utils/util';
+  import { getAccountsFromSelection, t } from '$lib/utils/util';
 
   async function fetchDailyQuests() {
     isFetching = true;
     doingBulkOperations.set(true);
     questStatuses = [];
 
-    const accounts = selectedAccounts
-      .map((accountId) => $accountsStore.allAccounts.find((account) => account.accountId === accountId))
-      .filter(x => !!x);
-
+    const accounts = getAccountsFromSelection(selectedAccounts);
     await Promise.allSettled(accounts.map(async (account) => {
-      const status: QuestStatus = {
-        accountId: account.accountId,
-        displayName: account.displayName,
-        data: {
-          hasFounder: false,
-          quests: []
-        }
-      };
+      const status: QuestStatus = { accountId: account.accountId, displayName: account.displayName, data: { hasFounder: false, quests: [] } };
 
       try {
         const campaignProfile = await MCPManager.clientQuestLogin(account, 'campaign');
