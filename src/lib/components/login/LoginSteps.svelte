@@ -12,14 +12,14 @@
 <div class="relative mb-6 select-none">
   <div class="absolute left-0 top-4 h-1 w-full bg-muted/25">
     <div
-      style="width: {(currentStep / (steps.length - 1) * 100) || 10}%"
+      style="width: {(currentStep / (steps.length - 1) * 100) || 20}%"
       class="h-full bg-muted transition-all duration-500 ease-in-out"
     ></div>
   </div>
 
   <div class="relative flex justify-between">
     {#each steps as step, index (step)}
-      <div class="flex flex-col items-center">
+      <div class="relative flex flex-col items-center flex-1">
         <div
           class={cn(
             'z-10 flex size-8 items-center justify-center rounded-full border transition-all',
@@ -31,7 +31,7 @@
           {index + 1}
         </div>
 
-        <span class="mt-2 text-xs {index <= currentStep ? 'text-foreground' : 'text-muted-foreground'}">
+        <span class="absolute top-10 w-max max-w-[120px] text-center text-xs {index <= currentStep ? 'text-foreground' : 'text-muted-foreground'}">
           {step}
         </span>
       </div>
