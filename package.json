@@ -31,7 +31,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.11",
     "@tauri-apps/cli": "^2.6.2",
-    "bits-ui": "^2.8.10",
+    "bits-ui": "2.8.8",
     "clsx": "^2.1.1",
     "eslint-plugin-svelte": "^3.10.1",
     "eventemitter3": "^5.0.1",
