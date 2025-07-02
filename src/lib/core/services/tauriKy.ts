@@ -27,7 +27,7 @@ const tauriKy = ky.create({
       headers.delete('x-user-agent');
     }
 
-    let textReqBody = request.body ? await request.text() : undefined;
+    let textReqBody = request.body ? await request.arrayBuffer() : undefined;
 
     const response = await fetch(request.url, {
       method: request.method,
@@ -39,11 +39,7 @@ const tauriKy = ky.create({
     const isJsonResponse = response.headers.get('Content-Type')?.includes('application/json');
 
     if (isJsonResponse) {
-      try {
-        data = await response.json();
-      } catch {
-        data = await response.text();
-      }
+      data = await response.json();
     } else {
       data = await response.text();
     }
