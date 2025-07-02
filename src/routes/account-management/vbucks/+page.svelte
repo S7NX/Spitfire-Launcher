@@ -73,19 +73,17 @@
         <div class="flex gap-x-2">
           <p class="font-medium">{status.displayName}:</p>
 
-          {#if status.data.vbucksAmount != null}
+          {#if status.data.error}
+            <p class="text-red-500">{status.data.error}</p>
+          {:else}
             <div class="flex items-center gap-x-1">
-              <p>{status.data.vbucksAmount.toLocaleString($language)}</p>
+              <p>{status.data.vbucksAmount!.toLocaleString($language)}</p>
               <img
                 class="size-5"
                 alt="V-Bucks"
                 src="/assets/resources/currency_mtxswap.png"
               />
             </div>
-          {/if}
-
-          {#if status.data.error}
-            <p class="text-red-500">{status.data.error}</p>
           {/if}
         </div>
       {/each}
