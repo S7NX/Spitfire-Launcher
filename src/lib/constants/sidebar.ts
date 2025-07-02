@@ -89,9 +89,9 @@ export const SidebarCategories = derived(t, ($t) => [
         href: '/br-stw/daily-quests'
       },
       {
-        key: 'stwWorldInfo',
+        key: 'stwMissionAlerts',
         name: $t('stwMissionAlerts.page.title'),
-        href: '/br-stw/stw-world-info'
+        href: '/br-stw/stw-mission-alerts'
       },
       {
         key: 'lookupPlayers',

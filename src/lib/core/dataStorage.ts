@@ -5,12 +5,11 @@ import { accountDataFileSchema } from '$lib/validations/accounts';
 import {
   allSettingsSchema,
   automationSettingsSchema,
-  customizableMenuSettingsSchema,
   deviceAuthsSettingsSchema,
   taxiSettingsSchema
 } from '$lib/validations/settings';
 import type { AccountDataFile } from '$types/accounts';
-import type { AllSettings, AutomationSettings, CustomizableMenuSettings, DeviceAuthsSettings, TaxiSettings } from '$types/settings';
+import type { AllSettings, AutomationSettings, DeviceAuthsSettings, TaxiSettings } from '$types/settings';
 import { path } from '@tauri-apps/api';
 import { dataDir } from '@tauri-apps/api/path';
 import { exists, mkdir, readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
@@ -28,15 +27,11 @@ export const SETTINGS_INITIAL_DATA: AllSettings = {
     language: null,
     claimRewardsDelay: 1.5,
     missionCheckInterval: 5,
-    startingPage: 'stwWorldInfo',
+    startingPage: 'stwMissionAlerts',
     startingAccount: 'lastUsed',
     hideToTray: false,
     checkForUpdates: true
-  },
-  customizableMenu: Object.keys(customizableMenuSettingsSchema.shape).reduce<CustomizableMenuSettings>((acc, key) => {
-    acc[key as keyof NonNullable<CustomizableMenuSettings>] = true;
-    return acc;
-  }, {})
+  }
 };
 
 export const DEVICE_AUTHS_FILE_PATH = dev ? 'device-auths-dev.json' : 'device-auths.json';

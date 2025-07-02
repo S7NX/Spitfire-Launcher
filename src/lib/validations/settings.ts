@@ -6,7 +6,7 @@ export const appSettingsSchema = z.object({
   gamePath: z.string(),
   missionCheckInterval: z.number().positive(),
   claimRewardsDelay: z.number().positive(),
-  startingPage: z.enum(['autoKick', 'itemShop', 'stwWorldInfo', 'taxiService', 'dailyQuests']),
+  startingPage: z.enum(['autoKick', 'itemShop', 'stwWorldInfo', 'stwMissionAlerts', 'taxiService', 'dailyQuests']),
   startingAccount: z.enum(['firstInTheList', 'lastUsed']),
   hideToTray: z.boolean(),
   checkForUpdates: z.boolean()
@@ -32,7 +32,7 @@ export const customizableMenuSettingsSchema = z.object({
   itemShop: z.boolean().default(true),
   earnedXp: z.boolean().default(true),
   dailyQuests: z.boolean().default(true),
-  stwWorldInfo: z.boolean().default(true),
+  stwMissionAlerts: z.boolean().default(true),
   lookupPlayers: z.boolean().default(true),
 
   exchangeCode: z.boolean().default(true),

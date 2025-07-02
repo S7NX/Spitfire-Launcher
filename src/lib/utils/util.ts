@@ -21,7 +21,7 @@ export function cn(...inputs: ClassValue[]) {
 export function checkLogin() {
   const hasAccount = !!get(accountsStore).activeAccount;
   if (!hasAccount) {
-    goto('/br-stw/stw-world-info', {
+    goto(Pages.stwMissionAlerts, {
       state: {
         showLoginModal: true
       }
@@ -69,7 +69,7 @@ export async function getStartingPage(settingsData?: AllSettings) {
   const settings = settingsData || await DataStorage.getSettingsFile();
   const startingPage = settings.app?.startingPage!;
 
-  return Pages[startingPage] || Pages.stwWorldInfo;
+  return Pages[startingPage] || Pages.stwMissionAlerts;
 }
 
 export function calculateDiscountedShopPrice(accountId: string, item: SpitfireShopItem) {
