@@ -26,7 +26,7 @@
   import { goto } from '$app/navigation';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
-  const deviceAuths = $derived(allDeviceAuths[activeAccount.accountId]);
+  const deviceAuths = $derived(allDeviceAuths[activeAccount?.accountId] || []);
 
   $effect(() => {
     fetchDeviceAuths();
@@ -63,8 +63,7 @@
   }
 
   async function fetchDeviceAuths(force = false) {
-    if (isFetching) return;
-    if (!force && deviceAuths?.length) return;
+    if (isFetching || !activeAccount || (!force && deviceAuths?.length)) return;
 
     isFetching = true;
 
@@ -102,10 +101,10 @@
       allDeviceAuths[activeAccount.accountId] = [deviceAuth, ...deviceAuths];
       toast.success($t('deviceAuthManagement.generated'), { id: toastId });
     } catch (error) {
-      toast.error($t('deviceAuthManagement.failedToGenerate'), { id: toastId });
-
       if (shouldErrorBeIgnored(error)) return;
+
       console.error(error);
+      toast.error($t('deviceAuthManagement.failedToGenerate'), { id: toastId });
     } finally {
       isGenerating = false;
     }
@@ -123,9 +122,11 @@
       toast.success(isCurrentDevice ? $t('deviceAuthManagement.deletedAndLoggedOut') : $t('deviceAuthManagement.deleted'), { id: toastId });
 
       if (isCurrentDevice) {
-        await Account.logout(activeAccount.accountId);
         allDeviceAuths[activeAccount.accountId] = [];
-        await goto(await getStartingPage());
+        await Account.logout(activeAccount.accountId, false);
+        if (!activeAccount) {
+          await goto(await getStartingPage());
+        }
       }
     } catch (error) {
       if (shouldErrorBeIgnored(error)) return;

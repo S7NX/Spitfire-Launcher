@@ -28,6 +28,11 @@
     "cancel": "Annuler",
     "confirm": "Confirmer"
   },
+  "errors": {
+    "notLoggedIn": "Vous devez être connecté pour voir cette page.",
+    "loginExpired": "La session de {accountName} a expiré, veuillez vous reconnecter.",
+    "eulaRequired": "{accountName} doit accepter le CLUF pour continuer."
+  },
   "rarities": {
     "common": "Commun",
     "uncommon": "Atypique",

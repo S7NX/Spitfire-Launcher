@@ -27,7 +27,7 @@
   import FriendManager from '$lib/core/managers/friend';
   import XMPPManager from '$lib/core/managers/xmpp';
   import { accountPartiesStore, accountsStore, friendsStore, language } from '$lib/stores';
-  import { nonNull, t } from '$lib/utils/util';
+  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
   import claimRewards from '$lib/utils/autoKick/claimRewards';
   import { Separator } from 'bits-ui';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
@@ -159,6 +159,8 @@
 
       toast.success($t('partyManagement.stwActions.kickedAll'));
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) return;
+
       console.error(error);
       toast.error($t('partyManagement.stwActions.failedToKickAll'));
     } finally {
@@ -180,6 +182,8 @@
         await claimRewards(account, true);
       }
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) return;
+
       console.error(error);
       toast.error($t('partyManagement.stwActions.failedToKickMember'));
     } finally {
@@ -225,17 +229,17 @@
         if (claimOnly || (!isAutoClaimEnabled && shouldClaimRewards)) await claimRewards(account, true);
       }));
 
-      toast.success(
-        accountId
-          ? $t('partyManagement.stwActions.leftParty')
-          : claimOnly ? $t('partyManagement.stwActions.claimedRewards') : $t('partyManagement.stwActions.leftParties')
+      toast.success(accountId
+        ? $t('partyManagement.stwActions.leftParty')
+        : claimOnly ? $t('partyManagement.stwActions.claimedRewards') : $t('partyManagement.stwActions.leftParties')
       );
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) return;
+
       console.error(error);
-      toast.error(
-        claimOnly
-          ? $t('partyManagement.stwActions.failedToClaimRewards')
-          : $t('partyManagement.stwActions.failedToLeaveParties')
+      toast.error(claimOnly
+        ? $t('partyManagement.stwActions.failedToClaimRewards')
+        : $t('partyManagement.stwActions.failedToLeaveParties')
       );
     } finally {
       if (claimOnly) {
@@ -268,6 +272,8 @@
 
       toast.success($t('partyManagement.stwActions.promotedMember', { name: member.displayName }));
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) return;
+
       console.error(error);
       toast.error($t('partyManagement.stwActions.failedToPromoteMember'));
     } finally {
@@ -281,6 +287,8 @@
     try {
       await FriendManager.addFriend(activeAccount, memberId);
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) return;
+
       toast.error($t('partyManagement.partyMembers.failedToSendFriendRequest'));
     } finally {
       isAddingFriend = false;
@@ -293,6 +301,8 @@
     try {
       await FriendManager.removeFriend(activeAccount, memberId);
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) return;
+
       console.error(error);
       toast.error($t('partyManagement.partyMembers.failedToRemoveFriend'));
     } finally {

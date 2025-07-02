@@ -1,5 +1,6 @@
 import { oauthService } from '$lib/core/services';
 import AsyncLock from '$lib/utils/asyncLock';
+import { t } from '$lib/utils/util';
 import type {
   DeviceAuthData,
   EpicDeviceAuthLoginData,
@@ -86,6 +87,8 @@ export default class Authentication {
         const { allAccounts } = get(accountsStore);
         const accountName = allAccounts.find(account => account.accountId === deviceAuthData.accountId)?.displayName;
 
+        const translate = get(t);
+
         if (error.errorCode === 'errors.com.epicgames.account.invalid_account_credentials') {
           if (!isDoingBulkOperations) await goto('/', {
             state: {
@@ -95,7 +98,7 @@ export default class Authentication {
 
           await Account.logout(deviceAuthData.accountId);
 
-          if (accountName) toast.error(`${accountName}'s login session has expired, please log in again.`);
+          if (accountName) toast.error(translate('errors.loginExpired', { accountName }));
         }
 
         if (error.errorCode === 'errors.com.epicgames.oauth.corrective_action_required') {
@@ -105,7 +108,7 @@ export default class Authentication {
             }
           });
 
-          if (accountName) toast.error(`${accountName} needs to accept the EULA to proceed.`);
+          if (accountName) toast.error(translate('errors.eulaRequired', { accountName }));
         }
       }
 

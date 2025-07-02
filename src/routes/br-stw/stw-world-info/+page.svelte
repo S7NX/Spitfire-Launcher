@@ -25,59 +25,56 @@
   });
 
   const parsedWorldInfo = $derived($worldInfoCache);
-  const parsedWorldInfoArray = $derived(parsedWorldInfo &&
-    Array.from(parsedWorldInfo.values()).flatMap((worldMissions) => Array.from(worldMissions.values()))
-  );
+  const parsedWorldInfoArray = $derived(parsedWorldInfo && Array.from(parsedWorldInfo.values(), worldMissions => Array.from(worldMissions.values())).flat());
+  const isLoading = $derived(!parsedWorldInfo || !parsedWorldInfoArray);
 
-  const isLoading = $derived(!$worldInfoCache || !parsedWorldInfo || !parsedWorldInfoArray);
+  const filteredMissions = $derived.by(() => {
+    if (!parsedWorldInfoArray) return null;
 
-  const sections = $derived<{ id: string; title: string; missions: WorldParsedMission[] }[]>([
+    return {
+      vbucks: parsedWorldInfoArray.filter(mission => mission.filters.some(id => id.includes('currency_mtxswap'))),
+      survivors: parsedWorldInfoArray.filter(mission => mission.filters.some(id => isLegendaryOrMythicSurvivor(id))),
+      twinePeaks: Array.from($worldInfoCache.get(Theaters.TwinePeaks)?.values() || [])
+        .filter(mission => mission.powerLevel === WorldPowerLevels[Theaters.TwinePeaks].Endgame_Zone6),
+      ventures: Array.from($worldInfoCache.entries())
+        .filter(([theaterId]) => ![Theaters.Stonewood, Theaters.Plankerton, Theaters.CannyValley, Theaters.TwinePeaks].includes(theaterId))
+        .flatMap(([, worldMissions]) => Array.from(worldMissions.values()))
+        .filter(mission => mission.powerLevel === WorldPowerLevels.ventures.Phoenix_Zone25),
+      upgradeLlamaTokens: parsedWorldInfoArray.filter(mission => mission.filters.some(id => id.includes('voucher_cardpack_bronze'))),
+      perkUp: parsedWorldInfoArray.filter(mission => mission.filters.some(id => id.includes('alteration_upgrade_sr')))
+    };
+  });
+
+  const sections = $derived([
     {
       id: 'vbucks',
       title: $t('common.vbucks'),
-      missions:
-        !isLoading && parsedWorldInfoArray
-          .filter((mission) => mission.filters.some((id) => id.includes('currency_mtxswap')))
+      missions: filteredMissions?.vbucks || []
     },
     {
       id: 'survivors',
       title: $t('stwMissionAlerts.sections.survivors'),
-      missions:
-        !isLoading && parsedWorldInfoArray
-          .filter((mission) => mission.filters.some((id) => isLegendaryOrMythicSurvivor(id)))
+      missions: filteredMissions?.survivors || []
     },
     {
       id: 'twinePeaks',
       title: $t('stwMissionAlerts.sections.twinePeaks'),
-      missions:
-        !isLoading && Array.from(parsedWorldInfo.get(Theaters.TwinePeaks)!.values())
-          .filter((mission) => mission.powerLevel === WorldPowerLevels[Theaters.TwinePeaks].Endgame_Zone6)
+      missions: filteredMissions?.twinePeaks || []
     },
     {
       id: 'ventures',
       title: $t('stwMissionAlerts.sections.ventures'),
-      missions:
-        !isLoading &&
-          Array.from(parsedWorldInfo.entries())
-            .filter(([theaterId]) =>
-              ![Theaters.Stonewood, Theaters.Plankerton, Theaters.CannyValley, Theaters.TwinePeaks].includes(theaterId)
-            )
-            .flatMap(([, worldMissions]) => Array.from(worldMissions.values()))
-            .filter((missions) => missions.powerLevel === WorldPowerLevels.ventures.Phoenix_Zone25)
+      missions: filteredMissions?.ventures || []
     },
     {
       id: 'upgradeLlamaTokens',
       title: $t('stwMissionAlerts.sections.upgradeLlamaTokens'),
-      missions:
-        !isLoading && parsedWorldInfoArray
-          .filter((mission) => mission.filters.some((id) => id.includes('voucher_cardpack_bronze')))
+      missions: filteredMissions?.upgradeLlamaTokens || []
     },
     {
       id: 'perkUp',
       title: $t('stwMissionAlerts.sections.perkup'),
-      missions:
-        !isLoading && parsedWorldInfoArray
-          .filter((mission) => mission.filters.some((id) => id.includes('alteration_upgrade_sr')))
+      missions: filteredMissions?.perkUp || []
     }
   ]);
 
@@ -86,25 +83,25 @@
       id: 'vbucks',
       name: $t('common.vbucks'),
       icon: '/assets/resources/currency_mtxswap.png',
-      amount: countMissionReward(sections.find(({ id }) => id === 'vbucks')?.missions, 'currency_mtxswap')
+      amount: countMissionReward(filteredMissions?.vbucks, 'currency_mtxswap')
     },
     {
       id: 'upgradeLlamaTokens',
       name: $t('stwMissionAlerts.sections.survivors'),
       icon: '/assets/resources/voucher_generic_worker_sr.png',
-      amount: countMissionReward(sections.find(({ id }) => id === 'survivors')?.missions, isLegendaryOrMythicSurvivor)
+      amount: countMissionReward(filteredMissions?.survivors, isLegendaryOrMythicSurvivor)
     },
     {
       id: 'perkUp',
       name: $t('stwMissionAlerts.sections.twinePeaks'),
       icon: '/assets/resources/voucher_cardpack_bronze.png',
-      amount: countMissionReward(sections.find(({ id }) => id === 'upgradeLlamaTokens')?.missions, 'voucher_cardpack_bronze')
+      amount: countMissionReward(filteredMissions?.upgradeLlamaTokens, 'voucher_cardpack_bronze')
     },
     {
       id: 'twinePeaks',
       name: $t('stwMissionAlerts.sections.ventures'),
       icon: '/assets/resources/reagent_alteration_upgrade_sr.png',
-      amount: countMissionReward(sections.find(({ id }) => id === 'perkUp')?.missions, 'alteration_upgrade_sr')
+      amount: countMissionReward(filteredMissions?.perkUp, 'alteration_upgrade_sr')
     }
   ]);
 

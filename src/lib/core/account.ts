@@ -33,7 +33,7 @@ export default class Account {
     AvatarManager.fetchAvatars(account, [account.accountId]).catch(console.error);
   }
 
-  static async logout(accountId: string) {
+  static async logout(accountId: string, deleteAuth = true) {
     const oldAccounts = get(accountsStore).allAccounts;
     const oldActiveAccount = oldAccounts.find(account => account.accountId === accountId);
 
@@ -58,7 +58,7 @@ export default class Account {
     AutoKickBase.removeAccount(accountId);
     XMPPManager.instances.get(accountId)?.disconnect()
 
-    if (oldActiveAccount?.deviceId)
+    if (oldActiveAccount?.deviceId && deleteAuth)
       DeviceAuthManager.delete(oldActiveAccount, oldActiveAccount.deviceId).catch(console.error);
   }
 }

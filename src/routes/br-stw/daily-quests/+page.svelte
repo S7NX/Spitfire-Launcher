@@ -45,7 +45,7 @@
         handleQueryProfile(campaignProfile, status);
 
         if (status.data.quests.length > 0) {
-          questStatuses = [...questStatuses, status];
+          questStatuses.push(status);
         }
       } catch (error) {
         console.error(error);

@@ -28,6 +28,11 @@
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
+  "errors": {
+    "notLoggedIn": "You must be logged in to view this page.",
+    "loginExpired": "{accountName}'s login session has expired, please log in again.",
+    "eulaRequired": "{accountName} must accept the EULA to continue."
+  },
   "rarities": {
     "common": "Common",
     "uncommon": "Uncommon",

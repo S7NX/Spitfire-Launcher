@@ -6,6 +6,7 @@
   import AvatarManager from '$lib/core/managers/avatar';
   import FriendManager from '$lib/core/managers/friend';
   import LookupManager from '$lib/core/managers/lookup';
+  import type { AccountDataFile } from '$types/accounts';
   import { getVersion } from '@tauri-apps/api/app';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { Toaster } from 'svelte-sonner';
@@ -16,13 +17,11 @@
   import Button from '$components/ui/Button.svelte';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import Dialog from '$components/ui/Dialog.svelte';
-  import DataStorage from '$lib/core/dataStorage';
+  import DataStorage, { ACCOUNTS_FILE_PATH } from '$lib/core/dataStorage';
   import { Tooltip } from 'bits-ui';
   import WorldInfoManager from '$lib/core/managers/worldInfo';
   import { accountsStore, worldInfoCache } from '$lib/stores';
   import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
-  import { page } from '$app/state';
-  import { locales, localizeHref } from '$lib/paraglide/runtime';
   import { t } from '$lib/utils/util';
 
   const { children } = $props();
@@ -60,6 +59,18 @@
     }
   }
 
+  async function syncAccountNames() {
+    if (!activeAccount) return;
+
+    const accounts = await LookupManager.fetchByIds(activeAccount, allAccounts.map(account => account.accountId));
+    await DataStorage.writeConfigFile<AccountDataFile>(ACCOUNTS_FILE_PATH, {
+      accounts: allAccounts.map(account => ({
+        ...account,
+        displayName: accounts.find(acc => acc.id === account.accountId)?.displayName || account.displayName
+      }))
+    });
+  }
+
   onMount(() => {
     document.addEventListener('keydown', disableF5);
 
@@ -67,8 +78,8 @@
       AutoKickBase.loadAccounts(),
       handleWorldInfo(),
       checkForUpdates(),
+      syncAccountNames(),
       activeAccount && FriendManager.getSummary(activeAccount),
-      activeAccount && LookupManager.fetchByIds(activeAccount, allAccounts.map(account => account.accountId)),
       allAccounts.map(account => AvatarManager.fetchAvatars(account, [account.accountId]))
     ]);
   });
@@ -101,12 +112,6 @@
       </div>
     </div>
   </Tooltip.Provider>
-</div>
-
-<div style="display: none">
-  {#each locales as locale (locale)}
-    <a href={localizeHref(page.url.pathname, { locale })}>{locale}</a>
-  {/each}
 </div>
 
 <Dialog bind:open={hasNewVersion}>

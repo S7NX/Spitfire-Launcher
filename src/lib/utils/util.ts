@@ -20,14 +20,13 @@ export function cn(...inputs: ClassValue[]) {
 
 export function checkLogin() {
   const hasAccount = !!get(accountsStore).activeAccount;
-
   if (!hasAccount) {
     goto('/br-stw/stw-world-info', {
       state: {
         showLoginModal: true
       }
     }).then(() => {
-      toast.error('You must be logged in to view this page.');
+      toast.error(get(t)('errors.notLoggedIn'));
     });
 
     return false;
@@ -46,8 +45,9 @@ export function isEpicApiError(data: any): data is EpicAPIErrorData {
 
 export function calculateVbucks(queryProfile: FullQueryProfile<'common_core'>) {
   const profile = queryProfile.profileChanges[0].profile;
+  const vbucksPlatform = profile.stats.attributes.current_mtx_platform;
   const vbucksItems = Object.values(profile.items).filter(
-    (x) => x.templateId.startsWith('Currency:Mtx') && !(profile.stats.attributes.current_mtx_platform === 'Nintendo' && x.attributes.platform !== 'Nintendo')
+    (x) => x.templateId.startsWith('Currency:Mtx') && !(vbucksPlatform === 'Nintendo' && x.attributes.platform !== 'Nintendo')
   );
 
   return vbucksItems.reduce((acc, x) => acc + x.quantity, 0);
@@ -55,8 +55,9 @@ export function calculateVbucks(queryProfile: FullQueryProfile<'common_core'>) {
 
 // TODO: Temporary solution to avoid showing multiple toasts when the system logs the user out
 export function shouldErrorBeIgnored(error: unknown) {
-  if (error instanceof EpicAPIError) {
-    if (error.errorCode === 'errors.com.epicgames.account.invalid_account_credentials') return true;
+  if (error instanceof EpicAPIError && error.errorCode === 'errors.com.epicgames.account.invalid_account_credentials') {
+    console.error(error);
+    return true;
   }
 }
 
@@ -78,10 +79,9 @@ export function calculateDiscountedShopPrice(accountId: string, item: SpitfireSh
 
   return item.contents.reduce((acc, content) => {
     const isOwned = ownedItems.has(content.id?.toLowerCase());
-    const reduction = content.alreadyOwnedPriceReduction;
+    const reduction = isOwned ? content.alreadyOwnedPriceReduction || 0 : 0;
 
-    if (isOwned && reduction != null) return Math.max(acc - reduction, item.price.floor);
-    return Math.max(acc, item.price.floor);
+    return Math.max(acc - reduction, item.price.floor);
   }, item.price.final);
 }
 

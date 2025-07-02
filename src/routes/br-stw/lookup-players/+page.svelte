@@ -50,11 +50,23 @@
   import { FounderEditionNames, RarityTypes, zoneThemes } from '$lib/constants/stw/resources';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
-  const claimedMisssionAlerts = $derived($worldInfoCache && stwData?.claimedMissionAlertIds.size &&
-    Array.from($worldInfoCache.values())
-      .flatMap((worldMissions) => Array.from(worldMissions.values()))
-      .filter((mission) => mission.alert && stwData?.claimedMissionAlertIds.has(mission.alert.guid))
-  );
+  const claimedMissionAlerts = $derived.by(() => {
+    if (!$worldInfoCache || !stwData?.claimedMissionAlertIds?.size) {
+      return [];
+    }
+
+    const result = [];
+
+    for (const worldMissions of $worldInfoCache.values()) {
+      for (const mission of worldMissions.values()) {
+        if (mission.alert && stwData.claimedMissionAlertIds.has(mission.alert.guid)) {
+          result.push(mission);
+        }
+      }
+    }
+
+    return result;
+  });
 
   let searchQuery = $state<string>();
 
@@ -331,14 +343,14 @@
         <STWDetails {heroLoadoutPage} {loadoutData} {mission} {missionPlayers}/>
       {/if}
 
-      {#if stwData && stwData?.claimedMissionAlertIds.size > 0 && claimedMisssionAlerts && claimedMisssionAlerts.length > 0}
+      {#if stwData && stwData?.claimedMissionAlertIds.size > 0 && claimedMissionAlerts && claimedMissionAlerts.length > 0}
         <Separator.Root class="bg-border h-px"/>
 
         <h3 class="text-lg font-semibold text-center">{$t('lookupPlayers.claimedAlerts.title')}</h3>
 
         <WorldInfoSectionAccordion
           claimedMissionAlerts={stwData?.claimedMissionAlertIds}
-          missions={claimedMisssionAlerts}
+          missions={claimedMissionAlerts}
           showAlertClaimedBorder={false}
         />
       {/if}

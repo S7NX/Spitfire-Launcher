@@ -221,7 +221,7 @@ export default class XMPPManager {
       let body: any;
       try {
         body = JSON.parse(message.body);
-      } catch (err) {
+      } catch {
         return;
       }
 

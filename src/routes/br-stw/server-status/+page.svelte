@@ -45,7 +45,7 @@
   import Button from '$components/ui/Button.svelte';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
-  import { formatRemainingDuration, getResolvedResults, t } from '$lib/utils/util';
+  import { formatRemainingDuration, getResolvedResults, shouldErrorBeIgnored, t } from '$lib/utils/util';
 
   $effect(() => {
     if (notifyUser) {
@@ -100,6 +100,8 @@
         });
       }
     } catch (error) {
+      if (shouldErrorBeIgnored(error)) return;
+
       console.error(error);
       toast.error($t('serverStatus.failedToFetch'));
     } finally {

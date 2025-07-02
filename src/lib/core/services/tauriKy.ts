@@ -8,42 +8,44 @@ import EpicAPIError from '$lib/exceptions/EpicAPIError';
 import { get } from 'svelte/store';
 
 const MAX_AUTH_RETRIES = 1;
-
-type InternalProperties = {
-  _authRetryCount?: number;
-}
+let userAgent: string;
 
 // Used to avoid any CORS issues
 const tauriKy = ky.create({
-  fetch: async (input, options: (RequestInit & InternalProperties) | undefined) => {
+  fetch: async (input, options: (RequestInit & { _authRetryCount?: number; }) | undefined) => {
     const request = new Request(input, options);
     const headers = new Headers(request.headers);
 
-    options = options || {};
-    options._authRetryCount = options._authRetryCount || 0;
+    options ??= {};
+    options._authRetryCount ??= 0;
 
     if (!headers.has('x-user-agent')) {
-      const userAgent = await Manifest.getFortniteUserAgent();
+      userAgent ??= await Manifest.getFortniteUserAgent();
       headers.set('User-Agent', userAgent);
     } else {
       headers.set('User-Agent', request.headers.get('x-user-agent')!);
       headers.delete('x-user-agent');
     }
 
-    let textBody = request.body ? await request.text() : undefined;
+    let textReqBody = request.body ? await request.text() : undefined;
 
     const response = await fetch(request.url, {
       method: request.method,
       headers,
-      body: textBody
+      body: textReqBody
     });
 
     let data: unknown;
+    const isJsonResponse = response.headers.get('Content-Type')?.includes('application/json');
 
-    try {
-      data = await response.json();
-    } catch (e) {
-      data = textBody;
+    if (isJsonResponse) {
+      try {
+        data = await response.json();
+      } catch {
+        data = await response.text();
+      }
+    } else {
+      data = await response.text();
     }
 
     if (isEpicApiError(data)) {
@@ -52,25 +54,20 @@ const tauriKy = ky.create({
         'errors.com.epicgames.common.oauth.invalid_token'
       ].includes(data.errorCode);
 
-      if (isInvalidTokenError && options && options._authRetryCount < MAX_AUTH_RETRIES) {
+      if (isInvalidTokenError && options._authRetryCount < MAX_AUTH_RETRIES) {
         options._authRetryCount++;
 
-        const accessTokenAccountId = Object.entries(get(accessTokenCache)).find(([, value]) => value.access_token === request.headers.get('Authorization')?.split(' ')[1])?.[0];
-        accessTokenCache.update(cache => {
-          if (accessTokenAccountId) {
-            delete cache[accessTokenAccountId];
-          }
-
-          return cache;
-        });
-
-        if (!accessTokenAccountId) {
+        const account = getAccountFromRequest(request);
+        if (!account) {
           throw new EpicAPIError(data, request, response.status);
         }
 
-        const account = get(accountsStore).allAccounts.find(account => account.accountId === accessTokenAccountId)!;
-        const accessTokenData = await Authentication.getAccessTokenUsingDeviceAuth(account, false);
+        accessTokenCache.update(cache => {
+          delete cache[account.accountId];
+          return cache;
+        });
 
+        const accessTokenData = await Authentication.getAccessTokenUsingDeviceAuth(account, false);
         if (options.headers instanceof Headers) {
           options.headers.set('Authorization', `Bearer ${accessTokenData.access_token}`);
         } else {
@@ -81,12 +78,12 @@ const tauriKy = ky.create({
         }
 
         return tauriKy(input, options);
-      } else {
-        throw new EpicAPIError(data, request, response.status);
       }
+
+      throw new EpicAPIError(data, request, response.status);
     }
 
-    return new Response(data ? JSON.stringify(data) : null, {
+    return new Response(data && typeof data === 'object' ? JSON.stringify(data) : data ? String(data) : null, {
       status: response.status,
       statusText: response.statusText,
       headers: response.headers
@@ -95,5 +92,14 @@ const tauriKy = ky.create({
   retry: 0,
   timeout: 30000
 });
+
+function getAccountFromRequest(request: Request) {
+  const tokenCache = get(accessTokenCache);
+  const { allAccounts } = get(accountsStore);
+  const token = request.headers.get('Authorization')?.split(' ')[1];
+  const accountId = Object.keys(tokenCache).find(accountId => tokenCache[accountId]?.access_token === token);
+
+  return allAccounts.find(account => account.accountId === accountId);
+}
 
 export default tauriKy;

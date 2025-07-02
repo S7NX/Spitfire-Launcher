@@ -28,6 +28,11 @@
     "cancel": "İptal",
     "confirm": "Onayla"
   },
+  "errors": {
+    "notLoggedIn": "Bu sayfayı görüntülemek için giriş yapmalısınız.",
+    "loginExpired": "{accountName} hesabının oturum süresi doldu, lütfen tekrar giriş yapın.",
+    "eulaRequired": "{accountName}, devam etmek için SKLA'yı kabul etmelidir."
+  },
   "rarities": {
     "common": "Yaygın",
     "uncommon": "Sıradışı",
