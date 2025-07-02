@@ -29,7 +29,6 @@
 </script>
 
 <script lang="ts">
-  import PageContent from '$components/PageContent.svelte';
   import DailyQuestAccordion from '$components/lookupPlayers/DailyQuestAccordion.svelte';
   import STWDetails from '$components/lookupPlayers/STWDetails.svelte';
   import ExternalLink from '$components/ui/ExternalLink.svelte';

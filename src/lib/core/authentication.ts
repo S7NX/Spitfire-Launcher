@@ -1,5 +1,5 @@
 import { oauthService } from '$lib/core/services';
-import Mutex from '$lib/utils/mutex';
+import AsyncLock from '$lib/utils/asyncLock';
 import type {
   DeviceAuthData,
   EpicDeviceAuthLoginData,
@@ -17,7 +17,7 @@ import { toast } from 'svelte-sonner';
 import Account from '$lib/core/account';
 import { goto } from '$app/navigation';
 
-const tokenMutexes = new Map<string, Mutex>();
+const tokenLocks = new Map<string, AsyncLock>();
 
 export default class Authentication {
   static async verifyOrRefreshAccessToken(
@@ -25,15 +25,13 @@ export default class Authentication {
     accessToken?: string,
     bypassCache = false
   ) {
-    let mutex = tokenMutexes.get(deviceAuthData.accountId);
-    if (!mutex) {
-      mutex = new Mutex();
-      tokenMutexes.set(deviceAuthData.accountId, mutex);
+    let tokenLock = tokenLocks.get(deviceAuthData.accountId);
+    if (!tokenLock) {
+      tokenLock = new AsyncLock();
+      tokenLocks.set(deviceAuthData.accountId, tokenLock);
     }
 
-    const unlock = await mutex.lock();
-
-    try {
+    return await tokenLock.withLock(async () => {
       const cache = Authentication.getAccessTokenFromCache(deviceAuthData.accountId);
       accessToken ??= cache?.access_token;
 
@@ -47,9 +45,7 @@ export default class Authentication {
       } catch (error) {
         return (await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false)).access_token;
       }
-    } finally {
-      unlock();
-    }
+    });
   }
 
   static async verifyAccessToken(accessToken: string): Promise<Omit<EpicOAuthData, 'refresh_token' | 'refresh_expires' | 'refresh_expires_at'>> {
