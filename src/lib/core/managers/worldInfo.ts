@@ -1,4 +1,4 @@
-import type { ParsedWorldInfo, WorldInfoData, WorldParsedMission } from '$types/game/stw/worldInfo';
+import type { ParsedWorldInfo, WorldInfoData, WorldInfoMission, WorldInfoMissionAlert, WorldInfoTheater, WorldParsedMission } from '$types/game/stw/worldInfo';
 import {
   WorldColors,
   WorldColorsByTheater,
@@ -30,226 +30,197 @@ export default class WorldInfoManager {
     }).json();
   }
 
-  static parseWorldInfo(worldInfoData: WorldInfoData) {
-    const rawWorldInfo: Record<string, {
-      alerts: Record<string, WorldInfoData['missionAlerts'][number]['availableMissionAlerts']>;
-      missions: Record<string, WorldInfoData['missions'][number]['availableMissions']>;
-      zones: Record<string, number[]>;
-    }> = {};
-
-    const validWorlds = [
+  static parseWorldInfo(worldInfoData: WorldInfoData): ParsedWorldInfo {
+    const validWorlds: string[] = [
       Theaters.Stonewood,
       Theaters.Plankerton,
       Theaters.CannyValley,
       Theaters.TwinePeaks
-    ] as string[];
+    ];
 
     const worldInfo = new Map<World, Map<string, WorldParsedMission>>();
 
-    function theaterExists(theaterId: string) {
-      return !!rawWorldInfo[theaterId];
-    }
+    const theaterData = new Map<string, {
+      missions: Map<number, string>;
+      theater: WorldInfoTheater
+    }>();
 
     for (const theater of worldInfoData.theaters) {
       const isValidWorld = validWorlds.includes(theater.uniqueId) || theater.missionRewardNamedWeightsRowName === 'Theater.Phoenix';
       if (!isValidWorld) continue;
 
+      const missions = new Map<number, string>();
+
       for (const region of theater.regions) {
         const isValidRegion = !['mission', 'outpost'].includes(region.uniqueId.toLowerCase());
         if (!isValidRegion) continue;
 
-        if (!rawWorldInfo[theater.uniqueId]) {
-          worldInfo.set(theater.uniqueId as World, new Map());
-          rawWorldInfo[theater.uniqueId] = {
-            alerts: {},
-            missions: {},
-            zones: {}
-          };
-        }
-
         const rawZone = region.missionData?.difficultyWeights?.[0]?.difficultyInfo?.rowName?.trim();
         if (!rawZone) continue;
 
-        const zone = rawZone
-          .replace('Theater_', '')
-          .replace('_Group', '');
+        const zone = rawZone.replace('Theater_', '').replace('_Group', '');
+        const newZone = zone === WorldStormKingZones.CannyValley ? 'Hard_Zone5' : zone === WorldStormKingZones.TwinePeaks ? 'Endgame_Zone5' : zone;
 
-        const newZone =
-          zone === WorldStormKingZones.CannyValley
-            ? 'Hard_Zone5'
-            : zone === WorldStormKingZones.TwinePeaks
-              ? 'Endgame_Zone5'
-              : zone;
-
-        if (!rawWorldInfo[theater.uniqueId].zones[newZone]) {
-          rawWorldInfo[theater.uniqueId].alerts[newZone] = [];
-          rawWorldInfo[theater.uniqueId].missions[newZone] = [];
-          rawWorldInfo[theater.uniqueId].zones[newZone] = [];
+        for (const tileIndex of region.tileIndices) {
+          missions.set(tileIndex, newZone);
         }
-
-        rawWorldInfo[theater.uniqueId].zones[newZone] = [
-          ...new Set([
-            ...rawWorldInfo[theater.uniqueId].zones[newZone],
-            ...region.tileIndices
-          ])
-        ];
       }
+
+      theaterData.set(theater.uniqueId, {
+        missions,
+        theater
+      });
+
+      worldInfo.set(theater.uniqueId as World, new Map());
     }
+
+    const missionByTheater = new Map<string, WorldInfoMission>();
+    const alertByTheater = new Map<string, WorldInfoMissionAlert>();
 
     for (const mission of worldInfoData.missions) {
-      if (!theaterExists(mission.theaterId) || !mission.availableMissions?.length) continue;
-
-      for (const currentMission of mission.availableMissions) {
-        for (const [zone, tileIndices] of Object.entries(rawWorldInfo[mission.theaterId].zones)) {
-          if (tileIndices.includes(currentMission.tileIndex)) {
-            rawWorldInfo[mission.theaterId].missions[zone].push(currentMission);
-          }
-        }
+      if (mission.availableMissions?.length) {
+        missionByTheater.set(mission.theaterId, mission);
       }
     }
 
-    for (const missionAlert of worldInfoData.missionAlerts) {
-      if (!theaterExists(missionAlert.theaterId) || !missionAlert.availableMissionAlerts?.length) continue;
-
-      for (const currentMissionAlert of missionAlert.availableMissionAlerts) {
-        for (const [zone, tileIndices] of Object.entries(rawWorldInfo[missionAlert.theaterId].zones)) {
-          if (tileIndices.includes(currentMissionAlert.tileIndex)) {
-            rawWorldInfo[missionAlert.theaterId].alerts[zone].push(currentMissionAlert);
-          }
-        }
+    for (const alert of worldInfoData.missionAlerts) {
+      if (alert.availableMissionAlerts?.length) {
+        alertByTheater.set(alert.theaterId, alert);
       }
     }
 
-    for (const [theaterId, data] of Object.entries(rawWorldInfo)) {
-      for (const [zone, missions] of Object.entries(data.missions)) {
-        const theater = worldInfo.get(theaterId as World);
-        if (!theater) continue;
+    for (const [theaterId, data] of theaterData) {
+      const theater = worldInfo.get(theaterId as World)!;
+      const missions = missionByTheater.get(theaterId);
+      const alerts = alertByTheater.get(theaterId);
+      if (!missions) continue;
 
-        for (const mission of missions) {
-          const zoneInfo = WorldInfoManager.parseZone(mission.missionGenerator);
-          const currentAlert = rawWorldInfo[theaterId].alerts[zone].find((alert) => mission.tileIndex === alert.tileIndex);
+      const alertByTile = new Map<number, WorldInfoMissionAlert['availableMissionAlerts'][number]>();
+      if (alerts) {
+        for (const alert of alerts.availableMissionAlerts) {
+          alertByTile.set(alert.tileIndex, alert);
+        }
+      }
 
-          const zoneLetter = (WorldLettersByTheaters as any)[theaterId] || WorldLetters.Ventures;
-          const modifiers = currentAlert?.missionAlertModifiers?.items.map((modifier) => WorldInfoManager.parseModifier(modifier.itemType)) || null;
-          const powerLevel = (WorldPowerLevels as any)[theaterId]?.[zone] ?? (WorldPowerLevels.ventures as any)?.[zone] ?? -1;
+      for (const mission of missions.availableMissions) {
+        const zone = data.missions.get(mission.tileIndex);
+        if (!zone) continue;
 
-          const filters: string[] = [];
+        const zoneInfo = WorldInfoManager.parseZone(mission.missionGenerator);
+        const currentAlert = alertByTile.get(mission.tileIndex);
 
-          const alertRewards = currentAlert?.missionAlertRewards.items
-            .reduce<typeof currentAlert.missionAlertRewards.items>((acc, crr) => {
-              const itemIndex = acc.findIndex((item) => item.itemType === crr.itemType);
+        const zoneLetter = (WorldLettersByTheaters as any)[theaterId] || WorldLetters.Ventures;
+        const modifiers = currentAlert?.missionAlertModifiers?.items.map((modifier) => WorldInfoManager.parseModifier(modifier.itemType)) || null;
+        const powerLevel = (WorldPowerLevels as any)[theaterId]?.[zone] ?? (WorldPowerLevels.ventures as any)?.[zone] ?? -1;
+        const filters: string[] = [];
 
-              if (itemIndex >= 0) {
-                acc[itemIndex].quantity += crr.quantity;
-              } else {
-                acc.push(crr);
-              }
+        const alertRewards = currentAlert?.missionAlertRewards.items
+          .reduce<typeof currentAlert.missionAlertRewards.items>((acc, crr) => {
+            const item = acc.find((item) => item.itemType === crr.itemType);
+            if (!item) {
+              acc.push(crr);
+            } else {
+              item.quantity += crr.quantity;
+            }
 
-              return acc;
-            }, [])
-            .map((item) => {
-              const parsedResource = WorldInfoManager.parseResource(item.itemType, item.quantity);
+            return acc;
+          }, [])
+          .map((item) => {
+            const parsedResource = WorldInfoManager.parseResource(item.itemType, item.quantity);
 
-              filters.push(item.itemType);
+            filters.push(item.itemType);
 
-              if (item.attributes?.Alteration?.LootTierGroup) {
-                filters.push(item.attributes?.Alteration?.LootTierGroup);
-              }
+            if (item.attributes?.Alteration?.LootTierGroup) {
+              filters.push(item.attributes?.Alteration?.LootTierGroup);
+            }
 
-              return {
-                imageUrl: parsedResource.imageUrl,
-                itemId: item.itemType,
-                quantity: item.quantity ?? 1,
-                rarity: parsedResource.rarity,
-                type: parsedResource.type
-              } satisfies NonNullable<WorldParsedMission['alert']>['rewards'][number];
-            });
-
-          const missionRewards = mission.missionRewards.items
-            .reduce<typeof mission.missionRewards.items>((acc, crr) => {
-              const itemIndex = acc.findIndex((item) => item.itemType === crr.itemType);
-
-              if (itemIndex >= 0) {
-                acc[itemIndex].quantity += crr.quantity;
-              } else {
-                acc.push(crr);
-              }
-
-              return acc;
-            }, [])
-            .map((item) => {
-              const parsedResource = WorldInfoManager.parseResource(item.itemType, item.quantity);
-
-              let isHard = false;
-
-              filters.push(item.itemType);
-
-              if (
-                WorldInfoManager.isEvolutionMaterial(parsedResource.itemType) &&
-                WorldPowerLevels[Theaters.TwinePeaks].Endgame_Zone6 === powerLevel
-              ) {
-                isHard = !(
-                  parsedResource.itemType.endsWith('_veryhigh') ||
-                  parsedResource.itemType.endsWith('_extreme')
-                );
-              }
-
-              return {
-                isHard,
-                imageUrl: parsedResource.imageUrl,
-                itemId: item.itemType,
-                key: parsedResource.key,
-                quantity: item.quantity ?? 1
-              } satisfies WorldParsedMission['rewards'][number];
-            });
-
-          theater.set(mission.missionGuid, {
-            filters,
-            guid: mission.missionGuid,
-            generator: mission.missionGenerator,
-            tileIndex: mission.tileIndex,
-            modifiers,
-            rewards: missionRewards,
-            zone: {
-              color: (WorldColorsByTheater as any)[theaterId] ?? WorldColors.Ventures,
-              letter: zoneLetter,
-              theme: worldInfoData.theaters.find(x => x.uniqueId === theaterId)!.tiles[mission.tileIndex].zoneTheme,
-              type: {
-                id: zoneInfo.type as keyof typeof ZoneCategories | undefined,
-                imageUrl: zoneInfo.imageUrl
-              }
-            },
-            powerLevel,
-            alert: currentAlert && alertRewards?.length ? {
-              guid: currentAlert.missionAlertGuid,
-              rewards: alertRewards
-            } : null
+            return {
+              imageUrl: parsedResource.imageUrl,
+              itemId: item.itemType,
+              quantity: item.quantity ?? 1,
+              rarity: parsedResource.rarity,
+              type: parsedResource.type
+            } satisfies NonNullable<WorldParsedMission['alert']>['rewards'][number];
           });
-        }
 
-        worldInfo.set(
-          theaterId as World,
-          new Map(Array.from(theater.entries()).sort((entryA, entryB) => {
-            const [, missionA] = entryA;
-            const [, missionB] = entryB;
+        const missionRewards = mission.missionRewards.items
+          .reduce<typeof mission.missionRewards.items>((acc, crr) => {
+            const item = acc.find((item) => item.itemType === crr.itemType);
+            if (!item) {
+              acc.push(crr);
+            } else {
+              item.quantity += crr.quantity;
+            }
 
-            const missionAGroup = missionA.generator.toLowerCase().includes('group') ? 1 : 0;
-            const missionBGroup = missionB.generator.toLowerCase().includes('group') ? 1 : 0;
+            return acc;
+          }, [])
+          .map((item) => {
+            const parsedResource = WorldInfoManager.parseResource(item.itemType, item.quantity);
 
-            const isGroup = missionBGroup - missionAGroup;
+            let isHard = false;
 
-            const missionAAlert = !!missionA.alert ? 1 : 0;
-            const missionBAlert = !!missionB.alert ? 1 : 0;
-            const hasAlert = missionBAlert - missionAAlert;
+            filters.push(item.itemType);
 
-            const missionAPowerLevel = missionA.powerLevel;
-            const missionBPowerLevel = missionB.powerLevel;
-            const comparePowerLevel = missionBPowerLevel - missionAPowerLevel;
+            if (
+              WorldInfoManager.isEvolutionMaterial(parsedResource.itemType) &&
+              WorldPowerLevels[Theaters.TwinePeaks].Endgame_Zone6 === powerLevel
+            ) {
+              isHard = !(
+                parsedResource.itemType.endsWith('_veryhigh') ||
+                parsedResource.itemType.endsWith('_extreme')
+              );
+            }
 
-            return comparePowerLevel || isGroup || hasAlert;
-          }))
-        );
+            return {
+              isHard,
+              imageUrl: parsedResource.imageUrl,
+              itemId: item.itemType,
+              key: parsedResource.key,
+              quantity: item.quantity ?? 1
+            } satisfies WorldParsedMission['rewards'][number];
+          });
+
+        theater.set(mission.missionGuid, {
+          filters,
+          guid: mission.missionGuid,
+          generator: mission.missionGenerator,
+          tileIndex: mission.tileIndex,
+          modifiers,
+          rewards: missionRewards,
+          zone: {
+            color: (WorldColorsByTheater as any)[theaterId] ?? WorldColors.Ventures,
+            letter: zoneLetter,
+            theme: worldInfoData.theaters.find(x => x.uniqueId === theaterId)!.tiles[mission.tileIndex].zoneTheme,
+            type: {
+              id: zoneInfo.type as keyof typeof ZoneCategories | undefined,
+              imageUrl: zoneInfo.imageUrl
+            }
+          },
+          powerLevel,
+          alert: currentAlert && alertRewards?.length ? {
+            guid: currentAlert.missionAlertGuid,
+            rewards: alertRewards
+          } : null
+        });
       }
+
+      worldInfo.set(
+        theaterId as World,
+        new Map(Array.from(theater.entries()).sort((entryA, entryB) => {
+            const a = entryA[1];
+            const b = entryB[1];
+
+            const missionAGroup = a.generator.toLowerCase().includes('group') ? 1 : 0;
+            const missionBGroup = b.generator.toLowerCase().includes('group') ? 1 : 0;
+
+            const missionAAlert = a.alert ? 1 : 0;
+            const missionBAlert = b.alert ? 1 : 0;
+
+            return b.powerLevel - a.powerLevel
+              || missionBGroup - missionAGroup
+              || missionBAlert - missionAAlert;
+          })
+        ));
     }
 
     return worldInfo;

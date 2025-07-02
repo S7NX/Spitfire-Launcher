@@ -2,59 +2,65 @@ import type { ParsedResourceData, RarityType } from '$types/game/stw/resources';
 import { Theaters, type ZoneCategories } from '$lib/constants/stw/worldInfo';
 
 export type WorldInfoData = {
-  missionAlerts: Array<{
-    availableMissionAlerts: Array<{
-      name: string;
-      missionAlertGuid: string;
-      tileIndex: number;
-      missionAlertRewards: {
-        tierGroupName: string;
-        items: Array<{
-          attributes?: {
-            Alteration?: Partial<{
-              LootTierGroup: string;
-              Tier: number;
-            }>;
-          };
-          itemType: string;
-          quantity: number;
-        }>;
-      };
-      missionAlertModifiers: {
-        tierGroupName: string;
-        items: Array<{
-          itemType: string;
-          quantity: number;
-        }>;
-      };
-    }>;
-    nextRefresh: string;
-    theaterId: string;
+  missionAlerts: Array<WorldInfoMissionAlert>;
+  missions: Array<WorldInfoMission>;
+  theaters: Array<WorldInfoTheater>;
+};
+
+export type WorldInfoMission = {
+  availableMissions: Array<{
+    missionGuid: string;
+    missionRewards: {
+      tierGroupName: string;
+      items: Array<{
+        itemType: string;
+        quantity: number;
+      }>;
+    };
+    missionGenerator: string;
+    tileIndex: number;
   }>;
-  missions: Array<{
-    availableMissions: Array<{
-      missionGuid: string;
-      missionRewards: {
-        tierGroupName: string;
-        items: Array<{
-          itemType: string;
-          quantity: number;
-        }>;
-      };
-      missionGenerator: string;
-      tileIndex: number;
-    }>;
-    nextRefresh: string;
-    theaterId: string;
+  nextRefresh: string;
+  theaterId: string;
+};
+
+export type WorldInfoMissionAlert = {
+  availableMissionAlerts: Array<{
+    name: string;
+    missionAlertGuid: string;
+    tileIndex: number;
+    missionAlertRewards: {
+      tierGroupName: string;
+      items: Array<{
+        attributes?: {
+          Alteration?: Partial<{
+            LootTierGroup: string;
+            Tier: number;
+          }>;
+        };
+        itemType: string;
+        quantity: number;
+      }>;
+    };
+    missionAlertModifiers: {
+      tierGroupName: string;
+      items: Array<{
+        itemType: string;
+        quantity: number;
+      }>;
+    };
   }>;
-  theaters: Array<{
-    displayName: Record<AvailableLocales, string>;
-    uniqueId: string;
-    missionRewardNamedWeightsRowName: string;
-    description: Record<AvailableLocales, string>;
-    tiles: Array<Tile>;
-    regions: Array<Region>;
-  }>;
+  nextRefresh: string;
+  theaterId: string;
+};
+
+export type WorldInfoTheater = {
+  displayName: Record<AvailableLocales, string>;
+  uniqueId: string;
+  missionRewardNamedWeightsRowName: string;
+  description: Record<AvailableLocales, string>;
+  tiles: Array<Tile>;
+  regions: Array<Region>;
 };
 
 type AvailableLocales =
