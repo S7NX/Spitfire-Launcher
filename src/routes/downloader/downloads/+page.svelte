@@ -73,17 +73,20 @@
         <div class="flex items-center justify-between">
           <h3 class="font-semibold text-lg">{currentDownload.item.title}</h3>
           <div class="flex items-center gap-2">
-            <Button class="p-2" disabled={isCancelling || isTogglingPause} onclick={togglePause} size="sm" variant="outline">
-              {#if isTogglingPause}
-                <LoaderCircleIcon class="size-4 animate-spin"/>
-              {:else}
-                {#if currentDownload.status === 'paused'}
-                  <PlayIcon class="size-4"/>
+            {#if !currentDownload.item.requiresRepair}
+              <Button class="p-2" disabled={isCancelling || isTogglingPause} onclick={togglePause} size="sm" variant="outline">
+                {#if isTogglingPause}
+                  <LoaderCircleIcon class="size-4 animate-spin"/>
                 {:else}
-                  <PauseIcon class="size-4"/>
+                  {#if currentDownload.status === 'paused'}
+                    <PlayIcon class="size-4"/>
+                  {:else}
+                    <PauseIcon class="size-4"/>
+                  {/if}
                 {/if}
-              {/if}
-            </Button>
+              </Button>
+            {/if}
+
             <Button class="p-2" disabled={isCancelling || isTogglingPause} onclick={() => showCancelDialog = true} size="sm" variant="outline">
               {#if isCancelling}
                 <LoaderCircleIcon class="size-4 animate-spin"/>
