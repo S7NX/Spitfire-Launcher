@@ -1,6 +1,5 @@
 import { locales } from '$lib/paraglide/runtime';
-import type { ParsedApp } from '$types/legendary';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 export const appSettingsSchema = z.object({
   language: z.enum(locales).nullish(),

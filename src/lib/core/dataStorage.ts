@@ -16,7 +16,7 @@ import { path } from '@tauri-apps/api';
 import { dataDir, homeDir } from '@tauri-apps/api/path';
 import { exists, mkdir, readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
 import { platform } from '@tauri-apps/plugin-os';
-import type { ZodType } from 'zod/v4';
+import type { ZodType } from 'zod';
 
 export const ACCOUNTS_FILE_PATH = dev ? 'accounts-dev.json' : 'accounts.json';
 export const ACCOUNTS_INITIAL_DATA: AccountDataFile = {
