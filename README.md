@@ -57,7 +57,7 @@ Settings are stored in:
 No need to uninstall. Run the setup file again to update. The app notifies when a new version is available.
 
 ## Setting Up Locally
-See the [Setting Up Locally](docs/setting-up-locally.md) guide for instructions on how to set up your development environment.
+See the [Setting Up Locally](../../wiki/Setting-Up-Locally) wiki for instructions on how to set up the project locally.
 
 ## Contributing
 
