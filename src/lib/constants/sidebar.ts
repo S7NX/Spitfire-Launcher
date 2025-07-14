@@ -1,4 +1,4 @@
-import type { AllSettings } from '$types/settings';
+import type { sidebarItems } from '$lib/validations/settings';
 import { platform as getPlatform } from '@tauri-apps/plugin-os';
 import { derived } from 'svelte/store';
 import { t } from '$lib/utils/util';
@@ -9,7 +9,7 @@ type Category = {
   key: string;
   name: string;
   items: {
-    key: keyof NonNullable<AllSettings['customizableMenu']>;
+    key: typeof sidebarItems[number];
     name: string;
     href: string;
   }[];
@@ -21,27 +21,27 @@ export const SidebarCategories = derived(t, ($t) => [
     name: $t('sidebar.categories.account'),
     items: [
       {
-        key: 'vbucksInformation',
+        key: 'vbucksInformation' as const,
         name: $t('vbucksInformation.page.title'),
         href: '/account-management/vbucks'
       },
       {
-        key: 'friendManagement',
+        key: 'friendManagement' as const,
         name: $t('friendManagement.page.title'),
         href: '/account-management/friends'
       },
       {
-        key: 'redeemCodes',
+        key: 'redeemCodes' as const,
         name: $t('redeemCodes.page.title'),
         href: '/account-management/redeem-codes'
       },
       {
-        key: 'epicGamesSettings',
+        key: 'epicGamesSettings' as const,
         name: $t('epicGamesSettings.page.title'),
         href: '/account-management/epic-games-settings'
       },
       {
-        key: 'eula',
+        key: 'eula' as const,
         name: $t('eula.page.title'),
         href: '/account-management/eula'
       }
@@ -52,90 +52,89 @@ export const SidebarCategories = derived(t, ($t) => [
     name: $t('sidebar.categories.brStw'),
     items: [
       {
-        key: 'autoKick',
+        key: 'autoKick' as const,
         name: $t('autoKick.page.title'),
         href: '/br-stw/auto-kick'
       },
       {
-        key: 'taxiService',
+        key: 'taxiService' as const,
         name: $t('taxiService.page.title'),
         href: '/br-stw/taxi-service'
       },
       {
-        key: 'customStatus',
+        key: 'customStatus' as const,
         name: $t('customStatus.page.title'),
         href: '/br-stw/custom-status'
       },
       {
-        key: 'partyManagement',
+        key: 'partyManagement' as const,
         name: $t('partyManagement.page.title'),
         href: '/br-stw/party'
       },
       {
-        key: 'serverStatus',
+        key: 'serverStatus' as const,
         name: $t('serverStatus.page.title'),
         href: '/br-stw/server-status'
       },
       {
-        key: 'itemShop',
+        key: 'itemShop' as const,
         name: $t('itemShop.page.title'),
         href: '/br-stw/item-shop'
       },
       {
-        key: 'earnedXp',
+        key: 'earnedXp' as const,
         name: $t('earnedXP.page.title'),
         href: '/br-stw/earned-xp'
       },
       {
-        key: 'dailyQuests',
+        key: 'dailyQuests' as const,
         name: $t('dailyQuests.page.title'),
         href: '/br-stw/daily-quests'
       },
       {
-        key: 'stwMissionAlerts',
+        key: 'stwMissionAlerts' as const,
         name: $t('stwMissionAlerts.page.title'),
         href: '/br-stw/stw-mission-alerts'
       },
       {
-        key: 'lookupPlayers',
+        key: 'lookupPlayers' as const,
         name: $t('lookupPlayers.page.title'),
         href: '/br-stw/lookup-players'
       }
     ]
   },
-  platform === 'windows' ? {
-    // todo: change category key and name later, i suck at naming
+  platform === 'windows' && {
     key: 'downloader',
     name: $t('sidebar.categories.downloader'),
     items: [
       {
-        key: 'library',
+        key: 'library' as const,
         name: $t('library.page.title'),
         href: '/downloader/library'
       },
       {
-        key: 'downloads',
+        key: 'downloads' as const,
         name: $t('downloads.page.title'),
         href: '/downloader/downloads'
       }
     ]
-  } : null,
+  },
   {
     key: 'authentication',
     name: $t('sidebar.categories.authentication'),
     items: [
       {
-        key: 'exchangeCode',
+        key: 'exchangeCode' as const,
         name: $t('exchangeCodeManagement.page.title'),
         href: '/authentication/generate-exchange-code'
       },
       {
-        key: 'accessToken',
+        key: 'accessToken' as const,
         name: $t('accessTokenManagement.page.title'),
         href: '/authentication/generate-access-token'
       },
       {
-        key: 'deviceAuth',
+        key: 'deviceAuth' as const,
         name: $t('deviceAuthManagement.page.title'),
         href: '/authentication/device-auth'
       }

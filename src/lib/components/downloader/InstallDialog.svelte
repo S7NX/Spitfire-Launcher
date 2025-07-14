@@ -169,7 +169,7 @@
     </div>
 
     <div class="flex gap-2 justify-end mt-2">
-      <Button variant="outline" onclick={() => isOpen = false}>
+      <Button onclick={() => isOpen = false} variant="outline">
         {$t('common.cancel')}
       </Button>
 

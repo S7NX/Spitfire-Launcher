@@ -35,7 +35,6 @@ activeAccountId.subscribe((activeAccountId) => {
 export const doingBulkOperations = writable<boolean>(false);
 export const displayNamesCache = new SvelteMap<string, string>();
 export const avatarCache = new SvelteMap<string, string>();
-// todo: use a map
 export const accessTokenCache = writable<Record<string, EpicOAuthData>>();
 export const worldInfoCache = writable<ParsedWorldInfo>();
 export const brShopStore = writable<SpitfireShop>();

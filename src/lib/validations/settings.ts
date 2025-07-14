@@ -18,31 +18,38 @@ export const deviceAuthsSettingsSchema = z.array(z.object({
   customName: z.string()
 }));
 
-export const customizableMenuSettingsSchema = z.object({
-  library: z.boolean().default(true),
-  downloads: z.boolean().default(true),
+export const sidebarItems = [
+  'vbucksInformation',
+  'friendManagement',
+  'redeemCodes',
+  'epicGamesSettings',
+  'eula',
 
-  vbucksInformation: z.boolean().default(true),
-  friendManagement: z.boolean().default(true),
-  redeemCodes: z.boolean().default(true),
-  epicGamesSettings: z.boolean().default(true),
-  eula: z.boolean().default(true),
+  'autoKick',
+  'taxiService',
+  'customStatus',
+  'partyManagement',
+  'serverStatus',
+  'itemShop',
+  'earnedXp',
+  'dailyQuests',
+  'stwMissionAlerts',
+  'lookupPlayers',
 
-  autoKick: z.boolean().default(true),
-  taxiService: z.boolean().default(true),
-  customStatus: z.boolean().default(true),
-  partyManagement: z.boolean().default(true),
-  serverStatus: z.boolean().default(true),
-  itemShop: z.boolean().default(true),
-  earnedXp: z.boolean().default(true),
-  dailyQuests: z.boolean().default(true),
-  stwMissionAlerts: z.boolean().default(true),
-  lookupPlayers: z.boolean().default(true),
+  'library',
+  'downloads',
 
-  exchangeCode: z.boolean().default(true),
-  accessToken: z.boolean().default(true),
-  deviceAuth: z.boolean().default(true)
-}).partial();
+  'exchangeCode',
+  'accessToken',
+  'deviceAuth'
+] as const;
+
+export const customizableMenuSettingsSchema = z.object(
+  sidebarItems.reduce((acc, item) => {
+    acc[item] = z.boolean().default(true);
+    return acc;
+  }, {} as Record<typeof sidebarItems[number], z.ZodType<boolean>>)
+).partial();
 
 export const allSettingsSchema = z.object({
   app: appSettingsSchema,

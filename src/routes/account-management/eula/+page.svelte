@@ -47,7 +47,7 @@
       eulaStatuses.push(status);
 
       try {
-        // TODO:  Fastest way I could find. Might change later
+        // TODO: Fastest way I could find. Might change later
         const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
         const exchangeData = await Authentication.getExchangeCodeUsingAccessToken(accessToken);
         const launcherAccessTokenData = await Authentication.getAccessTokenUsingExchangeCode(exchangeData.code, launcherAppClient2);

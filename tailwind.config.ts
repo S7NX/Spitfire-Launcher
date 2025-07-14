@@ -53,7 +53,6 @@ const config: Config = {
         'epic-muted-foreground': 'hsl(var(--epic-muted-foreground) / <alpha-value>)',
         'epic-accent': 'hsl(var(--epic-accent) / <alpha-value>)',
         'epic-accent-foreground': 'hsl(var(--epic-accent-foreground) / <alpha-value>)',
-        // todo: find a better name
         'surface-alt': 'hsl(var(--surface-alt) / <alpha-value>)'
       }
     }
