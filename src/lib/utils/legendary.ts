@@ -39,7 +39,7 @@ export default class Legendary {
     const json = args.includes('--json');
 
     try {
-      const result: ExecuteResult = await invoke('run_legendary', { args });
+      const result = await invoke<ExecuteResult>('run_legendary', { args });
 
       if (json) {
         result.stdout = JSON.parse(result.stdout) as T;
@@ -63,44 +63,49 @@ export default class Legendary {
     const accessToken = await Authentication.verifyOrRefreshAccessToken(account);
     const { code: exchange } = await Authentication.getExchangeCodeUsingAccessToken(accessToken);
 
-    const data = await this.execute<string>(['auth', '--token', exchange]);
-    this.caches.account = account.accountId;
-    if (this.caches.status) this.caches.status.account = account.accountId;
+    const data = await Legendary.execute<string>(['auth', '--token', exchange]);
+    Legendary.caches.account = account.accountId;
+    if (Legendary.caches.status) Legendary.caches.status.account = account.accountId;
+
+    Legendary.cachedApps = false;
+    await Legendary.cacheApps();
 
     return data;
   }
 
   static async logout() {
-    const data = await this.execute<string>(['auth', '--delete']);
-    this.caches.account = undefined;
-    if (this.caches.status) this.caches.status.account = null;
+    const data = await Legendary.execute<string>(['auth', '--delete']);
+    Legendary.caches.account = undefined;
+    if (Legendary.caches.status) Legendary.caches.status.account = null;
+
+    Legendary.cachedApps = false;
 
     return data;
   }
 
-  static async getList() {
-    return await this.execute<LegendaryList>(['list', '--json']);
+  static getList() {
+    return Legendary.execute<LegendaryList>(['list', '--json']);
   }
 
   static async getStatus() {
-    if (this.caches.status) return this.caches.status;
+    if (Legendary.caches.status) return Legendary.caches.status;
 
-    const { stdout } = await this.execute<LegendaryStatus>(['status', '--json']);
+    const { stdout } = await Legendary.execute<LegendaryStatus>(['status', '--json']);
 
     if (stdout.account === '<not logged in>') {
       stdout.account = null;
     }
 
-    this.caches.status = stdout;
+    Legendary.caches.status = stdout;
     return stdout;
   }
 
   static async getAccount() {
-    if (this.caches.account) {
-      return this.caches.account;
+    if (Legendary.caches.account) {
+      return Legendary.caches.account;
     }
 
-    const status = await this.getStatus();
+    const status = await Legendary.getStatus();
     if (!status.account) {
       return null;
     }
@@ -115,18 +120,21 @@ export default class Legendary {
     }
   }
 
-  static async getAppInfo(appId: string) {
-    return await this.execute<LegendaryAppInfo>(['info', appId, '--json']);
+  static getAppInfo(appId: string) {
+    return Legendary.execute<LegendaryAppInfo>(['info', appId, '--json']);
   }
 
-  static async getInstalledList() {
-    await this.execute(['egl-sync', '-y', '--enable-sync']).catch(console.error);
-    return await this.execute<LegendaryInstalledList>(['list-installed', '--json']);
+  static getInstalledList() {
+    return Legendary.execute<LegendaryInstalledList>(['list-installed', '--json']);
+  }
+
+  static async syncEGL() {
+    return Legendary.execute(['egl-sync', '-y', '--enable-sync']);
   }
 
   static async launch(appId: string) {
-    const { stdout: launchData } = await this.execute<LegendaryLaunchData>(['launch', appId, '--dry-run', '--json']);
-    return await invoke<number>('launch_app', {
+    const { stdout: launchData } = await Legendary.execute<LegendaryLaunchData>(['launch', appId, '--dry-run', '--json']);
+    return invoke<number>('launch_app', {
       launchData: {
         ...launchData,
         game_id: appId
@@ -135,7 +143,7 @@ export default class Legendary {
   }
 
   static async verify(appId: string) {
-    const { stderr } = await this.execute<string>(['verify', appId, '-y', '--skip-sdl']);
+    const { stderr } = await Legendary.execute<string>(['verify', appId, '-y', '--skip-sdl']);
     const requiresRepair = stderr.includes('repair your game installation');
     const requiredRepair = get(ownedApps).find(app => app.id === appId)?.requiresRepair || false;
 
@@ -153,7 +161,7 @@ export default class Legendary {
   }
 
   static async uninstall(appId: string) {
-    const data = await this.execute(['uninstall', appId, '-y']);
+    const data = await Legendary.execute(['uninstall', appId, '-y']);
 
     ownedApps.update(current => {
       return current.map(app =>
@@ -169,10 +177,9 @@ export default class Legendary {
   static async cacheApps() {
     if (Legendary.cachedApps) return;
 
-    const [list, installedList] = await Promise.all([
-      Legendary.getList(),
-      Legendary.getInstalledList()
-    ]);
+    const list = await Legendary.getList();
+    await Legendary.syncEGL();
+    const installedList = await Legendary.getInstalledList();
 
     ownedApps.set(list.stdout
       .filter(app => app.metadata.entitlementType === 'EXECUTABLE')
