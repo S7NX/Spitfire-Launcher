@@ -12,7 +12,10 @@ A launcher for Fortnite Battle Royale and Save the World
 - [ℹ️ Good to Know](#good-to-know)
 - [⚙️ Features](#features)
 - [🔄 Updating](#updating)
+- [🛠️ Setting Up Locally](#setting-up-locally)
 - [🤝 Contributing](#contributing)
+- [💡 Credits](#credits)
+- [📜 License](#license)
 
 ## Built With
 
@@ -22,7 +25,7 @@ A launcher for Fortnite Battle Royale and Save the World
 
 ## Installation
 
-Download the latest release from the [releases](https://github.com/BurakYs/Spitfire-Launcher/releases) page.
+Download the latest release from the [releases](../../releases/latest) page or from [our website](https://rookie-spitfire.xyz/launcher).
 
 - **Windows:** `Spitfire.Launcher_x.x.x_x64-setup.exe`
 - **Android:** `Spitfire.Launcher_x.x.x.apk`
@@ -35,28 +38,33 @@ installation.
 Settings are stored in:
 
 - **Windows:** `C:/Users/USERNAME_HERE/AppData/Roaming/spitfire-launcher`
-- **Android:** `/data/user/0/com.spitfire_launcher.app` (Not accessible without root)
+- **Android:** `/data/user/0/com.spitfire_launcher.app` (Requires root access)
 
 ## Features
 
-- **Customization:**
-    - Configure launcher language, game path, starting page, starting account
-- **Bulk Actions:**
-    - Redeem codes, view V-Bucks information, daily quests and more across multiple accounts
-- **Account and Game Management:**
-    - Easy web confirmation or exchange code login
-    - Launch game, auto-kick and taxis for STW and custom game status
-    - Manage friends and party, view item shop, earned XP, daily quests, mission alerts
-    - Lookup players, manage device authentications
-- **Upcoming Features:**
-    - Hero and survivor loadout, expedition management
-    - Storage and backpack management
+### Customizable
+
+- Choose launcher language from 4 different languages: English, French, Spanish, and Turkish
+- Set game path, default page, and startup account
+
+### Bulk Actions
+
+- Redeem codes, view V-Bucks information and daily quests across multiple accounts
+
+### Game & Account Management
+
+- Download and launch games from the Epic Games Store
+- View item shop, mission alerts, daily quests, and earned XP
+- Auto-kick and taxi features for Save the World
+- Set custom game statuses
+- Manage friends, party, and device authentication
 
 ## Updating
 
-No need to uninstall. Run the setup file again to update. The app notifies when a new version is available.
+Just run the latest setup file to update. The launcher also notifies you when an update is available.
 
 ## Setting Up Locally
+
 See the [Setting Up Locally](../../wiki/Setting-Up-Locally) wiki for instructions on how to set up the project locally.
 
 ## Contributing
