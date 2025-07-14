@@ -102,10 +102,10 @@
   },
   "redeemCodes": {
     "page": {
-      "title": "Utiliser des codes"
+      "title": "Utiliser un code"
     },
-    "codesPlaceholder": "Entre les codes à utiliser et appuie sur Entrée",
-    "redeemCodes": "Utiliser des codes",
+    "codesPlaceholder": "Entre un code à utiliser et appuie sur le bouton",
+    "redeemCodes": "Utiliser un code",
     "redeeming": "Activation",
     "redeemed": "Activé",
     "redeemErrors": {
