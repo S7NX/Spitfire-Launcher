@@ -12,7 +12,7 @@ use tauri_plugin_shell::ShellExt;
 pub fn get_locale() -> String {
     sys_locale::get_locale()
         .and_then(|locale| locale.split(['_', '-']).next().map(|s| s.to_string()))
-        .unwrap_or_else(|| "en".to_string())
+        .unwrap_or_else(|| "".to_string())
 }
 
 #[command]

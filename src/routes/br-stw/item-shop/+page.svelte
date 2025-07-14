@@ -12,11 +12,15 @@
   import { calculateVbucks, formatRemainingDuration, getResolvedResults, t } from '$lib/utils/util';
   import type { AccountStoreData } from '$types/accounts';
   import type { SpitfireShopFilter, SpitfireShopSection } from '$types/game/shop';
+  import Fuse from 'fuse.js';
   import { onMount } from 'svelte';
 
   const activeAccount = $derived($accountsStore.activeAccount);
 
   $effect(() => {
+    const alreadyFetched = activeAccount && Object.keys($accountDataStore[activeAccount.accountId] || {}).length > 0;
+    if (!activeAccount || alreadyFetched) return;
+
     fetchAccountData();
   });
 
@@ -55,22 +59,23 @@
         break;
     }
 
-    return result.map(section => {
-      const search = searchQuery.toLowerCase().trim();
-      if (!search) return section;
+    if (searchQuery) {
+      result = result.map(section => {
+        if (!searchQuery) return section;
 
-      const filteredItems = section.items.filter((item) => {
-        const itemName = item.name?.toLowerCase();
-        return itemName?.includes(search)
-          || item.id?.toLowerCase()?.includes(search)
-          || item.offerId.toLowerCase()?.includes(search);
+        const fuse = new Fuse(section.items, {
+          keys: ['name'],
+          threshold: 0.4
+        });
+
+        return {
+          ...section,
+          items: fuse.search(searchQuery).map(result => result.item)
+        };
       });
+    }
 
-      return {
-        ...section,
-        items: filteredItems
-      };
-    }).filter(x => x.items.length > 0);
+    return result.filter(x => x.items.length > 0);
   });
 
   async function fetchShop(isNewDay?: boolean) {
@@ -86,13 +91,11 @@
   }
 
   async function fetchAccountData() {
-    const alreadyFetched = activeAccount && Object.keys($accountDataStore[activeAccount.accountId] || {}).length > 0;
-    if (!activeAccount || alreadyFetched) return;
-
+    const account = activeAccount!;
     const [athenaProfile, commonCoreProfile, friendList] = await getResolvedResults([
-      MCPManager.queryProfile(activeAccount, 'athena'),
-      MCPManager.queryProfile(activeAccount, 'common_core'),
-      FriendManager.getFriends(activeAccount)
+      MCPManager.queryProfile(account, 'athena'),
+      MCPManager.queryProfile(account, 'common_core'),
+      FriendManager.getFriends(account)
     ]);
 
     let accountData: AccountStoreData = {
@@ -107,7 +110,7 @@
       const ownedItems = items.filter((item) => item.attributes.item_seen != null).map((item) => item.templateId.split(':')[1].toLowerCase());
 
       ownedItemsStore.update((accounts) => {
-        accounts[activeAccount.accountId] = new Set<string>(ownedItems);
+        accounts[account.accountId] = new Set<string>(ownedItems);
         return accounts;
       });
     }
@@ -119,7 +122,7 @@
     }
 
     if (friendList) {
-      const accountsData = await LookupManager.fetchByIds(activeAccount, friendList.map((friend) => friend.accountId));
+      const accountsData = await LookupManager.fetchByIds(account, friendList.map((friend) => friend.accountId));
 
       accountData.friends = accountsData
         .sort((a, b) => a.displayName.localeCompare(b.displayName))
@@ -131,7 +134,7 @@
 
     if (commonCoreProfile || friendList) {
       accountDataStore.update((accounts) => {
-        accounts[activeAccount.accountId] = accountData;
+        accounts[account.accountId] = accountData;
         return accounts;
       });
     }

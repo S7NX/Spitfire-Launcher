@@ -24,15 +24,13 @@
 
   let { item, open = $bindable(false) }: Props = $props();
 
-  const accountId = $activeAccountId!;
-
   const {
     vbucks: ownedVbucks = 0,
     friends = [],
     remainingGifts = 5
-  } = $derived<AccountStoreData>($accountDataStore[accountId] || {});
+  } = $derived<AccountStoreData>($accountDataStore[$activeAccountId!] || {});
 
-  const ownedItems = $derived($ownedItemsStore[accountId]);
+  const ownedItems = $derived($ownedItemsStore[$activeAccountId!]);
   const isItemOwned = $derived(ownedItems?.has(item.id?.toLowerCase()));
 
   const discountedPrice = jsDerived([activeAccountId, ownedItemsStore], ([accountId]) => calculateDiscountedShopPrice(accountId!, item));
@@ -151,7 +149,7 @@
     <div class="flex w-full gap-3">
       <Tooltip
         class="w-full"
-        tooltip={ownedVbucks < $discountedPrice ? $t('itemShop.notEnoughVbucks') : ''}
+        tooltip={ownedVbucks < $discountedPrice ? $t('itemShop.notEnoughVbucks') : undefined}
       >
         <Button
           class="flex justify-center items-center gap-x-2 w-full"

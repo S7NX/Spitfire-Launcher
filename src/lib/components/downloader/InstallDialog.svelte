@@ -79,9 +79,7 @@
 </script>
 
 <Dialog
-  contentProps={{
-    class: 'sm:max-w-xl'
-  }}
+  contentProps={{ class: 'sm:max-w-xl' }}
   onOpenChangeComplete={(open) => !open && (id = '')}
   title={app.title}
   bind:open={isOpen}
