@@ -25,22 +25,16 @@
 
   const backgroundColorHex = colors[seriesId] || colors[rarityId] || colors.common;
 
-  function handleItemModal() {
-    if (!$activeAccountId) return;
+  function showItemModal() {
     modalOfferId = item.offerId;
   }
 </script>
 
 <div
   style="background-color: {backgroundColorHex}"
-  class="relative pb-[100%] rounded-xl overflow-hidden transition-all duration-300 w-full hover:scale-105 {$activeAccountId ? 'cursor-pointer' : ''}"
-  onclick={handleItemModal}
-  onkeydown={(e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleItemModal();
-    }
-  }}
+  class="relative pb-[100%] rounded-xl overflow-hidden transition-all duration-300 w-full hover:scale-105 cursor-pointer"
+  onclick={showItemModal}
+  onkeydown={(event) => event.key === 'Enter' && showItemModal()}
   role="button"
   tabindex="0"
 >

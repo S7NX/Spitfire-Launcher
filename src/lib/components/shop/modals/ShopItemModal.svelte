@@ -146,47 +146,51 @@
       </div>
     </div>
 
-    <Separator.Root class="bg-border h-px"/>
+    {#if $activeAccountId}
+      <Separator.Root class="bg-border h-px"/>
 
-    <div class="flex w-full gap-3">
-      <Tooltip
-        class="w-full"
-        tooltip={ownedVbucks < $discountedPrice ? $t('itemShop.notEnoughVbucks') : undefined}
-      >
-        <Button
-          class="flex justify-center items-center gap-x-2 w-full"
-          disabled={isPurchasing || ownedVbucks < $discountedPrice || isItemOwned}
-          onclick={() => (isAlertDialogOpen = true)}
-          variant="epic"
+      <div class="flex w-full gap-3">
+        <Tooltip
+          class="w-full"
+          tooltip={ownedVbucks < $discountedPrice ? $t('itemShop.notEnoughVbucks') : undefined}
         >
-          {#if isItemOwned}
-            <CheckIcon class="size-5"/>
-            {$t('itemShop.owned')}
-          {:else}
-            <ShoppingCartIcon class="size-5"/>
-            {$t('itemShop.purchase')}
-          {/if}
-        </Button>
-      </Tooltip>
+          <Button
+            class="flex justify-center items-center gap-x-2 w-full"
+            disabled={isPurchasing || ownedVbucks < $discountedPrice || isItemOwned}
+            onclick={() => (isAlertDialogOpen = true)}
+            variant="epic"
+          >
+            {#if isItemOwned}
+              <CheckIcon class="size-5"/>
+              {$t('itemShop.owned')}
+            {:else}
+              <ShoppingCartIcon class="size-5"/>
+              {$t('itemShop.purchase')}
+            {/if}
+          </Button>
+        </Tooltip>
 
-      <Tooltip
-        class="w-full"
-        tooltip={remainingGifts < 1 ? $t('itemShop.noRemainingGifts') : ownedVbucks < item.price.final ? $t('itemShop.notEnoughVbucks') : !friends.length ? $t('itemShop.noFriends') : ''}
-      >
-        <Button
-          class="flex justify-center items-center gap-x-2 w-full"
-          disabled={isSendingGifts || remainingGifts < 1 || ownedVbucks < item.price.final || !item.giftable || !friends.length}
-          onclick={() => (isGiftDialogOpen = true)}
-          variant="outline"
+        <Tooltip
+          class="w-full"
+          tooltip={remainingGifts < 1 ? $t('itemShop.noRemainingGifts') : ownedVbucks < item.price.final ? $t('itemShop.notEnoughVbucks') : !friends.length ? $t('itemShop.noFriends') : ''}
         >
-          <GiftIcon class="size-5"/>
-          {$t('itemShop.gift')}
-        </Button>
-      </Tooltip>
-    </div>
+          <Button
+            class="flex justify-center items-center gap-x-2 w-full"
+            disabled={isSendingGifts || remainingGifts < 1 || ownedVbucks < item.price.final || !item.giftable || !friends.length}
+            onclick={() => (isGiftDialogOpen = true)}
+            variant="outline"
+          >
+            <GiftIcon class="size-5"/>
+            {$t('itemShop.gift')}
+          </Button>
+        </Tooltip>
+      </div>
+    {/if}
   </div>
 </Dialog>
 
-<ShopPurchaseConfirmation {isPurchasing} {item} bind:open={isAlertDialogOpen}/>
+{#if $activeAccountId}
+  <ShopPurchaseConfirmation {isPurchasing} {item} bind:open={isAlertDialogOpen}/>
 
-<ShopGiftFriendSelection {isSendingGifts} {item} bind:open={isGiftDialogOpen}/>
+  <ShopGiftFriendSelection {isSendingGifts} {item} bind:open={isGiftDialogOpen}/>
+{/if}
