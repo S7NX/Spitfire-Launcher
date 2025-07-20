@@ -1,5 +1,6 @@
 <script lang="ts">
   import PageContent from '$components/PageContent.svelte';
+  import ShopItemModal from '$components/shop/modals/ShopItemModal.svelte';
   import ShopFilter from '$components/shop/ShopFilter.svelte';
   import ShopSection from '$components/shop/ShopSection.svelte';
   import SkeletonShopSection from '$components/shop/SkeletonShopSection.svelte';
@@ -29,6 +30,7 @@
   let errorOccurred = $state(false);
   let searchQuery = $state<string>('');
   let selectedFilter = $state<SpitfireShopFilter>('all');
+  let modalOfferId = $state<string>('');
 
   const filteredItems = $derived.by(() => {
     if (!shopSections) return null;
@@ -203,10 +205,14 @@
       {/if}
     {:else if filteredItems?.length}
       {#each filteredItems as section (section.id)}
-        <ShopSection {section}/>
+        <ShopSection {section} bind:modalOfferId/>
       {/each}
     {:else}
       <p>{$t('itemShop.noItems')}</p>
     {/if}
   </div>
+
+  {#if modalOfferId}
+    <ShopItemModal bind:offerId={modalOfferId}/>
+  {/if}
 </PageContent>

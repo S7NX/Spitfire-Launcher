@@ -3,17 +3,15 @@
   import type { SpitfireShopItem } from '$types/game/shop';
   import { ItemColors } from '$lib/constants/itemColors';
   import { activeAccountId, language, ownedItemsStore } from '$lib/stores';
-  import ShopItemModal from '$components/shop/modals/ShopItemModal.svelte';
   import CheckIcon from 'lucide-svelte/icons/check';
   import { derived as jsDerived } from 'svelte/store';
 
   type ItemCardProps = {
     item: SpitfireShopItem;
+    modalOfferId: string;
   };
 
-  const { item }: ItemCardProps = $props();
-
-  let showItemModal = $state(false);
+  let { item, modalOfferId = $bindable() }: ItemCardProps = $props();
 
   const isItemOwned = $derived($activeAccountId && $ownedItemsStore[$activeAccountId!]?.has(item.id?.toLowerCase()));
   const displayName = item.name;
@@ -29,7 +27,7 @@
 
   function handleItemModal() {
     if (!$activeAccountId) return;
-    showItemModal = true;
+    modalOfferId = item.offerId;
   }
 </script>
 
@@ -92,5 +90,3 @@
     </div>
   </div>
 </div>
-
-<ShopItemModal {item} bind:open={showItemModal}/>

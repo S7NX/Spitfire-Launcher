@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { AlertDialog } from '$components/ui/AlertDialog';
+  import AlertDialogButton from '$components/ui/AlertDialog/AlertDialogButton.svelte';
   import Dialog from '$components/ui/Dialog.svelte';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import type { SpitfireShopItem } from '$types/game/shop';
@@ -92,11 +92,11 @@
   {/snippet}
 
   <div class="flex w-full items-center justify-center gap-2">
-    <AlertDialog.Button buttonType="cancel">
+    <AlertDialogButton buttonType="cancel">
       {$t('common.cancel')}
-    </AlertDialog.Button>
+    </AlertDialogButton>
 
-    <AlertDialog.Button
+    <AlertDialogButton
       buttonColor="epic"
       buttonType="action"
       disabled={isPurchasing}
@@ -108,6 +108,6 @@
       {:else}
         {$t('common.confirm')}
       {/if}
-    </AlertDialog.Button>
+    </AlertDialogButton>
   </div>
 </Dialog>

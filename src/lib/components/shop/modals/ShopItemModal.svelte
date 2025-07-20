@@ -8,9 +8,8 @@
   import GiftIcon from 'lucide-svelte/icons/gift';
   import ShoppingCartIcon from 'lucide-svelte/icons/shopping-cart';
   import CheckIcon from 'lucide-svelte/icons/check';
-  import type { SpitfireShopItem } from '$types/game/shop';
   import { ItemColors } from '$lib/constants/itemColors';
-  import { accountDataStore, activeAccountId, language, ownedItemsStore } from '$lib/stores';
+  import { accountDataStore, activeAccountId, brShopStore, language, ownedItemsStore } from '$lib/stores';
   import ShopPurchaseConfirmation from '$components/shop/modals/ShopPurchaseConfirmation.svelte';
   import ShopGiftFriendSelection from '$components/shop/modals/ShopGiftFriendSelection.svelte';
   import type { AccountStoreData } from '$types/accounts';
@@ -18,11 +17,13 @@
   import { t } from '$lib/utils/util';
 
   type Props = {
-    item: SpitfireShopItem;
-    open: boolean;
+    offerId: string;
   };
 
-  let { item, open = $bindable(false) }: Props = $props();
+  let { offerId = $bindable() }: Props = $props();
+
+  const item = $brShopStore.offers.find(x => x.offerId === offerId)!;
+  let isOpen = $state(true);
 
   const {
     vbucks: ownedVbucks = 0,
@@ -70,7 +71,8 @@
 
 <Dialog
   contentProps={{ class: '!max-w-160 !min-h-112 overflow-y-auto !min-h-0' }}
-  bind:open
+  onOpenChangeComplete={(open) => !open && (offerId = '')}
+  bind:open={isOpen}
 >
   <div class="flex flex-col gap-y-6 w-full">
     <div class="flex flex-col xs:flex-row gap-x-6">

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { AlertDialog } from '$components/ui/AlertDialog';
+  import AlertDialogButton from '$components/ui/AlertDialog/AlertDialogButton.svelte';
   import Combobox from '$components/ui/Combobox/Combobox.svelte';
   import Dialog from '$components/ui/Dialog.svelte';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
@@ -150,11 +150,11 @@
   </Combobox>
 
   <div class="flex w-full items-center justify-center gap-2 mt-4">
-    <AlertDialog.Button buttonType="cancel" onclick={() => (open = false)}>
+    <AlertDialogButton buttonType="cancel" onclick={() => (open = false)}>
       {$t('common.cancel')}
-    </AlertDialog.Button>
+    </AlertDialogButton>
 
-    <AlertDialog.Button
+    <AlertDialogButton
       class="gap-x-2"
       buttonColor="epic"
       buttonType="action"
@@ -170,6 +170,6 @@
         <GiftIcon class="size-5"/>
         {$t('itemShop.sendGift')}
       {/if}
-    </AlertDialog.Button>
+    </AlertDialogButton>
   </div>
 </Dialog>
