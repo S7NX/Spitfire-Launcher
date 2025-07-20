@@ -1,4 +1,5 @@
 <script lang="ts" module>
+  // eslint-disable-next-line svelte/prefer-svelte-reactivity -- This is not a reactive store
   const claimedMissionAlerts: Map<string, Set<string>> = new Map();
 </script>
 

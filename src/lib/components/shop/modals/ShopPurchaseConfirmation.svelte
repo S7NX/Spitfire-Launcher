@@ -34,6 +34,7 @@
       });
 
       ownedItemsStore.update((accounts) => {
+        // eslint-disable-next-line svelte/prefer-svelte-reactivity -- This is not a reactive store
         const items = accounts[activeAccount.accountId] || new Set<string>();
         items.add(item.offerId);
 
@@ -60,6 +61,7 @@
           case 'errors.com.epicgames.modules.gamesubcatalog.purchase_not_allowed': {
             toast.error($t('itemShop.alreadyOwned'));
             ownedItemsStore.update((accounts) => {
+              // eslint-disable-next-line svelte/prefer-svelte-reactivity -- This is not a reactive store
               const items = accounts[activeAccount.accountId] || new Set<string>();
               items.add(item.offerId);
 

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
+  import { MediaQuery } from 'svelte/reactivity';
   import Avatar from '$components/ui/Avatar.svelte';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
   import PlusIcon from 'lucide-svelte/icons/plus';
@@ -9,7 +10,6 @@
   import Account from '$lib/core/account';
   import type { AccountData } from '$types/accounts';
   import { accountsStore, avatarCache } from '$lib/stores';
-  import { onMount } from 'svelte';
   import { toast } from 'svelte-sonner';
   import LoginModal from '$components/login/LoginModal.svelte';
   import { cn, t } from '$lib/utils/util';
@@ -24,8 +24,9 @@
   let searchTerm = $state<string>();
   // eslint-disable-next-line svelte/prefer-writable-derived -- We assign this state later
   let showLoginModal = $state(false);
-  let vpWidth = $state(0);
-  let dropdownSide: 'top' | 'right' = $derived(vpWidth < 640 ? 'top' : 'right');
+
+  let isSmall = new MediaQuery('max-width: 640px');
+  let dropdownSide: 'top' | 'right' = $derived(isSmall.current ? 'top' : 'right');
 
   $effect(() => {
     showLoginModal = (page.state as PageState).showLoginModal || false;
@@ -53,7 +54,7 @@
   function addNewAccount() {
     setTimeout(() => {
       showLoginModal = true;
-    })
+    });
   }
 
   async function logout() {
@@ -76,20 +77,6 @@
       dropdownOpen = false;
     }
   }
-
-  onMount(() => {
-    vpWidth = window.innerWidth;
-
-    function handleResize() {
-      vpWidth = window.innerWidth;
-    }
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
 </script>
 
 <div class="relative">

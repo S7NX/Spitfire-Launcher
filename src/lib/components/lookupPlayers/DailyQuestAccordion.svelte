@@ -21,7 +21,7 @@
   const { dailyQuests }: Props = $props();
 </script>
 
-<Accordion rootClass="grid sm:grid-cols-2 gap-1" items={dailyQuests} type="multiple">
+<Accordion items={dailyQuests} rootClass="grid sm:grid-cols-2 gap-1" type="multiple">
   {#snippet trigger(quest)}
     <div class="flex items-center justify-between px-2 h-10 bg-muted-foreground/5 rounded-sm">
       <span class="text-start font-medium break-after-all">{quest.names[$language]} - {quest.completionProgress}/{quest.limit}</span>

@@ -1,6 +1,7 @@
 <script lang="ts" module>
   import type { LegendaryAppInfo } from '$types/legendary';
 
+  // eslint-disable-next-line svelte/prefer-svelte-reactivity -- This is not a reactive store
   const appInfoCache = new Map<string, LegendaryAppInfo>();
 </script>
 

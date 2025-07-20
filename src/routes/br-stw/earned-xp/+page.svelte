@@ -60,6 +60,7 @@
     const currentDay = now.getDay();
     const daysUntilTarget = (7 + dayIndex - currentDay) % 7;
 
+    // eslint-disable-next-line svelte/prefer-svelte-reactivity -- This is not a reactive store
     const nextDay = new Date();
     nextDay.setUTCDate(now.getDate() + (daysUntilTarget === 0 ? 7 : daysUntilTarget));
     nextDay.setUTCHours(hours, 0, 0, 0);
