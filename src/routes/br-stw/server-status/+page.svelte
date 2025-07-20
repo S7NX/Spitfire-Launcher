@@ -197,13 +197,13 @@
       title={$t('serverStatus.status', { status: getStatusData(serviceStatus.status).text })}
     />
   {:else}
-    <div class="border rounded-lg p-3 mb-2 bg-muted/50 skeleton-loader">
+    <div class="rounded-lg p-3 mb-2 bg-muted/30 skeleton-loader">
       <div class="flex items-center gap-2">
-        <div class="size-3 rounded-full bg-muted/80"></div>
-        <div class="font-medium bg-muted/80 rounded w-24"></div>
+        <div class="size-4 rounded-full bg-muted/80"></div>
+        <div class="font-medium bg-muted/80 rounded w-32 h-5"></div>
       </div>
 
-      <div class="h-8 bg-muted/80 rounded w-20"></div>
+      <div class="h-4 bg-muted/80 rounded w-30 mt-3"></div>
     </div>
   {/if}
 
@@ -218,15 +218,25 @@
   <Separator.Root class="bg-border h-px"/>
 
   {#if isLoading && !statusPageServices.length}
-    <div class="space-y-4">
-      {#each Array(4) as _, i (i)}
-        <div class="bg-muted/50 p-4 rounded-lg skeleton-loader">
-          <div class="flex justify-between">
-            <div class="h-6 bg-muted/80 rounded w-24"></div>
-            <div class="h-6 bg-muted/80 rounded w-20"></div>
+    <div class="space-y-3">
+      <div class="flex items-center gap-2 text-muted-foreground">
+        <div class="size-4 rounded-full skeleton-loader"></div>
+        <div class="h-4 w-40 rounded skeleton-loader"></div>
+      </div>
+
+      <div class="space-y-3">
+        {#each Array(4) as _, i (i)}
+          <div class="bg-muted/30 p-4 rounded-lg skeleton-loader">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-3 truncate">
+                <div class="size-4 rounded-full skeleton-loader"></div>
+                <div class="h-6 w-32 rounded skeleton-loader max-xs:w-24"></div>
+              </div>
+              <div class="h-6 w-20 rounded skeleton-loader"></div>
+            </div>
           </div>
-        </div>
-      {/each}
+        {/each}
+      </div>
     </div>
   {:else if statusPageServices.length > 0}
     <div class="space-y-2">
