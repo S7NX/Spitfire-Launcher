@@ -54,7 +54,7 @@ type Purpose = 'autoKick' | 'taxiService' | 'customStatus' | 'partyManagement' |
 export default class XMPPManager {
   public static instances: Map<string, XMPPManager> = new Map();
   public connection?: XMPP.Agent;
-  private listeners: { [K in keyof EventMap]?: Array<(data: EventMap[K]) => void> } = {};
+  private listeners: Map<keyof EventMap, Array<(data: any) => void>> = new Map();
   private purposes: Set<Purpose>;
   private heartbeatInterval?: number;
 
@@ -151,7 +151,7 @@ export default class XMPPManager {
     this.connection?.removeAllListeners();
     this.connection?.disconnect();
     this.connection = undefined;
-    this.listeners = {};
+    this.listeners.clear();
 
     XMPPManager.instances.delete(this.account.accountId);
     this.account = undefined!;
@@ -479,16 +479,13 @@ export default class XMPPManager {
     });
   }
 
-  addEventListener<T extends keyof EventMap>(
-    eventName: T,
-    listener: (data: EventMap[T]) => void,
-    options?: { signal?: AbortSignal }
-  ) {
-    if (!this.listeners[eventName]) {
-      this.listeners[eventName] = [];
+  addEventListener<T extends keyof EventMap>(eventName: T, listener: (data: EventMap[T]) => void, options?: { signal?: AbortSignal }) {
+    if (!this.listeners.has(eventName)) {
+      this.listeners.set(eventName, []);
     }
 
-    this.listeners[eventName].push(listener);
+    const listeners = this.listeners.get(eventName)!;
+    listeners.push(listener);
 
     options?.signal?.addEventListener('abort', () => {
       this.removeEventListener(eventName, listener);
@@ -496,10 +493,12 @@ export default class XMPPManager {
   }
 
   removeEventListener<T extends keyof EventMap>(eventName: T, listener: (data: EventMap[T]) => void) {
-    const listeners = this.listeners[eventName];
-    const index = listeners?.indexOf(listener) || -1;
+    const listeners = this.listeners.get(eventName);
+    if (!listeners?.length) return;
+
+    const index = listeners.indexOf(listener);
     if (index > -1) {
-      listeners!.splice(index, 1);
+      listeners.splice(index, 1);
     }
   }
 
@@ -523,10 +522,11 @@ export default class XMPPManager {
   }
 
   dispatchEvent<T extends keyof EventMap>(eventName: T, data: EventMap[T]) {
-    if (this.listeners[eventName]) {
-      for (let i = 0; i < this.listeners[eventName].length; i++) {
-        this.listeners[eventName][i](data);
-      }
+    const listeners = this.listeners.get(eventName);
+    if (!listeners?.length) return;
+
+    for (let i = 0; i < listeners.length; i++) {
+      listeners[i](data);
     }
   }
 }
