@@ -1,5 +1,6 @@
 import Authentication from '$lib/core/authentication';
 import PartyManager from '$lib/core/managers/party';
+import EventEmitter from '$lib/utils/eventEmitter';
 import { accountPartiesStore, accountsStore, friendsStore } from '$lib/stores';
 import { EpicEvents, ConnectionEvents } from '$lib/constants/events';
 import { get } from 'svelte/store';
@@ -51,10 +52,9 @@ type AccountOptions = {
 
 type Purpose = 'autoKick' | 'taxiService' | 'customStatus' | 'partyManagement' | 'friendManagement';
 
-export default class XMPPManager {
+export default class XMPPManager extends EventEmitter<EventMap> {
   public static instances = new Map<string, XMPPManager>();
   public connection?: XMPP.Agent;
-  private listeners = new Map<keyof EventMap, Array<(data: any) => void>>();
   private purposes: Set<Purpose>;
   private heartbeatInterval?: number;
 
@@ -64,6 +64,7 @@ export default class XMPPManager {
   private maxReconnectAttempts = 50;
 
   private constructor(private account: AccountOptions, purpose: Purpose) {
+    super();
     this.purposes = new Set([purpose]);
   }
 
@@ -151,7 +152,7 @@ export default class XMPPManager {
     this.connection?.removeAllListeners();
     this.connection?.disconnect();
     this.connection = undefined;
-    this.listeners.clear();
+    this.clearListeners();
 
     XMPPManager.instances.delete(this.account.accountId);
     this.account = undefined!;
@@ -477,56 +478,5 @@ export default class XMPPManager {
         bIsJoinable: false
       })
     });
-  }
-
-  addEventListener<T extends keyof EventMap>(eventName: T, listener: (data: EventMap[T]) => void, options?: { signal?: AbortSignal }) {
-    if (!this.listeners.has(eventName)) {
-      this.listeners.set(eventName, []);
-    }
-
-    const listeners = this.listeners.get(eventName)!;
-    listeners.push(listener);
-
-    options?.signal?.addEventListener('abort', () => {
-      this.removeEventListener(eventName, listener);
-    });
-  }
-
-  removeEventListener<T extends keyof EventMap>(eventName: T, listener: (data: EventMap[T]) => void) {
-    const listeners = this.listeners.get(eventName);
-    if (!listeners?.length) return;
-
-    const index = listeners.indexOf(listener);
-    if (index > -1) {
-      listeners.splice(index, 1);
-    }
-  }
-
-  waitForEvent<T extends keyof EventMap>(eventName: T, validate?: (data: EventMap[T]) => boolean, timeout = 5000) {
-    return new Promise<EventMap[T]>((resolve, reject) => {
-      const listener = (data: EventMap[T]) => {
-        if (!validate || validate(data)) {
-          clearTimeout(timeoutId);
-          this.removeEventListener(eventName, listener);
-          resolve(data);
-        }
-      };
-
-      const timeoutId = setTimeout(() => {
-        this.removeEventListener(eventName, listener);
-        reject(new Error('Timeout'));
-      }, timeout);
-
-      this.addEventListener(eventName, listener);
-    });
-  }
-
-  dispatchEvent<T extends keyof EventMap>(eventName: T, data: EventMap[T]) {
-    const listeners = this.listeners.get(eventName);
-    if (!listeners?.length) return;
-
-    for (let i = 0; i < listeners.length; i++) {
-      listeners[i](data);
-    }
   }
 }
