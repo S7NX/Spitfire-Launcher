@@ -16,10 +16,10 @@ export type AutomationAccount = {
 }
 
 export default class AutoKickBase {
-  private static accounts: Map<string, AutomationAccount> = new Map();
-  private static connections: Map<string, XMPPManager> = new Map();
-  private static autoKickManagers: Map<string, AutoKickManager> = new Map();
-  private static abortControllers: Map<string, AbortController> = new Map();
+  private static accounts = new Map<string, AutomationAccount>();
+  private static connections = new Map<string, XMPPManager>();
+  private static autoKickManagers = new Map<string, AutoKickManager>();
+  private static abortControllers = new Map<string, AbortController>();
 
   static async init() {
     const accounts = await DataStorage.getAutomationFile();

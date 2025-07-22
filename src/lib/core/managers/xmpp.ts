@@ -52,9 +52,9 @@ type AccountOptions = {
 type Purpose = 'autoKick' | 'taxiService' | 'customStatus' | 'partyManagement' | 'friendManagement';
 
 export default class XMPPManager {
-  public static instances: Map<string, XMPPManager> = new Map();
+  public static instances = new Map<string, XMPPManager>();
   public connection?: XMPP.Agent;
-  private listeners: Map<keyof EventMap, Array<(data: any) => void>> = new Map();
+  private listeners = new Map<keyof EventMap, Array<(data: any) => void>>();
   private purposes: Set<Purpose>;
   private heartbeatInterval?: number;
 
