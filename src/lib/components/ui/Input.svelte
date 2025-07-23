@@ -113,6 +113,7 @@
 
   function handleSearchShortcut(event: KeyboardEvent) {
     if (event.ctrlKey && event.key === 'f') {
+      event.preventDefault();
       inputElement?.focus();
     }
   }
