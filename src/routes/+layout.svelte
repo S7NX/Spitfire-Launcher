@@ -33,11 +33,6 @@
   let hasNewVersion = $state(false);
   let newVersionData = $state<{ tag: string; downloadUrl: string }>();
 
-  function disableF5(e: KeyboardEvent) {
-    // Using CTRL + R to refresh the page is allowed
-    if (e.key === 'F5') e.preventDefault();
-  }
-
   async function handleWorldInfo() {
     const worldInfoData = await WorldInfoManager.getWorldInfoData();
     const parsedWorldInfo = WorldInfoManager.parseWorldInfo(worldInfoData);
@@ -83,8 +78,6 @@
   }
 
   onMount(() => {
-    document.addEventListener('keydown', disableF5);
-
     Promise.allSettled([
       AutoKickBase.init(),
       DataStorage.init(),

@@ -1,4 +1,5 @@
 use tauri::{generate_handler, Manager};
+use tauri_plugin_prevent_default::{Builder as PreventDefaultBuilder, Flags, KeyboardShortcut};
 
 mod app_monitor;
 mod commands;
@@ -31,6 +32,11 @@ pub fn run() {
             });
     }
 
+    let prevent = PreventDefaultBuilder::new()
+        .shortcut(KeyboardShortcut::new("F5"))
+        .with_flags(Flags::all().difference(Flags::RELOAD | Flags::DEV_TOOLS))
+        .build();
+
     builder
         .invoke_handler(generate_handler![
             get_locale,
@@ -41,6 +47,7 @@ pub fn run() {
             stop_app,
             get_disk_space,
         ])
+        .plugin(prevent)
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_fs::init())
