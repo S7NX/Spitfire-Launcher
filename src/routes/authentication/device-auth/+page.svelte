@@ -177,9 +177,9 @@
   {/snippet}
 
   {#if !isFetching}
-    <div class="grid grid-cols-1 lg:grid-cols-2 place-items-center gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 place-items-center gap-4">
       {#each deviceAuths as auth (auth.deviceId)}
-        <div class="border border-input rounded-md p-4 relative w-fit h-full bg-surface-alt">
+        <div class="border border-input rounded-md p-4 relative size-full bg-surface-alt">
           <div class="flex justify-between items-start">
             <div class="flex flex-col gap-y-1">
               <div class="flex items-center gap-2 w-fit mb-1">

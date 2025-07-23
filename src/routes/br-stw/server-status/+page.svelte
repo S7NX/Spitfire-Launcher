@@ -35,7 +35,7 @@
   import StatusCard from '$components/ui/StatusCard.svelte';
   import NotificationManager from '$lib/core/managers/notification';
   import ServerStatusManager from '$lib/core/managers/serverStatus';
-  import { accountsStore } from '$lib/stores';
+  import { accountsStore, language } from '$lib/stores';
   import type { LightswitchData } from '$types/game/serverStatus';
   import { Separator } from 'bits-ui';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
@@ -152,7 +152,7 @@
   <div class="flex flex-col gap-4">
     <div class="flex justify-between items-center">
       <p class="text-sm text-muted-foreground">
-        {$t('serverStatus.lastUpdated', { date: lastUpdated ? lastUpdated.toLocaleTimeString() : '...' })}
+        {$t('serverStatus.lastUpdated', { date: lastUpdated ? lastUpdated.toLocaleTimeString($language) : '...' })}
       </p>
 
       <Button
