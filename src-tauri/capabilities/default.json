@@ -80,7 +80,7 @@
           ]
         },
         {
-          "name": "../bin/legendary",
+          "name": "binaries/legendary",
           "sidecar": true
         }
       ]
