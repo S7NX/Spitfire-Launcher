@@ -3,6 +3,7 @@
   import LookupManager from '$lib/core/managers/lookup';
   import { accountsStore, avatarCache, displayNamesCache } from '$lib/stores';
   import { cn } from '$lib/utils/util';
+  import { onMount } from 'svelte';
   import { cubicInOut } from 'svelte/easing';
   import type { HTMLInputAttributes } from 'svelte/elements';
   import { tv, type VariantProps } from 'tailwind-variants';
@@ -41,6 +42,7 @@
     nameAutocomplete = false,
     onblur,
     onkeydown,
+    type,
     ...restProps
   }: InputProps = $props();
 
@@ -90,17 +92,15 @@
     }
   }
 
-  function handleOutsideClick() {
-    dropdownVisible = false;
-  }
-
   function handleFocus() {
     if (value && autocompleteData.length) {
       dropdownVisible = true;
     }
   }
 
-  function debouncedSearch() {
+  function handleInput() {
+    selectedItemId = undefined;
+
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
     }
@@ -111,19 +111,30 @@
     }, 500);
   }
 
-  function handleInput() {
-    selectedItemId = undefined;
-    debouncedSearch();
+  function handleSearchShortcut(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key === 'f') {
+      inputElement?.focus();
+    }
   }
 
   if (onConfirm) {
     onblur = handleBlur;
     onkeydown = handleKeyDown;
   }
+
+  if (type === 'search') {
+    onMount(() => {
+      document.addEventListener('keydown', handleSearchShortcut);
+
+      return () => {
+        document.removeEventListener('keydown', handleSearchShortcut);
+      };
+    });
+  }
 </script>
 
 {#if nameAutocomplete}
-  <div class="relative w-full" use:outsideClick={{ handler: handleOutsideClick }}>
+  <div class="relative w-full" use:outsideClick={{ handler: () => dropdownVisible = false }}>
     <input
       {...restProps}
       bind:this={inputElement}
@@ -133,6 +144,7 @@
       onfocus={handleFocus}
       oninput={handleInput}
       spellcheck="false"
+      {type}
       bind:value
     />
 
@@ -181,6 +193,7 @@
     onfocus={handleFocus}
     oninput={handleInput}
     spellcheck="false"
+    {type}
     bind:value
   />
 {/if}

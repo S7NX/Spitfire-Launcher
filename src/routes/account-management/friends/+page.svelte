@@ -79,6 +79,7 @@
       disabled={isLoading}
       nameAutocomplete={true}
       placeholder={$t('lookupPlayers.search')}
+      type="search"
       bind:value={searchQuery}
     />
 
