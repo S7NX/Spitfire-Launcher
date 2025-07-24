@@ -33,7 +33,7 @@ export default async function claimRewards(account: AccountData, bypassDelay = f
     claimedRewardsPromises.push(MCPManager.compose(account, 'ClaimDifficultyIncreaseRewards', 'campaign', {}));
   }
 
-  return await Promise.allSettled(claimedRewardsPromises);
+  return Promise.allSettled(claimedRewardsPromises);
 }
 
 async function openCardPackBatch(account: AccountData, queryProfileItems: CampaignProfile['items']) {
@@ -45,7 +45,7 @@ async function openCardPackBatch(account: AccountData, queryProfileItems: Campai
 
   if (!cardPackItemIds.length) return;
 
-  return await MCPManager.compose(account, 'OpenCardPackBatch', 'campaign', { cardPackItemIds });
+  return MCPManager.compose(account, 'OpenCardPackBatch', 'campaign', { cardPackItemIds });
 }
 
 async function claimQuestRewards(account: AccountData, queryProfileItems: CampaignProfile['items']) {

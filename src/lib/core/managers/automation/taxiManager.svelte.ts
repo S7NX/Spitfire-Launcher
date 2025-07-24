@@ -120,8 +120,8 @@ export default class TaxiManager {
     }
   }
 
-  async setPowerLevel(partyId: string, revision: number) {
-    return await PartyManager.sendPatch(this.account, partyId, revision, this.getFortStats(), true);
+  setPowerLevel(partyId: string, revision: number) {
+    return PartyManager.sendPatch(this.account, partyId, revision, this.getFortStats(), true);
   }
 
   private async handleInvite(invite: EpicEventPartyPing) {
@@ -155,13 +155,13 @@ export default class TaxiManager {
 
   private async handlePartyStateChange(event: EpicEventMemberJoined | EpicEventMemberLeft | EpicEventMemberKicked | EpicEventMemberStateUpdated | EpicEventPartyUpdated) {
     if ('connection' in event && event.account_id === this.account.accountId) {
-      return await PartyManager.sendPatch(this.account, event.party_id, event.revision, {}, true);
+      return PartyManager.sendPatch(this.account, event.party_id, event.revision, {}, true);
     }
 
     if ('member_state_updated' in event) {
       const packedState = JSON.parse(event.member_state_updated['Default:PackedState_j']?.replaceAll('True', 'true') || '{}')?.PackedState;
       if (packedState?.location === 'Lobby')
-        return await PartyManager.leave(this.account, event.party_id);
+        return PartyManager.leave(this.account, event.party_id);
     }
 
     const currentParty = accountPartiesStore.get(this.account.accountId);

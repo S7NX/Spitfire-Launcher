@@ -62,7 +62,7 @@ export default async function transferBuildingMaterials(account: AccountData) {
     });
   }
 
-  return await MCPManager.compose(account, 'StorageTransfer', 'theater0', {
+  return MCPManager.compose(account, 'StorageTransfer', 'theater0', {
     transferOperations: [...wood.items, ...stone.items, ...metal.items].filter(x => x.quantity > 0)
   });
 }

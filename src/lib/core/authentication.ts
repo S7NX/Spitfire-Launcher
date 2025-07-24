@@ -21,7 +21,7 @@ import { goto } from '$app/navigation';
 const tokenLocks = new Map<string, AsyncLock>();
 
 export default class Authentication {
-  static async verifyOrRefreshAccessToken(
+  static verifyOrRefreshAccessToken(
     deviceAuthData: DeviceAuthData,
     accessToken?: string,
     bypassCache = false
@@ -32,7 +32,7 @@ export default class Authentication {
       tokenLocks.set(deviceAuthData.accountId, tokenLock);
     }
 
-    return await tokenLock.withLock(async () => {
+    return tokenLock.withLock(async () => {
       const cache = Authentication.getAccessTokenFromCache(deviceAuthData.accountId);
       accessToken ??= cache?.access_token;
 

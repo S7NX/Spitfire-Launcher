@@ -17,7 +17,7 @@ export default class EULAManager {
     );
 
     if (response.status === 204) return null;
-    return await response.json();
+    return response.json();
   }
 
   static async accept(account: AccountData, version: number) {
