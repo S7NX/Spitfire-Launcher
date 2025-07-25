@@ -19,7 +19,7 @@
   import type { GitHubRelease } from '$types/github';
   import Button from '$components/ui/Button.svelte';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
-  import Dialog from '$components/ui/Dialog.svelte';
+  import { Dialog } from '$components/ui/Dialog';
   import DataStorage, { ACCOUNTS_FILE_PATH } from '$lib/core/dataStorage';
   import { Tooltip } from 'bits-ui';
   import WorldInfoManager from '$lib/core/managers/worldInfo';
@@ -133,7 +133,7 @@
   </Tooltip.Provider>
 </div>
 
-<Dialog bind:open={hasNewVersion}>
+<Dialog.Root bind:open={hasNewVersion}>
   {#snippet title()}
     {$t('newVersionAvailable.title')}
   {/snippet}
@@ -149,4 +149,4 @@
     <ExternalLinkIcon class="size-5"/>
     {$t('newVersionAvailable.download')}
   </Button>
-</Dialog>
+</Dialog.Root>

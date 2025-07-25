@@ -4,7 +4,7 @@ import EventEmitter from '$lib/utils/eventEmitter';
 import { accountPartiesStore, accountsStore, friendsStore } from '$lib/stores';
 import { EpicEvents, ConnectionEvents } from '$lib/constants/events';
 import { get } from 'svelte/store';
-import * as XMPP from 'stanza';
+import { createClient, type Agent } from 'stanza';
 import type { AccountData } from '$types/accounts';
 import type { BlockedAccountData, FriendData, IncomingFriendRequestData, OutgoingFriendRequestData } from '$types/game/friends';
 import type { PartyMember } from '$types/game/party';
@@ -54,7 +54,7 @@ type Purpose = 'autoKick' | 'taxiService' | 'customStatus' | 'partyManagement' |
 
 export default class XMPPManager extends EventEmitter<EventMap> {
   public static instances = new Map<string, XMPPManager>();
-  public connection?: XMPP.Agent;
+  public connection?: Agent;
   private purposes: Set<Purpose>;
   private heartbeatInterval?: number;
 
@@ -94,7 +94,7 @@ export default class XMPPManager extends EventEmitter<EventMap> {
       .reduce((hex, byte) => hex + byte.toString(16).padStart(2, '0'), '')
       .toUpperCase();
 
-    this.connection = XMPP.createClient({
+    this.connection = createClient({
       jid: `${this.account.accountId}@${server}`,
       server,
       transports: {

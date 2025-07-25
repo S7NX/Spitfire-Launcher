@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { AlertDialog } from 'bits-ui';
+  import type { ClassValue, HTMLButtonAttributes } from 'svelte/elements';
   import { tv, type VariantProps } from 'tailwind-variants';
   import { cn } from '$lib/utils/util';
   import type { Snippet } from 'svelte';
@@ -7,39 +7,37 @@
   const dialogButtonVariants = tv({
     base: 'rounded-md inline-flex w-full items-center justify-center font-medium p-2 transition-all duration-200 disabled:opacity-50',
     variants: {
-      buttonColor: {
+      color: {
         primary: 'bg-primary text-primary-foreground hover:bg-primary/80',
         secondary: 'bg-muted text-primary hover:bg-muted/80',
         epic: 'bg-epic text-epic-secondary hover:bg-epic/80'
       }
     },
     defaultVariants: {
-      buttonColor: 'primary'
+      color: 'primary'
     }
   });
 
-  type Props = AlertDialog.CancelProps & VariantProps<typeof dialogButtonVariants> & {
+  type Props = HTMLButtonAttributes & VariantProps<typeof dialogButtonVariants> & {
     children: Snippet;
     buttonType: 'action' | 'cancel';
   };
 
-  let {
+  const {
     children,
     buttonType,
-    buttonColor,
+    color,
     ...restProps
   }: Props = $props();
-
-  const AlertDialogButton = buttonType === 'action' ? AlertDialog.Action : AlertDialog.Cancel;
 </script>
 
-<AlertDialogButton
+<button
   {...restProps}
   class={cn(
-    dialogButtonVariants({ buttonColor: buttonColor || (buttonType === 'action' ? 'primary' : 'secondary') }),
+    dialogButtonVariants({ color: color || (buttonType === 'action' ? 'primary' : 'secondary') }),
     'focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2',
     restProps.class
   )}
 >
   {@render children()}
-</AlertDialogButton>
+</button>

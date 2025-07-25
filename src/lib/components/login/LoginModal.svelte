@@ -2,7 +2,7 @@
   import LoginStep0, { type LoginMethod } from '$components/login/LoginStep0.svelte';
   import LoginStep1 from '$components/login/LoginStep1.svelte';
   import LoginStep2 from '$components/login/LoginStep2.svelte';
-  import Dialog from '$components/ui/Dialog.svelte';
+  import { Dialog } from '$components/ui/Dialog';
   import LoginSteps from '$components/login/LoginSteps.svelte';
   import { t } from '$lib/utils/util';
 
@@ -58,7 +58,7 @@
   }
 </script>
 
-<Dialog contentProps={{ class: 'overflow-hidden' }} bind:open>
+<Dialog.Root contentProps={{ class: 'overflow-hidden' }} bind:open>
   <div class="flex flex-col">
     <LoginSteps {currentStep} {steps}/>
 
@@ -76,4 +76,4 @@
       {/if}
     </div>
   </div>
-</Dialog>
+</Dialog.Root>

@@ -7,7 +7,7 @@
 
 <script lang="ts">
   import Button from '$components/ui/Button.svelte';
-  import Dialog from '$components/ui/Dialog.svelte';
+  import { Dialog } from '$components/ui/Dialog';
   import Tooltip from '$components/ui/Tooltip.svelte';
   import DataStorage from '$lib/core/dataStorage';
   import { ownedApps } from '$lib/stores';
@@ -79,7 +79,7 @@
   });
 </script>
 
-<Dialog
+<Dialog.Root
   contentProps={{ class: 'sm:max-w-xl' }}
   onOpenChangeComplete={(open) => !open && (id = '')}
   title={app.title}
@@ -186,4 +186,4 @@
       </Tooltip>
     </div>
   </div>
-</Dialog>
+</Dialog.Root>

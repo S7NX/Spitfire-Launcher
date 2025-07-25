@@ -1,6 +1,6 @@
 <script lang="ts">
   import DownloaderSettings from '$components/settings/categories/DownloaderSettings.svelte';
-  import Dialog from '$components/ui/Dialog.svelte';
+  import { Dialog } from '$components/ui/Dialog';
   import AppSettings from '$components/settings/categories/AppSettings.svelte';
   import CustomizableMenu from '$components/settings/categories/CustomizableMenu.svelte';
   import { platform as getPlatform } from '@tauri-apps/plugin-os';
@@ -19,7 +19,7 @@
   let activeTab = $state(categories[0].id);
 </script>
 
-<Dialog
+<Dialog.Root
   contentProps={{ class: '!max-w-[calc(100%-2rem)] sm:!max-w-180  max-xs:w-full' }}
   triggerClass="p-2 rounded-md hover:bg-accent"
 >
@@ -62,4 +62,4 @@
       </div>
     </div>
   </div>
-</Dialog>
+</Dialog.Root>

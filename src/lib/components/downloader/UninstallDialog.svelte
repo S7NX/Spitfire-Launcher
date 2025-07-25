@@ -1,6 +1,5 @@
 <script lang="ts">
-  import AlertDialogButton from '$components/ui/AlertDialog/AlertDialogButton.svelte';
-  import Dialog from '$components/ui/Dialog.svelte';
+  import { Dialog } from '$components/ui/Dialog';
   import { ownedApps } from '$lib/stores';
   import Legendary from '$lib/utils/legendary';
   import { bytesToSize, t } from '$lib/utils/util';
@@ -34,20 +33,20 @@
   }
 </script>
 
-<Dialog
+<Dialog.Root
   description={$t('library.uninstallConfirmation.description', { name: app.title })}
   onOpenChangeComplete={(open) => !open && (id = '')}
   title={$t('library.uninstallConfirmation.title')}
   bind:open={isOpen}
 >
   <div class="flex w-full items-center justify-center gap-2">
-    <AlertDialogButton buttonType="cancel">
+    <Dialog.Button buttonType="cancel">
       {$t('common.cancel')}
-    </AlertDialogButton>
+    </Dialog.Button>
 
-    <AlertDialogButton
-      buttonColor="epic"
+    <Dialog.Button
       buttonType="action"
+      color="epic"
       disabled={isDeleting}
       onclick={uninstallApp}
     >
@@ -55,6 +54,6 @@
         <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
       {/if}
       {$t('common.confirm')}
-    </AlertDialogButton>
+    </Dialog.Button>
   </div>
-</Dialog>
+</Dialog.Root>

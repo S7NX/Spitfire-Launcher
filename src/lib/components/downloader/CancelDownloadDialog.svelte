@@ -1,6 +1,5 @@
 <script lang="ts">
-  import AlertDialogButton from '$components/ui/AlertDialog/AlertDialogButton.svelte';
-  import Dialog from '$components/ui/Dialog.svelte';
+  import { Dialog } from '$components/ui/Dialog';
   import { t } from '$lib/utils/util';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
 
@@ -17,19 +16,19 @@
   let isCancelling = $state(false);
 </script>
 
-<Dialog
+<Dialog.Root
   description={$t('downloads.cancelDownloadConfirmation.description')}
   title={$t('downloads.cancelDownloadConfirmation.title')}
   bind:open
 >
   <div class="flex w-full items-center justify-center gap-2">
-    <AlertDialogButton buttonType="cancel">
+    <Dialog.Button buttonType="cancel">
       {$t('common.cancel')}
-    </AlertDialogButton>
+    </Dialog.Button>
 
-    <AlertDialogButton
-      buttonColor="epic"
+    <Dialog.Button
       buttonType="action"
+      color="epic"
       disabled={isCancelling}
       onclick={() => {
         onConfirm();
@@ -40,6 +39,6 @@
         <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
       {/if}
       {$t('common.confirm')}
-    </AlertDialogButton>
+    </Dialog.Button>
   </div>
-</Dialog>
+</Dialog.Root>

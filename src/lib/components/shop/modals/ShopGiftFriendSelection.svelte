@@ -1,7 +1,6 @@
 <script lang="ts">
-  import AlertDialogButton from '$components/ui/AlertDialog/AlertDialogButton.svelte';
   import Combobox from '$components/ui/Combobox/Combobox.svelte';
-  import Dialog from '$components/ui/Dialog.svelte';
+  import { Dialog } from '$components/ui/Dialog';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import UserIcon from 'lucide-svelte/icons/user';
   import GiftIcon from 'lucide-svelte/icons/gift';
@@ -113,7 +112,7 @@
   }
 </script>
 
-<Dialog title={$t('itemShop.giftConfirmation.title')} bind:open>
+<Dialog.Root title={$t('itemShop.giftConfirmation.title')} bind:open>
   {#snippet description()}
     <p class="flex flex-wrap items-center gap-1 break-words whitespace-normal">
       {@html $t('itemShop.giftConfirmation.description', {
@@ -150,14 +149,14 @@
   </Combobox>
 
   <div class="flex w-full items-center justify-center gap-2 mt-4">
-    <AlertDialogButton buttonType="cancel" onclick={() => (open = false)}>
+    <Dialog.Button buttonType="cancel" onclick={() => (open = false)}>
       {$t('common.cancel')}
-    </AlertDialogButton>
+    </Dialog.Button>
 
-    <AlertDialogButton
+    <Dialog.Button
       class="gap-x-2"
-      buttonColor="epic"
       buttonType="action"
+      color="epic"
       disabled={!selectedFriends.length ||
         isSendingGifts ||
         ownedVbucks < item.price.final * (selectedFriends.length || 1)}
@@ -170,6 +169,6 @@
         <GiftIcon class="size-5"/>
         {$t('itemShop.sendGift')}
       {/if}
-    </AlertDialogButton>
+    </Dialog.Button>
   </div>
-</Dialog>
+</Dialog.Root>

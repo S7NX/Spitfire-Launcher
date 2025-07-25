@@ -2,7 +2,7 @@
   import Tooltip from '$components/ui/Tooltip.svelte';
   import { calculateDiscountedShopPrice } from '$lib/utils/util';
   import { Separator } from 'bits-ui';
-  import Dialog from '$components/ui/Dialog.svelte';
+  import { Dialog } from '$components/ui/Dialog';
   import Badge from '$components/ui/Badge.svelte';
   import Button from '$components/ui/Button.svelte';
   import GiftIcon from 'lucide-svelte/icons/gift';
@@ -36,8 +36,8 @@
 
   const discountedPrice = jsDerived([activeAccountId, ownedItemsStore], ([accountId]) => calculateDiscountedShopPrice(accountId!, item));
 
-  let isAlertDialogOpen = $state(false);
   let isPurchasing = $state(false);
+  let isPurchaseDialogOpen = $state(false);
   let isGiftDialogOpen = $state(false);
   let isSendingGifts = $state(false);
 
@@ -69,7 +69,7 @@
   }
 </script>
 
-<Dialog
+<Dialog.Root
   contentProps={{ class: '!max-w-160 !min-h-112 overflow-y-auto !min-h-0' }}
   onOpenChangeComplete={(open) => !open && (offerId = '')}
   bind:open={isOpen}
@@ -157,7 +157,7 @@
           <Button
             class="flex justify-center items-center gap-x-2 w-full"
             disabled={isPurchasing || ownedVbucks < $discountedPrice || isItemOwned}
-            onclick={() => (isAlertDialogOpen = true)}
+            onclick={() => (isPurchaseDialogOpen = true)}
             variant="epic"
           >
             {#if isItemOwned}
@@ -187,10 +187,10 @@
       </div>
     {/if}
   </div>
-</Dialog>
+</Dialog.Root>
 
 {#if $activeAccountId}
-  <ShopPurchaseConfirmation {isPurchasing} {item} bind:open={isAlertDialogOpen}/>
+  <ShopPurchaseConfirmation {isPurchasing} {item} bind:open={isPurchaseDialogOpen}/>
 
   <ShopGiftFriendSelection {isSendingGifts} {item} bind:open={isGiftDialogOpen}/>
 {/if}
