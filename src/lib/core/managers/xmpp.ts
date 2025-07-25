@@ -52,6 +52,8 @@ type AccountOptions = {
 
 type Purpose = 'autoKick' | 'taxiService' | 'customStatus' | 'partyManagement' | 'friendManagement';
 
+const MAX_RECONNECT_ATTEMPTS = 50;
+
 export default class XMPPManager extends EventEmitter<EventMap> {
   public static instances = new Map<string, XMPPManager>();
   public connection?: Agent;
@@ -61,7 +63,6 @@ export default class XMPPManager extends EventEmitter<EventMap> {
   private reconnectInterval?: number;
   private intentionalDisconnect = false;
   private reconnectAttempts = 0;
-  private maxReconnectAttempts = 50;
 
   private constructor(private account: AccountOptions, purpose: Purpose) {
     super();
@@ -99,7 +100,7 @@ export default class XMPPManager extends EventEmitter<EventMap> {
       server,
       transports: {
         websocket: `wss://xmpp-service-${server}`,
-        bosh: true
+        bosh: false
       },
       credentials: {
         host: server,
@@ -169,7 +170,7 @@ export default class XMPPManager extends EventEmitter<EventMap> {
   }
 
   private async tryReconnect() {
-    if (this.intentionalDisconnect || this.reconnectAttempts >= this.maxReconnectAttempts) return;
+    if (this.intentionalDisconnect || this.reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) return;
 
     try {
       await this.connect();

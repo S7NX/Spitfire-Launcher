@@ -1,6 +1,5 @@
 <script lang="ts">
   import '../app.css';
-  import 'webrtc-adapter';
   import Sidebar from '$components/Sidebar.svelte';
   import Header from '$components/header/Header.svelte';
   import AvatarManager from '$lib/core/managers/avatar';
