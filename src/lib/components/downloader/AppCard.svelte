@@ -235,7 +235,7 @@
           <DropdownMenu.Item
             class="hover:bg-destructive"
             disabled={isVerifying || isDeleting || runningAppIds.has(app.id) || !!DownloadManager.downloadingAppId}
-            onclick={() => uninstallDialogAppId = app.id}
+            onclick={() => setTimeout(() => uninstallDialogAppId = app.id)}
           >
             {#if isDeleting}
               <LoaderCircleIcon class="size-5 animate-spin"/>
