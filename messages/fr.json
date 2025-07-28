@@ -401,6 +401,7 @@
     },
     "stwActions": {
       "claimRewardsAfterLeaving": "Réclame des récompenses après avoir quitté la mission",
+      "transferMaterialsAfterLeaving": "Transférer les matériaux après avoir quitté la mission",
       "kickAll": "Expulser tout le monde",
       "leaveParty": "Quitter le groupe",
       "claimRewards": "Réclamer les récompenses",

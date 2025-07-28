@@ -401,6 +401,7 @@
     },
     "stwActions": {
       "claimRewardsAfterLeaving": "Claim rewards after leaving the mission",
+      "transferMaterialsAfterLeaving": "Transfer materials after leaving the mission",
       "kickAll": "Kick All",
       "leaveParty": "Leave Party",
       "claimRewards": "Claim Rewards",

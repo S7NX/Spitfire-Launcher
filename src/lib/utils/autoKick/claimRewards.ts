@@ -4,11 +4,11 @@ import { sleep } from '$lib/utils/util';
 import type { AccountData } from '$types/accounts';
 import type { CampaignProfile } from '$types/game/mcp';
 
-export default async function claimRewards(account: AccountData, bypassDelay = false) {
+export default async function claimRewards(account: AccountData, skipDelay = false) {
   const settings = await DataStorage.getSettingsFile();
   const delaySeconds = settings.app?.claimRewardsDelay;
 
-  if (delaySeconds && !bypassDelay) {
+  if (delaySeconds && !skipDelay) {
     await sleep(delaySeconds * 1000);
   }
 

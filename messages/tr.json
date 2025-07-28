@@ -401,6 +401,7 @@
     },
     "stwActions": {
       "claimRewardsAfterLeaving": "Görevden ayrıldıktan sonra ödülleri al",
+      "transferMaterialsAfterLeaving": "Görevden ayrıldıktan sonra malzemeleri aktar",
       "kickAll": "Herkesi At",
       "leaveParty": "Gruptan Çık",
       "claimRewards": "Ödülleri Al",

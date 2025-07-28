@@ -18,10 +18,12 @@ type BuildingMaterialData = {
 
 const MAX_BUILDING_MATERIALS = 5000;
 
-export default async function transferBuildingMaterials(account: AccountData) {
-  const settings = await DataStorage.getSettingsFile();
-  const delaySeconds = settings.app?.claimRewardsDelay;
-  await sleep((delaySeconds || 1.5) * 1000);
+export default async function transferBuildingMaterials(account: AccountData, skipDelay = false) {
+  if (!skipDelay) {
+    const settings = await DataStorage.getSettingsFile();
+    const delaySeconds = settings.app?.claimRewardsDelay;
+    await sleep((delaySeconds || 1.5) * 1000);
+  }
 
   const wood: BuildingMaterialData = {
     total: 0,
