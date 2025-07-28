@@ -54,10 +54,20 @@ export function calculateVbucks(queryProfile: FullQueryProfile<'common_core'>) {
 }
 
 // TODO: Temporary solution to avoid showing multiple toasts when the system logs the user out
-export function shouldErrorBeIgnored(error: unknown) {
+export function shouldIgnoreError(error: unknown) {
   if (error instanceof EpicAPIError && error.errorCode === 'errors.com.epicgames.account.invalid_account_credentials') {
     console.error(error);
     return true;
+  }
+
+  return false;
+}
+
+export function handleError(error: unknown, message: string, toastId?: string | number) {
+  console.error(error);
+
+  if (!shouldIgnoreError(error)) {
+    toast.error(message, { id: toastId });
   }
 }
 

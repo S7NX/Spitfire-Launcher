@@ -7,7 +7,7 @@
   import DeviceAuthManager from '$lib/core/managers/deviceAuth';
   import { oauthService } from '$lib/core/services';
   import { accountsStore } from '$lib/stores';
-  import { nonNull, t } from '$lib/utils/util';
+  import { handleError, nonNull, t } from '$lib/utils/util';
   import type { DeviceCodeLoginData, EpicOAuthData } from '$types/game/authorizations';
   import { readText } from '@tauri-apps/plugin-clipboard-manager';
   import { openUrl } from '@tauri-apps/plugin-opener';
@@ -77,8 +77,7 @@
       const accessTokenData = await Authentication.getAccessTokenUsingExchangeCode(exchangeCode);
       await handleLogin(accessTokenData);
     } catch (error) {
-      console.error(error);
-      toast.error($t('accountManager.failedToLogin'));
+      handleError(error, $t('accountManager.failedToLogin'));
     } finally {
       isLoggingIn = false;
     }
@@ -108,16 +107,12 @@
         fortniteNewSwitchGameClient
       );
 
-      const newSwitchExchangeCode = await Authentication.getExchangeCodeUsingAccessToken(
-        newSwitchAccessTokenData.access_token
-      );
-
+      const newSwitchExchangeCode = await Authentication.getExchangeCodeUsingAccessToken(newSwitchAccessTokenData.access_token);
       const androidAccessTokenData = await Authentication.getAccessTokenUsingExchangeCode(newSwitchExchangeCode.code);
 
       await handleLogin(androidAccessTokenData);
     } catch (error) {
-      console.error(error);
-      toast.error($t('accountManager.confirmRequest'));
+      handleError(error, $t('accountManager.confirmRequest'));
     } finally {
       isLoggingIn = false;
     }

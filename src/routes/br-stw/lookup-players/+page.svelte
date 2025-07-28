@@ -44,7 +44,7 @@
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import LookupManager from '$lib/core/managers/lookup';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
+  import { handleError, nonNull, t } from '$lib/utils/util';
   import type { CampaignProfile, ProfileItem } from '$types/game/mcp';
   import MCPManager from '$lib/core/managers/mcp';
   import { FounderEditionNames, RarityTypes, zoneThemes } from '$lib/constants/stw/resources';
@@ -97,10 +97,7 @@
 
       lookupData = internalLookupData;
     } catch (error) {
-      if (shouldErrorBeIgnored(error)) return;
-
-      console.error(error);
-      toast.error($t('lookupPlayers.notFound'));
+      handleError(error, $t('lookupPlayers.notFound'));
     } finally {
       isLoading = false;
     }

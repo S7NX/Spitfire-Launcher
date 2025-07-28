@@ -2,7 +2,7 @@
   import { Dialog } from '$components/ui/Dialog';
   import { ownedApps } from '$lib/stores';
   import Legendary from '$lib/utils/legendary';
-  import { bytesToSize, t } from '$lib/utils/util';
+  import { handleError, t } from '$lib/utils/util';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { toast } from 'svelte-sonner';
 
@@ -24,8 +24,7 @@
       await Legendary.uninstall(app.id);
       toast.success($t('library.uninstallConfirmation.uninstalled', { name: app.title }));
     } catch (error) {
-      console.error(error);
-      toast.error($t('library.uninstallConfirmation.failedToUninstall', { name: app.title }));
+      handleError(error, $t('library.uninstallConfirmation.failedToUninstall', { name: app.title }));
     } finally {
       isDeleting = false;
       isOpen = false;

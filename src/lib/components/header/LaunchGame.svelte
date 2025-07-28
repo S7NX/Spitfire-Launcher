@@ -5,7 +5,7 @@
   import DataStorage from '$lib/core/dataStorage';
   import Manifest from '$lib/core/manifest';
   import { accountsStore, runningAppIds } from '$lib/stores';
-  import { shouldErrorBeIgnored, t } from '$lib/utils/util';
+  import { handleError, shouldIgnoreError, t } from '$lib/utils/util';
   import type { LegendaryLaunchData } from '$types/legendary';
   import { path } from '@tauri-apps/api';
   import { invoke } from '@tauri-apps/api/core';
@@ -81,7 +81,7 @@
 
       await invoke<number>('launch_app', { launchData });
     } catch (error) {
-      if (shouldErrorBeIgnored(error)) {
+      if (shouldIgnoreError(error)) {
         toast.dismiss(toastId);
         return;
       }
@@ -111,8 +111,7 @@
 
       toast.success($t('launchGame.stopped'), { id: toastId });
     } catch (error) {
-      console.error(error);
-      toast.error($t('launchGame.failedToStop'), { id: toastId });
+      handleError(error, $t('launchGame.failedToStop'), toastId);
     }
   }
 

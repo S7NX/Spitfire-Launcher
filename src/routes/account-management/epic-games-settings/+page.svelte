@@ -9,7 +9,7 @@
   import { accountsStore } from '$lib/stores';
   import { openUrl } from '@tauri-apps/plugin-opener';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
+  import { handleError, nonNull, t } from '$lib/utils/util';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
 
@@ -23,10 +23,7 @@
       await openUrl(`https://www.epicgames.com/id/exchange?exchangeCode=${exchangeCode}`);
       toast.success($t('epicGamesSettings.openedWebsite'));
     } catch (error) {
-      if (shouldErrorBeIgnored(error)) return;
-
-      console.error(error);
-      toast.error($t('epicGamesSettings.failedToOpenWebsite'));
+      handleError(error, $t('epicGamesSettings.failedToOpenWebsite'));
     } finally {
       isLoggingIn = false;
     }

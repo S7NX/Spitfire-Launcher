@@ -489,7 +489,11 @@
       },
       "account": {
         "title": "Account",
-        "description": "Select the account to use for downloading games."
+        "description": "Select the account to use for downloading games.",
+        "switched": "Switched downloader account successfully.",
+        "failedToSwitch": "Failed to switch downloader account.",
+        "loggedOut": "Logged out of downloader account.",
+        "failedToLogout": "Failed to log out of downloader account."
       }
     }
   },

@@ -15,7 +15,7 @@
   import UserPlusIcon from 'lucide-svelte/icons/user-plus';
   import { accountsStore, friendsStore } from '$lib/stores';
   import Input from '$components/ui/Input.svelte';
-  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
+  import { handleError, nonNull, t } from '$lib/utils/util';
   import { toast } from 'svelte-sonner';
 
   type ListType = 'friends' | 'incoming' | 'outgoing' | 'blocklist';
@@ -59,13 +59,10 @@
         searchQuery = '';
         toast.success($t('friendManagement.sentFriendRequest'));
       } catch (error) {
-        toast.error($t('friendManagement.failedToAdd'));
+        handleError(error, $t('friendManagement.failedToAdd'));
       }
     } catch (error) {
-      if (shouldErrorBeIgnored(error)) return;
-
-      console.error(error);
-      toast.error($t('lookupPlayers.notFound'));
+      handleError(error, $t('lookupPlayers.notFound'));
     } finally {
       isSendingRequest = false;
     }

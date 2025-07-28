@@ -489,7 +489,11 @@
       },
       "account": {
         "title": "Hesap",
-        "description": "Oyunları indirmek için kullanılacak hesabı seçin."
+        "description": "Oyunları indirmek için kullanılacak hesabı seçin.",
+        "switched": "İndirici hesabı başarıyla değiştirildi.",
+        "failedToSwitch": "İndirici hesabı değiştirilemedi.",
+        "loggedOut": "İndirici hesabından çıkış yapıldı.",
+        "failedToLogout": "İndirici hesabından çıkış yapılamadı."
       }
     }
   },

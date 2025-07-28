@@ -4,7 +4,7 @@
   import DownloadManager from '$lib/core/managers/download.svelte';
   import { favoritedAppIds, hiddenAppIds, ownedApps, perAppAutoUpdate, runningAppIds } from '$lib/stores';
   import Legendary from '$lib/utils/legendary';
-  import { bytesToSize, sleep, t } from '$lib/utils/util';
+  import { bytesToSize, handleError, sleep, t } from '$lib/utils/util';
   import type { DownloaderSettings } from '$types/settings';
   import { invoke } from '@tauri-apps/api/core';
   import CircleMinusIcon from 'lucide-svelte/icons/circle-minus';
@@ -53,8 +53,7 @@
     try {
       await Legendary.launch(app.id);
     } catch (error) {
-      console.error(error);
-      toast.error($t('library.app.failedToLaunch', { name: app.title }));
+      handleError(error, $t('library.app.failedToLaunch', { name: app.title }));
     } finally {
       isLaunching = false;
     }
@@ -67,8 +66,7 @@
       await invoke('stop_app', { appId: app.id });
       toast.success($t('library.app.stopped', { name: app.title }));
     } catch (error) {
-      console.error(error);
-      toast.error($t('library.app.failedToStop', { name: app.title }));
+      handleError(error, $t('library.app.failedToStop', { name: app.title }));
     } finally {
       // A delay to ensure the app is killed properly
       await sleep(2000);
@@ -127,8 +125,7 @@
       toast.success($t('library.app.requiresRepair', { name: app.title }));
       await DownloadManager.addToQueue(app);
     } catch (error) {
-      console.error(error);
-      toast.error($t('library.app.failedToVerify', { name: app.title }));
+      handleError(error, $t('library.app.failedToVerify', { name: app.title }));
     } finally {
       isVerifying = false;
     }

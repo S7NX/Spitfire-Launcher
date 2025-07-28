@@ -8,7 +8,7 @@
   import Button from '$components/ui/Button.svelte';
   import Authentication from '$lib/core/authentication';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
+  import { handleError, nonNull, t } from '$lib/utils/util';
   import { writeText } from '@tauri-apps/plugin-clipboard-manager';
   import Select from '$components/ui/Select.svelte';
   import KeyRound from 'lucide-svelte/icons/key-round';
@@ -45,10 +45,7 @@
       await writeText(accessTokenData.access_token);
       toast.success($t('accessTokenManagement.generated'));
     } catch (error) {
-      if (shouldErrorBeIgnored(error)) return;
-
-      console.error(error);
-      toast.error($t('accessTokenManagement.failedToGenerate'));
+      handleError(error, $t('accessTokenManagement.failedToGenerate'));
     } finally {
       generatingAccessToken = false;
     }

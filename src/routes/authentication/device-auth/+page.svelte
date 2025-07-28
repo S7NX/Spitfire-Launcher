@@ -20,7 +20,7 @@
   import { onMount } from 'svelte';
   import DataStorage, { DEVICE_AUTHS_FILE_PATH } from '$lib/core/dataStorage';
   import { accountsStore, language } from '$lib/stores';
-  import { getStartingPage, nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
+  import { getStartingPage, handleError, nonNull, t } from '$lib/utils/util';
   import Account from '$lib/core/account';
   import Tooltip from '$components/ui/Tooltip.svelte';
   import { goto } from '$app/navigation';
@@ -81,10 +81,7 @@
         return hasCustomName || dateDifference || 0;
       });
     } catch (error) {
-      if (shouldErrorBeIgnored(error)) return;
-
-      console.error(error);
-      toast.error($t('deviceAuthManagement.failedToFetch'));
+      handleError(error, $t('deviceAuthManagement.failedToFetch'));
     } finally {
       isFetching = false;
     }
@@ -101,10 +98,7 @@
       allDeviceAuths[activeAccount.accountId] = [deviceAuth, ...deviceAuths];
       toast.success($t('deviceAuthManagement.generated'), { id: toastId });
     } catch (error) {
-      if (shouldErrorBeIgnored(error)) return;
-
-      console.error(error);
-      toast.error($t('deviceAuthManagement.failedToGenerate'), { id: toastId });
+      handleError(error, $t('deviceAuthManagement.failedToGenerate'), toastId);
     } finally {
       isGenerating = false;
     }
@@ -129,10 +123,7 @@
         }
       }
     } catch (error) {
-      if (shouldErrorBeIgnored(error)) return;
-
-      console.error(error);
-      toast.error($t('deviceAuthManagement.failedToDelete'), { id: toastId });
+      handleError(error, $t('deviceAuthManagement.failedToDelete'), toastId);
     } finally {
       isDeleting = false;
     }

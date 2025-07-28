@@ -33,7 +33,7 @@
   import { accountPartiesStore, accountsStore, friendsStore, language } from '$lib/stores';
   import transferBuildingMaterials from '$lib/utils/autoKick/transferBuildingMaterials';
   import claimRewards from '$lib/utils/autoKick/claimRewards';
-  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
+  import { handleError, nonNull, t } from '$lib/utils/util';
   import { toast } from 'svelte-sonner';
   import type { AccountData } from '$types/accounts';
 
@@ -200,11 +200,9 @@
         : claimOnly ? $t('partyManagement.stwActions.claimedRewards') : $t('partyManagement.stwActions.leftParties')
       );
     } catch (error) {
-      const errorMessage = claimOnly
+      handleError(error, claimOnly
         ? $t('partyManagement.stwActions.failedToClaimRewards')
-        : $t('partyManagement.stwActions.failedToLeaveParties');
-
-      handleError(error, errorMessage);
+        : $t('partyManagement.stwActions.failedToLeaveParties'));
     } finally {
       if (claimOnly) {
         isClaiming = false;
@@ -276,13 +274,6 @@
     } finally {
       isRemovingFriend = false;
     }
-  }
-
-  function handleError(error: unknown, message: string) {
-    if (shouldErrorBeIgnored(error)) return;
-
-    console.error(error);
-    toast.error(message);
   }
 
   $effect(() => {

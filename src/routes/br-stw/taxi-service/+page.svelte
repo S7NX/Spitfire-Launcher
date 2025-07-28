@@ -11,10 +11,9 @@
   import Label from '$components/ui/Label.svelte';
   import DataStorage, { TAXI_FILE_PATH } from '$lib/core/dataStorage';
   import { accountPartiesStore, accountsStore } from '$lib/stores';
-  import { nonNull, t } from '$lib/utils/util';
+  import { handleError, nonNull, t } from '$lib/utils/util';
   import type { TaxiSettings } from '$types/settings';
   import { onMount } from 'svelte';
-  import { toast } from 'svelte-sonner';
   import Button from '$components/ui/Button.svelte';
   import { Separator } from 'bits-ui';
   import Switch from '$components/ui/Switch.svelte';
@@ -49,8 +48,7 @@
     try {
       await taxiManager.start();
     } catch (error) {
-      console.error(error);
-      toast.error($t('taxiService.failedToStart'));
+      handleError(error, $t('taxiService.failedToStart'));
     }
   }
 
@@ -58,8 +56,7 @@
     try {
       await taxiManager.stop();
     } catch (error) {
-      console.error(error);
-      toast.error($t('taxiService.failedToStop'));
+      handleError(error, $t('taxiService.failedToStop'));
     }
   }
 

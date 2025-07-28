@@ -7,7 +7,7 @@
   import DataStorage, { DOWNLOADER_FILE_PATH, DOWNLOADER_INITIAL_DATA } from '$lib/core/dataStorage';
   import { accountsStore } from '$lib/stores';
   import Legendary from '$lib/utils/legendary';
-  import { nonNull, t } from '$lib/utils/util';
+  import { handleError, nonNull, t } from '$lib/utils/util';
   import { downloaderSettingsSchema } from '$lib/validations/settings';
   import type { DownloaderSettings } from '$types/settings';
   import { onMount, untrack } from 'svelte';
@@ -69,14 +69,13 @@
       }
 
       toast.success(accountId
-        ? 'Switched downloader account successfully'
-        : 'Logged out of downloader account'
+        ? $t('settings.downloaderSettings.account.switched')
+        : $t('settings.downloaderSettings.account.loggedOut')
       );
     } catch (error) {
-      console.error(error);
-      toast.error(accountId
-        ? 'Failed to switch downloader account'
-        : 'Failed to log out of downloader account'
+      handleError(error, accountId
+        ? $t('settings.downloaderSettings.account.failedToSwitch')
+        : $t('settings.downloaderSettings.account.failedToLogout')
       );
     } finally {
       switchingDownloaderAccount = false;
@@ -93,7 +92,7 @@
 
     setTimeout(() => {
       mounted = true;
-    }, 0);
+    });
   });
 </script>
 

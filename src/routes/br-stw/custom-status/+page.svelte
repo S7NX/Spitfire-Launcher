@@ -14,7 +14,7 @@
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
   import { toast } from 'svelte-sonner';
-  import { nonNull, shouldErrorBeIgnored, t } from '$lib/utils/util';
+  import { handleError, nonNull, t } from '$lib/utils/util';
   import XMPPManager from '$lib/core/managers/xmpp';
 
   const activeAccount = $derived(nonNull($accountsStore.activeAccount));
@@ -37,10 +37,7 @@
 
       toast.success($t('customStatus.statusSet'));
     } catch (error) {
-      if (shouldErrorBeIgnored(error)) return;
-
-      console.error(error);
-      toast.error($t('customStatus.failedToSetStatus'));
+      handleError(error, $t('customStatus.failedToSetStatus'));
     } finally {
       isSettingStatus = false;
     }
@@ -58,10 +55,7 @@
 
       toast.success($t('customStatus.statusReset'));
     } catch (error) {
-      if (shouldErrorBeIgnored(error)) return;
-
-      console.error(error);
-      toast.error($t('customStatus.failedToResetStatus'));
+      handleError(error, $t('customStatus.failedToResetStatus'));
     } finally {
       isResettingStatus = false;
     }

@@ -19,9 +19,8 @@
   import BanIcon from 'lucide-svelte/icons/ban';
   import ShieldMinus from 'lucide-svelte/icons/shield-minus';
   import { accountsStore, avatarCache, displayNamesCache, friendsStore } from '$lib/stores';
-  import { nonNull, t } from '$lib/utils/util';
+  import { handleError, nonNull, t } from '$lib/utils/util';
   import type { BlockedAccountData, FriendData, IncomingFriendRequestData, OutgoingFriendRequestData } from '$types/game/friends';
-  import { toast } from 'svelte-sonner';
 
   type Props = {
     listType: 'friends' | 'incoming' | 'outgoing' | 'blocklist';
@@ -58,7 +57,7 @@
     try {
       await FriendManager.addFriend(activeAccount, id);
     } catch (error) {
-      toast.error($t('friendManagement.failedToAdd'));
+      handleError(error, $t('friendManagement.failedToAdd'));
     } finally {
       accountsAdding.delete(id);
     }
@@ -70,7 +69,7 @@
     try {
       await FriendManager.removeFriend(activeAccount, id);
     } catch (error) {
-      toast.error($t('friendManagement.failedToRemove'));
+      handleError(error, $t('friendManagement.failedToRemove'));
     } finally {
       accountsRemoving.delete(id);
     }
@@ -82,7 +81,7 @@
     try {
       await FriendManager.block(activeAccount, id);
     } catch (error) {
-      toast.error($t('friendManagement.failedToBlock'));
+      handleError(error, $t('friendManagement.failedToBlock'));
     } finally {
       accountsBlocking.delete(id);
     }
@@ -94,7 +93,7 @@
     try {
       await FriendManager.unblock(activeAccount, id);
     } catch (error) {
-      toast.error($t('friendManagement.failedToUnblock'));
+      handleError(error, $t('friendManagement.failedToUnblock'));
     } finally {
       accountsUnblocking.delete(id);
     }

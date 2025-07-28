@@ -12,7 +12,7 @@
   import { accountsStore, avatarCache } from '$lib/stores';
   import { toast } from 'svelte-sonner';
   import LoginModal from '$components/login/LoginModal.svelte';
-  import { cn, t } from '$lib/utils/util';
+  import { cn, handleError, t } from '$lib/utils/util';
 
   type PageState = {
     showLoginModal?: boolean;
@@ -46,8 +46,7 @@
     try {
       await Account.changeActiveAccount(account.accountId);
     } catch (error) {
-      console.error(error);
-      toast.error($t('accountManager.failedToSwitch', { name: account.displayName }));
+      handleError(error, $t('accountManager.failedToSwitch', { name: account.displayName }));
     }
   }
 
@@ -59,14 +58,13 @@
 
   async function logout() {
     const accountName = activeAccount!.displayName || activeAccount!.accountId;
-
     const toastId = toast.loading($t('accountManager.loggingOut', { name: accountName }));
+
     try {
       await Account.logout(activeAccount!.accountId);
       toast.success($t('accountManager.loggedOut', { name: accountName }), { id: toastId });
     } catch (error) {
-      console.error(error);
-      toast.error($t('accountManager.failedToLogout', { name: accountName }), { id: toastId });
+      handleError(error, $t('accountManager.failedToLogout', { name: accountName }), toastId);
     }
   }
 

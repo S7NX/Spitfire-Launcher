@@ -26,9 +26,10 @@
 <div class="flex gap-2">
   <AccountCombobox
     class="grow shrink min-w-0"
-    type={type}
+    type={type as any}
     bind:selected
   />
+
   <Button
     class="shrink-0"
     {disabled}

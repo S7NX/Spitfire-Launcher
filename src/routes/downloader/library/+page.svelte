@@ -9,7 +9,7 @@
   import DataStorage, { DOWNLOADER_INITIAL_DATA } from '$lib/core/dataStorage';
   import { accountsStore, favoritedAppIds, hiddenAppIds, ownedApps } from '$lib/stores';
   import Legendary from '$lib/utils/legendary';
-  import { t, nonNull } from '$lib/utils/util';
+  import { t, nonNull, handleError } from '$lib/utils/util';
   import type { AppFilterValue } from '$types/legendary';
   import Fuse from 'fuse.js';
   import { onMount } from 'svelte';
@@ -62,8 +62,7 @@
         await Legendary.login(activeAccount);
         toast.success($t('library.loggedIn'));
       } catch (error) {
-        console.error(error);
-        toast.error($t('library.failedToLogin'));
+        handleError(error, $t('library.failedToLogin'));
         return;
       }
     }

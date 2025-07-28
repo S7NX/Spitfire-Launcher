@@ -489,7 +489,11 @@
       },
       "account": {
         "title": "Compte",
-        "description": "Sélectionne le compte à utiliser pour télécharger des jeux."
+        "description": "Sélectionne le compte à utiliser pour télécharger des jeux.",
+        "switched": "Compte du téléchargeur changé avec succès.",
+        "failedToSwitch": "Échec du changement de compte du téléchargeur.",
+        "loggedOut": "Déconnexion du compte du téléchargeur.",
+        "failedToLogout": "Échec de la déconnexion du compte du téléchargeur."
       }
     }
   },

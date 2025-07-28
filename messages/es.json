@@ -489,7 +489,11 @@
       },
       "account": {
         "title": "Cuenta",
-        "description": "Seleccione la cuenta a utilizar para descargar juegos."
+        "description": "Seleccione la cuenta a utilizar para descargar juegos.",
+        "switched": "Cuenta del descargador cambiada correctamente.",
+        "failedToSwitch": "No se pudo cambiar la cuenta del descargador.",
+        "loggedOut": "Sesión cerrada de la cuenta del descargador.",
+        "failedToLogout": "No se pudo cerrar sesión de la cuenta del descargador."
       }
     }
   },

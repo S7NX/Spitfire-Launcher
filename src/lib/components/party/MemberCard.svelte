@@ -52,7 +52,7 @@
     removeFriend: (memberId: string) => void;
     promotingMemberId?: string;
     promote: (memberId: string) => void;
-  }
+  };
 
   const {
     member,
@@ -248,9 +248,10 @@
       </div>
     </div>
 
-    <div class={[
-      'rounded-full px-3 py-1 text-sm font-medium',
-      member.isReady ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
+    <div
+      class={[
+        'rounded-full px-3 py-1 text-sm font-medium',
+        member.isReady ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
       ]}
     >
       {member.isReady
