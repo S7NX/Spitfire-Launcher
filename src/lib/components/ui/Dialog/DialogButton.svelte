@@ -1,11 +1,11 @@
 <script lang="ts">
-  import type { ClassValue, HTMLButtonAttributes } from 'svelte/elements';
+  import { AlertDialog } from 'bits-ui';
   import { tv, type VariantProps } from 'tailwind-variants';
   import { cn } from '$lib/utils/util';
   import type { Snippet } from 'svelte';
 
   const dialogButtonVariants = tv({
-    base: 'rounded-md inline-flex w-full items-center justify-center font-medium p-2 transition-all duration-200 disabled:opacity-50',
+    base: 'rounded-md inline-flex w-full items-center justify-center font-medium p-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed',
     variants: {
       color: {
         primary: 'bg-primary text-primary-foreground hover:bg-primary/80',
@@ -18,7 +18,7 @@
     }
   });
 
-  type Props = HTMLButtonAttributes & VariantProps<typeof dialogButtonVariants> & {
+  type Props = AlertDialog.CancelProps & VariantProps<typeof dialogButtonVariants> & {
     children: Snippet;
     buttonType: 'action' | 'cancel';
   };
@@ -29,9 +29,11 @@
     color,
     ...restProps
   }: Props = $props();
+
+  const DialogButton = buttonType === 'action' ? AlertDialog.Action : AlertDialog.Cancel;
 </script>
 
-<button
+<DialogButton
   {...restProps}
   class={cn(
     dialogButtonVariants({ color: color || (buttonType === 'action' ? 'primary' : 'secondary') }),
@@ -40,4 +42,4 @@
   )}
 >
   {@render children()}
-</button>
+</DialogButton>

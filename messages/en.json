@@ -82,9 +82,9 @@
     "selectItems": "Select items",
     "noResults": "No results found"
   },
-  "epicGamesSettings": {
+  "epicGamesWebsite": {
     "page": {
-      "title": "Epic Games Settings",
+      "title": "Epic Games Website",
       "description": "Click the button below to login to Epic Games."
     },
     "login": "Login to Epic Games Website",
@@ -125,9 +125,9 @@
     "loginExpired": "Login expired. Please login again.",
     "unknownError": "Unknown error"
   },
-  "deviceAuthManagement": {
+  "deviceAuth": {
     "page": {
-      "title": "Device Auth List"
+      "title": "Device Auth"
     },
     "authInfo": {
       "noName": "No Name",
@@ -148,7 +148,7 @@
     "deletedAndLoggedOut": "Device auth deleted and logged out",
     "failedToDelete": "Failed to delete device auth"
   },
-  "accessTokenManagement": {
+  "accessToken": {
     "page": {
       "title": "Access Token"
     },
@@ -159,7 +159,7 @@
     "generated": "Generated and copied to clipboard",
     "failedToGenerate": "Failed to generate access token"
   },
-  "exchangeCodeManagement": {
+  "exchangeCode": {
     "page": {
       "title": "Exchange Code",
       "description": "Click the button below to generate an exchange code."
@@ -463,14 +463,6 @@
         "title": "Starting Page",
         "description": "Select the page to show when the launcher starts."
       },
-      "startingAccount": {
-        "title": "Starting Account",
-        "description": "Select the account to use when the launcher starts.",
-        "values": {
-          "firstInList": "First in the List",
-          "lastUsed": "Last Used"
-        }
-      },
       "hideToTray": "Hide to System Tray",
       "checkForUpdates": "Check for Updates"
     },
@@ -554,9 +546,9 @@
       "description": "You have successfully logged into your Epic Games account."
     }
   },
-  "friendManagement": {
+  "friendsManagement": {
     "page": {
-      "title": "Friend Management"
+      "title": "Friends Management"
     },
     "lists": {
       "friends": "Friends",
@@ -633,9 +625,8 @@
       "failedToUpdate": "Failed to update {name}",
       "repaired": "{name} repaired successfully",
       "failedToRepair": "Failed to repair {name}",
-      "startedInstallation": "Started installation of {name}",
-      "startedUpdate": "Started update of {name}",
-      "startedRepair": "Started repair of {name}"
+      "startedDownload": "Download has started. {el}Click here{elEnd} to view the progress",
+      "startedUpdate": "Started update of {name}"
     },
     "installConfirmation": {
       "downloadSize": "Download Size",

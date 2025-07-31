@@ -12,7 +12,7 @@ A launcher for Fortnite Battle Royale and Save the World
 - [ℹ️ Good to Know](#good-to-know)
 - [⚙️ Features](#features)
 - [🔄 Updating](#updating)
-- [🛠️ Setting Up Locally](#setting-up-locally)
+- [💻 Development Setup](#development-setup)
 - [🤝 Contributing](#contributing)
 - [💡 Credits](#credits)
 - [📜 License](#license)
@@ -25,15 +25,14 @@ A launcher for Fortnite Battle Royale and Save the World
 
 ## Installation
 
-Download the latest release from the [releases](../../releases/latest) page or from [our website](https://rookie-spitfire.xyz/launcher).
+Download the latest release from the [releases](https://github.com/BurakYs/Spitfire-Launcher/releases/latest) page or from [our website](https://rookie-spitfire.xyz/launcher).
 
 - **Windows:** `Spitfire.Launcher_x.x.x_x64-setup.exe`
 - **Android:** `Spitfire.Launcher_x.x.x.apk`
 
 ## Good to Know
 
-On first install, a blue SmartScreen warning may appear. This is because the app is unsigned, as code signing is expensive. You can click on "Run Anyway" and continue the
-installation.
+On first install, SmartScreen may show a blue warning. This happens because the launcher isn't code‑signed (as signing is expensive). You can safely click "Run anyway" to continue the installation.
 
 Settings are stored in:
 
@@ -45,11 +44,11 @@ Settings are stored in:
 ### Customizable
 
 - Choose launcher language from 4 different languages: English, French, Spanish, and Turkish
-- Set game path, default page, and startup account
+- Customize the sidebar with your most used features.
 
 ### Bulk Actions
 
-- Redeem codes, view V-Bucks information and daily quests across multiple accounts
+- Redeem codes, view V-Bucks information and daily quests across multiple accounts with a single click.
 
 ### Game & Account Management
 
@@ -63,9 +62,14 @@ Settings are stored in:
 
 Just run the latest setup file to update. The launcher also notifies you when an update is available.
 
-## Setting Up Locally
+## Development Setup
 
-See the [Setting Up Locally](../../wiki/Setting-Up-Locally) wiki for instructions on how to set up the project locally.
+See the [Setup Guide](https://github.com/BurakYs/Spitfire-Launcher/wiki/Setting-Up-Locally) for instructions on how to set up the project locally.
+
+## Translating
+
+You can help us translate the launcher on [Crowdin](https://crowdin.com/project/rookie-spitfire).  
+If you also join our [Discord](https://discord.gg/rookie-spitfire), you will get the Translator role as a thank-you.
 
 ## Contributing
 

@@ -3,8 +3,9 @@
   import PageContent from '$components/PageContent.svelte';
   import Alert from '$components/ui/Alert.svelte';
   import Button from '$components/ui/Button.svelte';
-  import AutoKickBase from '$lib/core/managers/automation/autoKickBase';
-  import { accountsStore, automationStore } from '$lib/stores';
+  import { accountsStorage } from '$lib/core/data-storage';
+  import AutoKickBase from '$lib/core/managers/autokick/base';
+  import { automationStore } from '$lib/stores';
   import { cn, nonNull, t } from '$lib/utils/util';
   import Switch from '$components/ui/Switch.svelte';
   import type { AutomationSetting as AutomationSettingWithId } from '$types/settings';
@@ -16,7 +17,7 @@
 
   type AutomationSetting = keyof Omit<AutomationSettingWithId, 'accountId'>;
 
-  const allAccounts = $derived(nonNull($accountsStore.allAccounts));
+  const allAccounts = $derived(nonNull($accountsStorage.accounts));
   const autoKickDisabledAccounts = $derived(allAccounts.filter((x) => !$automationStore.some((y) => y.accountId === x.accountId)));
   const currentPlatform = platform();
   let selectedAccountId = $state<string>();
@@ -76,7 +77,7 @@
       title={$t('autoKick.mobileIncompatibilityWarning.title')}
     />
   {/if}
-  
+
   <div class="flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2 text-muted-foreground text-sm">
     <div class="flex items-center gap-x-2">
       <div class="size-2 rounded-full bg-green-500"></div>

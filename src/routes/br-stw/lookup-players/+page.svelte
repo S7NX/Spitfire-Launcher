@@ -1,6 +1,6 @@
 <script lang="ts" module>
-  import type { DailyQuest } from '$components/lookupPlayers/DailyQuestAccordion.svelte';
-  import type { LoadoutData, MissionData, MissionPlayers } from '$components/lookupPlayers/STWDetails.svelte';
+  import type { DailyQuest } from '$components/lookup-players/DailyQuestAccordion.svelte';
+  import type { LoadoutData, MissionData, MissionPlayers } from '$components/lookup-players/STWDetails.svelte';
   import { FounderEditions, gadgets, heroes, teamPerks } from '$lib/constants/stw/resources';
 
   type FounderEdition = typeof FounderEditions[keyof typeof FounderEditions];
@@ -29,12 +29,13 @@
 </script>
 
 <script lang="ts">
-  import DailyQuestAccordion from '$components/lookupPlayers/DailyQuestAccordion.svelte';
-  import STWDetails from '$components/lookupPlayers/STWDetails.svelte';
+  import DailyQuestAccordion from '$components/lookup-players/DailyQuestAccordion.svelte';
+  import STWDetails from '$components/lookup-players/STWDetails.svelte';
   import ExternalLink from '$components/ui/ExternalLink.svelte';
-  import WorldInfoSectionAccordion from '$components/worldInfo/WorldInfoSectionAccordion.svelte';
+  import WorldInfoSectionAccordion from '$components/world-info/WorldInfoSectionAccordion.svelte';
+  import { activeAccountStore, language } from '$lib/core/data-storage';
   import MatchmakingManager from '$lib/core/managers/matchmaking';
-  import { accountsStore, avatarCache, language, worldInfoCache } from '$lib/stores';
+  import { avatarCache, worldInfoCache } from '$lib/stores';
   import { dailyQuests as dailyQuestsResource } from '$lib/constants/stw/resources';
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
@@ -49,7 +50,7 @@
   import MCPManager from '$lib/core/managers/mcp';
   import { FounderEditionNames, RarityTypes, zoneThemes } from '$lib/constants/stw/resources';
 
-  const activeAccount = $derived(nonNull($accountsStore.activeAccount));
+  const activeAccount = $derived(nonNull($activeAccountStore));
   const claimedMissionAlerts = $derived.by(() => {
     if (!$worldInfoCache || !stwData?.claimedMissionAlertIds?.size) {
       return [];
@@ -127,7 +128,7 @@
 
     for (const [itemGuid, itemData] of items) {
       if (itemData.attributes.loadout_index != null) {
-        handleLockerItem(profile, itemGuid, itemData);
+        handleLoadoutItem(profile, itemGuid, itemData);
       }
 
       if (itemData.templateId.startsWith('Quest:') && itemData.attributes.quest_state === 'Active') {
@@ -136,10 +137,13 @@
     }
   }
 
-  function handleLockerItem(profile: CampaignProfile, itemId: string, itemData: ProfileItem) {
+  function handleLoadoutItem(profile: CampaignProfile, itemId: string, itemData: ProfileItem) {
     const profileAttributes = profile.stats.attributes;
-
     const isSelectedLoadout = profileAttributes.selected_hero_loadout === itemId;
+    if (isSelectedLoadout) {
+      heroLoadoutPage = itemData.attributes.loadout_index + 1;
+    }
+
     const selectedCommander = profile.items[itemData.attributes.crew_members.commanderslot];
     const heroId = selectedCommander?.templateId.replace('Hero:', '').split('_').slice(0, -2).join('_').toLowerCase();
     const teamPerkId = profile.items[itemData.attributes.team_perk]?.templateId.split('_')[1];
@@ -148,8 +152,6 @@
       .filter(([key]) => key.startsWith('followerslot'))
       .map(([, value]) => profile.items[value as string]?.templateId)
       .filter(x => !!x);
-
-    if (isSelectedLoadout) heroLoadoutPage = itemData.attributes.loadout_index + 1;
 
     loadoutData.push({
       guid: itemId,
@@ -174,10 +176,10 @@
           rarity
         };
       }),
-      gadgets: itemData.attributes.gadgets
-        ?.sort((a: any, b: any) => a.slot_index - b.slot_index)
-        .filter((gadget: any) => gadgets[gadget.gadget.split('_').at(-1)])
-        .map((data: any) => {
+      gadgets: (itemData.attributes.gadgets as any[])
+        ?.sort((a, b) => a.slot_index - b.slot_index)
+        .filter((gadget) => gadgets[gadget.gadget.split('_').at(-1)])
+        .map((data) => {
           const id = data.gadget.split('_').at(-1);
 
           return {
@@ -292,8 +294,15 @@
 
   {#if lookupData}
     {@const kv = [
-      { name: $t('lookupPlayers.playerInfo.id'), value: lookupData.accountId },
-      { name: $t('lookupPlayers.playerInfo.name'), value: lookupData.displayName, href: `https://fortnitedb.com/profile/${lookupData.accountId}` },
+      {
+        name: $t('lookupPlayers.playerInfo.id'),
+        value: lookupData.accountId
+      },
+      {
+        name: $t('lookupPlayers.playerInfo.name'),
+        value: lookupData.displayName,
+        href: `https://fortnitedb.com/profile/${lookupData.accountId}`
+      },
       {
         name: $t('lookupPlayers.playerInfo.commanderLevel'),
         value: stwData && `${stwData.commanderLevel.current} ${stwData.commanderLevel.pastMaximum ? `(+${stwData.commanderLevel.pastMaximum})` : ''}`

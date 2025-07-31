@@ -82,9 +82,9 @@
     "selectItems": "Seleccionar elementos",
     "noResults": "No se encontraron resultados"
   },
-  "epicGamesSettings": {
+  "epicGamesWebsite": {
     "page": {
-      "title": "Configuración de Epic Games",
+      "title": "Sitio web de Epic Games",
       "description": "Haga clic en el botón a continuación para iniciar sesión en Epic Games."
     },
     "login": "Iniciar sesión en Epic",
@@ -125,9 +125,9 @@
     "loginExpired": "Código expirado. Por favor inicia otra vez.",
     "unknownError": "Código desconocido"
   },
-  "deviceAuthManagement": {
+  "deviceAuth": {
     "page": {
-      "title": "Lista de dispositivos"
+      "title": "Dispositivo Auth"
     },
     "authInfo": {
       "noName": "Sin nombre",
@@ -148,7 +148,7 @@
     "deletedAndLoggedOut": "Autenticación del dispositivo eliminada y desconectada",
     "failedToDelete": "Error al eliminar la autenticación del dispositivo"
   },
-  "accessTokenManagement": {
+  "accessToken": {
     "page": {
       "title": "Token de Acceso"
     },
@@ -159,7 +159,7 @@
     "generated": "Generado y copiado",
     "failedToGenerate": "Fallo al generar código"
   },
-  "exchangeCodeManagement": {
+  "exchangeCode": {
     "page": {
       "title": "Código Exchange",
       "description": "Dale click al botón para generar código."
@@ -463,14 +463,6 @@
         "title": "Página de inicio",
         "description": "Seleccione la página a mostrar cuando comience el lanzador."
       },
-      "startingAccount": {
-        "title": "Iniciando cuenta",
-        "description": "Seleccione la página a mostrar cuando comience el lanzador.",
-        "values": {
-          "firstInList": "Primero en la lista",
-          "lastUsed": "Usado por última vez"
-        }
-      },
       "hideToTray": "Ocultar en la bandeja del sistema",
       "checkForUpdates": "Buscar actualizaciones"
     },
@@ -554,7 +546,7 @@
       "description": "Has iniciado sesión con éxito en tu cuenta de Epic Games."
     }
   },
-  "friendManagement": {
+  "friendsManagement": {
     "page": {
       "title": "Gestión de Amigos"
     },
@@ -633,9 +625,8 @@
       "failedToUpdate": "Error al actualizar {name}",
       "repaired": "Archivos {name} verificados con éxito",
       "failedToRepair": "Error al reparar {name}",
-      "startedInstallation": "Se inició la instalación de {name}",
-      "startedUpdate": "Se inició la actualización de {name}",
-      "startedRepair": "Se inició la reparación de {name}"
+      "startedDownload": "La descarga ha comenzado. Para ver el progreso, {el}haz clic aquí{elEnd}",
+      "startedUpdate": "Se inició la actualización de {name}"
     },
     "installConfirmation": {
       "downloadSize": "Tamaño de descarga",

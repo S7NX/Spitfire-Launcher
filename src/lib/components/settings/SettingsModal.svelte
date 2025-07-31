@@ -1,6 +1,6 @@
 <script lang="ts">
-  import DownloaderSettings from '$components/settings/categories/DownloaderSettings.svelte';
   import { Dialog } from '$components/ui/Dialog';
+  import DownloaderSettings from '$components/settings/categories/DownloaderSettings.svelte';
   import AppSettings from '$components/settings/categories/AppSettings.svelte';
   import CustomizableMenu from '$components/settings/categories/CustomizableMenu.svelte';
   import { platform as getPlatform } from '@tauri-apps/plugin-os';
@@ -21,14 +21,11 @@
 
 <Dialog.Root
   contentProps={{ class: '!max-w-[calc(100%-2rem)] sm:!max-w-180  max-xs:w-full' }}
+  title={$t('settings.title')}
   triggerClass="p-2 rounded-md hover:bg-accent"
 >
   {#snippet trigger()}
     <SettingsIcon class="size-6"/>
-  {/snippet}
-
-  {#snippet title()}
-    {$t('settings.title')}
   {/snippet}
 
   <div class="flex flex-col sm:flex-row">
@@ -50,7 +47,7 @@
       </div>
     </div>
 
-    <div class="flex-1 p-1 sm:p-4 max-h-114 max-xs:max-h-128 overflow-y-auto">
+    <div class="flex-1 p-1 sm:p-4 max-h-114 max-xs:h-128 overflow-y-auto min-h-114">
       <div>
         {#each categories as category (category.id)}
           {@const CategoryComponent = category.component}

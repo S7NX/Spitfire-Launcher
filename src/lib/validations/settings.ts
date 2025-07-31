@@ -1,13 +1,14 @@
 import { locales } from '$lib/paraglide/runtime';
 import { z } from 'zod';
 
+type SidebarItem = typeof sidebarItems[number];
+
 export const appSettingsSchema = z.object({
   language: z.enum(locales).nullish(),
   gamePath: z.string(),
   missionCheckInterval: z.number().positive(),
   claimRewardsDelay: z.number().positive(),
-  startingPage: z.enum(['autoKick', 'itemShop', 'stwWorldInfo', 'stwMissionAlerts', 'taxiService', 'dailyQuests', 'library']),
-  startingAccount: z.enum(['firstInTheList', 'lastUsed']),
+  startingPage: z.enum(['autoKick', 'itemShop', 'stwMissionAlerts', 'taxiService', 'dailyQuests', 'library'] satisfies SidebarItem[]),
   hideToTray: z.boolean(),
   checkForUpdates: z.boolean()
 }).partial();
@@ -19,9 +20,9 @@ export const deviceAuthsSettingsSchema = z.array(z.object({
 
 export const sidebarItems = [
   'vbucksInformation',
-  'friendManagement',
+  'friendsManagement',
   'redeemCodes',
-  'epicGamesSettings',
+  'epicGamesWebsite',
   'eula',
 
   'autoKick',
@@ -30,7 +31,7 @@ export const sidebarItems = [
   'partyManagement',
   'serverStatus',
   'itemShop',
-  'earnedXp',
+  'earnedXP',
   'dailyQuests',
   'stwMissionAlerts',
   'lookupPlayers',
@@ -45,9 +46,9 @@ export const sidebarItems = [
 
 export const customizableMenuSettingsSchema = z.object(
   sidebarItems.reduce((acc, item) => {
-    acc[item] = z.boolean().default(true);
+    acc[item] = z.boolean().optional();
     return acc;
-  }, {} as Record<typeof sidebarItems[number], z.ZodType<boolean>>)
+  }, {} as Record<SidebarItem, z.ZodOptional<z.ZodBoolean>>)
 ).partial();
 
 export const allSettingsSchema = z.object({

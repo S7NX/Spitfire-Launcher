@@ -1,5 +1,6 @@
+import { accountsStorage } from '$lib/core/data-storage';
 import { oauthService } from '$lib/core/services';
-import AsyncLock from '$lib/utils/asyncLock';
+import AsyncLock from '$lib/utils/async-lock';
 import { t } from '$lib/utils/util';
 import type {
   DeviceAuthData,
@@ -10,7 +11,7 @@ import type {
   EpicTokenType,
   EpicVerifyAccessTokenData
 } from '$types/game/authorizations';
-import { accessTokenCache, accountsStore, doingBulkOperations } from '$lib/stores';
+import { accessTokenCache, doingBulkOperations } from '$lib/stores';
 import { get } from 'svelte/store';
 import { type ClientCredentials, defaultClient } from '$lib/constants/clients';
 import EpicAPIError from '$lib/exceptions/EpicAPIError';
@@ -24,26 +25,24 @@ export default class Authentication {
   static verifyOrRefreshAccessToken(
     deviceAuthData: DeviceAuthData,
     accessToken?: string,
-    bypassCache = false
+    skipCache = false
   ) {
-    let tokenLock = tokenLocks.get(deviceAuthData.accountId);
-    if (!tokenLock) {
-      tokenLock = new AsyncLock();
-      tokenLocks.set(deviceAuthData.accountId, tokenLock);
+    let lock = tokenLocks.get(deviceAuthData.accountId);
+    if (!lock) {
+      lock = new AsyncLock();
+      tokenLocks.set(deviceAuthData.accountId, lock);
     }
 
-    return tokenLock.withLock(async () => {
+    return lock.withLock(async () => {
       const cache = Authentication.getAccessTokenFromCache(deviceAuthData.accountId);
       accessToken ??= cache?.access_token;
 
       if (!accessToken) return (await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false)).access_token;
-
-      if (!bypassCache && cache)
-        return cache.access_token;
+      if (!skipCache && cache) return cache.access_token;
 
       try {
         return (await this.verifyAccessToken(accessToken)).access_token;
-      } catch (error) {
+      } catch {
         return (await this.getAccessTokenUsingDeviceAuth(deviceAuthData, false)).access_token;
       }
     });
@@ -84,8 +83,7 @@ export default class Authentication {
     } catch (error) {
       if (error instanceof EpicAPIError) {
         const isDoingBulkOperations = get(doingBulkOperations);
-        const { allAccounts } = get(accountsStore);
-        const accountName = allAccounts.find(account => account.accountId === deviceAuthData.accountId)?.displayName;
+        const accountName = get(accountsStorage).accounts.find(account => account.accountId === deviceAuthData.accountId)?.displayName;
 
         const translate = get(t);
 
@@ -96,7 +94,7 @@ export default class Authentication {
             }
           });
 
-          await Account.logout(deviceAuthData.accountId);
+          await Account.removeAccount(deviceAuthData.accountId);
 
           if (accountName) toast.error(translate('errors.loginExpired', { accountName }));
         }

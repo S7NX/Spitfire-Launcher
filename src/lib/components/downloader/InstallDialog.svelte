@@ -6,21 +6,23 @@
 </script>
 
 <script lang="ts">
-  import Button from '$components/ui/Button.svelte';
   import { Dialog } from '$components/ui/Dialog';
   import Tooltip from '$components/ui/Tooltip.svelte';
-  import DataStorage from '$lib/core/dataStorage';
+  import { downloaderStorage } from '$lib/core/data-storage';
   import { ownedApps } from '$lib/stores';
-  import Legendary from '$lib/utils/legendary';
+  import Legendary from '$lib/core/legendary';
   import DownloadManager from '$lib/core/managers/download.svelte';
   import { bytesToSize, cn, t } from '$lib/utils/util';
   import { invoke } from '@tauri-apps/api/core';
   import { Progress } from 'bits-ui';
+  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import PackageIcon from 'lucide-svelte/icons/package';
   import DownloadIcon from 'lucide-svelte/icons/download';
   import HardDriveIcon from 'lucide-svelte/icons/hard-drive';
   import AlertTriangleIcon from 'lucide-svelte/icons/alert-triangle';
   import { onMount } from 'svelte';
+  import { toast } from 'svelte-sonner';
+  import DownloadStartedToast from '$components/downloader/DownloadStartedToast.svelte';
 
   type Props = {
     id: string;
@@ -44,20 +46,25 @@
 
   async function installApp() {
     isStartingDownload = true;
-    DownloadManager.addToQueue(app).finally(() => {
+
+    try {
+      await DownloadManager.addToQueue(app);
+      if (DownloadManager.downloadingAppId === app.id) {
+        toast.info(DownloadStartedToast);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
       isStartingDownload = false;
       isOpen = false;
-    });
+    }
   }
 
   onMount(async () => {
-    const [downloaderSettings, appInfo] = await Promise.all([
-      DataStorage.getDownloaderFile(),
-      appInfoCache.get(app.id) || Legendary.getAppInfo(app.id).then(x => x.stdout)
-    ]);
+    const appInfo = appInfoCache.get(app.id) || (await Legendary.getAppInfo(app.id).then(x => x.stdout))!;
 
     const diskSpace = await invoke<{ total: number; available: number; }>('get_disk_space', {
-      dir: downloaderSettings.downloadPath
+      dir: $downloaderStorage.downloadPath
     });
 
     appInfoCache.set(app.id, appInfo);
@@ -169,20 +176,28 @@
       </div>
     </div>
 
-    <div class="flex gap-2 justify-end mt-2">
-      <Button onclick={() => isOpen = false} variant="outline">
+    <div class="flex w-full items-center justify-center gap-2">
+      <Dialog.Button buttonType="cancel" onclick={() => isOpen = false}>
         {$t('common.cancel')}
-      </Button>
+      </Dialog.Button>
 
-      <Tooltip tooltip={afterInstallPercentage >= 100 ? $t('library.installConfirmation.notEnoughSpace') : undefined}>
-        <Button
+      <Tooltip
+        class="w-full"
+        message={afterInstallPercentage >= 100 ? $t('library.installConfirmation.notEnoughSpace') : undefined}
+      >
+        <Dialog.Button
+          class="flex items-center gap-2"
+          buttonType="action"
+          color="epic"
           disabled={!afterInstallPercentage || afterInstallPercentage >= 100 || isStartingDownload}
-          loading={isStartingDownload}
           onclick={installApp}
-          variant="epic"
         >
+          {#if isStartingDownload}
+            <LoaderCircleIcon class="size-5 animate-spin"/>
+          {/if}
+
           {$t('library.installConfirmation.download')}
-        </Button>
+        </Dialog.Button>
       </Tooltip>
     </div>
   </div>

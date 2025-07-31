@@ -33,10 +33,10 @@
   import Switch from '$components/ui/Switch.svelte';
   import Tooltip from '$components/ui/Tooltip.svelte';
   import StatusCard from '$components/ui/StatusCard.svelte';
+  import { activeAccountStore, language } from '$lib/core/data-storage';
   import NotificationManager from '$lib/core/managers/notification';
-  import ServerStatusManager from '$lib/core/managers/serverStatus';
-  import { accountsStore, language } from '$lib/stores';
-  import type { LightswitchData } from '$types/game/serverStatus';
+  import ServerStatusManager from '$lib/core/managers/server-status';
+  import type { LightswitchData } from '$types/game/server-status';
   import { Separator } from 'bits-ui';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
   import { onMount } from 'svelte';
@@ -71,7 +71,7 @@
 
     try {
       const [lightswitchData, queueData, statusPageData] = await getResolvedResults([
-        ServerStatusManager.getLightswitch($accountsStore.activeAccount || undefined),
+        ServerStatusManager.getLightswitch($activeAccountStore || undefined),
         ServerStatusManager.getWaitingRoom(),
         ServerStatusManager.getStatusPage()
       ]);
@@ -170,7 +170,7 @@
 
     {#if serviceStatus && serviceStatus.status !== 'UP'}
       <div class="flex items-center justify-between">
-        <Tooltip tooltip={$t('serverStatus.notifyMe.description')}>
+        <Tooltip message={$t('serverStatus.notifyMe.description')}>
           <p class="flex-1 text-sm font-medium">
             {$t('serverStatus.notifyMe.title')}
           </p>
@@ -221,6 +221,7 @@
       </div>
 
       <div class="space-y-3">
+        <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
         {#each Array(4) as _, i (i)}
           <div class="bg-muted/30 p-4 rounded-lg skeleton-loader">
             <div class="flex justify-between items-center">

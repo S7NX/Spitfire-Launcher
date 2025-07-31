@@ -82,9 +82,9 @@
     "selectItems": "Sélectionner des éléments",
     "noResults": "Aucun résultat trouvé"
   },
-  "epicGamesSettings": {
+  "epicGamesWebsite": {
     "page": {
-      "title": "Paramètres Epic Games",
+      "title": "Site Epic Games",
       "description": "Clique sur le bouton ci-dessous pour te connecter à Epic Games."
     },
     "login": "Connecte-toi au site Web d'Epic Games",
@@ -125,9 +125,9 @@
     "loginExpired": "Connexion expirée. Veuillez vous reconnecter.",
     "unknownError": "Erreur inconnue"
   },
-  "deviceAuthManagement": {
+  "deviceAuth": {
     "page": {
-      "title": "Liste d'authentification des appareils"
+      "title": "Authentification des appareils"
     },
     "authInfo": {
       "noName": "Pas de nom",
@@ -148,7 +148,7 @@
     "deletedAndLoggedOut": "L'authentification de l'appareil a été supprimée et la connexion a été interrompue",
     "failedToDelete": "Échec de la suppression de l'authentification de l'appareil"
   },
-  "accessTokenManagement": {
+  "accessToken": {
     "page": {
       "title": "Jeton d'accès"
     },
@@ -159,7 +159,7 @@
     "generated": "Généré et copié dans le presse-papiers",
     "failedToGenerate": "Échec de la génération du jeton d'accès"
   },
-  "exchangeCodeManagement": {
+  "exchangeCode": {
     "page": {
       "title": "Code d'échange",
       "description": "Clique sur le bouton ci-dessous pour générer un code d'échange."
@@ -463,14 +463,6 @@
         "title": "Page de démarrage",
         "description": "Sélectionne la page à afficher au démarrage du lanceur."
       },
-      "startingAccount": {
-        "title": "Compte de démarrage",
-        "description": "Sélectionne le compte à utiliser au démarrage du lanceur.",
-        "values": {
-          "firstInList": "Premier dans la liste",
-          "lastUsed": "Dernière utilisation"
-        }
-      },
       "hideToTray": "Masquer dans la barre d'état système",
       "checkForUpdates": "Vérifier les mises à jour"
     },
@@ -554,7 +546,7 @@
       "description": "Tu t'es connecté avec succès à ton compte Epic Games."
     }
   },
-  "friendManagement": {
+  "friendsManagement": {
     "page": {
       "title": "Gestion d'ami"
     },
@@ -633,9 +625,8 @@
       "failedToUpdate": "Impossible de mettre à jour {name}",
       "repaired": "{name} s'est réparé avec succès",
       "failedToRepair": "Impossible de réparer {name}",
-      "startedInstallation": "Début de l'installation de {name}",
-      "startedUpdate": "Début de la mise à jour de {name}",
-      "startedRepair": "Début de la réparation de {name}"
+      "startedDownload": "Le téléchargement a commencé. Pour voir la progression, {el}cliquez ici{elEnd}",
+      "startedUpdate": "Début de la mise à jour de {name}"
     },
     "installConfirmation": {
       "downloadSize": "Taille du téléchargement",

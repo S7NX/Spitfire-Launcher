@@ -1,7 +1,7 @@
 import type { SpitfireShopItem } from '$types/game/shop';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { accountsStore, language, ownedItemsStore } from '$lib/stores';
+import { ownedItemsStore } from '$lib/stores';
 import { derived, get } from 'svelte/store';
 import { toast } from 'svelte-sonner';
 import { goto } from '$app/navigation';
@@ -9,30 +9,30 @@ import EpicAPIError from '$lib/exceptions/EpicAPIError';
 import type { EpicAPIErrorData } from '$types/game/authorizations';
 import type { FullQueryProfile } from '$types/game/mcp';
 import type { AllSettings } from '$types/settings';
-import DataStorage, { SETTINGS_FILE_PATH } from '$lib/core/dataStorage';
-import { Pages } from '$lib/constants/pages';
+import { accountsStorage, activeAccountStore, language, settingsStorage } from '$lib/core/data-storage';
 import { m } from '$lib/paraglide/messages';
-import { setLocale, type Locale } from '$lib/paraglide/runtime';
+import { type Locale, setLocale } from '$lib/paraglide/runtime';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function checkLogin() {
-  const hasAccount = !!get(accountsStore).activeAccount;
-  if (!hasAccount) {
-    goto(Pages.stwMissionAlerts, {
-      state: {
-        showLoginModal: true
-      }
-    }).then(() => {
-      toast.error(get(t)('errors.notLoggedIn'));
-    });
+export async function checkLogin() {
+  const hasAccount = !!get(activeAccountStore);
+  if (hasAccount) return true;
 
-    return false;
-  }
+  const sidebar = get(await getSidebar());
+  const defaultPage = sidebar.flatMap(x => x.items).find(x => x.key === 'stwMissionAlerts')!.href;
 
-  return true;
+  await goto(defaultPage, {
+    state: {
+      showLoginModal: true
+    }
+  });
+
+  toast.error(get(t)('errors.notLoggedIn'));
+
+  return false;
 }
 
 export function nonNull<T>(value: T): NonNullable<T> {
@@ -53,7 +53,6 @@ export function calculateVbucks(queryProfile: FullQueryProfile<'common_core'>) {
   return vbucksItems.reduce((acc, x) => acc + x.quantity, 0);
 }
 
-// TODO: Temporary solution to avoid showing multiple toasts when the system logs the user out
 export function shouldIgnoreError(error: unknown) {
   if (error instanceof EpicAPIError && error.errorCode === 'errors.com.epicgames.account.invalid_account_credentials') {
     console.error(error);
@@ -64,9 +63,8 @@ export function shouldIgnoreError(error: unknown) {
 }
 
 export function handleError(error: unknown, message: string, toastId?: string | number) {
-  console.error(error);
-
   if (!shouldIgnoreError(error)) {
+    console.error(error);
     toast.error(message, { id: toastId });
   }
 }
@@ -76,10 +74,16 @@ export function isLegendaryOrMythicSurvivor(itemId: string) {
 }
 
 export async function getStartingPage(settingsData?: AllSettings) {
-  const settings = settingsData || await DataStorage.getSettingsFile();
-  const startingPage = settings.app?.startingPage!;
+  const settings = settingsData || get(settingsStorage);
+  const startingPage = settings.app?.startingPage;
+  const pages = get(await getSidebar()).flatMap(x => x.items);
 
-  return Pages[startingPage] || Pages.stwMissionAlerts;
+  return (pages.find(x => x.key === startingPage) || pages.find(x => x.key === 'stwMissionAlerts')!)?.href;
+}
+
+async function getSidebar() {
+  const module = await import('$lib/constants/sidebar');
+  return module.SidebarCategories;
 }
 
 export function calculateDiscountedShopPrice(accountId: string, item: SpitfireShopItem) {
@@ -177,14 +181,17 @@ export const t = derived(language, ($language) => {
   };
 });
 
-export async function changeLocale(locale: Locale) {
+export function changeLocale(locale: Locale) {
   setLocale(locale, { reload: false });
-  language.set(locale);
 
-  const allSettings = await DataStorage.getSettingsFile();
-  allSettings.app = { ...allSettings.app, language: locale };
+  settingsStorage.update((settings) => {
+    if (!settings.app) {
+      settings.app = {};
+    }
 
-  DataStorage.writeConfigFile<AllSettings>(SETTINGS_FILE_PATH, allSettings).catch(console.error);
+    settings.app.language = locale;
+    return settings;
+  });
 }
 
 export function sleep(ms: number) {
@@ -216,11 +223,11 @@ export async function processChunks<T, R>(
 }
 
 export function getAccountsFromSelection(selection: string[]) {
-  const { allAccounts } = get(accountsStore);
-  return selection.map((id) => allAccounts.find((account) => account.accountId === id)).filter((x) => !!x);
+  const { accounts } = get(accountsStorage);
+  return selection.map((id) => accounts.find((account) => account.accountId === id)).filter((x) => !!x);
 }
 
-export function bytesToSize(bytes: number, decimals = 2, unit = 1000): string {
+export function bytesToSize(bytes: number, decimals = 2, unit = 1000) {
   if (bytes <= 0) return '0 B';
 
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];

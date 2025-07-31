@@ -1,25 +1,18 @@
 <script lang="ts">
+  import { Separator } from 'bits-ui';
   import Label from '$components/ui/Label.svelte';
   import Switch from '$components/ui/Switch.svelte';
-  import DataStorage, { SETTINGS_FILE_PATH } from '$lib/core/dataStorage';
-  import type { AllSettings } from '$types/settings';
-  import { customizableMenuStore } from '$lib/stores';
-  import { Separator } from 'bits-ui';
+  import { settingsStorage } from '$lib/core/data-storage';
   import { SidebarCategories } from '$lib/constants/sidebar';
 
-  let menuSettings = $derived($customizableMenuStore);
-
   function setVisibility(key: string, value: boolean) {
-    menuSettings = {
-      ...menuSettings,
-      [key]: value
-    };
-
-    customizableMenuStore.set(menuSettings);
-
-    DataStorage.writeConfigFile<AllSettings>(SETTINGS_FILE_PATH, {
-      customizableMenu: menuSettings
-    });
+    settingsStorage.update((settings) => ({
+      ...settings,
+      customizableMenu: {
+        ...settings.customizableMenu,
+        [key]: value
+      }
+    }));
   }
 </script>
 
@@ -35,7 +28,7 @@
             <Label class="flex-1 text-sm font-normal" for={item.key}>{item.name}</Label>
             <Switch
               id={item.key}
-              checked={menuSettings[item.key] !== false}
+              checked={($settingsStorage.customizableMenu || {})[item.key] !== false}
               onCheckedChange={(checked) => setVisibility(item.key, checked)}
             />
           </div>

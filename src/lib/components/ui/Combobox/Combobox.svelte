@@ -1,12 +1,11 @@
 <script lang="ts">
   import { Combobox, type WithoutChildrenOrChild } from 'bits-ui';
-  import { t } from '$lib/utils/util';
+  import { cn, t } from '$lib/utils/util';
   import ChevronsDownIcon from 'lucide-svelte/icons/chevrons-down';
   import ChevronsUpIcon from 'lucide-svelte/icons/chevrons-up';
   import ChevronsUpDownIcon from 'lucide-svelte/icons/chevrons-up-down';
   import CheckIcon from 'lucide-svelte/icons/check';
   import SearchIcon from 'lucide-svelte/icons/search';
-  import { cn } from '$lib/utils/util';
   import type { ClassValue } from 'svelte/elements';
 
   type Item = { value: string; label: string };
@@ -19,7 +18,7 @@
     inputProps?: WithoutChildrenOrChild<Combobox.InputProps>;
     contentProps?: WithoutChildrenOrChild<Combobox.ContentProps>;
     icon: any;
-    // Temporary prop until a new bits-ui release. Without this the search input inside the combobox doesn't work
+    // A temporary workaround, without this the search input inside the combobox doesn't work
     isGiftFriendSelection?: boolean
   };
 
@@ -55,7 +54,13 @@
   }
 </script>
 
-<Combobox.Root onOpenChange={handleOpenChange} type={type as never} bind:value={value as never} bind:open {...restProps}>
+<Combobox.Root
+  onOpenChange={handleOpenChange}
+  type={type as never}
+  bind:value={value as never}
+  bind:open
+  {...restProps}
+>
   <Combobox.Trigger
     class={cn(
       'flex w-full items-center peer disabled:cursor-not-allowed disabled:opacity-50 rounded-lg bg-surface-alt',

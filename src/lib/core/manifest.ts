@@ -10,14 +10,14 @@ type ManifestData = {
   installLocation: string;
   launchExecutable: string;
   executableLocation: string;
-}
+};
 
 export default class Manifest {
   private static fortniteManifestCache: ManifestData | null = null;
 
   static async getFortniteUserAgent() {
     const gameData = await Manifest.getFortniteManifest().catch(() => null);
-    return gameData?.userAgent || 'Fortnite/++Fortnite+Release-36.10-CL-43997926-Windows';
+    return gameData?.userAgent || 'Fortnite/++Fortnite+Release-36.30-CL-44367537-Windows';
   }
 
   static async getFortniteManifest() {

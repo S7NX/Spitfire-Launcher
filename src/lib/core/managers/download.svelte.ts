@@ -1,16 +1,16 @@
-import DataStorage, { DOWNLOADER_FILE_PATH } from '$lib/core/dataStorage';
+import { downloaderStorage } from '$lib/core/data-storage';
 import NotificationManager from '$lib/core/managers/notification';
 import { ownedApps } from '$lib/stores';
-import Legendary, { type StreamEvent } from '$lib/utils/legendary';
+import Legendary, { type StreamEvent } from '$lib/core/legendary';
 import { t } from '$lib/utils/util';
 import type { queueItemSchema } from '$lib/validations/settings';
 import type { ParsedApp } from '$types/legendary';
-import type { DownloaderSettings } from '$types/settings';
 import { invoke } from '@tauri-apps/api/core';
 import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 import { toast } from 'svelte-sonner';
 import { get } from 'svelte/store';
 import type { z } from 'zod';
+import { dev } from '$app/environment';
 
 type DownloadType = 'install' | 'update' | 'repair';
 type QueueItem = z.infer<typeof queueItemSchema>;
@@ -44,10 +44,8 @@ class DownloadManager {
   } | null = null;
 
   async init() {
-    const [downloaderSettings, accountId] = await Promise.all([
-      DataStorage.getDownloaderFile(),
-      Legendary.getAccount()
-    ]);
+    const downloaderSettings = get(downloaderStorage);
+    const accountId = await Legendary.getAccount();
 
     if (!downloaderSettings.queue || !accountId || !downloaderSettings.queue[accountId]?.length) {
       return;
@@ -154,7 +152,7 @@ class DownloadManager {
           };
         },
         onComplete: async (success) => {
-          const downloaderSettings = await DataStorage.getDownloaderFile();
+          const downloaderSettings = get(downloaderStorage);
 
           if (success) {
             app.installed = true;
@@ -266,7 +264,7 @@ class DownloadManager {
   }
 
   private async startInstallation(app: ParsedApp, callbacks: DownloadCallbacks = {}) {
-    const settings = await DataStorage.getDownloaderFile();
+    const settings = get(downloaderStorage);
     const streamId = `install_${app.id}_${Date.now()}`;
     const args = [app.requiresRepair ? 'repair' : 'install', app.id, '-y', '--skip-sdl', '--skip-dlcs', '--base-path', settings.downloadPath!];
 
@@ -296,6 +294,7 @@ class DownloadManager {
     });
 
     await invoke('start_legendary_stream', {
+      dev,
       args,
       streamId
     });
@@ -318,8 +317,13 @@ class DownloadManager {
 
   private async saveQueueToFile() {
     const accountId = (await Legendary.getAccount())!;
-    return DataStorage.writeConfigFile<DownloaderSettings>(DOWNLOADER_FILE_PATH, {
-      queue: { [accountId]: $state.snapshot(this.queue) }
+    return downloaderStorage.update((settings) => {
+      settings.queue = {
+        ...settings.queue,
+        [accountId]: $state.snapshot(this.queue)
+      };
+
+      return settings;
     });
   }
 

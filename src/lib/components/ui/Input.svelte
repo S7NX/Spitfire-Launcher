@@ -1,8 +1,10 @@
 <script lang="ts">
   import Avatar from '$components/ui/Avatar.svelte';
+  import { activeAccountStore as activeAccount } from '$lib/core/data-storage';
   import LookupManager from '$lib/core/managers/lookup';
-  import { accountsStore, avatarCache, displayNamesCache } from '$lib/stores';
+  import { avatarCache, displayNamesCache } from '$lib/stores';
   import { cn } from '$lib/utils/util';
+  import debounce from '$lib/utils/debounce';
   import { onMount } from 'svelte';
   import { cubicInOut } from 'svelte/easing';
   import type { HTMLInputAttributes } from 'svelte/elements';
@@ -18,7 +20,7 @@
     ),
     variants: {
       variant: {
-        primary: 'bg-surface-alt text-background-foreground',
+        primary: 'bg-surface-alt',
         secondary: 'bg-secondary text-secondary-foreground',
         outline: 'bg-transparent text-input-foreground',
         ghost: 'bg-transparent text-input-foreground border-none'
@@ -46,23 +48,23 @@
     ...restProps
   }: InputProps = $props();
 
-  const activeAccount = $derived($accountsStore.activeAccount);
   const initialValue = value || '';
 
   let inputElement = $state<HTMLInputElement>();
-  // eslint-disable-next-line svelte/prefer-writable-derived -- We assign this state later
   let dropdownVisible = $state(false);
   let selectedItemId = $state<string>();
-  let debounceTimeout = $state<number | undefined>();
+
+  const debouncedSearch = debounce(async (search: string) => {
+    if (!nameAutocomplete || !$activeAccount || !search || search.length < 3) return;
+    await LookupManager.searchByName($activeAccount, search);
+  }, 500);
 
   const autocompleteData = $derived.by(() => {
     if (!nameAutocomplete || !value) return [];
 
     return Array.from(displayNamesCache.entries())
-      .filter(([id, name]) =>
-        name.toLowerCase().includes(value.toLowerCase()) || id === value
-      )
-      .toSorted(([idA, nameA], [idB, nameB]) => {
+      .filter(([id, name]) => name.toLowerCase().includes(value.toLowerCase()) || id === value)
+      .sort(([idA, nameA], [idB, nameB]) => {
         const isFriendA = avatarCache.has(idA);
         const isFriendB = avatarCache.has(idB);
 
@@ -77,7 +79,8 @@
   });
 
   $effect(() => {
-    dropdownVisible = !!(value && autocompleteData.length) && !selectedItemId;
+    const hasAutoComplete = !!(value && autocompleteData.length);
+    dropdownVisible = hasAutoComplete && !selectedItemId;
   });
 
   function handleBlur(event: FocusEvent & { currentTarget: HTMLInputElement }) {
@@ -101,14 +104,9 @@
   function handleInput() {
     selectedItemId = undefined;
 
-    if (debounceTimeout) {
-      clearTimeout(debounceTimeout);
+    if (value) {
+      debouncedSearch(value);
     }
-
-    debounceTimeout = window.setTimeout(() => {
-      if (!nameAutocomplete || !activeAccount || !value || value.length < 3) return;
-      LookupManager.searchByName(activeAccount, value);
-    }, 500);
   }
 
   function handleSearchShortcut(event: KeyboardEvent) {
@@ -144,6 +142,7 @@
       {onblur}
       onfocus={handleFocus}
       oninput={handleInput}
+      {onkeydown}
       spellcheck="false"
       {type}
       bind:value
@@ -171,13 +170,7 @@
             }}
             type="button"
           >
-            <Avatar
-              alt={name}
-              fallback={fallbackAvatar}
-              imageClass="size-6"
-              src={avatar}
-            />
-
+            <Avatar alt={name} fallback={fallbackAvatar} imageClass="size-6" src={avatar}/>
             <span class="text-sm">{name}</span>
           </button>
         {/each}
@@ -193,6 +186,7 @@
     {onblur}
     onfocus={handleFocus}
     oninput={handleInput}
+    {onkeydown}
     spellcheck="false"
     {type}
     bind:value

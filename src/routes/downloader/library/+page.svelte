@@ -6,28 +6,27 @@
   import UninstallDialog from '$components/downloader/UninstallDialog.svelte';
   import PageContent from '$components/PageContent.svelte';
   import Input from '$components/ui/Input.svelte';
-  import DataStorage, { DOWNLOADER_INITIAL_DATA } from '$lib/core/dataStorage';
-  import { accountsStore, favoritedAppIds, hiddenAppIds, ownedApps } from '$lib/stores';
-  import Legendary from '$lib/utils/legendary';
-  import { t, nonNull, handleError } from '$lib/utils/util';
+  import { activeAccountStore, downloaderStorage } from '$lib/core/data-storage';
+  import { ownedApps } from '$lib/stores';
+  import Legendary from '$lib/core/legendary';
+  import { handleError, nonNull, t } from '$lib/utils/util';
   import type { AppFilterValue } from '$types/legendary';
   import Fuse from 'fuse.js';
   import { onMount } from 'svelte';
   import { toast } from 'svelte-sonner';
 
-  const activeAccount = $derived(nonNull($accountsStore.activeAccount));
+  const activeAccount = $derived(nonNull($activeAccountStore));
 
   let searchQuery = $state<string>('');
   let installDialogAppId = $state<string>();
   let uninstallDialogAppId = $state<string>();
   let filters = $state<AppFilterValue[]>([]);
-  let globalAutoUpdate = $state(DOWNLOADER_INITIAL_DATA.autoUpdate!);
 
   const filteredApps = $derived.by(() => {
     const query = searchQuery.trim().toLowerCase();
 
     let filtered = Object.values($ownedApps).filter(app => {
-      if (!filters.includes('hidden') && hiddenAppIds.has(app.id)) return false;
+      if (!filters.includes('hidden') && $downloaderStorage.hiddenApps?.includes(app.id)) return false;
       if (filters.includes('installed') && !app.installed) return false;
       if (filters.includes('updatesAvailable') && !app.hasUpdate) return false;
       return true;
@@ -43,8 +42,8 @@
     }
 
     return filtered.sort((a, b) => {
-      const favoriteA = favoritedAppIds.has(a.id) ? 0 : 1;
-      const favoriteB = favoritedAppIds.has(b.id) ? 0 : 1;
+      const favoriteA = $downloaderStorage.favoriteApps?.includes(a.id) ? 0 : 1;
+      const favoriteB = $downloaderStorage.favoriteApps?.includes(b.id) ? 0 : 1;
 
       const installedA = a.installed ? 0 : 1;
       const installedB = b.installed ? 0 : 1;
@@ -67,19 +66,6 @@
       }
     }
 
-    const downloaderSettings = await DataStorage.getDownloaderFile();
-    globalAutoUpdate = downloaderSettings.autoUpdate!;
-
-    favoritedAppIds.clear();
-    for (const id of downloaderSettings.favoriteApps || []) {
-      favoritedAppIds.add(id);
-    }
-
-    hiddenAppIds.clear();
-    for (const id of downloaderSettings.hiddenApps || []) {
-      hiddenAppIds.add(id);
-    }
-
     await Legendary.cacheApps();
   });
 </script>
@@ -100,12 +86,12 @@
       {#each filteredApps as app (app.id)}
         <AppCard
           appId={app.id}
-          {globalAutoUpdate}
           bind:installDialogAppId
           bind:uninstallDialogAppId
         />
       {/each}
     {:else}
+      <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
       {#each Array(8) as _, i (i)}
         <SkeletonAppCard/>
       {/each}

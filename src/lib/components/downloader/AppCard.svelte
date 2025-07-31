@@ -1,11 +1,11 @@
 <script lang="ts">
   import Button from '$components/ui/Button.svelte';
-  import DataStorage, { DOWNLOADER_FILE_PATH } from '$lib/core/dataStorage';
+  import { DropdownMenu } from '$components/ui/DropdownMenu';
+  import { downloaderStorage } from '$lib/core/data-storage';
   import DownloadManager from '$lib/core/managers/download.svelte';
-  import { favoritedAppIds, hiddenAppIds, ownedApps, perAppAutoUpdate, runningAppIds } from '$lib/stores';
-  import Legendary from '$lib/utils/legendary';
+  import { ownedApps, runningAppIds } from '$lib/stores';
+  import Legendary from '$lib/core/legendary';
   import { bytesToSize, handleError, sleep, t } from '$lib/utils/util';
-  import type { DownloaderSettings } from '$types/settings';
   import { invoke } from '@tauri-apps/api/core';
   import CircleMinusIcon from 'lucide-svelte/icons/circle-minus';
   import RefreshCwOffIcon from 'lucide-svelte/icons/refresh-cw-off';
@@ -18,16 +18,13 @@
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import MoreHorizontalIcon from 'lucide-svelte/icons/more-horizontal';
   import PlayIcon from 'lucide-svelte/icons/play';
-  import { DropdownMenu } from '$components/ui/DropdownMenu';
   import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
   import Trash2Icon from 'lucide-svelte/icons/trash-2';
   import XIcon from 'lucide-svelte/icons/x';
   import { toast } from 'svelte-sonner';
-  import { get } from 'svelte/store';
 
   type Props = {
     appId: string;
-    globalAutoUpdate: boolean;
     installDialogAppId?: string;
     uninstallDialogAppId?: string;
   };
@@ -40,7 +37,6 @@
 
   let {
     appId,
-    globalAutoUpdate,
     installDialogAppId = $bindable(),
     uninstallDialogAppId = $bindable()
   }: Props = $props();
@@ -75,37 +71,38 @@
   }
 
   async function toggleFavorite() {
-    if (favoritedAppIds.has(app.id)) {
-      favoritedAppIds.delete(app.id);
-    } else {
-      favoritedAppIds.add(app.id);
-    }
+    downloaderStorage.update(current => {
+      current.favoriteApps ??= [];
 
-    await DataStorage.writeConfigFile<DownloaderSettings>(DOWNLOADER_FILE_PATH, {
-      favoriteApps: Array.from(favoritedAppIds)
+      if (current.favoriteApps.includes(app.id)) {
+        current.favoriteApps = current.favoriteApps.filter(id => id !== app.id);
+      } else {
+        current.favoriteApps.push(app.id);
+      }
+
+      return current;
     });
   }
 
   async function toggleHidden() {
-    if (hiddenAppIds.has(app.id)) {
-      hiddenAppIds.delete(app.id);
-    } else {
-      hiddenAppIds.add(app.id);
-    }
+    downloaderStorage.update(current => {
+      current.hiddenApps ??= [];
 
-    await DataStorage.writeConfigFile<DownloaderSettings>(DOWNLOADER_FILE_PATH, {
-      hiddenApps: Array.from(hiddenAppIds)
+      if (current.hiddenApps.includes(app.id)) {
+        current.hiddenApps = current.hiddenApps.filter(id => id !== app.id);
+      } else {
+        current.hiddenApps.push(app.id);
+      }
+
+      return current;
     });
   }
 
   async function toggleAutoUpdate() {
-    perAppAutoUpdate.update(current => {
-      current[app.id] = !(current[app.id] ?? globalAutoUpdate);
+    downloaderStorage.update(current => {
+      current.perAppAutoUpdate ??= {};
+      current.perAppAutoUpdate[app.id] = !(current.perAppAutoUpdate[app.id] ?? current.autoUpdate);
       return current;
-    });
-
-    await DataStorage.writeConfigFile<DownloaderSettings>(DOWNLOADER_FILE_PATH, {
-      perAppAutoUpdate: get(perAppAutoUpdate)
     });
   }
 
@@ -151,7 +148,7 @@
     />
 
     <div class="absolute top-2 right-2 flex flex-col space-y-2">
-      {#if favoritedAppIds.has(app.id)}
+      {#if $downloaderStorage.favoriteApps?.includes(app.id)}
         <button class="bg-black rounded-full p-1.5" onclick={toggleFavorite} title={$t('library.app.unfavorite')}>
           <HeartIcon class="text-red-500 size-4.5" fill="red"/>
         </button>
@@ -161,7 +158,7 @@
         </button>
       {/if}
 
-      {#if hiddenAppIds.has(app.id)}
+      {#if $downloaderStorage.hiddenApps?.includes(app.id)}
         <button class="hidden group-hover:block bg-black rounded-full p-1.5" onclick={toggleHidden} title={$t('library.app.show')}>
           <EyeOffIcon class="text-gray-400 size-4.5"/>
         </button>
@@ -211,7 +208,7 @@
 
         {#if app.installed}
           <DropdownMenu.Item onclick={toggleAutoUpdate}>
-            {#if $perAppAutoUpdate[app.id] ?? globalAutoUpdate}
+            {#if ($downloaderStorage.perAppAutoUpdate || {})[app.id] ?? $downloaderStorage.autoUpdate}
               <RefreshCwOffIcon class="size-5"/>
               {$t('library.app.dropdown.autoUpdate.disable')}
             {:else}

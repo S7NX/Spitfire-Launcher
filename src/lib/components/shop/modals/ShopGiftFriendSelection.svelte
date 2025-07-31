@@ -1,10 +1,11 @@
 <script lang="ts">
-  import Combobox from '$components/ui/Combobox/Combobox.svelte';
   import { Dialog } from '$components/ui/Dialog';
+  import Combobox from '$components/ui/Combobox/Combobox.svelte';
+  import { activeAccountStore, language } from '$lib/core/data-storage';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import UserIcon from 'lucide-svelte/icons/user';
   import GiftIcon from 'lucide-svelte/icons/gift';
-  import { accountDataStore, accountsStore, language } from '$lib/stores';
+  import { accountDataStore } from '$lib/stores';
   import { nonNull, t } from '$lib/utils/util';
   import { toast } from 'svelte-sonner';
   import type { SpitfireShopItem } from '$types/game/shop';
@@ -20,7 +21,7 @@
 
   let { item, isSendingGifts, open = $bindable(false) }: Props = $props();
 
-  const activeAccount = $derived(nonNull($accountsStore.activeAccount));
+  const activeAccount = $derived(nonNull($activeAccountStore));
 
   const {
     vbucks: ownedVbucks = 0,
@@ -43,9 +44,9 @@
 
       accountDataStore.update((accounts) => {
         const account = accounts[activeAccount.accountId];
-        account.remainingGifts =
-          (account.remainingGifts || 0) - selectedFriends.length;
+        account.remainingGifts = (account.remainingGifts || 0) - selectedFriends.length;
         account.vbucks = (account.vbucks || 0) - giftData.vbucksSpent;
+
         return accounts;
       });
 
@@ -76,29 +77,21 @@
             return;
           }
           case 'errors.com.epicgames.modules.gamesubcatalog.purchase_not_allowed': {
-            toast.error($t('itemShop.friendsMayOwnItem'));
-            return;
+            return toast.error($t('itemShop.friendsMayOwnItem'));
           }
           case 'errors.com.epicgames.modules.gamesubcatalog.gift_recipient_not_eligible': {
-            toast.error($t('itemShop.friendsNotEligible'));
-            return;
+            return toast.error($t('itemShop.friendsNotEligible'));
           }
           case 'errors.com.epicgames.modules.gamesubcatalog.receiver_owns_item_from_bundle': {
-            toast.error($t('itemShop.friendsOwnItemFromBundle'));
-            return;
+            return toast.error($t('itemShop.friendsOwnItemFromBundle'));
           }
           default: {
             if (error.message.toLowerCase().includes('mfa')) {
-              toast.error($t('itemShop.enableMFA'));
-              return;
+              return toast.error($t('itemShop.enableMFA'));
             }
 
-            if (
-              error.messageVars?.[0] ===
-              'errors.com.epicgames.modules.gamesubcatalog.receiver_will_not_accept_gifts'
-            ) {
-              toast.error($t('itemShop.friendsDoNotAcceptGifts'));
-              return;
+            if (error.messageVars?.[0] === 'errors.com.epicgames.modules.gamesubcatalog.receiver_will_not_accept_gifts') {
+              return toast.error($t('itemShop.friendsDoNotAcceptGifts'));
             }
           }
         }
@@ -140,8 +133,8 @@
       !selectedFriends.length
         ? $t('itemShop.selectFriends')
         : selectedFriends.length > 1
-          ? $t('itemShop.selectedFriendCount', { count: selectedFriends.length })
-          :friends.find((f) => f.accountId === selectedFriends[0])?.displayName
+        ? $t('itemShop.selectedFriendCount', { count: selectedFriends.length })
+        :friends.find((f) => f.accountId === selectedFriends[0])?.displayName
     }
     type="multiple"
     bind:value={selectedFriends}

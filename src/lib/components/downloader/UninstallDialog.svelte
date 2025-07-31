@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Dialog } from '$components/ui/Dialog';
   import { ownedApps } from '$lib/stores';
-  import Legendary from '$lib/utils/legendary';
+  import Legendary from '$lib/core/legendary';
   import { handleError, t } from '$lib/utils/util';
   import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
   import { toast } from 'svelte-sonner';
@@ -44,14 +44,16 @@
     </Dialog.Button>
 
     <Dialog.Button
+      class="flex items-center gap-2"
       buttonType="action"
       color="epic"
       disabled={isDeleting}
       onclick={uninstallApp}
     >
       {#if isDeleting}
-        <LoaderCircleIcon class="size-5 animate-spin mr-2"/>
+        <LoaderCircleIcon class="size-5 animate-spin"/>
       {/if}
+
       {$t('common.confirm')}
     </Dialog.Button>
   </div>

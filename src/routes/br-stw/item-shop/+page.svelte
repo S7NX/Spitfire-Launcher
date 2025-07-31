@@ -1,3 +1,10 @@
+<script lang="ts" module>
+  import type { SpitfireShopFilter } from '$types/game/shop';
+
+  let searchQuery = $state<string>('');
+  let selectedFilter = $state<SpitfireShopFilter>('all');
+</script>
+
 <script lang="ts">
   import PageContent from '$components/PageContent.svelte';
   import ShopItemModal from '$components/shop/modals/ShopItemModal.svelte';
@@ -5,31 +12,28 @@
   import ShopSection from '$components/shop/ShopSection.svelte';
   import SkeletonShopSection from '$components/shop/SkeletonShopSection.svelte';
   import Input from '$components/ui/Input.svelte';
-  import FriendManager from '$lib/core/managers/friend';
+  import { activeAccountStore as activeAccount } from '$lib/core/data-storage';
+  import FriendsManager from '$lib/core/managers/friends';
   import LookupManager from '$lib/core/managers/lookup';
   import MCPManager from '$lib/core/managers/mcp';
   import ShopManager from '$lib/core/managers/shop';
-  import { accountDataStore, accountsStore, brShopStore, ownedItemsStore } from '$lib/stores';
+  import { accountDataStore, brShopStore, ownedItemsStore } from '$lib/stores';
   import { calculateVbucks, formatRemainingDuration, getResolvedResults, t } from '$lib/utils/util';
   import type { AccountStoreData } from '$types/accounts';
-  import type { SpitfireShopFilter, SpitfireShopSection } from '$types/game/shop';
+  import type { SpitfireShopSection } from '$types/game/shop';
   import Fuse from 'fuse.js';
   import { onMount } from 'svelte';
 
-  const activeAccount = $derived($accountsStore.activeAccount);
-
   $effect(() => {
-    const alreadyFetched = activeAccount && Object.keys($accountDataStore[activeAccount.accountId] || {}).length > 0;
-    if (!activeAccount || alreadyFetched) return;
+    const alreadyFetched = $activeAccount && Object.keys($accountDataStore[$activeAccount.accountId] || {}).length > 0;
+    if (!$activeAccount || alreadyFetched) return;
 
     fetchAccountData();
   });
 
-  let remainingTime = $state<number>();
+  let remainingTime = $state(getResetDate().getTime() - Date.now());
   let shopSections = $state<SpitfireShopSection[] | null>(null);
   let errorOccurred = $state(false);
-  let searchQuery = $state<string>('');
-  let selectedFilter = $state<SpitfireShopFilter>('all');
   let modalOfferId = $state<string>('');
 
   const filteredItems = $derived.by(() => {
@@ -67,7 +71,8 @@
 
         const fuse = new Fuse(section.items, {
           keys: ['name'],
-          threshold: 0.4
+          threshold: 0.4,
+          shouldSort: false
         });
 
         return {
@@ -85,7 +90,10 @@
 
     try {
       const shopResponse = (!isNewDay && $brShopStore) || await ShopManager.fetch();
-      shopSections = ShopManager.groupBySections(shopResponse.offers);
+      shopSections = ShopManager.groupBySections(shopResponse.offers).map((section) => ({
+        ...section,
+        items: section.items.sort((a, b) => b.sortPriority - a.sortPriority)
+      }));
     } catch (error) {
       console.error(error);
       errorOccurred = true;
@@ -93,11 +101,11 @@
   }
 
   async function fetchAccountData() {
-    const account = activeAccount!;
-    const [athenaProfile, commonCoreProfile, friendList] = await getResolvedResults([
+    const account = $activeAccount!;
+    const [athenaProfile, commonCoreProfile, friendsList] = await getResolvedResults([
       MCPManager.queryProfile(account, 'athena'),
       MCPManager.queryProfile(account, 'common_core'),
-      FriendManager.getFriends(account)
+      FriendsManager.getFriends(account)
     ]);
 
     let accountData: AccountStoreData = {
@@ -123,8 +131,8 @@
       accountData.remainingGifts = profile.stats.attributes.allowed_to_send_gifts ? 5 : 0;
     }
 
-    if (friendList) {
-      const accountsData = await LookupManager.fetchByIds(account, friendList.map((friend) => friend.accountId));
+    if (friendsList) {
+      const accountsData = await LookupManager.fetchByIds(account, friendsList.map((friend) => friend.accountId));
 
       accountData.friends = accountsData
         .sort((a, b) => a.displayName.localeCompare(b.displayName))
@@ -134,7 +142,7 @@
         }));
     }
 
-    if (commonCoreProfile || friendList) {
+    if (commonCoreProfile || friendsList) {
       accountDataStore.update((accounts) => {
         accounts[account.accountId] = accountData;
         return accounts;
@@ -152,24 +160,20 @@
   }
 
   onMount(() => {
-    remainingTime = getResetDate().getTime() - Date.now();
+    let isFetching = true;
+    fetchShop().finally(() => isFetching = false);
 
-    let intervalId: number;
-    let isFetching = false;
+    let intervalId = setInterval(() => {
+      const nextResetDate = getResetDate();
+      remainingTime = nextResetDate.getTime() - Date.now();
 
-    fetchShop().then(() => {
-      intervalId = window.setInterval(() => {
-        const nextResetDate = getResetDate();
-        remainingTime = nextResetDate.getTime() - Date.now();
-
-        if (Date.now() > nextResetDate.getTime() && !isFetching) {
-          isFetching = true;
-          fetchShop(true).then(() => {
-            isFetching = false;
-          });
-        }
-      }, 1000);
-    });
+      if (Date.now() > nextResetDate.getTime() && !isFetching) {
+        isFetching = true;
+        fetchShop(true).finally(() => {
+          isFetching = false;
+        });
+      }
+    }, 1000);
 
     return () => {
       clearInterval(intervalId);
@@ -198,6 +202,7 @@
         <p class="text-red-500">{$t('itemShop.failedtoFetch')}</p>
       {:else}
         <div class="space-y-6">
+          <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
           {#each Array(2) as _, index (index)}
             <SkeletonShopSection/>
           {/each}

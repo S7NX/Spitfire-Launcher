@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
+  import { accountsStorage, activeAccountStore } from '$lib/core/data-storage';
   import { MediaQuery } from 'svelte/reactivity';
   import Avatar from '$components/ui/Avatar.svelte';
   import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
@@ -9,27 +10,28 @@
   import { DropdownMenu } from '$components/ui/DropdownMenu';
   import Account from '$lib/core/account';
   import type { AccountData } from '$types/accounts';
-  import { accountsStore, avatarCache } from '$lib/stores';
+  import { avatarCache } from '$lib/stores';
   import { toast } from 'svelte-sonner';
   import LoginModal from '$components/login/LoginModal.svelte';
-  import { cn, handleError, t } from '$lib/utils/util';
+  import { cn, handleError, nonNull, t } from '$lib/utils/util';
 
   type PageState = {
     showLoginModal?: boolean;
   };
 
-  const { allAccounts, activeAccount } = $derived($accountsStore);
+  const allAccounts = $derived(nonNull($accountsStorage.accounts));
+  const activeAccount = $derived(nonNull($activeAccountStore));
 
   let dropdownOpen = $state(false);
   let searchTerm = $state<string>();
-  // eslint-disable-next-line svelte/prefer-writable-derived -- We assign this state later
   let showLoginModal = $state(false);
 
   let isSmall = new MediaQuery('max-width: 640px');
   let dropdownSide: 'top' | 'right' = $derived(isSmall.current ? 'top' : 'right');
 
   $effect(() => {
-    showLoginModal = (page.state as PageState).showLoginModal || false;
+    const pageState = page.state as PageState;
+    showLoginModal = pageState.showLoginModal || false;
   });
 
   const filteredAccounts = $derived(searchTerm
@@ -43,11 +45,10 @@
   async function changeAccounts(account: AccountData) {
     dropdownOpen = false;
 
-    try {
-      await Account.changeActiveAccount(account.accountId);
-    } catch (error) {
-      handleError(error, $t('accountManager.failedToSwitch', { name: account.displayName }));
-    }
+    accountsStorage.update(settings => {
+      settings.activeAccountId = account.accountId;
+      return settings;
+    });
   }
 
   function addNewAccount() {
@@ -61,7 +62,7 @@
     const toastId = toast.loading($t('accountManager.loggingOut', { name: accountName }));
 
     try {
-      await Account.logout(activeAccount!.accountId);
+      await Account.removeAccount(activeAccount!.accountId);
       toast.success($t('accountManager.loggedOut', { name: accountName }), { id: toastId });
     } catch (error) {
       handleError(error, $t('accountManager.failedToLogout', { name: accountName }), toastId);
@@ -145,8 +146,8 @@
         ]}
       >
         <DropdownMenu.Item onclick={addNewAccount}>
-          <PlusIcon class="size-4"/>
-          {$t('accountManager.login')}
+          <PlusIcon class="size-4 shrink-0"/>
+          <span class="truncate">{$t('accountManager.login')}</span>
         </DropdownMenu.Item>
 
         {#if activeAccount}
@@ -154,8 +155,8 @@
             class="hover:bg-destructive hover:text-destructive-foreground"
             onclick={logout}
           >
-            <LogOutIcon class="size-4"/>
-            {$t('accountManager.logout')}
+            <LogOutIcon class="size-4 shrink-0"/>
+            <span class="truncate">{$t('accountManager.logout')}</span>
           </DropdownMenu.Item>
         {/if}
       </div>
