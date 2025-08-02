@@ -16,10 +16,13 @@
   import { toast } from 'svelte-sonner';
   import { handleError, nonNull, t } from '$lib/utils/util';
   import XMPPManager from '$lib/core/managers/xmpp';
+  import MoonIcon from 'lucide-svelte/icons/moon';
 
   const activeAccount = $derived(nonNull($activeAccountStore));
   const isCustomStatusInUse = $derived(TaxiManager.taxiAccountIds.has(activeAccount.accountId));
+
   let customStatus = $state<string>();
+  let onlineType = $state<'online' | 'away'>('online');
 
   async function setCustomStatus(event: SubmitEvent) {
     event.preventDefault();
@@ -32,7 +35,7 @@
       const connection = await XMPPManager.create(activeAccount, 'customStatus');
       await connection.connect();
 
-      connection.setStatus(customStatus);
+      connection.setStatus(customStatus, onlineType);
       statusSetAccounts.add(activeAccount.accountId);
 
       toast.success($t('customStatus.statusSet'));
@@ -69,11 +72,34 @@
   title={$t('customStatus.page.title')}
 >
   <form class="flex flex-col gap-y-4" onsubmit={setCustomStatus}>
-    <Input
-      disabled={isCustomStatusInUse}
-      placeholder={$t('customStatus.statusPlaceholder')}
-      bind:value={customStatus}
-    />
+    <div class="relative">
+      <Input
+        class="pr-18"
+        disabled={isCustomStatusInUse}
+        placeholder={$t('customStatus.statusPlaceholder')}
+        bind:value={customStatus}
+      />
+
+      <button
+        class="absolute top-1/2 right-10 -translate-y-1/2 p-1.25 {onlineType === 'online' && 'bg-accent'} rounded-sm"
+        aria-label={$t('customStatus.onlineTypes.online')}
+        onclick={() => onlineType = 'online'}
+        title={$t('customStatus.onlineTypes.online')}
+        type="button"
+      >
+        <span class="block size-4 bg-[#43a25a] rounded-full p-2"></span>
+      </button>
+
+      <button
+        class="absolute top-1/2 right-2 -translate-y-1/2 p-1 {onlineType === 'away' && 'bg-accent'} rounded-sm"
+        aria-label={$t('customStatus.onlineTypes.away')}
+        onclick={() => onlineType = 'away'}
+        title={$t('customStatus.onlineTypes.away')}
+        type="button"
+      >
+        <MoonIcon class="size-4.5 text-orange-400 fill-orange-400 fill-orange-40"/>
+      </button>
+    </div>
 
     <Button
       disabled={isSettingStatus || !customStatus?.trim() || isCustomStatusInUse}

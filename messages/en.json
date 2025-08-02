@@ -203,7 +203,11 @@
     "resetStatus": "Reset Status",
     "resettingStatus": "Resetting Status",
     "statusReset": "Custom status reset successfully",
-    "failedToResetStatus": "Failed to reset custom status"
+    "failedToResetStatus": "Failed to reset custom status",
+    "onlineTypes": {
+      "online": "Online",
+      "away": "Away"
+    }
   },
   "dailyQuests": {
     "page": {

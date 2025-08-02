@@ -203,7 +203,11 @@
     "resetStatus": "Özel Durumu Sıfırla",
     "resettingStatus": "Sıfırlanıyor",
     "statusReset": "Özel durum başarıyla sıfırlandı",
-    "failedToResetStatus": "Özel durum sıfırlanamadı"
+    "failedToResetStatus": "Özel durum sıfırlanamadı",
+    "onlineTypes": {
+      "online": "Çevrimiçi",
+      "away": "Uzakta"
+    }
   },
   "dailyQuests": {
     "page": {

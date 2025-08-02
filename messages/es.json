@@ -203,7 +203,11 @@
     "resetStatus": "Restablecer Estado",
     "resettingStatus": "Restableciendo estado",
     "statusReset": "Estado personalizado restablecido correctamente",
-    "failedToResetStatus": "Error al restablecer el estado personalizado"
+    "failedToResetStatus": "Error al restablecer el estado personalizado",
+    "onlineTypes": {
+      "online": "En línea",
+      "away": "Ausente"
+    }
   },
   "dailyQuests": {
     "page": {
