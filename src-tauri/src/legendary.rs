@@ -2,7 +2,7 @@ use crate::types::{CommandOutput, EventType, StreamEvent};
 use std::collections::HashMap;
 use std::sync::{LazyLock, Mutex};
 use sysinfo::{ProcessRefreshKind, ProcessesToUpdate, Signal, System};
-use tauri::{AppHandle, Emitter, Manager};
+use tauri::{AppHandle, Emitter};
 use tauri_plugin_shell::process::{CommandChild, CommandEvent};
 use tauri_plugin_shell::ShellExt;
 
@@ -10,11 +10,11 @@ static ACTIVE_STREAMS: LazyLock<Mutex<HashMap<String, CommandChild>>> =
     LazyLock::new(|| Mutex::new(HashMap::new()));
 
 pub async fn run_legendary(
-    app: AppHandle,
-    dev: bool,
-    args: Vec<String>,
+    app: &AppHandle,
+    config_path: &str,
+    args: &[String],
 ) -> Result<CommandOutput, String> {
-    let sidecar = create_legendary_sidecar(&app, dev, args)?;
+    let sidecar = create_legendary_sidecar(app, config_path, args)?;
     let (mut rx, _child) = sidecar.spawn().map_err(|e| e.to_string())?;
 
     let mut stdout = String::new();
@@ -52,20 +52,20 @@ pub async fn run_legendary(
 }
 
 pub async fn start_legendary_stream(
-    app: AppHandle,
-    dev: bool,
-    stream_id: String,
-    args: Vec<String>,
+    app: &AppHandle,
+    config_path: &str,
+    stream_id: &str,
+    args: &[String],
 ) -> Result<String, String> {
-    let sidecar = create_legendary_sidecar(&app, dev, args)?;
+    let sidecar = create_legendary_sidecar(app, config_path, args)?;
     let (mut rx, child) = sidecar.spawn().map_err(|e| e.to_string())?;
 
     {
         let mut streams = ACTIVE_STREAMS.lock().unwrap();
-        streams.insert(stream_id.clone(), child);
+        streams.insert(stream_id.to_string(), child);
     }
 
-    let stream_id_clone = stream_id.clone();
+    let stream_id_clone = stream_id.to_string();
     let app_clone = app.clone();
 
     tauri::async_runtime::spawn(async move {
@@ -128,20 +128,17 @@ pub async fn start_legendary_stream(
         }
     });
 
-    Ok(stream_id)
+    Ok(stream_id.to_string())
 }
 
-pub async fn stop_legendary_stream(
-    stream_id: String,
-    force_kill_all: bool,
-) -> Result<bool, String> {
+pub async fn stop_legendary_stream(stream_id: &str, force_kill_all: bool) -> Result<bool, String> {
     if force_kill_all {
         kill_legendary_processes();
         Ok(true)
     } else {
         let child = {
             let mut streams = ACTIVE_STREAMS.lock().unwrap();
-            streams.remove(&stream_id)
+            streams.remove(stream_id)
         };
 
         if let Some(child) = child {
@@ -157,18 +154,9 @@ pub async fn stop_legendary_stream(
 
 fn create_legendary_sidecar(
     app: &AppHandle,
-    dev: bool,
-    args: Vec<String>,
+    config_path: &str,
+    args: &[String],
 ) -> Result<tauri_plugin_shell::process::Command, String> {
-    let config_path = app
-        .path()
-        .data_dir()
-        .map_err(|e| e.to_string())?
-        .join("spitfire-launcher")
-        .join(if dev { "legendary-dev" } else { "legendary" })
-        .to_string_lossy()
-        .to_string();
-
     Ok(app
         .shell()
         .sidecar("legendary")

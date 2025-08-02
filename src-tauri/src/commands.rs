@@ -61,21 +61,21 @@ pub async fn stop_app(_app: AppHandle, app_id: String) -> Result<bool, String> {
 #[command]
 pub async fn run_legendary(
     app: AppHandle,
-    dev: bool,
+    config_path: String,
     args: Vec<String>,
 ) -> Result<CommandOutput, String> {
-    legendary::run_legendary(app, dev, args).await
+    legendary::run_legendary(&app, &config_path, &args).await
 }
 
 #[cfg(desktop)]
 #[command]
 pub async fn start_legendary_stream(
     app: AppHandle,
-    dev: bool,
+    config_path: String,
     stream_id: String,
     args: Vec<String>,
 ) -> Result<String, String> {
-    legendary::start_legendary_stream(app, dev, stream_id, args).await
+    legendary::start_legendary_stream(&app, &config_path, &stream_id, &args).await
 }
 
 #[cfg(desktop)]
@@ -84,7 +84,7 @@ pub async fn stop_legendary_stream(
     stream_id: String,
     force_kill_all: bool,
 ) -> Result<bool, String> {
-    legendary::stop_legendary_stream(stream_id, force_kill_all).await
+    legendary::stop_legendary_stream(&stream_id, force_kill_all).await
 }
 
 #[cfg(desktop)]

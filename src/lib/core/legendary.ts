@@ -1,5 +1,5 @@
 import Authentication from '$lib/core/authentication';
-import { downloaderStorage } from '$lib/core/data-storage';
+import DataStorage, { downloaderStorage } from '$lib/core/data-storage';
 import DownloadManager from '$lib/core/managers/download.svelte.js';
 import LegendaryError from '$lib/exceptions/LegendaryError';
 import { ownedApps } from '$lib/stores';
@@ -37,12 +37,11 @@ export default class Legendary {
   } = {};
 
   static async execute<T>(args: string[]): Promise<ExecuteResult<T>> {
-    const json = args.includes('--json');
-
     try {
-      const result = await invoke<ExecuteResult>('run_legendary', { dev, args });
+      const configPath = await Legendary.getConfigPath();
+      const result = await invoke<ExecuteResult>('run_legendary', { configPath, args });
 
-      if (json) {
+      if (args.includes('--json')) {
         result.stdout = JSON.parse(result.stdout) as T;
       }
 
@@ -52,12 +51,14 @@ export default class Legendary {
 
       return result;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new LegendaryError(error.message);
-      } else {
-        throw new LegendaryError(String(error));
-      }
+      const message = error instanceof Error ? error.message : String(error);
+      throw new LegendaryError(message);
     }
+  }
+
+  static async getConfigPath() {
+    const dataDirectory = await DataStorage.getDataDirectory();
+    return path.join(dataDirectory, dev ? 'legendary-dev' : 'legendary');
   }
 
   static async login(account: AccountData) {
@@ -76,10 +77,10 @@ export default class Legendary {
 
   static async logout() {
     const data = await Legendary.execute<string>(['auth', '--delete']);
-    Legendary.caches.account = undefined;
-    if (Legendary.caches.status) Legendary.caches.status.account = null;
 
     Legendary.cachedApps = false;
+    Legendary.caches.account = undefined;
+    if (Legendary.caches.status) Legendary.caches.status.account = null;
 
     return data;
   }

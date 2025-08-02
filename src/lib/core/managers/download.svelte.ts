@@ -10,7 +10,6 @@ import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 import { toast } from 'svelte-sonner';
 import { get } from 'svelte/store';
 import type { z } from 'zod';
-import { dev } from '$app/environment';
 
 type DownloadType = 'install' | 'update' | 'repair';
 type QueueItem = z.infer<typeof queueItemSchema>;
@@ -294,7 +293,7 @@ class DownloadManager {
     });
 
     await invoke('start_legendary_stream', {
-      dev,
+      configPath: await Legendary.getConfigPath(),
       args,
       streamId
     });

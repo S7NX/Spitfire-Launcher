@@ -13,11 +13,11 @@ import debounce from '$lib/utils/debounce';
 import type { ZodType } from 'zod';
 import { baseLocale, type Locale } from '$lib/paraglide/runtime';
 
-class DataStorage<T> implements Writable<T> {
+export default class DataStorage<T> implements Writable<T> {
   private readonly path: string;
   private readonly debouncedWrite: (data: Partial<T>) => Promise<void>;
   public readonly ready: Promise<void>;
-  private configPath?: string;
+  private static dataDirectory?: string;
   private store: Writable<T>;
 
   subscribe: Writable<T>['subscribe'];
@@ -31,8 +31,8 @@ class DataStorage<T> implements Writable<T> {
     this.subscribe = this.store.subscribe;
     this.set = this.store.set;
     this.update = this.store.update;
-    this.debouncedWrite = debounce(this.writeConfigFile.bind(this), 500);
 
+    this.debouncedWrite = debounce(this.writeConfigFile.bind(this), 500);
     this.ready = this.init(defaultData, schema, fileName);
   }
 
@@ -89,16 +89,8 @@ class DataStorage<T> implements Writable<T> {
   }
 
   private async getConfigPath() {
-    if (this.configPath) return this.configPath;
-
-    const dataDirectory = platform() === 'android' ? await dataDir() : await path.join(await dataDir(), config.identifier);
-
-    if (!(await exists(dataDirectory))) {
-      await mkdir(dataDirectory, { recursive: true });
-    }
-
-    this.configPath = await path.join(dataDirectory, this.path);
-    return this.configPath;
+    const dataDirectory = await DataStorage.getDataDirectory();
+    return path.join(dataDirectory, this.path);
   }
 
   private mergeWithDefaults<T>(defaults: T, data: T): T {
@@ -115,6 +107,19 @@ class DataStorage<T> implements Writable<T> {
     }
 
     return merged;
+  }
+
+  public static async getDataDirectory() {
+    if (DataStorage.dataDirectory) return DataStorage.dataDirectory;
+
+    const dataDirectory = platform() === 'android' ? await dataDir() : await path.join(await dataDir(), config.identifier);
+
+    if (!(await exists(dataDirectory))) {
+      await mkdir(dataDirectory, { recursive: true });
+    }
+
+    DataStorage.dataDirectory = dataDirectory;
+    return dataDirectory;
   }
 }
 
