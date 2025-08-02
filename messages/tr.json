@@ -90,7 +90,9 @@
     "login": "Giriş Yap",
     "loggingIn": "Giriş yapılıyor",
     "openedWebsite": "Epic Games websitesi açıldı",
-    "failedToOpenWebsite": "Epic Games websitesi açılamadı"
+    "failedToOpenWebsite": "Epic Games websitesi açılamadı",
+    "copied": "Giriş URL'si panoya kopyalandı",
+    "failedToCopy": "Giriş URL'si kopyalanamadı"
   },
   "eula": {
     "page": {

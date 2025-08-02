@@ -87,10 +87,12 @@
       "title": "Site Epic Games",
       "description": "Clique sur le bouton ci-dessous pour te connecter à Epic Games."
     },
-    "login": "Connecte-toi au site Web d'Epic Games",
+    "login": "Connexion à Epic Games",
     "loggingIn": "Connexion",
     "openedWebsite": "Ouverture du site Web d'Epic Games",
-    "failedToOpenWebsite": "Impossible d'ouvrir le site Web d'Epic Games"
+    "failedToOpenWebsite": "Impossible d'ouvrir le site Web d'Epic Games",
+    "copied": "URL de connexion copiée dans le presse-papiers",
+    "failedToCopy": "Échec de la copie de l'URL de connexion"
   },
   "eula": {
     "page": {

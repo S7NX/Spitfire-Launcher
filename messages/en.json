@@ -90,7 +90,9 @@
     "login": "Login to Epic Games Website",
     "loggingIn": "Logging in",
     "openedWebsite": "Opened Epic Games website",
-    "failedToOpenWebsite": "Failed to open Epic Games website"
+    "failedToOpenWebsite": "Failed to open Epic Games website",
+    "copied": "Copied login URL to clipboard",
+    "failedToCopy": "Failed to copy login URL"
   },
   "eula": {
     "page": {

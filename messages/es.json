@@ -90,7 +90,9 @@
     "login": "Iniciar sesión en Epic",
     "loggingIn": "Iniciando sesión",
     "openedWebsite": "Se abrió el sitio web de Epic Games",
-    "failedToOpenWebsite": "Error al abrir el sitio web de Epic Games"
+    "failedToOpenWebsite": "Error al abrir el sitio web de Epic Games",
+    "copied": "URL de inicio de sesión copiada al portapapeles",
+    "failedToCopy": "No se pudo copiar la URL de inicio de sesión"
   },
   "eula": {
     "page": {
