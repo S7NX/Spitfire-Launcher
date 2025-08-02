@@ -99,10 +99,7 @@ export default class XMPPManager extends EventEmitter<EventMap> {
   }
 
   async connect() {
-    if (this.connection?.jid) return;
-
-    this.intentionalDisconnect = false;
-    this.reconnectAttempts = 0;
+    if (this.connection?.sessionStarted) return;
 
     const server = 'prod.ol.epicgames.com';
 
@@ -137,8 +134,15 @@ export default class XMPPManager extends EventEmitter<EventMap> {
       }, 15000);
 
       this.connection!.once('session:started', () => {
+        this.intentionalDisconnect = false;
+        this.reconnectAttempts = 0;
+
+        if (this.reconnectTimeout) {
+          clearTimeout(this.reconnectTimeout);
+          this.reconnectTimeout = undefined;
+        }
+
         clearTimeout(timeout);
-        XMPPManager.instances.set(this.account.accountId, this);
         resolve();
       });
 
@@ -235,13 +239,6 @@ export default class XMPPManager extends EventEmitter<EventMap> {
 
     try {
       await this.connect();
-
-      if (this.reconnectTimeout) {
-        clearTimeout(this.reconnectTimeout);
-        this.reconnectTimeout = undefined;
-      }
-
-      this.reconnectAttempts = 0;
     } catch (error) {
       console.error(error);
       this.reconnectAttempts++;

@@ -56,7 +56,7 @@ export default class EventEmitter<EventMap extends Record<string, any>> {
     });
   }
 
-  clearListeners() {
+  protected clearListeners() {
     this.listeners.clear();
   }
 }
