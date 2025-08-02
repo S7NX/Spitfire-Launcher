@@ -2,7 +2,7 @@
 use {
     crate::app_monitor,
     crate::legendary,
-    crate::types::{AppState, CommandOutput, DiskSpace, LaunchData},
+    crate::types::{AppState, CommandOutput, DiskSpace, LaunchData, TrackedApp},
     fs2, shlex,
     std::path::Path,
     tauri::AppHandle,
@@ -31,6 +31,12 @@ pub fn get_disk_space(dir: String) -> Result<DiskSpace, String> {
         }
         (Err(e), _) | (_, Err(e)) => Err(e.to_string()),
     }
+}
+
+#[cfg(desktop)]
+#[command]
+pub fn get_tracked_apps() -> Result<Vec<TrackedApp>, String> {
+    app_monitor::get_tracked_apps()
 }
 
 #[cfg(desktop)]

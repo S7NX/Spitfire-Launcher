@@ -5,11 +5,10 @@
   import { activeAccountStore as activeAccount, settingsStorage } from '$lib/core/data-storage';
   import Manifest from '$lib/core/manifest';
   import { runningAppIds } from '$lib/stores';
-  import { handleError, shouldIgnoreError, t } from '$lib/utils/util';
+  import { handleError, shouldIgnoreError, sleep, t } from '$lib/utils/util';
   import type { LegendaryLaunchData } from '$types/legendary';
   import { path } from '@tauri-apps/api';
   import { invoke } from '@tauri-apps/api/core';
-  import { Command } from '@tauri-apps/plugin-shell';
   import GamePad2Icon from 'lucide-svelte/icons/gamepad-2';
   import CircleStopIcon from 'lucide-svelte/icons/circle-stop';
   import { toast } from 'svelte-sonner';
@@ -29,7 +28,8 @@
     pre_launch_wait: false
   };
 
-  let isLoading = $state(false);
+  let isLaunching = $state(false);
+  let isStopping = $state(false);
 
   async function launchFortnite() {
     if (runningAppIds.has(fortniteAppId)) {
@@ -37,7 +37,7 @@
       return;
     }
 
-    isLoading = true;
+    isLaunching = true;
     const toastId = toast.loading($t('launchGame.launching'));
 
     try {
@@ -91,40 +91,32 @@
         toast.error($t('launchGame.failedToLaunch'), { id: toastId });
       }
     } finally {
-      isLoading = false;
+      isLaunching = false;
     }
   }
 
   async function stopFortnite() {
+    isStopping = true;
+
     const toastId = toast.loading($t('launchGame.stopping'));
 
     try {
-      const { code } = await Command.create('kill-fortnite').execute();
-      if (code !== 0) {
-        throw new Error(`Command exited with code ${code}`);
-      }
-
       await invoke<number>('stop_app', { appId: fortniteAppId });
-
       toast.success($t('launchGame.stopped'), { id: toastId });
     } catch (error) {
       handleError(error, $t('launchGame.failedToStop'), toastId);
-    }
-  }
-
-  async function launchOrStop() {
-    if (runningAppIds.has(fortniteAppId)) {
-      await stopFortnite();
-    } else {
-      await launchFortnite();
+    } finally {
+      // A delay to ensure the app was killed properly
+      await sleep(2000);
+      isStopping = false;
     }
   }
 </script>
 
 <Button
   class="flex items-center justify-between gap-x-2 shrink-0"
-  disabled={!$activeAccount || (isLoading && !runningAppIds.has(fortniteAppId))}
-  onclick={launchOrStop}
+  disabled={!$activeAccount || (isLaunching && !runningAppIds.has(fortniteAppId)) || isStopping}
+  onclick={() => runningAppIds.has(fortniteAppId) ? stopFortnite() : launchFortnite()}
   variant={runningAppIds.has(fortniteAppId) ? 'danger' : 'epic'}
 >
   {#if runningAppIds.has(fortniteAppId)}

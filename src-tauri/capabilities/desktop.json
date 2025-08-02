@@ -50,15 +50,6 @@
       "identifier": "shell:allow-execute",
       "allow": [
         {
-          "name": "kill-fortnite",
-          "cmd": "taskkill",
-          "args": [
-            "/F",
-            "/IM",
-            "FortniteClient-Win64-Shipping.exe"
-          ]
-        },
-        {
           "name": "binaries/legendary",
           "sidecar": true
         }

@@ -59,12 +59,12 @@
     isStopping = true;
 
     try {
-      await invoke('stop_app', { appId: app.id });
+      await invoke<number>('stop_app', { appId: app.id });
       toast.success($t('library.app.stopped', { name: app.title }));
     } catch (error) {
       handleError(error, $t('library.app.failedToStop', { name: app.title }));
     } finally {
-      // A delay to ensure the app is killed properly
+      // A delay to ensure the app was killed properly
       await sleep(2000);
       isStopping = false;
     }

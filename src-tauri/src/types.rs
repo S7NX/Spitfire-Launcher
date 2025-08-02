@@ -62,7 +62,8 @@ pub struct AppStateEvent {
 }
 
 #[cfg(desktop)]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub struct TrackedApp {
     pub pid: u32,
     pub app_id: String,

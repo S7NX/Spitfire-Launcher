@@ -61,6 +61,8 @@ pub fn run() {
             #[cfg(desktop)]
             stop_app,
             #[cfg(desktop)]
+            get_tracked_apps,
+            #[cfg(desktop)]
             get_disk_space,
         ])
         .plugin(prevent)

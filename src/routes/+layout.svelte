@@ -25,6 +25,7 @@
   import { runningAppIds, worldInfoCache } from '$lib/stores';
   import AutoKickBase from '$lib/core/managers/autokick/base';
   import { t } from '$lib/utils/util';
+  import { invoke } from '@tauri-apps/api/core';
 
   const { children } = $props();
 
@@ -104,6 +105,21 @@
         runningAppIds.delete(event.payload.app_id);
       }
     });
+
+    // Used to set running apps when the page is refreshed
+    invoke<Array<{
+      pid: number;
+      app_id: string;
+      is_running: boolean;
+    }>>('get_tracked_apps').then((apps) => {
+      for (const app of apps) {
+        if (app.is_running) {
+          runningAppIds.add(app.app_id);
+        } else {
+          runningAppIds.delete(app.app_id);
+        }
+      }
+    }).catch(console.error);
   });
 </script>
 
