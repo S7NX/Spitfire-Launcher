@@ -314,13 +314,13 @@
       },
       {
         name: $t('lookupPlayers.playerInfo.founderEdition'),
-        value: stwData?.founderEdition
+        value: !stwData ? null : stwData.founderEdition
           ? $FounderEditionNames[stwData.founderEdition]
           : $t('common.stw.founderEditions.none')
       }
     ]}
 
-    <div class="space-y-4 text-sm relative border p-5 rounded-md min-w-72 sm:min-w-80 xs:min-w-96">
+    <div class="space-y-4 text-sm relative border p-5 rounded-md min-w-72 sm:min-w-80 xs:min-w-96 bg-surface-alt">
       <div class="flex gap-4 items-start">
         {#if avatarCache.has(lookupData.accountId)}
           <img class="hidden xs:block size-20 rounded-md self-center" alt={lookupData.displayName} src={avatarCache.get(lookupData.accountId)}/>
@@ -346,9 +346,7 @@
         </div>
       </div>
 
-      {#if stwData}
-        <STWDetails {heroLoadoutPage} {loadoutData} {mission} {missionPlayers}/>
-      {/if}
+      <STWDetails {heroLoadoutPage} {loadoutData} {mission} {missionPlayers}/>
 
       {#if stwData && stwData?.claimedMissionAlertIds.size > 0 && claimedMissionAlerts && claimedMissionAlerts.length > 0}
         <Separator.Root class="bg-border h-px"/>

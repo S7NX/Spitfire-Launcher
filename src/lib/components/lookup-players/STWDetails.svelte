@@ -51,6 +51,10 @@
   import { Separator } from 'bits-ui';
   import { t } from '$lib/utils/util';
   import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
+  import CopyIcon from 'lucide-svelte/icons/copy';
+  import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+  import { SvelteMap } from 'svelte/reactivity';
+  import CheckIcon from 'lucide-svelte/icons/check';
 
   type Props = {
     missionPlayers?: MissionPlayers;
@@ -60,10 +64,23 @@
   };
 
   let { missionPlayers, mission, loadoutData, heroLoadoutPage }: Props = $props();
+
   const selectedHeroLoadout = $derived(loadoutData?.[heroLoadoutPage - 1]);
+  const copiedStates = new SvelteMap<string, boolean>();
+
+  async function copyAccountId(accountId: string) {
+    if (copiedStates.has(accountId)) return;
+
+    await writeText(accountId);
+    copiedStates.set(accountId, true);
+
+    setTimeout(() => {
+      copiedStates.delete(accountId);
+    }, 2000);
+  }
 </script>
 
-{#if missionPlayers?.length || mission || loadoutData}
+{#if missionPlayers?.length || mission || loadoutData?.length}
   <Separator.Root class="bg-border h-px"/>
 
   <h3 class="text-lg font-semibold text-center">{$t('lookupPlayers.stwDetails.title')}</h3>
@@ -75,10 +92,20 @@
           <h4 class="text-lg font-semibold">{$t('lookupPlayers.stwDetails.players')}</h4>
           {#each missionPlayers as member (member.accountId)}
             <div class="flex items-center gap-1">
-              <span>{member.name}</span>
-              <ExternalLink class="text-muted-foreground" href="https://fortnitedb.com/profile/{member.accountId}">
+              <span class="mr-1">{member.name}</span>
+
+              <ExternalLink class="text-muted-foreground hover:text-primary transition" href="https://fortnitedb.com/profile/{member.accountId}">
                 <ExternalLinkIcon class="size-4"/>
               </ExternalLink>
+
+              {#if copiedStates.has(member.accountId)}
+                <CheckIcon class="size-4 text-muted-foreground"/>
+              {:else}
+                <CopyIcon
+                  class="size-4 cursor-pointer text-muted-foreground hover:text-primary transition"
+                  onclick={() => copyAccountId(member.accountId)}
+                />
+              {/if}
             </div>
           {/each}
         </div>

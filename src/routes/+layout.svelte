@@ -26,6 +26,7 @@
   import AutoKickBase from '$lib/core/managers/autokick/base';
   import { t } from '$lib/utils/util';
   import { invoke } from '@tauri-apps/api/core';
+  import { platform } from '@tauri-apps/plugin-os';
 
   const { children } = $props();
 
@@ -106,20 +107,18 @@
       }
     });
 
-    // Used to set running apps when the page is refreshed
-    invoke<Array<{
-      pid: number;
-      app_id: string;
-      is_running: boolean;
-    }>>('get_tracked_apps').then((apps) => {
-      for (const app of apps) {
-        if (app.is_running) {
-          runningAppIds.add(app.app_id);
-        } else {
-          runningAppIds.delete(app.app_id);
+    if (platform() === 'windows') {
+      // Used to set running apps when the page is refreshed
+      invoke<Array<{ pid: number; app_id: string; is_running: boolean; }>>('get_tracked_apps').then((apps) => {
+        for (const app of apps) {
+          if (app.is_running) {
+            runningAppIds.add(app.app_id);
+          } else {
+            runningAppIds.delete(app.app_id);
+          }
         }
-      }
-    }).catch(console.error);
+      }).catch(console.error);
+    }
   });
 </script>
 
