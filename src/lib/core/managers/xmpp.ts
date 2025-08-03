@@ -9,7 +9,6 @@ import { get } from 'svelte/store';
 import { type Agent, createClient } from 'stanza';
 import type { AccountData } from '$types/accounts';
 import type { PartyMember } from '$types/game/party';
-import type { Presence } from 'stanza/protocol';
 import type {
   EpicEventFriendRemoved,
   EpicEventFriendRequest,
@@ -61,7 +60,6 @@ export default class XMPPManager extends EventEmitter<EventMap> {
   public static instances = new Map<string, XMPPManager>();
   public connection?: Agent;
   private purposes: Set<Purpose>;
-  private heartbeatInterval?: number;
 
   private reconnectTimeout?: number;
   private intentionalDisconnect = false;
@@ -163,11 +161,6 @@ export default class XMPPManager extends EventEmitter<EventMap> {
       this.reconnectTimeout = undefined;
     }
 
-    if (this.heartbeatInterval) {
-      clearInterval(this.heartbeatInterval);
-      this.heartbeatInterval = undefined;
-    }
-
     this.dispatchEvent(ConnectionEvents.Disconnected, undefined);
     this.connection?.removeAllListeners();
     this.connection?.disconnect();
@@ -181,45 +174,26 @@ export default class XMPPManager extends EventEmitter<EventMap> {
   removePurpose(purpose: Purpose) {
     this.purposes.delete(purpose);
 
-    if (!this.purposes.size) this.disconnect();
+    if (!this.purposes.size) {
+      this.disconnect();
+    }
   }
 
   setStatus(status: string, onlineType: 'online' | 'away' | 'chat' | 'dnd' | 'xa' = 'online') {
-    if (!this.connection) throw new Error('Connection not established');
+    if (!this.connection?.sessionStarted) throw new Error('Connection not established');
 
-    const presenceData: Presence = {
+    return this.connection.sendPresence({
       status: JSON.stringify({
         Status: status,
         bIsPlaying: false,
         bIsJoinable: false
       }),
       show: onlineType === 'online' ? undefined : onlineType
-    };
-
-    if (this.heartbeatInterval) {
-      clearInterval(this.heartbeatInterval);
-    }
-
-    this.heartbeatInterval = window.setInterval(() => {
-      if (!this.connection) {
-        clearInterval(this.heartbeatInterval!);
-        this.heartbeatInterval = undefined;
-        return;
-      }
-
-      this.connection.sendPresence(presenceData);
-    }, 15000);
-
-    return this.connection.sendPresence(presenceData);
+    });
   }
 
   resetStatus() {
-    if (!this.connection) throw new Error('Connection not established');
-
-    if (this.heartbeatInterval) {
-      clearInterval(this.heartbeatInterval);
-      this.heartbeatInterval = undefined;
-    }
+    if (!this.connection?.sessionStarted) throw new Error('Connection not established');
 
     return this.connection.sendPresence({
       status: JSON.stringify({

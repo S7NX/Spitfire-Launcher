@@ -4,6 +4,9 @@
   let statusSetAccounts = new SvelteSet<string>();
   let isSettingStatus = $state(false);
   let isResettingStatus = $state(false);
+
+  let customStatus = $state<string>();
+  let onlineType = $state<'online' | 'away'>('online');
 </script>
 
 <script lang="ts">
@@ -20,9 +23,6 @@
 
   const activeAccount = $derived(nonNull($activeAccountStore));
   const isCustomStatusInUse = $derived(TaxiManager.taxiAccountIds.has(activeAccount.accountId));
-
-  let customStatus = $state<string>();
-  let onlineType = $state<'online' | 'away'>('online');
 
   async function setCustomStatus(event: SubmitEvent) {
     event.preventDefault();

@@ -30,8 +30,6 @@
 
   const { children } = $props();
 
-  const allAccounts = $derived($accountsStorage.accounts);
-
   let hasNewVersion = $state(false);
   let newVersionData = $state<{ tag: string; downloadUrl: string }>();
 
@@ -61,7 +59,7 @@
   async function syncAccountNames() {
     if (!$activeAccount) return;
 
-    const accounts = await LookupManager.fetchByIds($activeAccount, allAccounts.map(account => account.accountId));
+    const accounts = await LookupManager.fetchByIds($activeAccount, $accountsStorage.accounts.map(account => account.accountId));
     accountsStorage.update(current => ({
       ...current,
       accounts: current.accounts.map(account => ({
@@ -92,7 +90,7 @@
       syncAccountNames(),
       autoUpdateApps(),
       $activeAccount && FriendsManager.getSummary($activeAccount),
-      allAccounts.map(account => AvatarManager.fetchAvatars(account, [account.accountId]))
+      $accountsStorage.accounts.map(account => AvatarManager.fetchAvatars(account, [account.accountId]))
     ]);
 
     listen<{
