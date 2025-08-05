@@ -1,7 +1,7 @@
 use crate::types::{CommandOutput, EventType, StreamEvent};
 use std::collections::HashMap;
+use std::process::Command;
 use std::sync::{LazyLock, Mutex};
-use sysinfo::{ProcessRefreshKind, ProcessesToUpdate, Signal, System};
 use tauri::{AppHandle, Emitter};
 use tauri_plugin_shell::process::{CommandChild, CommandEvent};
 use tauri_plugin_shell::ShellExt;
@@ -173,20 +173,9 @@ pub fn kill_legendary_processes() {
         }
     }
 
-    let mut system = System::new();
-    system.refresh_processes_specifics(ProcessesToUpdate::All, true, ProcessRefreshKind::nothing());
-
-    for (_, process) in system.processes() {
-        let process_name = if cfg!(windows) {
-            "legendary.exe"
-        } else {
-            "legendary"
-        };
-
-        if process.name().eq(process_name) {
-            process.kill_with(Signal::Kill);
-        }
-    }
+    let _ = Command::new("taskkill")
+        .args(&["/F", "/IM", "legendary.exe"])
+        .output();
 
     {
         let mut streams = ACTIVE_STREAMS.lock().unwrap();
