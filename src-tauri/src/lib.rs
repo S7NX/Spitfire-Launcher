@@ -3,9 +3,9 @@ use tauri::generate_handler;
 use tauri::Manager;
 use tauri_plugin_prevent_default::{Builder as PreventDefaultBuilder, Flags, KeyboardShortcut};
 
-#[cfg(desktop)]
+#[cfg(windows)]
 mod app_monitor;
-#[cfg(desktop)]
+#[cfg(windows)]
 mod legendary;
 
 mod commands;
@@ -31,6 +31,11 @@ pub fn run() {
                     .expect("no main window")
                     .set_focus();
             }))
+    }
+
+    #[cfg(windows)]
+    {
+        builder = builder
             .setup(|app| {
                 app_monitor::start_monitoring(app.handle().clone());
                 Ok(())
@@ -50,20 +55,13 @@ pub fn run() {
     builder
         .invoke_handler(generate_handler![
             get_locale,
-            #[cfg(desktop)]
-            run_legendary,
-            #[cfg(desktop)]
-            start_legendary_stream,
-            #[cfg(desktop)]
-            stop_legendary_stream,
-            #[cfg(desktop)]
-            launch_app,
-            #[cfg(desktop)]
-            stop_app,
-            #[cfg(desktop)]
-            get_tracked_apps,
-            #[cfg(desktop)]
-            get_disk_space,
+            #[cfg(windows)] run_legendary,
+            #[cfg(windows)] start_legendary_stream,
+            #[cfg(windows)] stop_legendary_stream,
+            #[cfg(windows)] launch_app,
+            #[cfg(windows)] stop_app,
+            #[cfg(windows)] get_tracked_apps,
+            #[cfg(windows)] get_disk_space,
         ])
         .plugin(prevent)
         .plugin(tauri_plugin_http::init())

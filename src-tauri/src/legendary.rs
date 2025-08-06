@@ -1,5 +1,6 @@
 use crate::types::{CommandOutput, EventType, StreamEvent};
 use std::collections::HashMap;
+use std::os::windows::process::CommandExt;
 use std::process::Command;
 use std::sync::{LazyLock, Mutex};
 use tauri::{AppHandle, Emitter};
@@ -175,6 +176,7 @@ pub fn kill_legendary_processes() {
 
     let _ = Command::new("taskkill")
         .args(&["/F", "/IM", "legendary.exe"])
+        .creation_flags(0x08000000)
         .output();
 
     {

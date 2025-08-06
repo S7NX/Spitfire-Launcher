@@ -61,7 +61,7 @@ pub struct AppStateEvent {
     pub state: AppState,
 }
 
-#[cfg(desktop)]
+#[cfg(windows)]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct TrackedApp {

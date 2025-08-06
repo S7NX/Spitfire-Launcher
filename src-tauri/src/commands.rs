@@ -1,4 +1,4 @@
-#[cfg(desktop)]
+#[cfg(windows)]
 use {
     crate::app_monitor,
     crate::legendary,
@@ -18,7 +18,7 @@ pub fn get_locale() -> String {
         .unwrap_or_else(|| "".to_string())
 }
 
-#[cfg(desktop)]
+#[cfg(windows)]
 #[command]
 pub fn get_disk_space(dir: String) -> Result<DiskSpace, String> {
     let path = Path::new(&dir);
@@ -33,13 +33,13 @@ pub fn get_disk_space(dir: String) -> Result<DiskSpace, String> {
     }
 }
 
-#[cfg(desktop)]
+#[cfg(windows)]
 #[command]
 pub fn get_tracked_apps() -> Result<Vec<TrackedApp>, String> {
     app_monitor::get_tracked_apps()
 }
 
-#[cfg(desktop)]
+#[cfg(windows)]
 #[command]
 pub async fn launch_app(app: AppHandle, launch_data: LaunchData) -> Result<u32, String> {
     if !launch_data.pre_launch_command.is_empty() {
@@ -57,13 +57,13 @@ pub async fn launch_app(app: AppHandle, launch_data: LaunchData) -> Result<u32, 
     Ok(pid)
 }
 
-#[cfg(desktop)]
+#[cfg(windows)]
 #[command]
 pub async fn stop_app(_app: AppHandle, app_id: String) -> Result<bool, String> {
     app_monitor::stop_app(&app_id)
 }
 
-#[cfg(desktop)]
+#[cfg(windows)]
 #[command]
 pub async fn run_legendary(
     app: AppHandle,
@@ -73,7 +73,7 @@ pub async fn run_legendary(
     legendary::run_legendary(&app, &config_path, &args).await
 }
 
-#[cfg(desktop)]
+#[cfg(windows)]
 #[command]
 pub async fn start_legendary_stream(
     app: AppHandle,
@@ -84,7 +84,7 @@ pub async fn start_legendary_stream(
     legendary::start_legendary_stream(&app, &config_path, &stream_id, &args).await
 }
 
-#[cfg(desktop)]
+#[cfg(windows)]
 #[command]
 pub async fn stop_legendary_stream(
     stream_id: String,
@@ -93,7 +93,7 @@ pub async fn stop_legendary_stream(
     legendary::stop_legendary_stream(&stream_id, force_kill_all).await
 }
 
-#[cfg(desktop)]
+#[cfg(windows)]
 async fn execute_pre_launch_command(
     app: &AppHandle,
     launch_data: &LaunchData,
@@ -153,7 +153,7 @@ async fn execute_pre_launch_command(
     Ok(())
 }
 
-#[cfg(desktop)]
+#[cfg(windows)]
 async fn launch_application(app: &AppHandle, launch_data: &LaunchData) -> Result<u32, String> {
     let shell = app.shell();
 
