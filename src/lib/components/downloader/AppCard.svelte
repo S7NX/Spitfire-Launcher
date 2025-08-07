@@ -191,7 +191,7 @@
       {/if}
 
       <DropdownMenu.Root
-        contentProps={{ class: 'w-fit'}}
+        contentProps={{ class: 'w-fit' }}
         bind:open={dropdownOpen}
       >
         {#snippet trigger()}

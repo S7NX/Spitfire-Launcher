@@ -10,7 +10,7 @@
   let { section, modalOfferId = $bindable() }: ShopSectionProps = $props();
 </script>
 
-<div class="flex flex-col items-center mb-9">
+<div class="flex flex-col items-center">
   <h2 class="w-full text-2xl font-extrabold uppercase tracking-wider mb-4">
     {section.name}
   </h2>

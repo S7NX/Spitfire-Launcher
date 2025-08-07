@@ -67,8 +67,6 @@
 
     if (searchQuery) {
       result = result.map(section => {
-        if (!searchQuery) return section;
-
         const fuse = new Fuse(section.items, {
           keys: ['name'],
           threshold: 0.4,
@@ -201,7 +199,7 @@
       {#if errorOccurred}
         <p class="text-red-500">{$t('itemShop.failedtoFetch')}</p>
       {:else}
-        <div class="space-y-6">
+        <div class="space-y-9">
           <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
           {#each Array(2) as _, index (index)}
             <SkeletonShopSection/>
@@ -209,9 +207,11 @@
         </div>
       {/if}
     {:else if filteredItems?.length}
-      {#each filteredItems as section (section.id)}
-        <ShopSection {section} bind:modalOfferId/>
-      {/each}
+      <div class="space-y-9">
+        {#each filteredItems as section (section.id)}
+          <ShopSection {section} bind:modalOfferId/>
+        {/each}
+      </div>
     {:else}
       <p>{$t('itemShop.noItems')}</p>
     {/if}

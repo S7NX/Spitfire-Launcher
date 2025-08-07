@@ -23,7 +23,6 @@
   const colors: Record<string, string> = { ...ItemColors.rarities, ...ItemColors.series };
   const seriesId = item.series?.id?.toLowerCase() || '';
   const rarityId = item.rarity?.id?.toLowerCase();
-  const displayName = item.name;
   const imageUrl = item.assets.featured || item.assets.large || item.assets.small;
   const backgroundColorHex = colors[seriesId] || colors[rarityId] || colors.common;
 
@@ -34,7 +33,7 @@
 
 <div
   style="background-color: {backgroundColorHex}"
-  class="relative pb-[100%] rounded-xl overflow-hidden transition-all duration-300 w-full hover:scale-105 cursor-pointer"
+  class="relative pb-[100%] rounded-xl overflow-hidden transition-all duration-300 w-full hover:scale-105 focus:scale-105 cursor-pointer"
   onclick={showItemModal}
   onkeydown={(event) => event.key === 'Enter' && showItemModal()}
   role="button"
@@ -43,7 +42,7 @@
   {#if imageUrl}
     <img
       class="absolute inset-0 size-full select-none object-cover"
-      alt={displayName}
+      alt={item.name}
       draggable="false"
       loading="lazy"
       src={imageUrl}
@@ -55,7 +54,7 @@
       style="text-shadow: 0 2px 4px #000000"
       class="text-white text-lg font-bold mb-2 leading-none text-left"
     >
-      {displayName}
+      {item.name}
     </h3>
 
     <div class="relative flex items-center justify-start pl-6">
