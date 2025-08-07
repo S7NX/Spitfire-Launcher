@@ -1,4 +1,4 @@
-export type SpitfireShopFilter = 'all' | 'new' | 'leavingSoon' | 'longestWait';
+export type SpitfireShopFilter = 'new' | 'leavingSoon' | 'longestWait';
 
 export type SpitfireShop = {
   lastUpdated: string;

@@ -238,7 +238,6 @@
     "noItems": "Aucun objet trouvé",
     "selectFilter": "Sélectionne un filtre",
     "filters": {
-      "all": "Tout",
       "new": "Nouveau",
       "leavingSoon": "Part bientôt",
       "longestWait": "La plus longue attente"
@@ -603,7 +602,7 @@
       "hide": "Masquer",
       "stop": "Arrêter",
       "play": "Jouer",
-      "update": "Mise à jour",
+      "update": "Maj",
       "repair": "Réparer",
       "install": "Installer",
       "removeFromQueue": {

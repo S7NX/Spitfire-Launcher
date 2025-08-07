@@ -238,10 +238,9 @@
     "noItems": "No items found",
     "selectFilter": "Select a filter",
     "filters": {
-      "all": "All",
       "new": "New",
-      "leavingSoon": "Leaving Soon",
-      "longestWait": "Longest Wait"
+      "leavingSoon": "Leaving soon",
+      "longestWait": "Longest wait"
     },
     "owned": "Owned",
     "purchase": "Purchase",
@@ -592,9 +591,9 @@
     "searchPlaceholder": "Search for games...",
     "filters": {
       "select": "Select filters",
-      "showHidden": "Show Hidden",
-      "installedOnly": "Installed Only",
-      "updatesAvailable": "Updates Available"
+      "showHidden": "Show hidden",
+      "installedOnly": "Installed only",
+      "updatesAvailable": "Updates available"
     },
     "app": {
       "unfavorite": "Unfavorite",

@@ -12,7 +12,7 @@
   ]);
 
   type Props = {
-    selected: AppFilterValue[];
+    selected: AppFilterValue[] | undefined;
   };
 
   let { selected = $bindable() }: Props = $props();
@@ -20,13 +20,13 @@
 
 <Select
   items={filters}
-  triggerClass="bg-surface-alt max-xs:min-w-44 max-xs:ml-auto"
+  triggerClass="bg-surface-alt max-xs:min-w-44 max-xs:ml-auto rounded-md py-2.25"
   type="multiple"
   bind:value={selected}
 >
   {#snippet trigger(label)}
     <FilterIcon class="text-muted-foreground size-5 mr-2"/>
-    <span class="text-muted-foreground truncate">{label || $t('library.filters.select')}</span>
+    <span class="text-muted-foreground text-sm truncate">{label || $t('library.filters.select')}</span>
     <ChevronsUpDownIcon class="text-muted-foreground size-5 ml-auto"/>
   {/snippet}
 </Select>

@@ -2,7 +2,7 @@
   import type { SpitfireShopFilter } from '$types/game/shop';
 
   let searchQuery = $state<string>('');
-  let selectedFilter = $state<SpitfireShopFilter>('all');
+  let selectedFilter = $state<SpitfireShopFilter>();
 </script>
 
 <script lang="ts">
@@ -39,26 +39,23 @@
   const filteredSections = $derived.by(() => {
     if (!shopSections) return null;
 
-    let result: SpitfireShopSection[] = [];
+    let result: SpitfireShopSection[] = shopSections;
 
-    switch (selectedFilter || 'all') {
-      case 'all':
-        result = shopSections;
-        break;
+    switch (selectedFilter) {
       case 'new':
-        result = shopSections.map((section) => ({
+        result = result.map((section) => ({
           ...section,
           items: section.items.filter((item) => !item.dates.lastSeen || item.shopHistory.length < 2)
         }));
         break;
       case 'leavingSoon':
-        result = shopSections.map((section) => ({
+        result = result.map((section) => ({
           ...section,
           items: section.items.filter((item) => item.dates.out && new Date(item.dates.out).getTime() - Date.now() < 3 * 24 * 60 * 60 * 1000)
         }));
         break;
       case 'longestWait':
-        result = shopSections.map((section) => ({
+        result = result.map((section) => ({
           ...section,
           items: section.items.filter((item) => item.dates.lastSeen && Date.now() - new Date(item.dates.lastSeen).getTime() > 120 * 24 * 60 * 60 * 1000)
         }));

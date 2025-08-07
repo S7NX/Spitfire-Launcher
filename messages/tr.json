@@ -236,12 +236,11 @@
     "searchPlaceholder": "İçerik ara...",
     "failedtoFetch": "İçerik mağazası alınamadı. Lütfen daha sonra tekrar deneyin.",
     "noItems": "Hiç içerik bulunamadı",
-    "selectFilter": "Filtre Seçin",
+    "selectFilter": "Filtre seçin",
     "filters": {
-      "all": "Hepsi",
       "new": "Yeni",
-      "leavingSoon": "Yakında Gidiyor",
-      "longestWait": "En Uzun Bekleme"
+      "leavingSoon": "Yakında gidiyor",
+      "longestWait": "En uzun bekleme"
     },
     "owned": "Sahipsin",
     "purchase": "Satın Al",
@@ -591,10 +590,10 @@
     "failedToLogin": "Giriş yapılamadı",
     "searchPlaceholder": "Oyun ara...",
     "filters": {
-      "select": "Filtre Seçin",
-      "showHidden": "Gizlenenleri Göster",
-      "installedOnly": "Yalnızca Yüklü Oyunlar",
-      "updatesAvailable": "Güncelleme Mevcut"
+      "select": "Filtre seçin",
+      "showHidden": "Gizlenenleri göster",
+      "installedOnly": "Yalnızca yüklü oyunlar",
+      "updatesAvailable": "Güncelleme mevcut"
     },
     "app": {
       "unfavorite": "Favorilerden Kaldır",

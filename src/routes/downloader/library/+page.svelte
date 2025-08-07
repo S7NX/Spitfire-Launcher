@@ -9,6 +9,7 @@
   import { activeAccountStore, downloaderStorage } from '$lib/core/data-storage';
   import { ownedApps } from '$lib/stores';
   import Legendary from '$lib/core/legendary';
+  import DownloadManager from '$lib/core/managers/download.svelte';
   import { handleError, nonNull, t } from '$lib/utils/util';
   import type { AppFilterValue } from '$types/legendary';
   import Fuse from 'fuse.js';
@@ -48,7 +49,17 @@
       const installedA = a.installed ? 0 : 1;
       const installedB = b.installed ? 0 : 1;
 
-      return favoriteA - favoriteB || installedA - installedB || a.title.localeCompare(b.title);
+      const installingA = DownloadManager.downloadingAppId === a.id ? 0 : 1;
+      const installingB = DownloadManager.downloadingAppId === b.id ? 0 : 1;
+
+      const inQueueA = DownloadManager.isInQueue(a.id) ? 0 : 1;
+      const inQueueB = DownloadManager.isInQueue(b.id) ? 0 : 1;
+
+      return favoriteA - favoriteB
+        || installedA - installedB
+        || installingA - installingB
+        || inQueueA - inQueueB
+        || a.title.localeCompare(b.title);
     });
   });
 

@@ -257,7 +257,7 @@
 
 {#snippet StopButton()}
   <Button
-    class="flex items-center justify-center flex-1 gap-2 text-sm"
+    class="flex items-center justify-center flex-1 gap-1 text-sm truncate"
     disabled={isStopping}
     onclick={() => stopApp()}
     variant="danger"
@@ -267,13 +267,13 @@
     {:else}
       <XIcon class="size-5"/>
     {/if}
-    {$t('library.app.stop')}
+    <span class="truncate">{$t('library.app.stop')}</span>
   </Button>
 {/snippet}
 
 {#snippet PlayButton()}
   <Button
-    class="flex items-center justify-center flex-1 gap-2 text-sm"
+    class="flex items-center justify-center flex-1 gap-1 text-sm truncate"
     disabled={isLaunching || isVerifying || isDeleting}
     onclick={() => launchApp()}
     variant="epic"
@@ -289,7 +289,7 @@
 
 {#snippet UpdateButton()}
   <Button
-    class="flex items-center justify-center flex-1 gap-2 text-sm"
+    class="flex items-center justify-center flex-1 gap-1 text-sm"
     disabled={isVerifying || isDeleting}
     onclick={installApp}
     variant="secondary"
@@ -301,25 +301,25 @@
 
 {#snippet RepairButton()}
   <Button
-    class="flex items-center justify-center flex-1 gap-2 text-sm"
+    class="flex items-center justify-center flex-1 gap-1 text-sm truncate"
     disabled={isVerifying || isDeleting}
     onclick={verifyAndRepair}
     variant="secondary"
   >
     <WrenchIcon class="size-5"/>
-    {$t('library.app.repair')}
+    <span class="truncate">{$t('library.app.repair')}</span>
   </Button>
 {/snippet}
 
 {#snippet RemoveFromQueueButton()}
   <Button
-    class="flex items-center justify-center flex-1 gap-2 text-sm"
+    class="flex items-center justify-center flex-1 gap-1 text-sm truncate"
     onclick={() => DownloadManager.removeFromQueue(app.id)}
     title={$t('library.app.removeFromQueue.long')}
     variant="danger"
   >
     <CircleMinusIcon class="size-5"/>
-    {$t('library.app.removeFromQueue.short')}
+    <span class="truncate">{$t('library.app.removeFromQueue.short')}</span>
   </Button>
 {/snippet}
 
@@ -327,7 +327,7 @@
   {@const percent = isInstalling && DownloadManager.progress.percent ? `(${Math.floor(DownloadManager.progress.percent)}%)` : ''}
 
   <Button
-    class="flex items-center justify-center flex-1 gap-2 text-sm"
+    class="flex items-center justify-center flex-1 gap-1 text-sm truncate"
     disabled={isInstalling}
     onclick={() => installDialogAppId = app.id}
     variant="outline"
@@ -337,6 +337,6 @@
     {:else}
       <DownloadIcon class="size-5"/>
     {/if}
-    {app.hasUpdate ? $t('library.app.update') : app.requiresRepair ? $t('library.app.repair') : $t('library.app.install')} {percent}
+    <span class="truncate">{app.hasUpdate ? $t('library.app.update') : app.requiresRepair ? $t('library.app.repair') : $t('library.app.install')} {percent}</span>
   </Button>
 {/snippet}

@@ -238,7 +238,6 @@
     "noItems": "No se han encontrado objetos",
     "selectFilter": "Seleccionar filtro",
     "filters": {
-      "all": "Todos",
       "new": "Nuevos",
       "leavingSoon": "Desaparecerá pronto",
       "longestWait": "Espera más larga"
@@ -591,7 +590,7 @@
     "failedToLogin": "No se ha podido iniciar sesión",
     "searchPlaceholder": "Buscar juegos...",
     "filters": {
-      "select": "Selecciona Filtros",
+      "select": "Selecciona filtros",
       "showHidden": "Mostrar ocultos",
       "installedOnly": "Solo instalados",
       "updatesAvailable": "Hay actualizaciones disponibles"
@@ -603,7 +602,7 @@
       "hide": "Ocultar",
       "stop": "Detener",
       "play": "Iniciar",
-      "update": "Actualización",
+      "update": "Actualiz.",
       "repair": "Reparar",
       "install": "Instalar",
       "removeFromQueue": {
