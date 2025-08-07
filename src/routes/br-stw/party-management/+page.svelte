@@ -168,6 +168,7 @@
     }
 
     try {
+      // eslint-disable-next-line svelte/prefer-svelte-reactivity -- This is not a reactive store
       const accountParties = new Map<string, string>();
       const accounts = allAccounts.filter(account => selectedAccounts.includes(account.accountId));
       const registeredAccounts = allAccounts.map(account => account.accountId);
@@ -306,11 +307,11 @@
     </div>
 
     <PartyAccountSelection
-      type="single"
-      bind:selected={kickAllSelectedAccount}
       disabled={isDoingSomething || !currentAccountParty?.members.length || !kickAllSelectedAccount}
       loading={isKicking}
       onclick={kickAll}
+      type="single"
+      bind:selected={kickAllSelectedAccount}
     >
       {$t('partyManagement.stwActions.kickAll')}
     </PartyAccountSelection>
@@ -318,11 +319,11 @@
     <Separator.Root class="bg-border h-px"/>
 
     <PartyAccountSelection
-      type="multiple"
-      bind:selected={leavePartySelectedAccounts}
       disabled={isDoingSomething || !currentAccountParty?.members.length || !leavePartySelectedAccounts.length}
       loading={isLeaving}
       onclick={() => leaveParty()}
+      type="multiple"
+      bind:selected={leavePartySelectedAccounts}
     >
       {$t('partyManagement.stwActions.leaveParty')}
     </PartyAccountSelection>
@@ -330,11 +331,11 @@
     <Separator.Root class="bg-border h-px"/>
 
     <PartyAccountSelection
-      type="multiple"
-      bind:selected={claimRewardsPartySelectedAccounts}
       disabled={isDoingSomething || !currentAccountParty?.members.length || !claimRewardsPartySelectedAccounts.length || !shouldClaimRewards}
       loading={isClaiming}
       onclick={() => leaveParty(true)}
+      type="multiple"
+      bind:selected={claimRewardsPartySelectedAccounts}
     >
       {$t('partyManagement.stwActions.claimRewards')}
     </PartyAccountSelection>
@@ -363,38 +364,34 @@
     {/if}
 
     {#if partyMembers}
-      <div class="space-y-2">
-        <div class="grid gap-4 max-[40rem]:place-items-center min-[40rem]:grid-cols-2 min-[75rem]:grid-cols-3">
-          {#each partyMembers as member (member.accountId)}
-            {@const isRegisteredAccount = allAccounts.some(account => account.accountId === member.accountId)}
-            {@const canLeave = isRegisteredAccount && !member.isLeader}
-            {@const canKick = partyLeaderAccount ? partyLeaderAccount.accountId !== member.accountId : false}
-            {@const canBePromoted = partyLeaderAccount ? !member.isLeader : false}
-            {@const canAddFriend = (
-              !$friendsStore[activeAccount.accountId]?.friends?.has(member.accountId)
-              && !$friendsStore[activeAccount.accountId]?.outgoing?.has(member.accountId)
-            )}
+      <div class="grid gap-4 max-[40rem]:place-items-center min-[40rem]:grid-cols-2 min-[75rem]:grid-cols-3">
+        {#each partyMembers as member (member.accountId)}
+          {@const isRegisteredAccount = allAccounts.some(account => account.accountId === member.accountId)}
+          {@const canLeave = isRegisteredAccount && !member.isLeader}
+          {@const canKick = partyLeaderAccount ? partyLeaderAccount.accountId !== member.accountId : false}
+          {@const canBePromoted = partyLeaderAccount ? !member.isLeader : false}
+          {@const accountFriends = $friendsStore[activeAccount.accountId]}
+          {@const canAddFriend = !accountFriends?.friends?.has(member.accountId) && !accountFriends?.outgoing?.has(member.accountId)}
 
-            <!-- Maybe this wasn't a good idea -->
-            <MemberCard
-              {member}
-              {canLeave}
-              {canKick}
-              {canBePromoted}
-              {canAddFriend}
-              {isAddingFriend}
-              {isRemovingFriend}
-              {isLeaving}
-              {kickingMemberIds}
-              {kickMember}
-              {leaveParty}
-              {sendFriendRequest}
-              {removeFriend}
-              {promotingMemberId}
-              {promote}
-            />
-          {/each}
-        </div>
+          <!-- Maybe this wasn't a good idea -->
+          <MemberCard
+            {canAddFriend}
+            {canBePromoted}
+            {canKick}
+            {canLeave}
+            {isAddingFriend}
+            {isLeaving}
+            {isRemovingFriend}
+            {kickMember}
+            {kickingMemberIds}
+            {leaveParty}
+            {member}
+            {promote}
+            {promotingMemberId}
+            {removeFriend}
+            {sendFriendRequest}
+          />
+        {/each}
       </div>
     {/if}
   </div>

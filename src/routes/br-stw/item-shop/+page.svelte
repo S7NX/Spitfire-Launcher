@@ -36,7 +36,7 @@
   let errorOccurred = $state(false);
   let modalOfferId = $state<string>('');
 
-  const filteredItems = $derived.by(() => {
+  const filteredSections = $derived.by(() => {
     if (!shopSections) return null;
 
     let result: SpitfireShopSection[] = [];
@@ -195,7 +195,7 @@
   </div>
 
   <div class="mt-4">
-    {#if !filteredItems}
+    {#if !filteredSections}
       {#if errorOccurred}
         <p class="text-red-500">{$t('itemShop.failedtoFetch')}</p>
       {:else}
@@ -206,9 +206,9 @@
           {/each}
         </div>
       {/if}
-    {:else if filteredItems?.length}
+    {:else if filteredSections?.length}
       <div class="space-y-9">
-        {#each filteredItems as section (section.id)}
+        {#each filteredSections as section (section.id)}
           <ShopSection {section} bind:modalOfferId/>
         {/each}
       </div>

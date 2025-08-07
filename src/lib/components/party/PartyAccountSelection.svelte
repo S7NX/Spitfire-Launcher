@@ -27,7 +27,7 @@
   <AccountCombobox
     class="grow shrink min-w-0"
     type={type as any}
-    bind:selected
+    bind:selected={selected as any}
   />
 
   <Button
