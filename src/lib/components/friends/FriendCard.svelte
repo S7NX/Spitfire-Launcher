@@ -1,12 +1,3 @@
-<script lang="ts" module>
-  import { SvelteSet } from 'svelte/reactivity';
-
-  const accountsAdding = new SvelteSet<string>();
-  const accountsRemoving = new SvelteSet<string>();
-  const accountsBlocking = new SvelteSet<string>();
-  const accountsUnblocking = new SvelteSet<string>();
-</script>
-
 <script lang="ts">
   import { DropdownMenu } from '$components/ui/DropdownMenu';
   import type { Friend, ListType } from '$components/friends/FriendsList.svelte';
@@ -30,51 +21,56 @@
   const { listType, friend }: Props = $props();
   const activeAccount = $derived(nonNull($activeAccountStore));
 
+  let isAdding = $state(false);
+  let isRemoving = $state(false);
+  let isBlocking = $state(false);
+  let isUnblocking = $state(false);
+
   async function acceptOrAddFriend(id: string) {
-    accountsAdding.add(id);
+    isAdding = true;
 
     try {
       await FriendsManager.addFriend(activeAccount, id);
     } catch (error) {
       handleError(error, $t('friendsManagement.failedToAdd'));
     } finally {
-      accountsAdding.delete(id);
+      isAdding = false;
     }
   }
 
   async function denyOrRemoveFriend(id: string) {
-    accountsRemoving.add(id);
+    isRemoving = true;
 
     try {
       await FriendsManager.removeFriend(activeAccount, id);
     } catch (error) {
       handleError(error, $t('friendsManagement.failedToRemove'));
     } finally {
-      accountsRemoving.delete(id);
+      isRemoving = false;
     }
   }
 
   async function blockUser(id: string) {
-    accountsBlocking.add(id);
+    isBlocking = true;
 
     try {
       await FriendsManager.block(activeAccount, id);
     } catch (error) {
       handleError(error, $t('friendsManagement.failedToBlock'));
     } finally {
-      accountsBlocking.delete(id);
+      isBlocking = false;
     }
   }
 
   async function unblockUser(id: string) {
-    accountsUnblocking.add(id);
+    isUnblocking = true;
 
     try {
       await FriendsManager.unblock(activeAccount, id);
     } catch (error) {
       handleError(error, $t('friendsManagement.failedToUnblock'));
     } finally {
-      accountsUnblocking.delete(id);
+      isUnblocking = false;
     }
   }
 </script>
@@ -128,10 +124,10 @@
 
 {#snippet AddFriendDropdownItem(friendId: string)}
   <DropdownMenu.Item
-    disabled={accountsAdding.has(friendId)}
+    disabled={isAdding}
     onclick={() => acceptOrAddFriend(friendId)}
   >
-    {#if accountsAdding.has(friendId)}
+    {#if isAdding}
       <LoaderCircleIcon class="size-5 animate-spin"/>
     {:else}
       <UserPlusIcon class="size-5"/>
@@ -142,10 +138,10 @@
 
 {#snippet RemoveFriendDropdownItem(friendId: string, type: 'friend' | 'outgoing' | 'incoming')}
   <DropdownMenu.Item
-    disabled={accountsRemoving.has(friendId)}
+    disabled={isRemoving}
     onclick={() => denyOrRemoveFriend(friendId)}
   >
-    {#if accountsRemoving.has(friendId)}
+    {#if isRemoving}
       <LoaderCircleIcon class="size-5 animate-spin"/>
     {:else}
       <UserMinusIcon class="size-5"/>
@@ -156,10 +152,10 @@
 
 {#snippet BlockDropdownItem(accountId: string)}
   <DropdownMenu.Item
-    disabled={accountsBlocking.has(accountId)}
+    disabled={isBlocking}
     onclick={() => blockUser(accountId)}
   >
-    {#if accountsBlocking.has(accountId)}
+    {#if isBlocking}
       <LoaderCircleIcon class="size-5 animate-spin"/>
     {:else}
       <BanIcon class="size-5"/>
@@ -170,10 +166,10 @@
 
 {#snippet UnblockDropdownItem(accountId: string)}
   <DropdownMenu.Item
-    disabled={accountsUnblocking.has(accountId)}
+    disabled={isUnblocking}
     onclick={() => unblockUser(accountId)}
   >
-    {#if accountsUnblocking.has(accountId)}
+    {#if isUnblocking}
       <LoaderCircleIcon class="size-5 animate-spin"/>
     {:else}
       <ShieldMinus class="size-5"/>
