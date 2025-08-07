@@ -257,7 +257,7 @@
 
 {#snippet StopButton()}
   <Button
-    class="flex items-center justify-center flex-1 gap-1 text-sm truncate"
+    class="flex items-center justify-center flex-1 gap-2 text-sm truncate"
     disabled={isStopping}
     onclick={() => stopApp()}
     variant="danger"
@@ -273,7 +273,7 @@
 
 {#snippet PlayButton()}
   <Button
-    class="flex items-center justify-center flex-1 gap-1 text-sm truncate"
+    class="flex items-center justify-center flex-1 gap-2 text-sm truncate"
     disabled={isLaunching || isVerifying || isDeleting}
     onclick={() => launchApp()}
     variant="epic"
@@ -289,7 +289,7 @@
 
 {#snippet UpdateButton()}
   <Button
-    class="flex items-center justify-center flex-1 gap-1 text-sm"
+    class="flex items-center justify-center flex-1 gap-2 text-sm"
     disabled={isVerifying || isDeleting}
     onclick={installApp}
     variant="secondary"
@@ -301,7 +301,7 @@
 
 {#snippet RepairButton()}
   <Button
-    class="flex items-center justify-center flex-1 gap-1 text-sm truncate"
+    class="flex items-center justify-center flex-1 gap-2 text-sm truncate"
     disabled={isVerifying || isDeleting}
     onclick={verifyAndRepair}
     variant="secondary"
@@ -313,7 +313,7 @@
 
 {#snippet RemoveFromQueueButton()}
   <Button
-    class="flex items-center justify-center flex-1 gap-1 text-sm truncate"
+    class="flex items-center justify-center flex-1 gap-2 text-sm truncate"
     onclick={() => DownloadManager.removeFromQueue(app.id)}
     title={$t('library.app.removeFromQueue.long')}
     variant="danger"
@@ -327,7 +327,7 @@
   {@const percent = isInstalling && DownloadManager.progress.percent ? `(${Math.floor(DownloadManager.progress.percent)}%)` : ''}
 
   <Button
-    class="flex items-center justify-center flex-1 gap-1 text-sm truncate"
+    class="flex items-center justify-center flex-1 gap-2 text-sm truncate"
     disabled={isInstalling}
     onclick={() => installDialogAppId = app.id}
     variant="outline"
