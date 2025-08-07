@@ -183,6 +183,7 @@ export const t = derived(language, ($language) => {
 
 export function changeLocale(locale: Locale) {
   setLocale(locale, { reload: false });
+  document.documentElement.lang = locale;
 
   settingsStorage.update((settings) => {
     if (!settings.app) {

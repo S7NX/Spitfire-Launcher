@@ -1,4 +1,4 @@
-import { language, settingsStorage } from '$lib/core/data-storage';
+import { settingsStorage } from '$lib/core/data-storage';
 import { changeLocale } from '$lib/utils/util';
 import { baseLocale, locales } from '$lib/paraglide/runtime';
 import { invoke } from '@tauri-apps/api/core';
@@ -17,7 +17,5 @@ export async function load() {
     locale = baseLocale;
   }
 
-  if (get(language) !== locale) {
-    changeLocale(locale as typeof locales[number]);
-  }
+  changeLocale(locale as typeof locales[number]);
 }
