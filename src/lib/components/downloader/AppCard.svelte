@@ -191,9 +191,7 @@
       {/if}
 
       <DropdownMenu.Root
-        contentProps={{
-          class: 'w-fit'
-        }}
+        contentProps={{ class: 'w-fit'}}
         bind:open={dropdownOpen}
       >
         {#snippet trigger()}
@@ -248,7 +246,7 @@
     {:else}
       {@const isInstalling = DownloadManager.downloadingAppId === app.id}
 
-      {#if DownloadManager.isInQueue(app.id) && !isInstalling}
+      {#if DownloadManager.isInQueue(app.id) && !isInstalling && DownloadManager.queue.length > 1}
         {@render RemoveFromQueueButton()}
       {:else}
         {@render InstallButton(isInstalling)}
