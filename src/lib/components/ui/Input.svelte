@@ -90,7 +90,7 @@
   }
 
   function handleKeyDown(event: KeyboardEvent & { currentTarget: HTMLInputElement }) {
-    if (event.currentTarget.value !== initialValue && event.key === 'Enter' && onConfirm) {
+    if (event.key === 'Enter' && onConfirm) {
       onConfirm(event);
     }
   }

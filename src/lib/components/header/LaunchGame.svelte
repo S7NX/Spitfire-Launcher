@@ -42,7 +42,7 @@
 
     try {
       const manifestData = await Manifest.getFortniteManifest();
-      const customPath = $settingsStorage?.app?.gamePath;
+      const customPath = $settingsStorage.app?.gamePath;
 
       let gameDirectory = manifestData?.installLocation;
       if (customPath) {
@@ -64,6 +64,7 @@
       const launcherExchangeData = await Authentication.getExchangeCodeUsingAccessToken(launcherAccessTokenData.access_token);
 
       launchData.game_parameters = manifestData?.launchCommand.split(' ') || [];
+      launchData.user_parameters = $settingsStorage.app?.launchArguments?.split(' ') || [];
       launchData.egl_parameters = [
         '-AUTH_LOGIN=unused',
         `-AUTH_PASSWORD=${launcherExchangeData.code}`,

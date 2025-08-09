@@ -456,6 +456,10 @@
     "invalidValue": "Geçersiz bir değer girdiniz.",
     "appSettings": {
       "gamePath": "Özel Oyun Dosya Yolu",
+      "launchArguments": {
+        "title": "Başlatma Argümanları",
+        "description": "Fortnite'ı başlatırken kullanılacak komut satırı argümanları."
+      },
       "missionCheckInterval": {
         "title": "Görev Kontrol Aralığı",
         "description": "STW görevinde olup olmadığınızı kontrol etmek için saniye cinsinden aralık. Auto-Kick özelliği ile kullanılır."

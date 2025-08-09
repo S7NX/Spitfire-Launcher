@@ -456,6 +456,10 @@
     "invalidValue": "Ha introducido un valor no válido.",
     "appSettings": {
       "gamePath": "Ruta de juego personalizada",
+      "launchArguments": {
+        "title": "Argumentos de lanzamiento",
+        "description": "Argumentos de línea de comandos para usar al iniciar Fortnite."
+      },
       "missionCheckInterval": {
         "title": "Intervalo de verificación de misión",
         "description": "Intervalo en segundos para comprobar si estás en una misión de STW. Utilizado con la función de auto-expulso."

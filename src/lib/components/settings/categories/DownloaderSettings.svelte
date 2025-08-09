@@ -100,7 +100,7 @@
       id="downloadPath"
       onConfirm={(e) => handleSettingChange(e, 'downloadPath')}
       placeholder={$downloaderStorage.downloadPath}
-      value={$downloaderStorage?.downloadPath}
+      value={$downloaderStorage.downloadPath}
       variant="outline"
     />
   </SettingItem>

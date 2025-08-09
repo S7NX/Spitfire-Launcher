@@ -456,6 +456,10 @@
     "invalidValue": "Tu as entré une valeur invalide.",
     "appSettings": {
       "gamePath": "Chemin de jeu personnalisé",
+      "launchArguments": {
+        "title": "Arguments de lancement",
+        "description": "Arguments en ligne de commande à utiliser pour lancer Fortnite."
+      },
       "missionCheckInterval": {
         "title": "Intervalle de vérification de mission",
         "description": "Intervalle en secondes pour vérifier si tu es en mission SLM. Utilisé avec la fonction Auto-Kick."

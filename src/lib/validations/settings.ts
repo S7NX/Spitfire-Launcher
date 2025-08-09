@@ -6,6 +6,7 @@ type SidebarItem = typeof sidebarItems[number];
 export const appSettingsSchema = z.object({
   language: z.enum(locales).nullish(),
   gamePath: z.string(),
+  launchArguments: z.string(),
   missionCheckInterval: z.number().positive(),
   claimRewardsDelay: z.number().positive(),
   startingPage: z.enum(['autoKick', 'itemShop', 'stwMissionAlerts', 'taxiService', 'dailyQuests', 'library'] satisfies SidebarItem[]),

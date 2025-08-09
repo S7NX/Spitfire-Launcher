@@ -456,6 +456,10 @@
     "invalidValue": "You have entered an invalid value.",
     "appSettings": {
       "gamePath": "Custom Game Path",
+      "launchArguments": {
+        "title": "Launch Arguments",
+        "description": "Command-line arguments to use when launching Fortnite."
+      },
       "missionCheckInterval": {
         "title": "Mission Check Interval",
         "description": "Interval in seconds to check if you are in a STW mission. Used with the Auto-Kick feature."

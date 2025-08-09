@@ -70,6 +70,20 @@
         variant="outline"
       />
     </SettingItem>
+
+    <SettingItem
+      description={$t('settings.appSettings.launchArguments.description')}
+      labelFor="launchArguments"
+      orientation="vertical"
+      title={$t('settings.appSettings.launchArguments.title')}
+    >
+      <Input
+        id="launchArguments"
+        onConfirm={(e) => handleSettingChange(e, 'launchArguments')}
+        value={$settingsStorage.app?.launchArguments}
+        variant="outline"
+      />
+    </SettingItem>
   {/if}
 
   <SettingItem
@@ -115,12 +129,10 @@
     <Select
       id="startingPage"
       items={startingPageOptions}
+      onValueChange={(value) => handleSettingChange(value, 'startingPage')}
       triggerClass="w-full"
       type="single"
-      bind:value={
-        () => $settingsStorage.app?.startingPage,
-        (value) => value && handleSettingChange(value, 'startingPage')
-      }
+      value={$settingsStorage.app?.startingPage}
     >
       {#snippet trigger(label)}
         <p>{label}</p>
