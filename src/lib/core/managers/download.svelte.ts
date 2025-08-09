@@ -192,11 +192,13 @@ class DownloadManager {
           }
         },
         onError: async (error) => {
+          item.completedAt = Date.now();
           await this.handleDownloadError(item, type, error);
           this.cleanupActiveDownload();
         }
       });
     } catch (error) {
+      item.completedAt = Date.now();
       await this.handleDownloadError(item, type, error);
       this.cleanupActiveDownload();
     }
