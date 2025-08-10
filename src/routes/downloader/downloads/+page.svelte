@@ -96,9 +96,9 @@
 
         <div class="space-y-3">
           <div class="flex items-center justify-end space-x-2 text-sm">
-            <span>{bytesToSize(progress.downloaded)} / {bytesToSize(progress.downloadSize)}</span>
+            <span>{bytesToSize(progress.downloaded)} / {bytesToSize(progress.actualDownloadSize)}</span>
             <span class="text-muted-foreground">/</span>
-            <span>{progress.percent}%</span>
+            <span>{progress.percent.toFixed(2)}%</span>
           </div>
 
           <Progress.Root class="h-2 bg-accent rounded-full overflow-hidden" value={progress.percent}>

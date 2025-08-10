@@ -20,8 +20,8 @@ type DownloadCallbacks = Partial<{
 }>;
 
 export type DownloadProgress = {
-  installSize: number;
-  downloadSize: number;
+  actualDownloadSize: number;
+  currentDownloadSize: number;
   percent: number;
   etaMs: number;
   downloaded: number;
@@ -136,15 +136,18 @@ class DownloadManager {
     const type: DownloadType = app.requiresRepair ? 'repair' : app.hasUpdate ? 'update' : 'install';
 
     this.downloadingAppId = app.id;
-    this.progress = {
-      installSize: 0,
-      downloadSize: 0,
-      percent: 0,
-      etaMs: 0,
-      downloaded: 0,
-      downloadSpeed: 0,
-      diskWriteSpeed: 0
-    };
+
+    if (item.status !== 'paused') {
+      this.progress = {
+        actualDownloadSize: 0,
+        currentDownloadSize: 0,
+        percent: 0,
+        etaMs: 0,
+        downloaded: 0,
+        downloadSpeed: 0,
+        diskWriteSpeed: 0
+      };
+    }
 
     item.startedAt = Date.now();
     await this.setItemStatus(item, 'downloading');
@@ -348,35 +351,33 @@ class DownloadManager {
 
   private parseDownloadOutput(output: string) {
     const MiBtoBytes = (mib: string) => Number.parseFloat(mib) * 1024 * 1024;
-    const timeToMs = (time: string) => {
-      const [h, m, s] = time.split(':').map(Number);
-      return ((h * 3600) + (m * 60) + s) * 1000;
-    };
-
     const result: Partial<DownloadProgress> = {};
 
-    let match = output.match(/Install size: ([\d.]+) MiB/);
+    let match = output.match(/Download size: ([\d.]+) MiB/);
     if (match) {
-      result.installSize = MiBtoBytes(match[1]);
+      result.currentDownloadSize = MiBtoBytes(match[1]);
+
+      if (!this.progress.actualDownloadSize) {
+        result.actualDownloadSize = result.currentDownloadSize;
+      }
+
       return result;
     }
 
-    match = output.match(/Download size: ([\d.]+) MiB/);
+    match = output.match(/ETA: (\d{2}:\d{2}:\d{2})/);
     if (match) {
-      result.downloadSize = MiBtoBytes(match[1]);
-      return result;
-    }
-
-    match = output.match(/Progress: ([\d.]+)% .* ETA: (\d{2}:\d{2}:\d{2})/);
-    if (match) {
-      result.percent = parseFloat(match[1]);
-      result.etaMs = timeToMs(match[2]);
+      const [h, m, s] = match[1].split(':').map(Number);
+      result.etaMs = ((h * 3600) + (m * 60) + s) * 1000;
       return result;
     }
 
     match = output.match(/Downloaded: ([\d.]+) MiB/);
     if (match) {
-      result.downloaded = MiBtoBytes(match[1]);
+      const downloaded = MiBtoBytes(match[1]);
+      const totalDownloaded = downloaded + this.progress.actualDownloadSize! - this.progress.currentDownloadSize!;
+
+      result.percent = totalDownloaded / this.progress.actualDownloadSize! * 100;
+      result.downloaded = totalDownloaded;
       return result;
     }
 
