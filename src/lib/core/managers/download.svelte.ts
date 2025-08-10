@@ -45,9 +45,16 @@ class DownloadManager {
   async init() {
     const downloaderSettings = get(downloaderStorage);
     const accountId = await Legendary.getAccount();
+    const queue = accountId ? downloaderSettings.queue?.[accountId] : null;
 
-    if (!downloaderSettings.queue || !accountId || !downloaderSettings.queue[accountId]?.length) {
+    if (!downloaderSettings.queue || !accountId || !queue?.length) {
       return;
+    }
+
+    for (const item of queue) {
+      if (item.status === 'downloading') {
+        item.status = 'paused';
+      }
     }
 
     this.queue = downloaderSettings.queue[accountId];
@@ -192,13 +199,11 @@ class DownloadManager {
           }
         },
         onError: async (error) => {
-          item.completedAt = Date.now();
           await this.handleDownloadError(item, type, error);
           this.cleanupActiveDownload();
         }
       });
     } catch (error) {
-      item.completedAt = Date.now();
       await this.handleDownloadError(item, type, error);
       this.cleanupActiveDownload();
     }
@@ -261,6 +266,7 @@ class DownloadManager {
 
     toast.error(errorMessage);
 
+    item.completedAt = Date.now();
     await this.setItemStatus(item, 'failed');
   }
 
