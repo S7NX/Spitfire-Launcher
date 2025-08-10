@@ -9,6 +9,7 @@
 
   let shouldClaimRewards = $state(false);
   let shouldTransferMaterials = $state(false);
+  let shouldInvite = $state(false);
 
   let kickAllSelectedAccount = $state<string>('');
   let leavePartySelectedAccounts = $state<string[]>([]);
@@ -34,9 +35,11 @@
   import { accountPartiesStore, friendsStore } from '$lib/stores';
   import transferBuildingMaterials from '$lib/core/managers/autokick/transfer-building-materials';
   import claimRewards from '$lib/core/managers/autokick/claim-rewards';
-  import { handleError, nonNull, t } from '$lib/utils/util';
+  import { getResolvedResults, handleError, nonNull, sleep, t } from '$lib/utils/util';
   import { toast } from 'svelte-sonner';
   import type { AccountData } from '$types/accounts';
+  import type { PartyData } from '$types/game/party';
+  import { EpicEvents } from '$lib/constants/events';
 
   type Party = {
     maxSize: number;
@@ -134,7 +137,14 @@
       await Promise.allSettled(partyMemberIds.map((id) => kickMember(partyData.id, id, kickerAccount)));
 
       await PartyManager.leave(kickerAccount, partyData.id);
+      afterKickActions(kickerAccount.accountId).catch(() => null);
+
       toast.success($t('partyManagement.stwActions.kickedAll'));
+
+      const members = partyData.members.filter(x => x.account_id !== kickerAccount.accountId);
+      if (shouldInvite) {
+        inviteMembers(kickerAccount, members).catch(console.error);
+      }
     } catch (error) {
       handleError(error, $t('partyManagement.stwActions.failedToKickAll'));
     } finally {
@@ -191,10 +201,20 @@
         const account = allAccounts.find((account) => account.accountId === accountId)!;
 
         if (!claimOnly) {
+          const oldParty = accountPartiesStore.get(account.accountId);
+          const oldMembers = oldParty?.members.filter(x => x.account_id !== account.accountId) || [];
           await PartyManager.leave(account, partyId);
+
+          if (shouldInvite && !claimOnly) {
+            fetchPartyData(account).then(partyData => {
+              if (partyData) {
+                inviteMembers(account, oldMembers).catch(console.error);
+              }
+            });
+          }
         }
 
-        await afterKickActions(accountId);
+        afterKickActions(accountId, claimOnly).catch(() => null);
       }));
 
       toast.success(accountId
@@ -214,7 +234,32 @@
     }
   }
 
-  async function afterKickActions(memberId: string) {
+  async function inviteMembers(account: AccountData, members: PartyData['members']) {
+    if (!members?.length) return;
+
+    const xmpp = await XMPPManager.create(account, 'partyManagement');
+
+    await xmpp.waitForEvent(EpicEvents.MemberJoined, (data) => data.account_id === account.accountId, 20000);
+    await sleep(1000);
+
+    const [partyData, friends] = await getResolvedResults([
+      PartyManager.get(account),
+      FriendsManager.getFriends(account)
+    ]);
+
+    const party = partyData?.current[0];
+
+    if (!party || !friends?.length) return;
+
+    const partyMemberIds = members.map(x => x.account_id).filter(x => x !== account.accountId);
+    const friendsInParty = friends.filter((friend) => partyMemberIds.includes(friend.accountId));
+
+    await Promise.allSettled(friendsInParty.map(async (friend) => {
+      await PartyManager.invite(account, party.id, friend.accountId);
+    }));
+  }
+
+  async function afterKickActions(memberId: string, claim = false) {
     const account = allAccounts.find(account => account.accountId === memberId);
     const settings = AutoKickBase.getAccountById(memberId)?.settings || {};
 
@@ -222,7 +267,7 @@
 
     const promises: Promise<unknown>[] = [];
 
-    if (!settings.autoClaim && shouldClaimRewards) {
+    if (!settings.autoClaim && (claim || shouldClaimRewards)) {
       promises.push(claimRewards(account, true));
     }
 
@@ -296,14 +341,25 @@
 
 {#snippet STWActions()}
   <div class="flex flex-col gap-3">
-    <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
-      <Label for="shouldClaimRewards">{$t('partyManagement.stwActions.claimRewardsAfterLeaving')}</Label>
-      <Switch id="shouldClaimRewards" bind:checked={shouldClaimRewards}/>
-    </div>
+    <div class="flex not-sm:flex-col justify-between sm:items-center gap-2">
+      <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
+        <Label for="shouldClaimRewards">{$t('partyManagement.stwActions.claimRewardsAfterLeaving')}</Label>
+        <Switch id="shouldClaimRewards" bind:checked={shouldClaimRewards}/>
+      </div>
 
-    <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
-      <Label for="shouldTransferMaterials">{$t('partyManagement.stwActions.transferMaterialsAfterLeaving')}</Label>
-      <Switch id="shouldTransferMaterials" bind:checked={shouldTransferMaterials}/>
+      <Separator.Root class="bg-border h-6 w-px not-sm:hidden"/>
+
+      <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
+        <Label for="shouldTransferMaterials">{$t('partyManagement.stwActions.transferMaterialsAfterLeaving')}</Label>
+        <Switch id="shouldTransferMaterials" bind:checked={shouldTransferMaterials}/>
+      </div>
+
+      <Separator.Root class="bg-border h-6 w-px not-sm:hidden"/>
+
+      <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
+        <Label for="inviteAfterLeaving">{$t('partyManagement.stwActions.inviteAfterLeaving')}</Label>
+        <Switch id="inviteAfterLeaving" bind:checked={shouldInvite}/>
+      </div>
     </div>
 
     <PartyAccountSelection
@@ -331,7 +387,7 @@
     <Separator.Root class="bg-border h-px"/>
 
     <PartyAccountSelection
-      disabled={isDoingSomething || !currentAccountParty?.members.length || !claimRewardsPartySelectedAccounts.length || !shouldClaimRewards}
+      disabled={isDoingSomething || !currentAccountParty?.members.length || !claimRewardsPartySelectedAccounts.length}
       loading={isClaiming}
       onclick={() => leaveParty(true)}
       type="multiple"

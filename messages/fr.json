@@ -405,11 +405,12 @@
       "partyMembers": "Membres du groupe"
     },
     "stwActions": {
-      "claimRewardsAfterLeaving": "Réclame des récompenses après avoir quitté la mission",
-      "transferMaterialsAfterLeaving": "Transférer les matériaux après avoir quitté la mission",
-      "kickAll": "Expulser tout le monde",
-      "leaveParty": "Quitter le groupe",
-      "claimRewards": "Réclamer les récompenses",
+      "claimRewardsAfterLeaving": "Réclamer des récompenses",
+      "transferMaterialsAfterLeaving": "Transférer des matériaux",
+      "inviteAfterLeaving": "Inviter",
+      "kickAll": "Expulser tous",
+      "leaveParty": "Quitter grp",
+      "claimRewards": "Réclamer",
       "notInParty": "Tu n'es pas dans un groupe",
       "notLeader": "Tu n'es pas le chef du groupe",
       "kickedAll": "Tous les joueurs ont été expulsés avec succès",

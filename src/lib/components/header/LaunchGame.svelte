@@ -9,8 +9,6 @@
   import type { LegendaryLaunchData } from '$types/legendary';
   import { path } from '@tauri-apps/api';
   import { invoke } from '@tauri-apps/api/core';
-  import GamePad2Icon from 'lucide-svelte/icons/gamepad-2';
-  import CircleStopIcon from 'lucide-svelte/icons/circle-stop';
   import { toast } from 'svelte-sonner';
 
   const fortniteAppId = 'Fortnite';
@@ -121,10 +119,8 @@
   variant={runningAppIds.has(fortniteAppId) ? 'danger' : 'epic'}
 >
   {#if runningAppIds.has(fortniteAppId)}
-    <span class="hidden xs:block">{$t('launchGame.stop')}</span>
-    <CircleStopIcon class="size-6 xs:hidden block"/>
+    {$t('launchGame.stop')}
   {:else}
-    <span class="hidden xs:block">{$t('launchGame.launch')}</span>
-    <GamePad2Icon class="size-6 xs:hidden block"/>
+    {$t('launchGame.launch')}
   {/if}
 </Button>
