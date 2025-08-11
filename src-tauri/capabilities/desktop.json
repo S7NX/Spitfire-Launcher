@@ -30,23 +30,6 @@
       ]
     },
     {
-      "identifier": "fs:allow-exists",
-      "allow": [
-        {
-          "path": "**/Fortnite/FortniteGame/Binaries/Win64/FortniteLauncher.exe"
-        },
-        {
-          "path": "**/Fortnite/FortniteGame/Binaries/Win64/UnrealEditorFortnite-Win64-Shipping.exe"
-        },
-        {
-          "path": "**/rocketleague/Binaries/Win64/RocketLeague.exe"
-        },
-        {
-          "path": "**/FallGuys/RunFallGuys.exe"
-        }
-      ]
-    },
-    {
       "identifier": "shell:allow-execute",
       "allow": [
         {

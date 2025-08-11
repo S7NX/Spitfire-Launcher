@@ -17,14 +17,14 @@ export default class Manifest {
 
   static async getFortniteUserAgent() {
     const gameData = await Manifest.getFortniteManifest().catch(() => null);
-    return gameData?.userAgent || 'Fortnite/++Fortnite+Release-36.30-CL-44367537-Windows';
+    return gameData?.userAgent || 'Fortnite/++Fortnite+Release-37.00-CL-44501951-Windows';
   }
 
   static async getFortniteManifest() {
     if (platform() !== 'windows') return null;
     if (Manifest.fortniteManifestCache) return Manifest.fortniteManifestCache;
 
-    const manifestsDirectory = 'C:\\ProgramData\\Epic\\EpicGamesLauncher\\Data\\Manifests';
+    const manifestsDirectory = 'C:/ProgramData/Epic/EpicGamesLauncher/Data/Manifests';
     const manifestFiles = await readDir(manifestsDirectory);
 
     let parsedManifest: ManifestData | null = null;
