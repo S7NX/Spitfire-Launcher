@@ -151,36 +151,31 @@
               }
             ]}
 
-            <div class="bg-background border rounded-md p-4">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+            <div class="border rounded-md p-3">
+              <div class="flex flex-col xs:flex-row xs:items-center justify-between gap-3 mb-4 relative {canReroll[status.accountId] && 'pr-10'}">
                 <h3 class="font-medium">{quest.names[$language]}</h3>
 
-                <div class="flex items-center gap-2">
-                  <span class="font-medium">{quest.completionProgress}/{quest.limit}</span>
+                <span class="font-medium">{quest.completionProgress}/{quest.limit}</span>
 
-                  {#if canReroll[status.accountId]}
-                    <Button
-                      class="flex items-center justify-center h-8 w-8"
-                      disabled={!!rerollingQuestId}
-                      onclick={() => rerollQuest(status.accountId, quest.id)}
-                      size="sm"
-                      variant="outline"
-                    >
-                      <RefreshCwIcon
-                        class="size-4 {rerollingQuestId === quest.id
-                          ? 'animate-spin'
-                          : ''}"
-                      />
-                    </Button>
-                  {/if}
-                </div>
+                {#if canReroll[status.accountId]}
+                  <Button
+                    class="flex items-center justify-center absolute top-0 right-0 size-8"
+                    disabled={!!rerollingQuestId}
+                    onclick={() => rerollQuest(status.accountId, quest.id)}
+                    size="sm"
+                    variant="outline"
+                  >
+                    <RefreshCwIcon class={rerollingQuestId === quest.id ? 'animate-spin': ''}/>
+                  </Button>
+                {/if}
               </div>
+
 
               <div class="flex justify-around">
                 {#each rewards as reward (reward.name)}
                   {#if reward.amount > 0}
                     <div class="flex items-center gap-2 bg-muted/50 p-2 rounded">
-                      <img class="size-5" alt={reward.name} src={reward.icon}/>
+                      <img class="size-6" alt={reward.name} src={reward.icon}/>
                       <span class="font-medium">{reward.amount.toLocaleString($language)}</span>
                     </div>
                   {/if}
