@@ -481,6 +481,10 @@
         "title": "İndirme Yolu",
         "description": "Başlatıcının oyunları indireceği yolu seçin."
       },
+      "noHTTPS": {
+        "title": "HTTPS'i Devre Dışı Bırak",
+        "description": "Oyunları HTTPS olmadan indir."
+      },
       "autoUpdate": {
         "title": "Otomatik Güncelleme",
         "description": "Yeni bir sürüm mevcut olduğunda oyunları otomatik olarak güncelle."

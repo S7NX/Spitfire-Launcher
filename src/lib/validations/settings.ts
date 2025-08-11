@@ -100,6 +100,7 @@ export const queueItemSchema = z.object({
 
 export const downloaderSettingsSchema = z.object({
   downloadPath: z.string(),
+  noHTTPS: z.boolean(),
   autoUpdate: z.boolean(),
   sendNotifications: z.boolean(),
   favoriteApps: z.array(z.string()),

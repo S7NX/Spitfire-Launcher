@@ -278,6 +278,10 @@ class DownloadManager {
     const streamId = `install_${app.id}_${Date.now()}`;
     const args = [app.requiresRepair ? 'repair' : 'install', app.id, '-y', '--skip-sdl', '--skip-dlcs', '--base-path', settings.downloadPath!];
 
+    if (settings.noHTTPS) {
+      args.push('--no-https');
+    }
+
     const unlisten = await listen<StreamEvent>(`legendary_stream:${streamId}`, (event) => {
       const payload = event.payload;
 

@@ -166,6 +166,7 @@ const downloaderStorage = new DataStorage<DownloaderSettings>(
   'downloader',
   {
     downloadPath: '%HOME%/Games/Spitfire Launcher',
+    noHTTPS: false,
     autoUpdate: true,
     sendNotifications: true,
     favoriteApps: [],

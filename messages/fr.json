@@ -481,6 +481,10 @@
         "title": "Chemin de l'installateur",
         "description": "Sélectionne le chemin où le lanceur téléchargera les jeux."
       },
+      "noHTTPS": {
+        "title": "Désactiver HTTPS",
+        "description": "Télécharger les jeux sans HTTPS."
+      },
       "autoUpdate": {
         "title": "Mise à jour automatique",
         "description": "Mettre à jour automatiquement les jeux lorsqu'une nouvelle version est disponible."

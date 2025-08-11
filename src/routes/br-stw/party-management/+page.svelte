@@ -342,21 +342,21 @@
 {#snippet STWActions()}
   <div class="flex flex-col gap-3">
     <div class="flex not-sm:flex-col justify-between sm:items-center gap-2">
-      <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
+      <div class="flex items-center justify-between gap-x-2">
         <Label for="shouldClaimRewards">{$t('partyManagement.stwActions.claimRewardsAfterLeaving')}</Label>
         <Switch id="shouldClaimRewards" bind:checked={shouldClaimRewards}/>
       </div>
 
       <Separator.Root class="bg-border h-6 w-px not-sm:hidden"/>
 
-      <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
+      <div class="flex items-center justify-between gap-x-2">
         <Label for="shouldTransferMaterials">{$t('partyManagement.stwActions.transferMaterialsAfterLeaving')}</Label>
         <Switch id="shouldTransferMaterials" bind:checked={shouldTransferMaterials}/>
       </div>
 
       <Separator.Root class="bg-border h-6 w-px not-sm:hidden"/>
 
-      <div class="flex flex-row sm:justify-between items-center justify-between gap-x-2">
+      <div class="flex items-center justify-between gap-x-2">
         <Label for="inviteAfterLeaving">{$t('partyManagement.stwActions.inviteAfterLeaving')}</Label>
         <Switch id="inviteAfterLeaving" bind:checked={shouldInvite}/>
       </div>

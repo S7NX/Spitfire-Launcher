@@ -481,6 +481,10 @@
         "title": "Download Path",
         "description": "Select the path where the launcher will download games."
       },
+      "noHTTPS": {
+        "title": "Disable HTTPS",
+        "description": "Download games without HTTPS."
+      },
       "autoUpdate": {
         "title": "Auto Update",
         "description": "Automatically update games when a new version is available."

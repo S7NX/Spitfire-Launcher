@@ -120,6 +120,19 @@
   </SettingItem>
 
   <SettingItem
+    description={$t('settings.downloaderSettings.noHTTPS.description')}
+    labelFor="noHTTPS"
+    orientation="horizontal"
+    title={$t('settings.downloaderSettings.noHTTPS.title')}
+  >
+    <Switch
+      id="noHTTPS"
+      checked={$downloaderStorage.noHTTPS}
+      onCheckedChange={(checked) => handleSettingChange(checked, 'noHTTPS')}
+    />
+  </SettingItem>
+
+  <SettingItem
     description={$t('settings.downloaderSettings.autoUpdate.description')}
     labelFor="autoUpdate"
     orientation="horizontal"

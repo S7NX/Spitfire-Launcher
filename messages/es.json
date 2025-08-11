@@ -481,6 +481,10 @@
         "title": "Ruta de descarga",
         "description": "Seleccione la ruta donde el lanzador descargará los juegos."
       },
+      "noHTTPS": {
+        "title": "Desactivar HTTPS",
+        "description": "Descargar juegos sin HTTPS."
+      },
       "autoUpdate": {
         "title": "Actualización automática",
         "description": "Actualizar automáticamente los juegos cuando una nueva versión esté disponible."
