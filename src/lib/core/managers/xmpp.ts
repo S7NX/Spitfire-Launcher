@@ -188,7 +188,10 @@ export default class XMPPManager extends EventEmitter<EventMap> {
         bIsPlaying: false,
         bIsJoinable: false
       }),
-      show: onlineType === 'online' ? undefined : onlineType
+      show: onlineType === 'online' ? undefined : onlineType,
+      delay: {
+        timestamp: new Date('9999-12-31T23:59:59.999Z').toISOString()
+      }
     });
   }
 
