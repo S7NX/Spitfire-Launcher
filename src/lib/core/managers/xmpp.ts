@@ -2,6 +2,7 @@ import AsyncLock from '$lib/utils/async-lock';
 import Authentication from '$lib/core/authentication';
 import { accountsStorage } from '$lib/core/data-storage';
 import PartyManager from '$lib/core/managers/party';
+import FriendsManager from '$lib/core/managers/friends';
 import EventEmitter from '$lib/utils/event-emitter';
 import { accountPartiesStore, friendsStore } from '$lib/stores';
 import { ConnectionEvents, EpicEvents } from '$lib/constants/events';
@@ -45,8 +46,7 @@ type EventMap = {
   [ConnectionEvents.Disconnected]: void;
 };
 
-type AccountOptions = {
-  accountId: string;
+type AccountOptions = AccountData & {
   accessToken: string;
 };
 
@@ -89,7 +89,7 @@ export default class XMPPManager extends EventEmitter<EventMap> {
       }
 
       const accessTokenData = await Authentication.getAccessTokenUsingDeviceAuth(account, false);
-      const instance = new XMPPManager({ accountId: account.accountId, accessToken: accessTokenData.access_token }, purpose);
+      const instance = new XMPPManager({ ...account, accessToken: accessTokenData.access_token }, purpose);
       XMPPManager.instances.set(account.accountId, instance);
 
       return instance;
@@ -444,6 +444,7 @@ export default class XMPPManager extends EventEmitter<EventMap> {
 
       if (data.status === 'PENDING') {
         if (data.from === this.accountId) {
+          FriendsManager.cacheAccountNameAndAvatar(this.account, data.to);
           newFriends.outgoing.set(data.to, {
             accountId: data.to,
             mutual: 0,
@@ -451,6 +452,7 @@ export default class XMPPManager extends EventEmitter<EventMap> {
             created: data.timestamp
           });
         } else {
+          FriendsManager.cacheAccountNameAndAvatar(this.account, data.from);
           newFriends.incoming.set(data.from, {
             accountId: data.from,
             mutual: 0,
@@ -460,6 +462,8 @@ export default class XMPPManager extends EventEmitter<EventMap> {
         }
       } else if (data.status === 'ACCEPTED') {
         const friendId = data.from === this.accountId ? data.to : data.from;
+
+        FriendsManager.cacheAccountNameAndAvatar(this.account, friendId);
         newFriends.incoming.delete(friendId);
         newFriends.outgoing.delete(friendId);
         newFriends.friends.set(friendId, {

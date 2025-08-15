@@ -371,7 +371,7 @@ export default class FriendsManager {
     return acceptedRequests;
   }
 
-  private static cacheAccountNameAndAvatar(account: AccountData, accountId: string) {
+  static cacheAccountNameAndAvatar(account: AccountData, accountId: string) {
     if (!displayNamesCache.get(accountId)) {
       LookupManager.fetchById(account, accountId).catch(console.error);
     }
