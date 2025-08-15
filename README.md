@@ -17,12 +17,6 @@ A launcher for Fortnite Battle Royale and Save the World
 - [💡 Credits](#credits)
 - [📜 License](#license)
 
-## Built With
-
-- [Svelte](https://svelte.dev) - Cybernetically enhanced web apps
-- [Tailwind CSS](https://tailwindcss.com) - Rapidly build modern websites without ever leaving your HTML
-- [Tauri](https://tauri.app) - Build smaller, faster, and more secure desktop applications
-
 ## Installation
 
 Download the latest release from the [releases](https://github.com/BurakYs/Spitfire-Launcher/releases/latest) page or from [our website](https://rookie-spitfire.xyz/launcher).
