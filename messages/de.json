@@ -87,7 +87,7 @@
       "title": "Epic Games Website",
       "description": "Klicke auf die Schaltfläche unten, um dich bei Epic Games anzumelden."
     },
-    "login": "Bei Epic Games Website anmelden",
+    "login": "Bei Epic Games anmelden",
     "loggingIn": "Anmeldung läuft",
     "openedWebsite": "Epic Games Website geöffnet",
     "failedToOpenWebsite": "Epic Games Website konnte nicht geöffnet werden",
@@ -122,8 +122,8 @@
     "page": {
       "title": "V-Bucks Informationen"
     },
-    "getInformation": "V-Bucks Informationen Abrufen",
-    "loading": "V-Bucks Informationen werden geladen",
+    "getInformation": "V-Bucks abrufen",
+    "loading": "V-Bucks werden geladen",
     "loginExpired": "Anmeldung abgelauft. Bitte melde dich erneut an.",
     "unknownError": "Unbekannter Fehler"
   },
@@ -566,9 +566,9 @@
     },
     "lists": {
       "friends": "Freunde",
-      "incoming": "Eingehende Anfragen",
-      "outgoing": "Ausgehende Anfragen",
-      "blocklist": "Blockierliste"
+      "incoming": "Eingehend",
+      "outgoing": "Ausgehend",
+      "blocklist": "Blockliste"
     },
     "failedToAdd": "Freund konnte nicht hinzugefügt oder Anfrage akzeptiert werden",
     "failedToRemove": "Freund konnte nicht entfernt oder Anfrage abgelehnt werden",
