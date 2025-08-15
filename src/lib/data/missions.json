@@ -1,6 +1,7 @@
 {
   "fightTheStorm": {
     "names": {
+      "de": "Bekämpfe den Sturm",
       "en": "Fight the Storm",
       "fr": "Combattre la tempête",
       "es": "Lucha contra la tormenta",
@@ -9,6 +10,7 @@
   },
   "fightCategory2Storm": {
     "names": {
+      "de": "Kategorie 2-Sturm bekämpfen",
       "en": "Fight Category 2 Storm",
       "fr": "Combattre la tempête de catégorie 2",
       "es": "Lucha contra una tormenta de categoría 2",
@@ -17,6 +19,7 @@
   },
   "fightCategory3Storm": {
     "names": {
+      "de": "Kategorie 3-Sturm bekämpfen",
       "en": "Fight Category 3 Storm",
       "fr": "Combattre la tempête de catégorie 3",
       "es": "Lucha contra una tormenta de categoría 3",
@@ -25,6 +28,7 @@
   },
   "fightCategory4Storm": {
     "names": {
+      "de": "Bekämpfe Kategorie 4-Sturm",
       "en": "Fight Category 4 Storm",
       "fr": "Combattre la tempête de catégorie 4",
       "es": "Lucha contra una tormenta de categoría 4",
@@ -33,6 +37,7 @@
   },
   "buildTheFort": {
     "names": {
+      "de": "Baue die Festung.",
       "en": "Build the Fort",
       "fr": "Construire le fort",
       "es": "Construye el fuerte",
@@ -41,6 +46,7 @@
   },
   "buildTheRadarGrid": {
     "names": {
+      "de": "Baue das Radarraster",
       "en": "Build the Radar Grid",
       "fr": "Construire le réseau radar",
       "es": "Construye la red de radares",
@@ -49,6 +55,7 @@
   },
   "challengeTheHorde": {
     "names": {
+      "de": "Bekämpfe die Horde",
       "en": "Challenge the Horde",
       "fr": "Défier la horde",
       "es": "Desafía a la horda",
@@ -57,6 +64,7 @@
   },
   "closeTheGate(PerfMem)": {
     "names": {
+      "de": "Schließe das Tor (PerfMem)",
       "en": "Close the Gate (PerfMem)",
       "fr": "Fermer le portail (PerfMem)",
       "es": "Cierra la puerta (PerfMem)",
@@ -65,6 +73,7 @@
   },
   "deliverTheGoods": {
     "names": {
+      "de": "Güter abliefern",
       "en": "Deliver The Goods",
       "fr": "Livrer la marchandise",
       "es": "Entrega la mercancía",
@@ -73,6 +82,7 @@
   },
   "destroyTheEncampments": {
     "names": {
+      "de": "Die Lager zerstören",
       "en": "Destroy The Encampments",
       "fr": "Détruire les camps",
       "es": "Destruye los campamentos",
@@ -81,6 +91,7 @@
   },
   "eliminateAndCollect": {
     "names": {
+      "de": "Erledigen und sammeln",
       "en": "Eliminate and Collect",
       "fr": "Éliminer et collecter",
       "es": "Elimina y recolecta",
@@ -89,6 +100,7 @@
   },
   "frostnite": {
     "names": {
+      "de": "Frostnite",
       "en": "Frostnite",
       "fr": "Nuit de glace",
       "es": "Frostnite",
@@ -97,6 +109,7 @@
   },
   "frostnite:FinalFrost": {
     "names": {
+      "de": "Frostnite: Finaler Frost",
       "en": "Frostnite: Final Frost",
       "fr": "Nuit de glace - Ultime glaciation",
       "es": "Frostnite: Última escarcha",
@@ -105,6 +118,7 @@
   },
   "frostnite:FrostyTurf": {
     "names": {
+      "de": "Frostnite: Frostfeld",
       "en": "Frostnite: Frosty Turf",
       "fr": "Nuit de glace - Gazon glacial",
       "es": "Frostnite: Territorio escarchado",
@@ -113,6 +127,7 @@
   },
   "frostnite:MerryMelee": {
     "names": {
+      "de": "Frostnite: Frohes Nahkampffest",
       "en": "Frostnite: Merry Melee",
       "fr": "Nuit de glace - Joyeuse mêlée",
       "es": "Frostnite: Refriega festiva",
@@ -121,6 +136,7 @@
   },
   "frostnite:NewWaveHoliday": {
     "names": {
+      "de": "Frostnite: Das Fest schlägt Wellen",
       "en": "Frostnite: New Wave Holiday",
       "fr": "Nuit de glace - Vagues festives",
       "es": "Frostnite: Fiesta de la Nueva Oleada",
@@ -129,6 +145,7 @@
   },
   "frostnite:SpecialDelivery": {
     "names": {
+      "de": "Frostnite: Sonderlieferung",
       "en": "Frostnite: Special Delivery",
       "fr": "Nuit de glace - Livraison spéciale",
       "es": "Frostnite: Entrega especial",
@@ -137,6 +154,7 @@
   },
   "frostnite:Superheated": {
     "names": {
+      "de": "Frostnite: Überhitzt",
       "en": "Frostnite: Superheated",
       "fr": "Nuit de glace - Structures en sueur",
       "es": "Frostnite: Sobrecalentado",
@@ -145,6 +163,7 @@
   },
   "frostnite:TopItOff": {
     "names": {
+      "de": "Frostnite: Brennstoffdurst",
       "en": "Frostnite: Top It Off",
       "fr": "Nuit de glace - Faire le plein",
       "es": "Frostnite: Hasta arriba",
@@ -153,6 +172,7 @@
   },
   "rescueTheSurvivors": {
     "names": {
+      "de": "Rette die Überlebenden",
       "en": "Rescue the Survivors",
       "fr": "Sauver les survivants",
       "es": "Rescata a los supervivientes",
@@ -161,6 +181,7 @@
   },
   "rideTheLightning": {
     "names": {
+      "de": "Reite auf dem Blitz",
       "en": "Ride The Lightning",
       "fr": "Chevaucher la foudre",
       "es": "Monta el rayo",
@@ -169,6 +190,7 @@
   },
   "launchTheRocket": {
     "names": {
+      "de": "Starte die Rakete",
       "en": "Launch the Rocket",
       "fr": "Lancer la fusée",
       "es": "Lanza el cohete",
@@ -177,6 +199,7 @@
   },
   "hitTheRoad": {
     "names": {
+      "de": "Auf die endlose Straße",
       "en": "Hit the Road",
       "fr": "Sur la route",
       "es": "En marcha",
@@ -185,6 +208,7 @@
   },
   "onboardingFort": {
     "names": {
+      "de": "Festung eingliedern",
       "en": "Onboarding Fort",
       "fr": "Embarquement immédiat",
       "es": "Adentrándose en el fuerte",
@@ -193,6 +217,7 @@
   },
   "repairTheShelter": {
     "names": {
+      "de": "Repariere den Schutzbunker",
       "en": "Repair the Shelter",
       "fr": "Réparer le refuge",
       "es": "Repara el refugio",
@@ -201,6 +226,7 @@
   },
   "refuelTheHomebase": {
     "names": {
+      "de": "Treibstoff für die Heimatbasis",
       "en": "Refuel the Homebase",
       "fr": "Réapprovisionner la base",
       "es": "Reabastece la base",
@@ -209,6 +235,7 @@
   },
   "resupply": {
     "names": {
+      "de": "Neuversorgung",
       "en": "Resupply",
       "fr": "Se réapprovisionner",
       "es": "Reabastécete",
@@ -217,6 +244,7 @@
   },
   "retrieveTheData": {
     "names": {
+      "de": "Datenbeschaffung",
       "en": "Retrieve the Data",
       "fr": "Récupérer les données",
       "es": "Recupera los datos",
@@ -225,6 +253,7 @@
   },
   "steelIcarus": {
     "names": {
+      "de": "Stählerner Ikarus",
       "en": "Steel Icarus",
       "fr": "Un Icare de tôles",
       "es": "Ícaro de acero",
@@ -233,6 +262,7 @@
   },
   "theCrypts": {
     "names": {
+      "de": "Die Krypten",
       "en": "The Crypts",
       "fr": "Cryptes",
       "es": "Las criptas",
@@ -241,6 +271,7 @@
   },
   "theCrypts(MeleeOnly!)": {
     "names": {
+      "de": "Die Krypten (nur Nahkampf!)",
       "en": "The Crypts (Melee Only!)",
       "fr": "Cryptes (mêlée uniquement !)",
       "es": "Las criptas (¡solo cuerpo a cuerpo!)",
@@ -249,6 +280,7 @@
   },
   "theCrypts(Melee+Timed!)": {
     "names": {
+      "de": "Die Krypten (Nahkampf + Zeitlimit!)",
       "en": "The Crypts (Melee+Timed!)",
       "fr": "Cryptes (mêlée+chronométré !)",
       "es": "Las criptas (¡cuerpo a cuerpo + contrarreloj!)",
@@ -257,6 +289,7 @@
   },
   "theCrypts(TimedRun!)": {
     "names": {
+      "de": "Die Krypten (Zeitlimit!)",
       "en": "The Crypts (Timed Run!)",
       "fr": "Cryptes (course chronométrée !)",
       "es": "Las criptas (¡contrarreloj!)",
@@ -265,6 +298,7 @@
   },
   "inferno": {
     "names": {
+      "de": "Inferno",
       "en": "Inferno",
       "fr": "Enfer",
       "es": "Infierno",
@@ -273,6 +307,7 @@
   },
   "inferno(TimedRun!)": {
     "names": {
+      "de": "Inferno (Zeitlimit!)",
       "en": "Inferno (Timed Run!)",
       "fr": "Enfer (course chronométrée !)",
       "es": "Infierno (¡contrarreloj!)",
@@ -281,6 +316,7 @@
   },
   "theGrotto": {
     "names": {
+      "de": "The Grotto",
       "en": "The Grotto",
       "fr": "Grotte",
       "es": "La Gruta",
@@ -289,6 +325,7 @@
   },
   "theGrotto(TimedRun!)": {
     "names": {
+      "de": "Die Grotte (Zeitlimit!)",
       "en": "The Grotto (Timed Run!)",
       "fr": "Grotte (course chronométrée !)",
       "es": "La Gruta (¡contrarreloj!)",
@@ -297,6 +334,7 @@
   },
   "theLabyrinth": {
     "names": {
+      "de": "Das Labyrinth",
       "en": "The Labyrinth",
       "fr": "Labyrinthe",
       "es": "El Laberinto",
@@ -305,6 +343,7 @@
   },
   "theLabyrinth(TimedRun!)": {
     "names": {
+      "de": "Das Labyrinth (Zeitlimit!)",
       "en": "The Labyrinth (Timed Run!)",
       "fr": "Labyrinthe (course chronométrée !)",
       "es": "El Laberinto (¡contrarreloj!)",
@@ -313,6 +352,7 @@
   },
   "theLab": {
     "names": {
+      "de": "Das Labor",
       "en": "The Lab",
       "fr": "Le Labo",
       "es": "El Laboratorio",
@@ -321,6 +361,7 @@
   },
   "surviveTheStorm": {
     "names": {
+      "de": "Überlebe den Sturm",
       "en": "Survive the Storm",
       "fr": "Survivre à la tempête",
       "es": "Sobrevive a la tormenta",
@@ -329,6 +370,7 @@
   },
   "surviveTheStorm:3Days": {
     "names": {
+      "de": "Überlebe den Sturm: 3 Tage",
       "en": "Survive the Storm: 3 Days",
       "fr": "Survivre à la tempête : 3 j",
       "es": "Sobrevive a la tormenta: 3 días",
@@ -337,6 +379,7 @@
   },
   "surviveTheStorm:7Days": {
     "names": {
+      "de": "Überlebe den Sturm: 7 Tage",
       "en": "Survive the Storm: 7 Days",
       "fr": "Survivre à la tempête : 7 j",
       "es": "Sobrevive a la tormenta: 7 días",
@@ -345,6 +388,7 @@
   },
   "surviveTheStorm:14Days": {
     "names": {
+      "de": "Überlebe den Sturm: 14 Tage",
       "en": "Survive the Storm: 14 Days",
       "fr": "Survivre à la tempête : 14 jours",
       "es": "Sobrevive a la tormenta: 14 días",
@@ -353,6 +397,7 @@
   },
   "surviveTheStorm:3+Days": {
     "names": {
+      "de": "Überlebe den Sturm: Mindestens 3 Tage",
       "en": "Survive the Storm: 3+ Days",
       "fr": "Survivre à la tempête : 3 jours min.",
       "es": "Sobrevive a la tormenta: 3 días o más",
@@ -361,6 +406,7 @@
   },
   "surviveTheStorm:7+Days": {
     "names": {
+      "de": "Überlebe den Sturm: Mindestens 7 Tage",
       "en": "Survive the Storm: 7+ Days",
       "fr": "Survivre à la tempête : 7 jours min.",
       "es": "Sobrevive a la tormenta: 7 días o más",
@@ -369,6 +415,7 @@
   },
   "evacuateTheShelter": {
     "names": {
+      "de": "Den Schutzbunker evakuieren",
       "en": "Evacuate the Shelter",
       "fr": "Évacuer le refuge",
       "es": "Evacúa el refugio",
@@ -377,6 +424,7 @@
   },
   "theOutpost": {
     "names": {
+      "de": "Der Außenposten",
       "en": "The Outpost",
       "fr": "L'Avant-poste",
       "es": "El puesto de avanzada",
@@ -385,6 +433,7 @@
   },
   "homebaseStormShield": {
     "names": {
+      "de": "Heimatbasis-Sturmschild",
       "en": "Homebase Storm Shield",
       "fr": "Bouclier antitempête de la base",
       "es": "Escudo antitormentas de la base",
@@ -393,6 +442,7 @@
   },
   "plankertonStormShield": {
     "names": {
+      "de": "Plankerton-Sturmschild",
       "en": "Plankerton Storm Shield",
       "fr": "Bouclier antitempête de Villeplanche",
       "es": "Escudo antitormentas de Villatablón",
@@ -401,6 +451,7 @@
   },
   "cannyValleyStormShield": {
     "names": {
+      "de": "Bru-Tal-Sturmschild",
       "en": "Canny Valley Storm Shield",
       "fr": "Bouclier antitempête de Morne-la-Vallée",
       "es": "Escudo antitormentas de Valle Latoso",
@@ -409,6 +460,7 @@
   },
   "twinePeaksStormShield": {
     "names": {
+      "de": "Twine Peaks-Sturmschild",
       "en": "Twine Peaks Storm Shield",
       "fr": "Bouclier antitempête de Pics Hardis",
       "es": "Escudo antitormentas de Cumbres Leñosas",
@@ -417,6 +469,7 @@
   },
   "weeklyHordeChallenge": {
     "names": {
+      "de": "Wöchentliche Hordenherausforderung",
       "en": "Weekly Horde Challenge",
       "fr": "Défi de la horde hebdomadaire",
       "es": "Desafío de la horda semanal",
@@ -425,6 +478,7 @@
   },
   "exploreTheMist": {
     "names": {
+      "de": "Erkunde den Nebel",
       "en": "Explore the Mist",
       "fr": "Explorer la brume",
       "es": "Explora la bruma",
@@ -433,6 +487,7 @@
   },
   "trapTheStorm": {
     "names": {
+      "de": "Fange den Sturm",
       "en": "Trap the Storm",
       "fr": "Piéger la tempête",
       "es": "Atrapa la tormenta",
@@ -441,6 +496,7 @@
   },
   "surviveTheNight": {
     "names": {
+      "de": "Überlebe die Nacht",
       "en": "Survive the Night",
       "fr": "Survivre à la nuit",
       "es": "Sobrevive a la noche",
@@ -449,6 +505,7 @@
   },
   "thePortal": {
     "names": {
+      "de": "Das Portal",
       "en": "The Portal",
       "fr": "Le portail",
       "es": "El portal",
@@ -457,6 +514,7 @@
   },
   "walkThePlank": {
     "names": {
+      "de": "Über die Planke",
       "en": "Walk the Plank",
       "fr": "Marcher sur la planche",
       "es": "Date un paseo por la tabla",
@@ -465,6 +523,7 @@
   },
   "yarrr!": {
     "names": {
+      "de": "Arr!",
       "en": "Yarrr!",
       "fr": "Mille sabords !",
       "es": "¡Arrrr!",
@@ -473,6 +532,7 @@
   },
   "protectThePresents": {
     "names": {
+      "de": "Beschütze die Geschenke",
       "en": "Protect The Presents",
       "fr": "Protégez les cadeaux",
       "es": "Protege los regalos",
@@ -481,6 +541,7 @@
   },
   "in-VendingDoom": {
     "names": {
+      "de": "Verderbnisverkauf",
       "en": "In-Vending Doom",
       "fr": "Distributeur de désespoir",
       "es": "Doom expendedor",
@@ -489,6 +550,7 @@
   },
   "frightMaze": {
     "names": {
+      "de": "Fürchterliches Labyrinth",
       "en": "Fright Maze",
       "fr": "Labyrinthe de l'horreur",
       "es": "Laberinto espeluznante",
@@ -497,6 +559,7 @@
   },
   "hollyJollyRansom": {
     "names": {
+      "de": "Fröhlich-festliche Forderung",
       "en": "Holly Jolly Ransom",
       "fr": "Une joyeuse rançon",
       "es": "Rescate festivo",
@@ -505,6 +568,7 @@
   },
   "jar-RelatedConsequences": {
     "names": {
+      "de": "Konsequenzen aus dem Glas",
       "en": "Jar-Related Consequences",
       "fr": "Conséquences abocalyptiques",
       "es": "No te comas el tarro",
@@ -513,6 +577,7 @@
   },
   "re-Shoots": {
     "names": {
+      "de": "Neuaufnahmen",
       "en": "Re-Shoots",
       "fr": "Il faut tout refaire",
       "es": "Repetición de tomas",
@@ -521,6 +586,7 @@
   },
   "backstage": {
     "names": {
+      "de": "Backstage",
       "en": "Backstage",
       "fr": "Coulisses",
       "es": "Entre bambalinas",
@@ -529,6 +595,7 @@
   },
   "theDoorToDarkness": {
     "names": {
+      "de": "Die Tür zur Finsternis",
       "en": "The Door To Darkness",
       "fr": "La porte des ténèbres",
       "es": "El portal a la oscuridad",
@@ -537,6 +604,7 @@
   },
   "night1:RumorsOfGhosts": {
     "names": {
+      "de": "Nacht 1: Gerüchte über Geister",
       "en": "Night 1: Rumors of Ghosts",
       "fr": "Nuit 1 - Rumeurs de fantômes",
       "es": "Noche 1: Rumores de fantasmas",
@@ -545,6 +613,7 @@
   },
   "yarrr'sReturn": {
     "names": {
+      "de": "Augenklappen-Comeback",
       "en": "Yarrr's Return",
       "fr": "Le retour des pirates",
       "es": "El regreso de Arrrr",
@@ -553,6 +622,7 @@
   },
   "constructorBuildOff": {
     "names": {
+      "de": "Konstrukteurswettbewerb",
       "en": "Constructor Build Off",
       "fr": "Duel de construction",
       "es": "Desafío del constructor",
@@ -561,6 +631,7 @@
   },
   "searchVinderman’sMansion": {
     "names": {
+      "de": "Durchsuche Vindermans Anwesen",
       "en": "Search Vinderman’s Mansion",
       "fr": "Fouiller le manoir de Vinderman",
       "es": "Registra la mansión de Vinderman",
@@ -569,6 +640,7 @@
   },
   "stabilizeTheRift": {
     "names": {
+      "de": "Stabilisiere den Riss",
       "en": "Stabilize the Rift",
       "fr": "Stabiliser la faille",
       "es": "Estabiliza la grieta",
@@ -577,6 +649,7 @@
   },
   "fightTheGunslinger": {
     "names": {
+      "de": "Kämpfe gegen den Pistolero",
       "en": "Fight The Gunslinger",
       "fr": "Affronter l'as de la gâchette",
       "es": "Enfréntate al pistolero",
@@ -585,6 +658,7 @@
   },
   "deployTheProbe": {
     "names": {
+      "de": "Setze die Messsonde ein",
       "en": "Deploy the Probe",
       "fr": "Déployer la sonde",
       "es": "Despliega la sonda",
@@ -593,6 +667,7 @@
   },
   "buildasaurusRex": {
     "names": {
+      "de": "Tyrannobaurus Rex",
       "en": "Buildasaurus Rex",
       "fr": "Constructosaure rex",
       "es": "Construyesaurus Rex",
@@ -601,6 +676,7 @@
   },
   "buildTheMemorial": {
     "names": {
+      "de": "Errichte das Denkmal",
       "en": "Build The Memorial",
       "fr": "Construire un mémorial",
       "es": "Construye un monumento homenaje",
@@ -609,6 +685,7 @@
   },
   "liberatePlankHarbor": {
     "names": {
+      "de": "Befreie Plank Harbor",
       "en": "Liberate Plank Harbor",
       "fr": "Libérer Port-de-Planche",
       "es": "Libera Puerto Tablón",
@@ -617,6 +694,7 @@
   },
   "watchTheSkies": {
     "names": {
+      "de": "Augen nach oben",
       "en": "Watch the Skies",
       "fr": "Surveiller le ciel",
       "es": "Mira al cielo",
@@ -625,6 +703,7 @@
   },
   "testTheSuit": {
     "names": {
+      "de": "Teste den Anzug",
       "en": "Test the Suit",
       "fr": "Tester la combinaison",
       "es": "Pon a prueba el traje",
@@ -633,6 +712,7 @@
   },
   "vindertechResearchLab": {
     "names": {
+      "de": "Vindertech-Forschungslabor",
       "en": "Vindertech Research Lab",
       "fr": "Laboratoire Vinderman",
       "es": "Laboratorio de investigación de Vindertech",
@@ -641,6 +721,7 @@
   },
   "deliverTheBomb": {
     "names": {
+      "de": "Liefere die Bombe ab",
       "en": "Deliver The Bomb",
       "fr": "Livrer la bombe",
       "es": "Entrega la bomba",
@@ -649,6 +730,7 @@
   },
   "scanTheComet": {
     "names": {
+      "de": "Scanne den Kometen",
       "en": "Scan the Comet",
       "fr": "Scanner la comète",
       "es": "Escanea el cometa",
@@ -657,6 +739,7 @@
   },
   "destroyTheMeteor": {
     "names": {
+      "de": "Zerstöre den Meteoriten",
       "en": "Destroy The Meteor",
       "fr": "Détruire la comète",
       "es": "Destruye el meteorito",
@@ -665,6 +748,7 @@
   },
   "huntTheTitan": {
     "names": {
+      "de": "Jage den Titanen",
       "en": "Hunt The Titan",
       "fr": "Chasse au Titan",
       "es": "Caza al titán",

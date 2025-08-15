@@ -7,6 +7,7 @@
   import { changeLocale, t } from '$lib/utils/util';
 
   const locales: { locale: Locale; country: string }[] = [
+    { locale: 'de', country: 'germany' },
     { locale: 'en', country: 'usa' },
     { locale: 'es', country: 'spain' },
     { locale: 'fr', country: 'france' },

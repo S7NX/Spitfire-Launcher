@@ -69,6 +69,7 @@
   },
   "394D85EF40B2BF401E6F32B587D7672B": {
     "names": {
+      "de": "Gruften",
       "en": "Dungeons",
       "fr": "Donjons",
       "es": "Mazmorras",
@@ -94,6 +95,7 @@
   },
   "25D86CC64F0F3EE1831CFD9B2DF6D68C": {
     "names": {
+      "de": "Verwüstetes Ödland",
       "en": "Blasted Badlands",
       "fr": "Friches Éclatées",
       "es": "Erial Estallado",
@@ -102,6 +104,7 @@
   },
   "FF97186D4741CB5F2A980BB0164081D4": {
     "names": {
+      "de": "Flannelfurt",
       "en": "Flannel Falls",
       "fr": "Flots de Flanelle",
       "es": "Cataratas Cachemir",
@@ -110,6 +113,7 @@
   },
   "D61659064BED28BEA91FD2A343C126B7": {
     "names": {
+      "de": "Frostfjorde",
       "en": "Frozen Fjords",
       "fr": "Fjords Frisquets",
       "es": "Fiordos Fresquitos",
@@ -118,6 +122,7 @@
   },
   "DBB6E92A4EDE30B76C94C7BA3852C473": {
     "names": {
+      "de": "Hexsilvanien",
       "en": "Hexsylvania",
       "fr": "Malsylvanie",
       "es": "Malsilvania",
@@ -126,7 +131,8 @@
   },
   "243870C643F8611F25D24287814E1DA4": {
     "names": {
-      "en": "Scurvy Shores",
+      "de": "Salzwasseruntiefen",
+      "en": "Scurvy Shoals",
       "fr": "Côte Corrompue",
       "es": "Estiaje Escorbuto",
       "tr": "Kefal Kumsalı"

@@ -98,12 +98,12 @@
           <div class="flex items-center justify-end space-x-2 text-sm">
             <span>{bytesToSize(progress.downloaded)} / {bytesToSize(progress.actualDownloadSize)}</span>
             <span class="text-muted-foreground">/</span>
-            <span>{progress.percent.toFixed(2)}%</span>
+            <span>{(progress.percent || 0).toFixed(2)}%</span>
           </div>
 
-          <Progress.Root class="h-2 bg-accent rounded-full overflow-hidden" value={progress.percent}>
+          <Progress.Root class="h-2 bg-accent rounded-full overflow-hidden" value={progress.percent || 0}>
             <div
-              style={`transform: translateX(-${100 - (100 * (progress.percent ?? 0)) / 100}%)`}
+              style={`transform: translateX(-${100 - (100 * (progress.percent || 0)) / 100}%)`}
               class="bg-epic flex-1 size-full rounded-full transition-all duration-1000 ease-in-out"
             ></div>
           </Progress.Root>

@@ -190,7 +190,7 @@ export default class XMPPManager extends EventEmitter<EventMap> {
       }),
       show: onlineType === 'online' ? undefined : onlineType,
       delay: {
-        timestamp: new Date('9999-12-31T23:59:59.999Z').toISOString()
+        timestamp: new Date('9999-12-31T23:59:59.999Z')
       }
     });
   }

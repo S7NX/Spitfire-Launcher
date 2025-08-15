@@ -1,6 +1,7 @@
 {
   "daily_destroyarcademachines": {
     "names": {
+      "de": "Tägliche Zerstörung (Spielautomaten)",
       "en": "Daily Destroy (Arcade Machines)",
       "fr": "Destruction quotidienne (bornes d'arcade)",
       "es": "Destrucción diaria (máquinas recreativas)",
@@ -15,6 +16,7 @@
   },
   "daily_destroybears": {
     "names": {
+      "de": "Tägliche Zerstörung (Teddybären)",
       "en": "Daily Destroy (Teddy Bears)",
       "fr": "Destruction quotidienne (nounours)",
       "es": "Destrucción diaria (ositos de peluche)",
@@ -29,6 +31,7 @@
   },
   "daily_destroyfiretrucks": {
     "names": {
+      "de": "Tägliche Zerstörung (Feuerwehrautos)",
       "en": "Daily Destroy (Fire Trucks)",
       "fr": "Destruction quotidienne (camions de pompier)",
       "es": "Destrucción diaria (camiones de bomberos)",
@@ -43,6 +46,7 @@
   },
   "daily_destroygnomes": {
     "names": {
+      "de": "Tägliche Zerstörung (Gartenzwerge)",
       "en": "Daily Destroy (Garden Gnomes)",
       "fr": "Destruction quotidienne (nains de jardin)",
       "es": "Destrucción diaria (gnomos de jardín)",
@@ -57,6 +61,7 @@
   },
   "daily_destroypropanetanks": {
     "names": {
+      "de": "Tägliche Zerstörung (Propantanks)",
       "en": "Daily Destroy (Propane Tanks)",
       "fr": "Destruction quotidienne (bonbonnes de gaz)",
       "es": "Destrucción diaria (tanques de propano)",
@@ -71,6 +76,7 @@
   },
   "daily_destroyseesaws": {
     "names": {
+      "de": "Tägliche Zerstörung (Wippen)",
       "en": "Daily Destroy (Park Seesaws)",
       "fr": "Destruction quotidienne (balançoires)",
       "es": "Destrucción diaria (balancines)",
@@ -85,6 +91,7 @@
   },
   "daily_destroyserverracks": {
     "names": {
+      "de": "Tägliche Zerstörung (Serverschränke)",
       "en": "Daily Destroy (Server Racks)",
       "fr": "Destruction quotidienne (baies à serveur)",
       "es": "Destrucción diaria (grupos de servidores)",
@@ -99,6 +106,7 @@
   },
   "daily_destroytransformers": {
     "names": {
+      "de": "Tägliche Zerstörung (Transformatoren)",
       "en": "Daily Destroy (Transformers)",
       "fr": "Destruction quotidienne (transformateurs)",
       "es": "Destrucción diaria (transformadores)",
@@ -113,6 +121,7 @@
   },
   "daily_destroytvs": {
     "names": {
+      "de": "Tägliche Zerstörung (Fernseher)",
       "en": "Daily Destroy (TVs)",
       "fr": "Destruction quotidienne (télévisions)",
       "es": "Destrucción diaria (televisores)",
@@ -127,6 +136,7 @@
   },
   "daily_discovery_industriallocations": {
     "names": {
+      "de": "Tägliche Industriebaustellenaufklärung",
       "en": "Daily Scouting Industrial Construction",
       "fr": "Exploration quotidienne (industrie)",
       "es": "Exploración diaria de construcción industrial",
@@ -141,6 +151,7 @@
   },
   "daily_discovery_rurallocations": {
     "names": {
+      "de": "Tägliche Landaufklärung ",
       "en": "Daily Scouting Rural ",
       "fr": "Exploration quotidienne (campagne) ",
       "es": "Exploración diaria rural ",
@@ -155,6 +166,7 @@
   },
   "daily_discovery_shelters": {
     "names": {
+      "de": "Tägliche Schutzbunkeraufklärung",
       "en": "Daily Scouting Shelters",
       "fr": "Exploration quotidienne (refuges)",
       "es": "Exploración diaria de refugios",
@@ -169,6 +181,7 @@
   },
   "daily_discovery_suburbanlocations": {
     "names": {
+      "de": "Tägliche Vorstadtaufklärung",
       "en": "Daily Scouting Suburbia",
       "fr": "Exploration quotidienne (banlieue)",
       "es": "Exploración diaria en suburbios",
@@ -183,6 +196,7 @@
   },
   "daily_discovery_urbanlocations": {
     "names": {
+      "de": "Tägliche Stadtaufklärung",
       "en": "Daily Scouting Cities",
       "fr": "Exploration quotidienne (villes)",
       "es": "Exploración diaria de ciudades",
@@ -197,6 +211,7 @@
   },
   "daily_explorezones": {
     "names": {
+      "de": "Erkundungstruppe",
       "en": "Exploration Party",
       "fr": "Groupe d'exploration",
       "es": "Grupo de exploración",
@@ -211,6 +226,7 @@
   },
   "daily_high_priority": {
     "names": {
+      "de": "Alle zusammen",
       "en": "All Together Now",
       "fr": "Attentifs ensemble",
       "es": "Ahora todos juntos",
@@ -225,6 +241,7 @@
   },
   "daily_huskextermination_anyhero": {
     "names": {
+      "de": "Hüllenausrottung (Beliebiger Held)",
       "en": "Husk Extermination (Any Hero)",
       "fr": "Extermination de Carcasses (tout héros)",
       "es": "Exterminación de cáscaras (con cualquier héroe)",
@@ -239,6 +256,7 @@
   },
   "daily_huskextermination_constructor": {
     "names": {
+      "de": "Hüllenausrottung (Konstrukteur)",
       "en": "Husk Extermination (Constructor)",
       "fr": "Extermination de Carcasses (Constructeur)",
       "es": "Exterminación de cáscaras (constructor)",
@@ -253,6 +271,7 @@
   },
   "daily_huskextermination_melee": {
     "names": {
+      "de": "Hüllenausrottung (Nahkampf)",
       "en": "Husk Extermination (Melee)",
       "fr": "Extermination de Carcasses (mêlée)",
       "es": "Exterminación de cáscaras (cuerpo a cuerpo)",
@@ -267,6 +286,7 @@
   },
   "daily_huskextermination_ninja": {
     "names": {
+      "de": "Hüllenausrottung (Ninja)",
       "en": "Husk Extermination (Ninja)",
       "fr": "Extermination de Carcasses (Ninja)",
       "es": "Exterminación de cáscaras (ninja)",
@@ -281,6 +301,7 @@
   },
   "daily_huskextermination_outlander": {
     "names": {
+      "de": "Hüllenausrottung (Entdecker)",
       "en": "Husk Extermination (Outlander)",
       "fr": "Extermination de Carcasses (Aventurier)",
       "es": "Exterminación de cáscaras (trotamundos)",
@@ -295,6 +316,7 @@
   },
   "daily_huskextermination_ranged_assault": {
     "names": {
+      "de": "Hüllenausrottung (Sturmgewehr)",
       "en": "Husk Extermination (Assault Rifle)",
       "fr": "Extermination de Carcasses (fusil d'assaut)",
       "es": "Exterminación de cáscaras (fusil de asalto)",
@@ -309,6 +331,7 @@
   },
   "daily_huskextermination_ranged_pistol": {
     "names": {
+      "de": "Hüllenausrottung (Pistole)",
       "en": "Husk Extermination (Pistol)",
       "fr": "Extermination de Carcasses (pistolet)",
       "es": "Exterminación de cáscaras (pistola)",
@@ -323,6 +346,7 @@
   },
   "daily_huskextermination_ranged_shotgun": {
     "names": {
+      "de": "Hüllenausrottung (Schrotflinte)",
       "en": "Husk Extermination (Shotgun)",
       "fr": "Extermination de Carcasses (fusil à pompe)",
       "es": "Exterminación de cáscaras (escopeta)",
@@ -337,6 +361,7 @@
   },
   "daily_huskextermination_ranged_smg": {
     "names": {
+      "de": "Hüllenausrottung (Maschinenpistole)",
       "en": "Husk Extermination (SMG)",
       "fr": "Extermination de Carcasses (pistolet-mitrailleur)",
       "es": "Exterminación de cáscaras (subfusil)",
@@ -351,6 +376,7 @@
   },
   "daily_huskextermination_ranged_sniper": {
     "names": {
+      "de": "Hüllenausrottung (Scharfschützengewehr)",
       "en": "Husk Extermination (Sniper Rifle)",
       "fr": "Extermination de Carcasses (fusil de sniper)",
       "es": "Exterminación de cáscaras (fusil de tirador)",
@@ -365,6 +391,7 @@
   },
   "daily_huskextermination_soldier": {
     "names": {
+      "de": "Hüllenausrottung (Soldat)",
       "en": "Husk Extermination (Soldier)",
       "fr": "Extermination de Carcasses (Soldat)",
       "es": "Exterminación de cáscaras (soldado)",
@@ -379,6 +406,7 @@
   },
   "daily_huskextermination_trap": {
     "names": {
+      "de": "Hüllenausrottung (Falle)",
       "en": "Husk Extermination (Trap)",
       "fr": "Extermination de Carcasses (piège)",
       "es": "Exterminación de cáscaras (trampa)",
@@ -393,6 +421,7 @@
   },
   "daily_mission_buildradar": {
     "names": {
+      "de": "Bau den Radarturm",
       "en": "Build the Radar Tower",
       "fr": "Construire la tour radar",
       "es": "Construye la torre del radar",
@@ -407,6 +436,7 @@
   },
   "daily_mission_specialist_anyhero_1": {
     "names": {
+      "de": "Missionsspezialist (beliebiger Held)",
       "en": "Mission Specialist (Any Hero)",
       "fr": "Spécialiste de mission (tout héros)",
       "es": "Enviado espacial (cualquier héroe)",
@@ -421,6 +451,7 @@
   },
   "daily_mission_specialist_anyhero_2": {
     "names": {
+      "de": "Missionsveteran (beliebiger Held)",
       "en": "Mission Veteran (Any Hero)",
       "fr": "Vétéran de mission (tout héros)",
       "es": "Veterano de misión (cualquier héroe)",
@@ -435,6 +466,7 @@
   },
   "daily_mission_specialist_constructor": {
     "names": {
+      "de": "Missionsspezialist (Konstrukteur)",
       "en": "Mission Specialist (Constructor)",
       "fr": "Spécialiste de mission (Constructeur)",
       "es": "Especialista en misiones (constructor)",
@@ -449,6 +481,7 @@
   },
   "daily_mission_specialist_ninja": {
     "names": {
+      "de": "Missionsspezialist (Ninja)",
       "en": "Mission Specialist (Ninja)",
       "fr": "Spécialiste de mission (Ninja)",
       "es": "Especialista en misiones (ninja)",
@@ -463,6 +496,7 @@
   },
   "daily_mission_specialist_outlander": {
     "names": {
+      "de": "Missionsspezialist (Entdecker)",
       "en": "Mission Specialist (Outlander)",
       "fr": "Spécialiste de mission (Aventurier)",
       "es": "Especialista en misiones (trotamundos)",
@@ -477,6 +511,7 @@
   },
   "daily_mission_specialist_soldier": {
     "names": {
+      "de": "Missionsspezialist (Soldat)",
       "en": "Mission Specialist (Soldier)",
       "fr": "Spécialiste de mission (Soldat)",
       "es": "Especialista en misiones (soldado)",
@@ -491,6 +526,7 @@
   },
   "daily_partyof50": {
     "names": {
+      "de": "25er Gruppe",
       "en": "Party of 25",
       "fr": "Entre vingt et trente",
       "es": "Grupo de 25",
@@ -505,6 +541,7 @@
   },
   "daily_safes": {
     "names": {
+      "de": "Safe ist anders",
       "en": "Playing It Safe",
       "fr": "Coffrez-moi ça",
       "es": "Sin riesgos",
@@ -519,6 +556,7 @@
   },
   "daily_treasurechests": {
     "names": {
+      "de": "Vergessene Schätze",
       "en": "Lost Treasures",
       "fr": "Trésors perdus",
       "es": "Tesoros perdidos",

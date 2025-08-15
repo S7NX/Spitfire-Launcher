@@ -283,19 +283,19 @@
     {:else}
       <PlayIcon class="size-5"/>
     {/if}
-    {$t('library.app.play')}
+    <span class="truncate">{$t('library.app.play')}</span>
   </Button>
 {/snippet}
 
 {#snippet UpdateButton()}
   <Button
-    class="flex items-center justify-center flex-1 gap-2 text-sm"
+    class="flex items-center justify-center flex-1 gap-2 text-sm truncate"
     disabled={isVerifying || isDeleting}
     onclick={installApp}
     variant="secondary"
   >
     <RefreshCwIcon class="size-5"/>
-    {$t('library.app.update')}
+    <span class="truncate">{$t('library.app.update')}</span>
   </Button>
 {/snippet}
 

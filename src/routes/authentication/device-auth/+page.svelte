@@ -70,7 +70,7 @@
 
 <PageContent>
   {#snippet title()}
-    <h2 class="max-xs:text-3xl text-4xl font-bold max-w-64">
+    <h2 class="max-xs:text-3xl text-4xl font-bold max-xs:max-w-64">
       {$t('deviceAuth.page.title')}
     </h2>
 
