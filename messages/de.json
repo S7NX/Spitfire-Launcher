@@ -600,7 +600,7 @@
     "searchPlaceholder": "Nach Spielen suchen...",
     "filters": {
       "select": "Filter auswählen",
-      "showHidden": "Ausgeblendete anzeigen",
+      "showHidden": "Ausgeblendete",
       "installedOnly": "Nur installierte",
       "updatesAvailable": "Updates verfügbar"
     },
