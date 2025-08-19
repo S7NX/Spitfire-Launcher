@@ -77,9 +77,9 @@
       variant="accent"
     >
       {#if isCopying}
-        <LoaderCircleIcon class="size-5 animate-spin m-1"/>
+        <LoaderCircleIcon class="size-5 animate-spin my-1"/>
       {:else}
-        <CopyIcon class="size-5 m-1"/>
+        <CopyIcon class="size-5 my-1"/>
       {/if}
     </Button>
   </div>

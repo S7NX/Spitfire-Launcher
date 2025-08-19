@@ -20,6 +20,8 @@
   import { handleError, nonNull, t } from '$lib/utils/util';
   import XMPPManager from '$lib/core/managers/xmpp';
   import MoonIcon from 'lucide-svelte/icons/moon';
+  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
+  import XIcon from 'lucide-svelte/icons/x';
 
   const activeAccount = $derived(nonNull($activeAccountStore));
   const isCustomStatusInUse = $derived(TaxiManager.taxiAccountIds.has(activeAccount.accountId));
@@ -101,27 +103,31 @@
       </button>
     </div>
 
-    <Button
-      disabled={isSettingStatus || !customStatus?.trim() || isCustomStatusInUse}
-      loading={isSettingStatus}
-      loadingText={$t('customStatus.settingStatus')}
-      type="submit"
-      variant="epic"
-    >
-      {$t('customStatus.setStatus')}
-    </Button>
-
-    {#if statusSetAccounts.has(activeAccount.accountId)}
+    <div class="flex items-center gap-2">
       <Button
-        disabled={isResettingStatus}
-        loading={isResettingStatus}
-        loadingText={$t('customStatus.resettingStatus')}
-        onclick={resetStatus}
-        type="button"
+        class="w-full"
+        disabled={isSettingStatus || !customStatus?.trim() || isCustomStatusInUse}
+        loading={isSettingStatus}
+        loadingText={$t('customStatus.settingStatus')}
+        type="submit"
         variant="epic"
       >
-        {$t('customStatus.resetStatus')}
+        {$t('customStatus.setStatus')}
       </Button>
-    {/if}
+
+      <Button
+        disabled={isResettingStatus || !statusSetAccounts.has(activeAccount.accountId)}
+        onclick={resetStatus}
+        title={$t('customStatus.resetStatus')}
+        type="button"
+        variant="accent"
+      >
+        {#if isResettingStatus}
+          <LoaderCircleIcon class="size-5 animate-spin my-1"/>
+        {:else}
+          <XIcon class="size-5 my-1"/>
+        {/if}
+      </Button>
+    </div>
   </form>
 </PageContent>
