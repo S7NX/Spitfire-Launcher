@@ -363,7 +363,7 @@
     </div>
 
     <PartyAccountSelection
-      disabled={isDoingSomething || !currentAccountParty?.members.length || !kickAllSelectedAccount}
+      disabled={isDoingSomething || !kickAllSelectedAccount}
       loading={isKicking}
       onclick={kickAll}
       type="single"
@@ -375,7 +375,7 @@
     <Separator.Root class="bg-border h-px"/>
 
     <PartyAccountSelection
-      disabled={isDoingSomething || !currentAccountParty?.members.length || !leavePartySelectedAccounts.length}
+      disabled={isDoingSomething || !leavePartySelectedAccounts.length}
       loading={isLeaving}
       onclick={() => leaveParty()}
       type="multiple"
@@ -387,7 +387,7 @@
     <Separator.Root class="bg-border h-px"/>
 
     <PartyAccountSelection
-      disabled={isDoingSomething || !currentAccountParty?.members.length || !claimRewardsPartySelectedAccounts.length}
+      disabled={isDoingSomething || !claimRewardsPartySelectedAccounts.length}
       loading={isClaiming}
       onclick={() => leaveParty(true)}
       type="multiple"
