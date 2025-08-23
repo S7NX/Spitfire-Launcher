@@ -12,8 +12,8 @@
   import FriendsManager from '$lib/core/managers/friends';
   import LookupManager from '$lib/core/managers/lookup';
   import XMPPManager from '$lib/core/managers/xmpp';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import UserPlusIcon from 'lucide-svelte/icons/user-plus';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
+  import UserPlusIcon from '@lucide/svelte/icons/user-plus';
   import { friendsStore } from '$lib/stores';
   import Input from '$components/ui/Input.svelte';
   import { handleError, nonNull, t } from '$lib/utils/util';

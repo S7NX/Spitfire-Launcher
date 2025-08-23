@@ -40,9 +40,9 @@
   import Button from '$components/ui/Button.svelte';
   import Input from '$components/ui/Input.svelte';
   import { Separator } from 'bits-ui';
-  import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
-  import SearchIcon from 'lucide-svelte/icons/search';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
+  import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
+  import SearchIcon from '@lucide/svelte/icons/search';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
   import LookupManager from '$lib/core/managers/lookup';
   import { toast } from 'svelte-sonner';
   import { handleError, nonNull, t } from '$lib/utils/util';

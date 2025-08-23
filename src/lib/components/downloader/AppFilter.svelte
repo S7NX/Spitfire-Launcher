@@ -1,8 +1,8 @@
 <script lang="ts">
   import Select from '$components/ui/Select.svelte';
   import type { AppFilterValue } from '$types/legendary';
-  import FilterIcon from 'lucide-svelte/icons/filter';
-  import ChevronsUpDownIcon from 'lucide-svelte/icons/chevrons-up-down';
+  import FilterIcon from '@lucide/svelte/icons/filter';
+  import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
   import { t } from '$lib/utils/util';
 
   const filters: { label: string; value: AppFilterValue }[] = $derived([

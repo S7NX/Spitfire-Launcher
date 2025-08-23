@@ -1,6 +1,6 @@
 <script generics="T" lang="ts">
   import Accordion from '$components/ui/Accordion/Accordion.svelte';
-  import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
+  import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
   import type { Snippet } from 'svelte';
   import type { BulkActionStatus } from '$types/accounts';
 

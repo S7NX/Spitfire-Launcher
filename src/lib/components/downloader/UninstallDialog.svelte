@@ -3,7 +3,7 @@
   import { ownedApps } from '$lib/stores';
   import Legendary from '$lib/core/legendary';
   import { handleError, t } from '$lib/utils/util';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
   import { toast } from 'svelte-sonner';
 
   type Props = {

@@ -11,8 +11,8 @@
   import { handleError, nonNull, t } from '$lib/utils/util';
   import { writeText } from '@tauri-apps/plugin-clipboard-manager';
   import Select from '$components/ui/Select.svelte';
-  import KeyRound from 'lucide-svelte/icons/key-round';
-  import ChevronsUpDownIcon from 'lucide-svelte/icons/chevrons-up-down';
+  import KeyRound from '@lucide/svelte/icons/key-round';
+  import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
   import { defaultClient, fortniteAndroidGameClient, fortnitePCGameClient, launcherAppClient2 } from '$lib/constants/clients';
 
   const activeAccount = $derived(nonNull($activeAccountStore));

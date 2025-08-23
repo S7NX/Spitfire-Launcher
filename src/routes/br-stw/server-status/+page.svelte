@@ -38,12 +38,12 @@
   import ServerStatusManager from '$lib/core/managers/server-status';
   import type { LightswitchData } from '$types/game/server-status';
   import { Separator } from 'bits-ui';
-  import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
+  import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
   import { onMount } from 'svelte';
   import PageContent from '$components/PageContent.svelte';
   import Button from '$components/ui/Button.svelte';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
+  import RefreshCwIcon from '@lucide/svelte/icons/refresh-cw';
   import { formatRemainingDuration, getResolvedResults, handleError, t } from '$lib/utils/util';
 
   $effect(() => {

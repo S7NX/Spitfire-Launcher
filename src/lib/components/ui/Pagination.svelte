@@ -1,8 +1,8 @@
 <script lang="ts">
   import { cn } from '$lib/utils/util';
   import { Pagination } from 'bits-ui';
-  import ChevronLeftIcon from 'lucide-svelte/icons/chevron-left';
-  import ChevronRightIcon from 'lucide-svelte/icons/chevron-right';
+  import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
+  import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
 
   type Props = Pagination.RootProps;
 

@@ -9,7 +9,7 @@
   import { allSettingsSchema, appSettingsSchema } from '$lib/validations/settings';
   import type { AllSettings } from '$types/settings';
   import { type } from '@tauri-apps/plugin-os';
-  import ChevronsUpDownIcon from 'lucide-svelte/icons/chevrons-up-down';
+  import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
   import { toast } from 'svelte-sonner';
 
   const currentPlatform = type();

@@ -7,20 +7,20 @@
   import Legendary from '$lib/core/legendary';
   import { bytesToSize, handleError, sleep, t } from '$lib/utils/util';
   import { invoke } from '@tauri-apps/api/core';
-  import CircleMinusIcon from 'lucide-svelte/icons/circle-minus';
-  import RefreshCwOffIcon from 'lucide-svelte/icons/refresh-cw-off';
-  import WrenchIcon from 'lucide-svelte/icons/wrench';
-  import DownloadIcon from 'lucide-svelte/icons/download';
-  import EyeIcon from 'lucide-svelte/icons/eye';
-  import EyeOffIcon from 'lucide-svelte/icons/eye-off';
-  import HardDriveIcon from 'lucide-svelte/icons/hard-drive';
-  import HeartIcon from 'lucide-svelte/icons/heart';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import MoreHorizontalIcon from 'lucide-svelte/icons/more-horizontal';
-  import PlayIcon from 'lucide-svelte/icons/play';
-  import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
-  import Trash2Icon from 'lucide-svelte/icons/trash-2';
-  import XIcon from 'lucide-svelte/icons/x';
+  import CircleMinusIcon from '@lucide/svelte/icons/circle-minus';
+  import RefreshCwOffIcon from '@lucide/svelte/icons/refresh-cw-off';
+  import WrenchIcon from '@lucide/svelte/icons/wrench';
+  import DownloadIcon from '@lucide/svelte/icons/download';
+  import EyeIcon from '@lucide/svelte/icons/eye';
+  import EyeOffIcon from '@lucide/svelte/icons/eye-off';
+  import HardDriveIcon from '@lucide/svelte/icons/hard-drive';
+  import HeartIcon from '@lucide/svelte/icons/heart';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
+  import MoreHorizontalIcon from '@lucide/svelte/icons/more-horizontal';
+  import PlayIcon from '@lucide/svelte/icons/play';
+  import RefreshCwIcon from '@lucide/svelte/icons/refresh-cw';
+  import Trash2Icon from '@lucide/svelte/icons/trash-2';
+  import XIcon from '@lucide/svelte/icons/x';
   import { toast } from 'svelte-sonner';
 
   type Props = {

@@ -11,8 +11,8 @@
   import SkeletonDeviceAuthCard from '$components/device-auth/SkeletonDeviceAuthCard.svelte';
   import PageContent from '$components/PageContent.svelte';
   import { Separator } from 'bits-ui';
-  import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
-  import PlusIcon from 'lucide-svelte/icons/plus';
+  import RefreshCwIcon from '@lucide/svelte/icons/refresh-cw';
+  import PlusIcon from '@lucide/svelte/icons/plus';
   import { toast } from 'svelte-sonner';
   import DeviceAuthManager from '$lib/core/managers/device-auth';
   import { activeAccountStore, deviceAuthsStorage } from '$lib/core/data-storage';

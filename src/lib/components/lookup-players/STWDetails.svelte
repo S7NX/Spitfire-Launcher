@@ -50,11 +50,11 @@
   import { language } from '$lib/core/data-storage';
   import { Separator } from 'bits-ui';
   import { t } from '$lib/utils/util';
-  import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
-  import CopyIcon from 'lucide-svelte/icons/copy';
+  import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
+  import CopyIcon from '@lucide/svelte/icons/copy';
   import { writeText } from '@tauri-apps/plugin-clipboard-manager';
   import { SvelteMap } from 'svelte/reactivity';
-  import CheckIcon from 'lucide-svelte/icons/check';
+  import CheckIcon from '@lucide/svelte/icons/check';
 
   type Props = {
     missionPlayers?: MissionPlayers;

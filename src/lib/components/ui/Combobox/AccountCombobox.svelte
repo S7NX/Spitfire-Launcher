@@ -1,7 +1,7 @@
 <script lang="ts">
   import Combobox from '$components/ui/Combobox/Combobox.svelte';
   import { accountsStorage } from '$lib/core/data-storage';
-  import UserIcon from 'lucide-svelte/icons/user';
+  import UserIcon from '@lucide/svelte/icons/user';
   import type { AccountData } from '$types/accounts';
   import type { ClassValue } from 'svelte/elements';
   import { t } from '$lib/utils/util';

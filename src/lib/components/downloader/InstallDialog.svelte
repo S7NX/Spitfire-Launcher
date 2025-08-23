@@ -15,11 +15,11 @@
   import { bytesToSize, cn, t } from '$lib/utils/util';
   import { invoke } from '@tauri-apps/api/core';
   import { Progress } from 'bits-ui';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import PackageIcon from 'lucide-svelte/icons/package';
-  import DownloadIcon from 'lucide-svelte/icons/download';
-  import HardDriveIcon from 'lucide-svelte/icons/hard-drive';
-  import AlertTriangleIcon from 'lucide-svelte/icons/alert-triangle';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
+  import PackageIcon from '@lucide/svelte/icons/package';
+  import DownloadIcon from '@lucide/svelte/icons/download';
+  import HardDriveIcon from '@lucide/svelte/icons/hard-drive';
+  import AlertTriangleIcon from '@lucide/svelte/icons/alert-triangle';
   import { onMount } from 'svelte';
   import { toast } from 'svelte-sonner';
   import DownloadStartedToast from '$components/downloader/DownloadStartedToast.svelte';

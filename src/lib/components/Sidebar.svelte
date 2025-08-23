@@ -13,7 +13,7 @@
   import { Separator } from 'bits-ui';
   import { slide } from 'svelte/transition';
   import { cubicInOut } from 'svelte/easing';
-  import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
+  import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
   import config from '$lib/config';
   import { cn, t } from '$lib/utils/util';
   import { page } from '$app/state';

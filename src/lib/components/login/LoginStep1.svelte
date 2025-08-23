@@ -11,8 +11,8 @@
   import type { DeviceCodeLoginData, EpicOAuthData } from '$types/game/authorizations';
   import { readText } from '@tauri-apps/plugin-clipboard-manager';
   import { openUrl } from '@tauri-apps/plugin-opener';
-  import ArrowLeftIcon from 'lucide-svelte/icons/arrow-left';
-  import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
+  import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
+  import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
   import type { LoginMethod } from '$lib/components/login/LoginStep0.svelte';
   import { toast } from 'svelte-sonner';
   import { fade } from 'svelte/transition';

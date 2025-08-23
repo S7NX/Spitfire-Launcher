@@ -5,8 +5,8 @@
 <script lang="ts">
   import Button from '$components/ui/Button.svelte';
   import { t } from '$lib/utils/util';
-  import GlobeIcon from 'lucide-svelte/icons/globe';
-  import KeyIcon from 'lucide-svelte/icons/key';
+  import GlobeIcon from '@lucide/svelte/icons/globe';
+  import KeyIcon from '@lucide/svelte/icons/key';
   import { fade } from 'svelte/transition';
 
   type Props = {

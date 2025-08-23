@@ -10,14 +10,14 @@
   import Legendary from '$lib/core/legendary';
   import { getVersion } from '@tauri-apps/api/app';
   import { listen } from '@tauri-apps/api/event';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
   import { Toaster } from 'svelte-sonner';
   import { onMount } from 'svelte';
   import ky from 'ky';
   import config from '$lib/config';
   import type { GitHubRelease } from '$types/github';
   import Button from '$components/ui/Button.svelte';
-  import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
+  import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
   import { Dialog } from '$components/ui/Dialog';
   import { accountsStorage, activeAccountStore as activeAccount, settingsStorage } from '$lib/core/data-storage';
   import { Tooltip } from 'bits-ui';

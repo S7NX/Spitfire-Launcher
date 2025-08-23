@@ -19,9 +19,9 @@
   import { toast } from 'svelte-sonner';
   import { handleError, nonNull, t } from '$lib/utils/util';
   import XMPPManager from '$lib/core/managers/xmpp';
-  import MoonIcon from 'lucide-svelte/icons/moon';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import XIcon from 'lucide-svelte/icons/x';
+  import MoonIcon from '@lucide/svelte/icons/moon';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
+  import XIcon from '@lucide/svelte/icons/x';
 
   const activeAccount = $derived(nonNull($activeAccountStore));
   const isCustomStatusInUse = $derived(TaxiManager.taxiAccountIds.has(activeAccount.accountId));

@@ -12,7 +12,7 @@
 
 <script lang="ts">
   import { activeAccountStore } from '$lib/core/data-storage';
-  import BanIcon from 'lucide-svelte/icons/ban';
+  import BanIcon from '@lucide/svelte/icons/ban';
   import { avatarCache, displayNamesCache, friendsStore } from '$lib/stores';
   import { nonNull, t } from '$lib/utils/util';
   import type { BlockedAccountData, FriendData, IncomingFriendRequestData, OutgoingFriendRequestData } from '$types/game/friends';

@@ -4,7 +4,7 @@
   import AppSettings from '$components/settings/categories/AppSettings.svelte';
   import CustomizableMenu from '$components/settings/categories/CustomizableMenu.svelte';
   import { platform as getPlatform } from '@tauri-apps/plugin-os';
-  import SettingsIcon from 'lucide-svelte/icons/settings';
+  import SettingsIcon from '@lucide/svelte/icons/settings';
   import { cn, t } from '$lib/utils/util';
 
   const platform = getPlatform();

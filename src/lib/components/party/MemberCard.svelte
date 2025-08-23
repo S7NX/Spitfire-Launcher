@@ -24,14 +24,14 @@
   import { activeAccountStore } from '$lib/core/data-storage';
   import { accountPartiesStore } from '$lib/stores';
   import { nonNull, t } from '$lib/utils/util';
-  import CrownIcon from 'lucide-svelte/icons/crown';
-  import EllipsisIcon from 'lucide-svelte/icons/ellipsis';
-  import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import LogOutIcon from 'lucide-svelte/icons/log-out';
-  import UserMinusIcon from 'lucide-svelte/icons/user-minus';
-  import UserPlusIcon from 'lucide-svelte/icons/user-plus';
-  import UserXIcon from 'lucide-svelte/icons/user-x';
+  import CrownIcon from '@lucide/svelte/icons/crown';
+  import EllipsisIcon from '@lucide/svelte/icons/ellipsis';
+  import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
+  import LogOutIcon from '@lucide/svelte/icons/log-out';
+  import UserMinusIcon from '@lucide/svelte/icons/user-minus';
+  import UserPlusIcon from '@lucide/svelte/icons/user-plus';
+  import UserXIcon from '@lucide/svelte/icons/user-x';
   import type { SvelteSet } from 'svelte/reactivity';
 
   const activeAccount = $derived(nonNull($activeAccountStore));

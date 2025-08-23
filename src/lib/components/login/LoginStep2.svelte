@@ -1,7 +1,7 @@
 <script lang="ts">
   import { activeAccountStore } from '$lib/core/data-storage';
   import { nonNull, t } from '$lib/utils/util';
-  import CheckCircleIcon from 'lucide-svelte/icons/check-circle';
+  import CheckCircleIcon from '@lucide/svelte/icons/check-circle';
   import { fade } from 'svelte/transition';
 
   const activeAccount = $derived(nonNull($activeAccountStore));

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Dialog } from '$components/ui/Dialog';
   import { t } from '$lib/utils/util';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
 
   type Props = {
     open: boolean;

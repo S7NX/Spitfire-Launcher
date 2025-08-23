@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Select, type WithoutChildren } from 'bits-ui';
-  import CheckIcon from 'lucide-svelte/icons/check';
-  import ChevronsUpIcon from 'lucide-svelte/icons/chevrons-up';
-  import ChevronsDownIcon from 'lucide-svelte/icons/chevrons-down';
+  import CheckIcon from '@lucide/svelte/icons/check';
+  import ChevronsUpIcon from '@lucide/svelte/icons/chevrons-up';
+  import ChevronsDownIcon from '@lucide/svelte/icons/chevrons-down';
   import type { Snippet } from 'svelte';
   import { cn } from '$lib/utils/util';
   import type { ClassValue } from 'svelte/elements';

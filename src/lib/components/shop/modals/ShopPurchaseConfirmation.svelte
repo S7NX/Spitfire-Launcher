@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Dialog } from '$components/ui/Dialog';
   import { activeAccountStore, language } from '$lib/core/data-storage';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
   import type { SpitfireShopItem } from '$types/game/shop';
   import { toast } from 'svelte-sonner';
   import { accountDataStore, ownedItemsStore } from '$lib/stores';

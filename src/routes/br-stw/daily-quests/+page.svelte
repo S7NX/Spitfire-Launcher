@@ -25,7 +25,7 @@
   import { accountsStorage, language } from '$lib/core/data-storage';
   import { doingBulkOperations } from '$lib/stores';
   import Button from '$components/ui/Button.svelte';
-  import RefreshCwIcon from 'lucide-svelte/icons/refresh-cw';
+  import RefreshCwIcon from '@lucide/svelte/icons/refresh-cw';
   import MCPManager from '$lib/core/managers/mcp';
   import { dailyQuests } from '$lib/constants/stw/resources';
   import type { FullQueryProfile } from '$types/game/mcp';

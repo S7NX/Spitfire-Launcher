@@ -1,14 +1,14 @@
 <script lang="ts">
   import { DropdownMenu } from '$components/ui/DropdownMenu';
   import type { Friend, ListType } from '$components/friends/FriendsList.svelte';
-  import EllipsisIcon from 'lucide-svelte/icons/ellipsis';
+  import EllipsisIcon from '@lucide/svelte/icons/ellipsis';
   import { writeText } from '@tauri-apps/plugin-clipboard-manager';
-  import CopyIcon from 'lucide-svelte/icons/copy';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import UserPlusIcon from 'lucide-svelte/icons/user-plus';
-  import UserMinusIcon from 'lucide-svelte/icons/user-minus';
-  import BanIcon from 'lucide-svelte/icons/ban';
-  import ShieldMinus from 'lucide-svelte/icons/shield-minus';
+  import CopyIcon from '@lucide/svelte/icons/copy';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
+  import UserPlusIcon from '@lucide/svelte/icons/user-plus';
+  import UserMinusIcon from '@lucide/svelte/icons/user-minus';
+  import BanIcon from '@lucide/svelte/icons/ban';
+  import ShieldMinus from '@lucide/svelte/icons/shield-minus';
   import { handleError, nonNull, t } from '$lib/utils/util';
   import FriendsManager from '$lib/core/managers/friends';
   import { activeAccountStore } from '$lib/core/data-storage';

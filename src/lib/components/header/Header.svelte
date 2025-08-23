@@ -7,8 +7,8 @@
   import SettingsModal from '$components/settings/SettingsModal.svelte';
   import SidebarBurger from '$components/header/SidebarBurger.svelte';
   import LanguageSwitcher from '$components/header/LanguageSwitcher.svelte';
-  import MinusIcon from 'lucide-svelte/icons/minus';
-  import XIcon from 'lucide-svelte/icons/x';
+  import MinusIcon from '@lucide/svelte/icons/minus';
+  import XIcon from '@lucide/svelte/icons/x';
 
   const appWindow = getCurrentWindow();
   const currentPlatform = platform();

@@ -11,9 +11,9 @@
   import { openUrl } from '@tauri-apps/plugin-opener';
   import { toast } from 'svelte-sonner';
   import { handleError, nonNull, t } from '$lib/utils/util';
-  import CopyIcon from 'lucide-svelte/icons/copy';
+  import CopyIcon from '@lucide/svelte/icons/copy';
   import { writeText } from '@tauri-apps/plugin-clipboard-manager';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
 
   const activeAccount = $derived(nonNull($activeAccountStore));
 

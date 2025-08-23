@@ -18,7 +18,7 @@
   import ExternalLink from '$components/ui/ExternalLink.svelte';
   import { launcherAppClient2 } from '$lib/constants/clients';
   import EULAManager from '$lib/core/managers/eula';
-  import ExternalLinkIcon from 'lucide-svelte/icons/external-link';
+  import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
   import { doingBulkOperations } from '$lib/stores';
   import { toast } from 'svelte-sonner';
   import Authentication from '$lib/core/authentication';

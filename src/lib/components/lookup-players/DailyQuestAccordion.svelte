@@ -12,7 +12,7 @@
   import Accordion from '$components/ui/Accordion/Accordion.svelte';
   import { language } from '$lib/core/data-storage';
   import { t } from '$lib/utils/util';
-  import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
+  import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 
   type Props = {
     dailyQuests: Array<DailyQuest>;

@@ -1,7 +1,7 @@
 <script lang="ts">
   import Select from '$components/ui/Select.svelte';
-  import FilterIcon from 'lucide-svelte/icons/filter';
-  import ChevronsUpDownIcon from 'lucide-svelte/icons/chevrons-up-down';
+  import FilterIcon from '@lucide/svelte/icons/filter';
+  import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
   import type { SpitfireShopFilter } from '$types/game/shop';
   import { t } from '$lib/utils/util';
 

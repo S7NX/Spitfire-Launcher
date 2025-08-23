@@ -7,16 +7,16 @@
   import DownloadManager, { type DownloadProgress } from '$lib/core/managers/download.svelte';
   import { bytesToSize, formatRemainingDuration, t } from '$lib/utils/util';
   import { Progress } from 'bits-ui';
-  import TriangleAlertIcon from 'lucide-svelte/icons/triangle-alert';
-  import ClockIcon from 'lucide-svelte/icons/clock';
-  import DownloadIcon from 'lucide-svelte/icons/download';
-  import HardDriveIcon from 'lucide-svelte/icons/hard-drive';
-  import LoaderCircleIcon from 'lucide-svelte/icons/loader-circle';
-  import PauseIcon from 'lucide-svelte/icons/pause';
-  import PlayIcon from 'lucide-svelte/icons/play';
-  import XIcon from 'lucide-svelte/icons/x';
-  import ChevronUpIcon from 'lucide-svelte/icons/chevron-up';
-  import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
+  import TriangleAlertIcon from '@lucide/svelte/icons/triangle-alert';
+  import ClockIcon from '@lucide/svelte/icons/clock';
+  import DownloadIcon from '@lucide/svelte/icons/download';
+  import HardDriveIcon from '@lucide/svelte/icons/hard-drive';
+  import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
+  import PauseIcon from '@lucide/svelte/icons/pause';
+  import PlayIcon from '@lucide/svelte/icons/play';
+  import XIcon from '@lucide/svelte/icons/x';
+  import ChevronUpIcon from '@lucide/svelte/icons/chevron-up';
+  import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 
   let showCancelDialog = $state(false);
   let isCancelling = $state(false);

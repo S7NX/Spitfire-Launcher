@@ -1,5 +1,5 @@
 <script lang="ts">
-  import XIcon from 'lucide-svelte/icons/x';
+  import XIcon from '@lucide/svelte/icons/x';
 
   type Props = {
     items?: string[];

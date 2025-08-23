@@ -4,7 +4,7 @@
   import type { SpitfireShopItem } from '$types/game/shop';
   import { ItemColors } from '$lib/constants/item-colors';
   import { ownedItemsStore } from '$lib/stores';
-  import CheckIcon from 'lucide-svelte/icons/check';
+  import CheckIcon from '@lucide/svelte/icons/check';
   import { derived as jsDerived } from 'svelte/store';
 
   type ItemCardProps = {

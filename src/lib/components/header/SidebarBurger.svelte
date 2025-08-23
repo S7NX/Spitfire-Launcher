@@ -1,5 +1,5 @@
 <script lang="ts">
-  import MenuIcon from 'lucide-svelte/icons/menu';
+  import MenuIcon from '@lucide/svelte/icons/menu';
   import { sidebarOpen } from '$components/Sidebar.svelte';
 
   function toggleSidebar() {

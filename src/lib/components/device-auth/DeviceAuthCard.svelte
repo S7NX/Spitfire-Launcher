@@ -7,7 +7,7 @@
   import DeviceAuthManager from '$lib/core/managers/device-auth';
   import { getStartingPage, handleError, nonNull, t } from '$lib/utils/util';
   import type { EpicDeviceAuthData } from '$types/game/authorizations';
-  import Trash2Icon from 'lucide-svelte/icons/trash-2';
+  import Trash2Icon from '@lucide/svelte/icons/trash-2';
   import { toast } from 'svelte-sonner';
 
   type Props = {

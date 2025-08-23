@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Dialog } from '$components/ui/Dialog';
-  import HelpCircleIcon from 'lucide-svelte/icons/help-circle';
+  import HelpCircleIcon from '@lucide/svelte/icons/help-circle';
   import type { Snippet } from 'svelte';
 
   type Props = {

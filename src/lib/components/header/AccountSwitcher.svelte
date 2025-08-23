@@ -3,10 +3,10 @@
   import { accountsStorage, activeAccountStore } from '$lib/core/data-storage';
   import { MediaQuery } from 'svelte/reactivity';
   import Avatar from '$components/ui/Avatar.svelte';
-  import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
-  import PlusIcon from 'lucide-svelte/icons/plus';
-  import LogOutIcon from 'lucide-svelte/icons/log-out';
-  import CheckIcon from 'lucide-svelte/icons/check';
+  import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
+  import PlusIcon from '@lucide/svelte/icons/plus';
+  import LogOutIcon from '@lucide/svelte/icons/log-out';
+  import CheckIcon from '@lucide/svelte/icons/check';
   import { DropdownMenu } from '$components/ui/DropdownMenu';
   import Account from '$lib/core/account';
   import type { AccountData } from '$types/accounts';
