@@ -135,7 +135,7 @@
         id="taxiLevel"
         max={MAX_POWER_LEVEL}
         min={MIN_POWER_LEVEL}
-        onConfirm={handleTaxiLevelChange}
+        onchange={handleTaxiLevelChange}
         type="number"
         value={taxiManager.level}
       />
@@ -145,7 +145,7 @@
       <Label for="availableStatus">{$t('taxiService.settings.availableStatus.title')}</Label>
       <Input
         id="availableStatus"
-        onConfirm={(event) => handleStatusChange(event, 'available')}
+        onchange={(event) => handleStatusChange(event, 'available')}
         placeholder={$t('taxiService.settings.availableStatus.placeholder')}
         value={taxiManager.availableStatus}
       />
@@ -155,7 +155,7 @@
       <Label for="busyStatus">{$t('taxiService.settings.busyStatus.title')}</Label>
       <Input
         id="busyStatus"
-        onConfirm={(event) => handleStatusChange(event, 'busy')}
+        onchange={(event) => handleStatusChange(event, 'busy')}
         placeholder={$t('taxiService.settings.busyStatus.placeholder')}
         value={taxiManager.busyStatus}
       />

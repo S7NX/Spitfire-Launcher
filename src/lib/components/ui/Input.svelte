@@ -32,7 +32,6 @@
   });
 
   type InputProps = HTMLInputAttributes & VariantProps<typeof inputVariants> & {
-    onConfirm?: (event: Event & { currentTarget: HTMLInputElement }) => void;
     nameAutocomplete?: boolean;
   };
 
@@ -40,15 +39,10 @@
     class: className,
     variant,
     value = $bindable<string>(),
-    onConfirm,
     nameAutocomplete = false,
-    onblur,
-    onkeydown,
     type,
     ...restProps
   }: InputProps = $props();
-
-  const initialValue = value || '';
 
   let inputElement = $state<HTMLInputElement>();
   let dropdownVisible = $state(false);
@@ -83,18 +77,6 @@
     dropdownVisible = hasAutoComplete && !selectedItemId;
   });
 
-  function handleBlur(event: FocusEvent & { currentTarget: HTMLInputElement }) {
-    if (event.currentTarget.value !== initialValue && onConfirm) {
-      onConfirm(event);
-    }
-  }
-
-  function handleKeyDown(event: KeyboardEvent & { currentTarget: HTMLInputElement }) {
-    if (event.key === 'Enter' && onConfirm) {
-      onConfirm(event);
-    }
-  }
-
   function handleFocus() {
     if (value && autocompleteData.length) {
       dropdownVisible = true;
@@ -116,11 +98,6 @@
     }
   }
 
-  if (onConfirm) {
-    onblur = handleBlur;
-    onkeydown = handleKeyDown;
-  }
-
   if (type === 'search') {
     onMount(() => {
       document.addEventListener('keydown', handleSearchShortcut);
@@ -139,10 +116,8 @@
       bind:this={inputElement}
       class={cn(inputVariants({ variant }), className)}
       autocomplete="off"
-      {onblur}
       onfocus={handleFocus}
       oninput={handleInput}
-      {onkeydown}
       spellcheck="false"
       {type}
       bind:value
@@ -183,10 +158,8 @@
     bind:this={inputElement}
     class={cn(inputVariants({ variant }), className)}
     autocomplete="off"
-    {onblur}
     onfocus={handleFocus}
     oninput={handleInput}
-    {onkeydown}
     spellcheck="false"
     {type}
     bind:value

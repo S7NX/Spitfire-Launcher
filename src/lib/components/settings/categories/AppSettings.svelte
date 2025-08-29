@@ -64,7 +64,7 @@
     >
       <Input
         id="gamePath"
-        onConfirm={(e) => handleSettingChange(e, 'gamePath')}
+        onchange={(e) => handleSettingChange(e, 'gamePath')}
         placeholder="C:/Program Files/.../FortniteGame/Binaries/Win64"
         value={$settingsStorage.app?.gamePath}
         variant="outline"
@@ -79,7 +79,7 @@
     >
       <Input
         id="launchArguments"
-        onConfirm={(e) => handleSettingChange(e, 'launchArguments')}
+        onchange={(e) => handleSettingChange(e, 'launchArguments')}
         value={$settingsStorage.app?.launchArguments}
         variant="outline"
       />
@@ -96,7 +96,7 @@
       id="missionCheckInterval"
       max={10}
       min={1}
-      onConfirm={(e) => handleSettingChange(convertToNumber(e), 'missionCheckInterval')}
+      onchange={(e) => handleSettingChange(convertToNumber(e), 'missionCheckInterval')}
       type="number"
       value={$settingsStorage.app?.missionCheckInterval}
       variant="outline"
@@ -113,7 +113,7 @@
       id="claimRewardsDelay"
       max={10}
       min={1}
-      onConfirm={(e) => handleSettingChange(convertToNumber(e), 'claimRewardsDelay')}
+      onchange={(e) => handleSettingChange(convertToNumber(e), 'claimRewardsDelay')}
       type="number"
       value={$settingsStorage.app?.claimRewardsDelay}
       variant="outline"
