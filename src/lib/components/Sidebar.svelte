@@ -13,6 +13,7 @@
   import { Separator } from 'bits-ui';
   import { slide } from 'svelte/transition';
   import { cubicInOut } from 'svelte/easing';
+  import { platform } from '@tauri-apps/plugin-os';
   import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
   import config from '$lib/config';
   import { cn, t } from '$lib/utils/util';
@@ -20,6 +21,9 @@
   import { SidebarCategories } from '$lib/constants/sidebar';
   import { SvelteSet } from 'svelte/reactivity';
 
+  const currentPlatform = platform();
+  const isMobile = currentPlatform === 'android' || currentPlatform === 'ios';
+	
   let notExpandedCategories = new SvelteSet<string>();
 
   const externalLinks = $derived([
@@ -73,7 +77,7 @@
   )}
 >
   <div
-    class="flex items-center justify-center p-4 border-b border-r h-16"
+    class="flex items-center justify-center p-4 border-b border-r {isMobile ? 'pt-6 h-22' : 'h-16'}"
     data-tauri-drag-region
   >
     <a class="max-xs:text-xl text-2xl font-bold" href="/">{config.name}</a>

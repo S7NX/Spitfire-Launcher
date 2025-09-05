@@ -120,7 +120,7 @@
   });
 </script>
 
-<div class="flex min-h-[100dvh]">
+<div class="flex">
   <Tooltip.Provider>
     <Toaster
       position="bottom-center"

@@ -163,6 +163,7 @@
         background-color: hsl(var(--background));
         color: hsl(var(--foreground));
         overflow-x: hidden !important;
+        min-height: 100dvh;
     }
 
     button {

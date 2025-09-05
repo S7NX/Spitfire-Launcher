@@ -28,8 +28,9 @@
   }
 </script>
 
+<!-- TODO: Could use `padding-top: env(safe-area-inset-top)` but it still overlaps, same for sidebar -->
 <header
-  class="h-16 bg-surface-alt border-b border-border flex items-center justify-between md:justify-end px-4 select-none sticky top-0 z-10"
+  class="{isMobile ? 'pt-6 h-22' : 'h-16'} bg-surface-alt border-b border-border flex items-center justify-between md:justify-end px-4 select-none sticky top-0 z-10"
   data-tauri-drag-region
 >
   <SidebarBurger/>
