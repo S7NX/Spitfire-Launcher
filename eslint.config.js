@@ -37,7 +37,8 @@ export default tsEslint.config(
   },
   {
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off'
+      '@typescript-eslint/no-explicit-any': 'off',
+      'svelte/no-navigation-without-resolve': 'off'
     }
   },
   {
