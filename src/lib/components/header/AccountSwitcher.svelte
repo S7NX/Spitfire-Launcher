@@ -52,9 +52,7 @@
   }
 
   function addNewAccount() {
-    setTimeout(() => {
-      showLoginModal = true;
-    });
+    showLoginModal = true;
   }
 
   async function logout() {
