@@ -4014,7 +4014,7 @@ dependencies = [
 
 [[package]]
 name = "spitfire-launcher"
-version = "1.6.0"
+version = "1.6.1"
 dependencies = [
  "fs2",
  "serde",
