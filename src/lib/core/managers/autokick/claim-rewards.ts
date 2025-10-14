@@ -49,8 +49,12 @@ async function openCardPackBatch(account: AccountData, queryProfileItems: Campai
 
 async function claimQuestRewards(account: AccountData, queryProfileItems: CampaignProfile['items']) {
   const questItems = Object.entries(queryProfileItems)
-    .filter(([, x]) =>
-      x.templateId.startsWith('Quest:') && x.attributes.quest_state === 'Completed'
+        .filter(([, x]) =>
+      x.templateId.startsWith('Quest:') &&
+      (
+        x.attributes.quest_state === 'Completed' ||
+        (x.attributes.quest_state === 'Claimed' && x.templateId.includes('questpool'))
+      )
     )
     .map(([, x]) => x);
 
