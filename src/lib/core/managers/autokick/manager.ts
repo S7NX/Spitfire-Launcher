@@ -58,7 +58,7 @@ export default class AutokickManager {
 
       if (!matchmakingData) {
         const wasInMatch = matchmakingState.partyState === 'Matchmaking' || matchmakingState.partyState === 'PostMatchmaking';
-        if (!wasInMatch) {
+        if (!wasInMatch && this.matchmakingState.started) {
           this.dispose();
         }
 
