@@ -372,8 +372,10 @@
   "bp_zt_starlight_c": {
     "names": {
       "de": "Spukwald",
+      "en": "Haunted Forest",
       "es": "Bosque encantado",
       "fr": "Forêt hantée",
+      "pt-br": "Floresta Assombrada",
       "tr": "Perili Orman"
     }
   },
