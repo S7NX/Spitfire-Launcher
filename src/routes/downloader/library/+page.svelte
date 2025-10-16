@@ -66,13 +66,13 @@
   onMount(async () => {
     const isLoggedIn = (await Legendary.getStatus()).account;
     if (!isLoggedIn) {
-      toast.loading($t('library.loggingIn'));
+      const toastId = toast.loading($t('library.loggingIn'), { duration: Number.POSITIVE_INFINITY });
 
       try {
         await Legendary.login(activeAccount);
-        toast.success($t('library.loggedIn'));
+        toast.success($t('library.loggedIn'), { id: toastId, duration: 3000 });
       } catch (error) {
-        handleError(error, $t('library.failedToLogin'));
+        handleError(error, $t('library.failedToLogin'), toastId);
         return;
       }
     }
