@@ -1,0 +1,708 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "language": "Português",
+  "common": {
+    "yes": "Sim",
+    "no": "Não",
+    "vbucks": "V-Bucks",
+    "xp": "XP",
+    "quest": "Desafio",
+    "stw": {
+      "xrayTickets": "Tickets Raio-X",
+      "gold": "Ouro",
+      "founderEditions": {
+        "none": "Não-Fundador",
+        "founder": "Fundador",
+        "standard": "Padrão",
+        "deluxe": "Luxo",
+        "superDeluxe": "Super Luxo",
+        "limited": "Limitado",
+        "ultimate": "Ultimate"
+      }
+    },
+    "gameModes": {
+      "battleRoyale": "Battle Royale",
+      "creative": "Criativo",
+      "saveTheWorld": "Salve o Mundo"
+    },
+    "cancel": "Cancelar",
+    "confirm": "Confirmar"
+  },
+  "errors": {
+    "notLoggedIn": "Iniciar sessão para visualizar esta página.",
+    "loginExpired": "A sessão de login de {accountName} expirou, por favor fazer o login novamente.",
+    "eulaRequired": "{accountName} deve aceitar EULA para continuar."
+  },
+  "rarities": {
+    "common": "Comum",
+    "uncommon": "Incomum",
+    "rare": "Raro",
+    "epic": "Épico",
+    "legendary": "Lendário",
+    "mythic": "Mítico"
+  },
+  "times": {
+    "seconds": {
+      "one": "{count} segundo",
+      "other": "{count} segundos"
+    },
+    "minutes": {
+      "one": "{count} minuto",
+      "other": "{count} minutos"
+    },
+    "hours": {
+      "one": "{count} hora",
+      "other": "{count} horas"
+    },
+    "days": {
+      "one": "{count} dia",
+      "other": "{count} dias"
+    }
+  },
+  "sidebar": {
+    "externalLinks": {
+      "discord": "Servidor Discord",
+      "repository": "Repositório GitHub"
+    },
+    "version": "Versão",
+    "categories": {
+      "downloader": "Downloader",
+      "account": "Conta",
+      "brStw": "BR & STW",
+      "authentication": "Autenticação"
+    }
+  },
+  "newVersionAvailable": {
+    "title": "Nova Versão Disponível",
+    "description": "A Versão {version} está disponível. Clicar no botão abaixo para atualizar.",
+    "download": "Download"
+  },
+  "combobox": {
+    "search": "Pesquisar...",
+    "selectItems": "Selecionar Itens",
+    "noResults": "Nenhum resultado encontrado"
+  },
+  "epicGamesWebsite": {
+    "page": {
+      "title": "Website Epic Games",
+      "description": "Clica no botão abaixo para logar na Epic Games."
+    },
+    "login": "Entrar no site da Epic Games",
+    "loggingIn": "A iniciar sessão",
+    "openedWebsite": "Site da Epic Games Aberto",
+    "failedToOpenWebsite": "Falha ao abrir o site da Epic Games",
+    "copied": "URL de login copiado para área de transferência",
+    "failedToCopy": "Falha ao copiar URL de login"
+  },
+  "eula": {
+    "page": {
+      "title": "EULA"
+    },
+    "check": "Verificar EULA",
+    "checking": "Verificando EULA",
+    "allAccountsAlreadyAccepted": "Todas as contas selecionadas já aceitaram EULA"
+  },
+  "redeemCodes": {
+    "page": {
+      "title": "Resgatar Códigos"
+    },
+    "codesPlaceholder": "Inserir os códigos para resgatar e pressionar Enter",
+    "redeemCodes": "Resgatar Códigos",
+    "redeeming": "Resgatando",
+    "redeemed": "Resgatado",
+    "redeemErrors": {
+      "notFound": "Código não encontrado",
+      "itemsAlreadyOwned": "Itens já possuídos",
+      "alreadyUsed": "Código já usado",
+      "unknownError": "Erro desconhecido"
+    },
+    "loginExpired": "Login expirado. Por favor, faz login novamente."
+  },
+  "vbucksInformation": {
+    "page": {
+      "title": "Informações de V-Bucks"
+    },
+    "getInformation": "Obter informações de V-Bucks",
+    "loading": "Carregando informações de V-Bucks",
+    "loginExpired": "Login expirado. Por favor, faz login novamente.",
+    "unknownError": "Erro desconhecido"
+  },
+  "deviceAuth": {
+    "page": {
+      "title": "Autenticação de dispositivo"
+    },
+    "authInfo": {
+      "noName": "Nenhum Nome",
+      "activeAuth": "O launcher usa este dispositivo de autenticação",
+      "id": "ID do dispositivo",
+      "created": "Criado",
+      "lastAccess": "Último Acesso",
+      "location": "Localização",
+      "ip": "IP",
+      "date": "Data"
+    },
+    "failedToFetch": "Falha ao obter a lista de autenticação do dispositivo",
+    "generating": "Gerando autenticação de dispositivo...",
+    "generated": "Autorização de dispositivo gerada",
+    "failedToGenerate": "Falha ao gerar autenticação de dispositivo",
+    "deleting": "Excluindo autenticação de dispositivo...",
+    "deleted": "Autorização de dispositivo excluída",
+    "deletedAndLoggedOut": "Autorização de dispositivo excluída e desconectada",
+    "failedToDelete": "Falha ao excluir o dispositivo de autenticação"
+  },
+  "accessToken": {
+    "page": {
+      "title": "Token de Acesso"
+    },
+    "selectTokenType": "Selecionar Tipo de token",
+    "selectClient": "Selecionar Cliente",
+    "generate": "Gerar Token de Acesso",
+    "generating": "Gerando",
+    "generated": "Gerado e copiado para a área de transferência",
+    "failedToGenerate": "Falha ao gerar token de acesso"
+  },
+  "exchangeCode": {
+    "page": {
+      "title": "Exchange Code",
+      "description": "Clicar no botão abaixo para gerar um exchange code."
+    },
+    "generate": "Gerar Exchange Code",
+    "generating": "Gerando",
+    "generated": "Gerado e copiado para área de transferência",
+    "failedToGenerate": "Falha ao gerar exchange code"
+  },
+  "autoKick": {
+    "page": {
+      "title": "Auto-Expulsar",
+      "description": "Ativar/desativar auto-reivindicação e auto-transferência de materiais para missões do Salve o Mundo."
+    },
+    "mobileIncompatibilityWarning": {
+      "title": "AVISO",
+      "description": "Enviar launcher para o plano de fundo ou desligar a tela, poderá fazer o Auto-Expulsar não funcionar corretamente."
+    },
+    "accountStatus": {
+      "active": "Ativo",
+      "loginExpired": "Log-in Expirado",
+      "disconnected": "Desconectado"
+    },
+    "settings": {
+      "kick": "Expulsar",
+      "claim": "Resgatar recompensas",
+      "transferMaterials": "Transferir Materiais",
+      "invite": "Convidar"
+    }
+  },
+  "customStatus": {
+    "page": {
+      "title": "Status Personalizado",
+      "description": "Definir status personalizado para conta."
+    },
+    "statusPlaceholder": "Inserir status personalizado",
+    "setStatus": "Definir Status",
+    "settingStatus": "Definindo Status",
+    "statusSet": "Status personalizado definido com sucesso",
+    "failedToSetStatus": "Falha ao definir status",
+    "resetStatus": "Redefinir Status",
+    "resettingStatus": "Redefinindo Status",
+    "statusReset": "Status personalizado redefinido com sucesso",
+    "failedToResetStatus": "Falha ao redefinir status personalizado",
+    "onlineTypes": {
+      "online": "Online",
+      "away": "Ausente"
+    }
+  },
+  "dailyQuests": {
+    "page": {
+      "title": "Missões Diárias"
+    },
+    "getQuests": "Obter Missões Diárias",
+    "loading": "Carregando Missões"
+  },
+  "earnedXP": {
+    "page": {
+      "title": "XP Ganho",
+      "description": "Verificar progresso de XP do Battle Royale, Criativo e Salve o Mundo."
+    },
+    "check": "Verificar XP Ganho",
+    "loading": "Carregando",
+    "resetsAt": "Redefine em {time}"
+  },
+  "itemShop": {
+    "page": {
+      "title": "Loja de Itens"
+    },
+    "lastUpdated": "Última atualização: {date}",
+    "nextRotation": "Próxima rotação em {time}",
+    "searchPlaceholder": "Procurar itens...",
+    "failedtoFetch": "Não foi possível obter itens da loja. Tentar novamente mais tarde.",
+    "noItems": "Nenhum item encontrado",
+    "selectFilter": "Seleccionar um filtro",
+    "filters": {
+      "new": "Novo",
+      "leavingSoon": "Saindo em breve",
+      "longestWait": "Mais Esperado"
+    },
+    "owned": "Adquirido",
+    "purchase": "Comprar",
+    "gift": "Presentear",
+    "itemInformation": {
+      "price": "Preço",
+      "firstSeen": "Visto pela primeira vez",
+      "lastSeen": "Visto por último",
+      "leavesOn": "Sai em"
+    },
+    "notEnoughVbucks": "V-Bucks insuficientes",
+    "noFriends": "Nenhum amigo encontrado",
+    "noRemainingGifts": "Sem presentes restantes",
+    "purchaseConfirmation": {
+      "title": "Confirmar Compra",
+      "description": "Tem certeza que deseja comprar {name} por {price} {vbucksIcon}?"
+    },
+    "purchasing": "Comprando",
+    "purchased": "Item comprado com sucesso",
+    "needMoreVbucksToPurchase": "É preciso mais {amount} V-Bucks para comprar este item",
+    "alreadyOwned": "Item já adquirido",
+    "failedToPurchase": "Falha ao comprar item",
+    "giftConfirmation": {
+      "title": "Confirmação de Presentes",
+      "description": "Escolher amigos para presentear {name} por {price} {vbucksIcon}."
+    },
+    "selectFriends": "Selecionar amigos",
+    "selectedFriendCount": "{count} amigos selecionados",
+    "sendGift": "Enviar Presente",
+    "sendingGift": "Enviando presente",
+    "sentGift": "Presente enviado com sucesso",
+    "reachedDailyGiftLimit": "Você atingiu o limite diário de presentes",
+    "needMoreVbucksToGift": "É preciso de mais {amount} V-Bucks para comprar este item",
+    "friendsMayOwnItem": "Não foi possível enviar presentes, um ou mais amigos podem já possuir este item.",
+    "friendsNotEligible": "Não foi possível enviar presentes, um ou mais amigos não são elegíveis.",
+    "friendsOwnItemFromBundle": "Não foi possível enviar presentes, um ou mais amigos possuem um item deste pacote.",
+    "friendsDoNotAcceptGifts": "Não foi possível enviar presentes, um ou mais amigos não aceitam presentes.",
+    "enableMFA": "É preciso ativar ADF para presentear itens",
+    "failedToGift": "Falha ao presentear item"
+  },
+  "taxiService": {
+    "page": {
+      "title": "Serviço de Táxi",
+      "description": "Transformar conta em um táxi e jogar missões STW que estão acima do nível de poder."
+    },
+    "alert": {
+      "title": "Aviso",
+      "message": "Selecionar \"Não Preencher\" para que o táxi funcione corretamente."
+    },
+    "settings": {
+      "powerLevel": "Nível de Poder",
+      "availableStatus": {
+        "title": "Status Disponível",
+        "placeholder": "Status personalizado do táxi quando disponível",
+        "default": "Disponível para o serviço de táxi. Enviar um convite de grupo!"
+      },
+      "busyStatus": {
+        "title": "Status Ocupado",
+        "placeholder": "Status customizado do táxi quando ocupado",
+        "default": "Atualmente em um grupo. Estará disponível em breve."
+      },
+      "autoAcceptFriendRequests": "Aceitar Pedidos de Amizade Automaticamente"
+    },
+    "start": "Iniciar Serviço de Ttáxi",
+    "starting": "A iniciar",
+    "stop": "Parar serviço de táxi",
+    "stopping": "Parando",
+    "failedToStart": "Falha ao iniciar serviço de táxi",
+    "failedToStop": "Falha ao parar serviço de táxi"
+  },
+  "stwMissionAlerts": {
+    "page": {
+      "title": "Alertas de Missão STW"
+    },
+    "sections": {
+      "survivors": "Sobreviventes Lendários/Míticos",
+      "twinePeaks": "Twine Peaks ⚡160",
+      "ventures": "Aventura⚡140",
+      "upgradeLlamaTokens": "Tokens de Llama de Aprimoramento",
+      "perkup": "Perk-up Lendário!"
+    },
+    "noMissions": "Sem missões disponíveis",
+    "rewards": "Recompensas",
+    "alertRewards": "Recompensas de Alerta"
+  },
+  "lookupPlayers": {
+    "page": {
+      "title": "Procurar Jogadores"
+    },
+    "search": "Pesquisar por nome ou ID de conta",
+    "notFound": "Jogador não encontrado",
+    "stwStatsPrivate": "Não foi possível obter dados STW do jogador. As suas estatísticas de jogo são privadas.",
+    "playerInfo": {
+      "id": "ID",
+      "name": "Nome",
+      "commanderLevel": "Nível do Comandante",
+      "boostedXp": "XP Otimizado",
+      "boostCount": "{count} bônus",
+      "founderEdition": "Edição de Fundador"
+    },
+    "stwDetails": {
+      "title": "Detalhes Salve o Mundo",
+      "players": "Jogadores",
+      "missionInformation": {
+        "title": "Informações da Missão",
+        "name": "Nome",
+        "world": "Mundo",
+        "zone": "Zona"
+      },
+      "heroLoadout": {
+        "commander": "Comandante",
+        "teamPerk": "Habilidades da Equipa",
+        "supportTeam": "Equipa de Suporte",
+        "gadgets": "Gadgets"
+      }
+    },
+    "claimedAlerts": {
+      "title": "Alertas de Missão Reivindicados"
+    },
+    "dailyQuests": {
+      "title": "Missões Diárias",
+      "rewards": "Recompensas"
+    }
+  },
+  "serverStatus": {
+    "page": {
+      "title": "Status do Servidor"
+    },
+    "statuses": {
+      "operational": "Operacional",
+      "down": "Inativo",
+      "majorOutage": "Interrupção Crítica",
+      "partialOutage": "Interrupção Parcial",
+      "underMaintenance": "Em Manutenção",
+      "degradedPerformance": "Performance Reduzida",
+      "unknown": "Desconhecido"
+    },
+    "notification": {
+      "title": "Status do Servidor Fortnite",
+      "message": "Fortnite está online novamente!"
+    },
+    "status": "Status: {status}",
+    "failedToFetch": "Falha ao obter o estado do servidor",
+    "lastUpdated": "Última atualização: {date}",
+    "refresh": "Atualizar",
+    "refreshing": "Atualizando",
+    "notifyMe": {
+      "title": "Notificar-me",
+      "description": "Receber uma notificação quando Fortnite estiver online"
+    },
+    "queue": {
+      "title": "Fila Ativa",
+      "description": "Tempo de espera previsto: {time}"
+    }
+  },
+  "partyManagement": {
+    "page": {
+      "title": "Gerenciamento do Grupo"
+    },
+    "tabs": {
+      "stwActions": "Ações STW",
+      "partyMembers": "Membros do Grupo"
+    },
+    "stwActions": {
+      "claimRewardsAfterLeaving": "Receber Recompensas",
+      "transferMaterialsAfterLeaving": "Transferir Materiais",
+      "inviteAfterLeaving": "Convidar",
+      "kickAll": "Expulsar todos",
+      "leaveParty": "Sair do Grupo",
+      "claimRewards": "Reivindicar Recompensas",
+      "notInParty": "Não está em um Grupo",
+      "notLeader": "Não é o líder do grupo",
+      "kickedAll": "Todos os jogadores expulsos com sucesso",
+      "failedToKickAll": "Falha ao expulsar todos os jogadores",
+      "failedToKickMember": "Falha ao expulsar membro",
+      "leftParty": "Saiu do grupo com sucesso",
+      "claimedRewards": "Recompensas reivindicadas com êxito",
+      "failedToClaimRewards": "Falha ao resgatar recompensas",
+      "leftParties": "Saíste do grupo com sucesso",
+      "failedToLeaveParties": "Falha ao sair do grupo",
+      "promotedMember": "{name} promovido com sucesso para líder do grupo",
+      "failedToPromoteMember": "Falha ao promover membro"
+    },
+    "partyMembers": {
+      "size": "Tamanho",
+      "region": "Região",
+      "createdAt": "Criado em",
+      "kick": "Expulsar",
+      "kicking": "Expulsando",
+      "leaveParty": "Sair do Grupo",
+      "leavingParty": "Saindo do Grupo",
+      "promote": "Promover a Líder",
+      "promoting": "Promovendo",
+      "sendFriendRequest": "Adicionar Amigo",
+      "sendingFriendRequest": "Adicionando Amigo",
+      "failedToSendFriendRequest": "Falha ao adicionar amigo",
+      "removeFriend": "Remover Amigo",
+      "removingFriend": "Removendo Amigo",
+      "failedToRemoveFriend": "Falha ao remover amigo",
+      "platform": "Plataforma",
+      "ownsSTW": "Possui STW",
+      "loadout": "Equipamento",
+      "ready": "Pronto",
+      "notReady": "Não Está Pronto"
+    }
+  },
+  "settings": {
+    "title": "Configurações",
+    "tabs": {
+      "appSettings": "Configurações da App",
+      "customizableMenu": "Menu Customizável",
+      "downloaderSettings": "Configurações do Downloader"
+    },
+    "invalidValue": "Valor invalido.",
+    "appSettings": {
+      "gamePath": "Local de Jogo Personalizado",
+      "launchArguments": {
+        "title": "Argumentos de Lançamento",
+        "description": "Argumentos de linha de comando a usar ao iniciar Fortnite."
+      },
+      "missionCheckInterval": {
+        "title": "Intervalo de Verificação de Missão",
+        "description": "Intervalo em segundos para verificar se você está em uma missão STW. Usado com o recurso de Auto-Expulsar."
+      },
+      "claimRewardsDelay": {
+        "title": "Atraso na Reivindicação de Recompensas",
+        "description": "Atraso em segundos antes de reivindicação de recompensas após deixar missão STW. Usado com o recurso de Auto-Expulsar."
+      },
+      "startingPage": {
+        "title": "Página Inicial",
+        "description": "Selecionar página a ser mostrada quando o launcher iniciar."
+      },
+      "hideToTray": "Ocultar para System Tray",
+      "checkForUpdates": "Procurar por Atualizações"
+    },
+    "downloaderSettings": {
+      "downloadPath": {
+        "title": "Local do download",
+        "description": "Selecionar local onde o launcher baixará jogos."
+      },
+      "noHTTPS": {
+        "title": "Desativar HTTPS",
+        "description": "Baixar jogos sem HTTPS."
+      },
+      "autoUpdate": {
+        "title": "Atualização Automática",
+        "description": "Atualizar jogos automaticamente quando uma nova versão estiver disponível."
+      },
+      "sendNotifications": {
+        "title": "Enviar Notificações",
+        "description": "Enviar notificações quando um jogo é atualizado ou baixado."
+      },
+      "account": {
+        "title": "Conta",
+        "description": "Selecionar conta para usar ao baixar jogos.",
+        "switched": "Conta de download alterada com sucesso.",
+        "failedToSwitch": "Falha ao trocar conta de downloader.",
+        "loggedOut": "Desconectado da conta de downloader.",
+        "failedToLogout": "Falha ao desconectar da conta do downloader."
+      }
+    }
+  },
+  "launchGame": {
+    "launch": "Iniciar jogo",
+    "stop": "Parar Jogo",
+    "alreadyRunning": "Fortnite já está em execução",
+    "launching": "Executando Fortnite...",
+    "notInstalled": "Fortnite não está instalado. Por favor, instalar primeiro.",
+    "launched": "Fortnite iniciado com sucesso",
+    "failedToLaunch": "Falha ao iniciar Fortnite",
+    "stopping": "Encerrando Fortnite...",
+    "stopped": "Fortnite encerrrado com sucesso",
+    "failedToStop": "Falha ao interromper Fortnite"
+  },
+  "accountManager": {
+    "noAccount": "Sem conta",
+    "searchAccounts": "Pesquisar contas...",
+    "login": "Adicionar Nova Conta",
+    "logout": "Logout",
+    "failedToSwitch": "Falha ao trocar para {name}",
+    "loggingOut": "Desconectando de {name}...",
+    "loggedOut": "Sessão terminada de {name}",
+    "failedToLogout": "Falha ao encerrar sessão de {name}",
+    "selectAccount": "Selecionar uma conta",
+    "selectAccounts": "Selecionar Contas",
+    "selectedAccounts": "{count} contas selecionadas",
+    "chooseLoginMethod": "Escolher Método de Login",
+    "back": "Retroceder",
+    "recommended": "Recomendado",
+    "continue": "Continuar",
+    "verifying": "Verificando...",
+    "loginSteps": {
+      "select": "Selecionar Método",
+      "login": "Login",
+      "completed": "Concluído"
+    },
+    "loginMethods": {
+      "webConfirmation": {
+        "title": "Confirmação Web",
+        "description": "Fazer o login através do site da Epic com um simples passo de confirmação.",
+        "instructions": "Clicar no botão abaixo para abrir o site da Epic Games. Assim que confirmar acesso, clicar em \"Continuar\" para continuar.",
+        "generatingURL": "Gerando URL...",
+        "openWebsite": "Abrir Website da Epic Games"
+      },
+      "exchangeCode": {
+        "title": "Exchange Code",
+        "description": "Faz login usando um exchange code, se houver um.",
+        "instructions": "Colar o exchage code e clicar em \"Continuar\".",
+        "inputPlaceholder": "Cole o exchange code aqui"
+      }
+    },
+    "failedToLogin": "Falha ao fazer login",
+    "confirmRequest": "Por favor, confirmar o login no site da Epic Games para continuar.",
+    "alreadyLoggedIn": "Já logado com {name}.",
+    "welcome": {
+      "title": "👋 Boas-vindas, {name}",
+      "description": "Login com sucesso na conta Epic Games."
+    }
+  },
+  "friendsManagement": {
+    "page": {
+      "title": "Gerenciador de Amigos"
+    },
+    "lists": {
+      "friends": "Amigos",
+      "incoming": "Pedidos Recebidos",
+      "outgoing": "Pedidos enviados",
+      "blocklist": "Lista de Bloqueio"
+    },
+    "failedToAdd": "Falha ao adicionar amigo ou aceitar pedido",
+    "failedToRemove": "Falha ao remover o pedido de amizade ou negado",
+    "failedToBlock": "Falha ao bloquear usuário",
+    "failedToUnblock": "Falha ao desbloquear usuário",
+    "failedToChangeNickname": "Falha ao mudar nickname",
+    "noFriends": "Nenhum amigo",
+    "noIncomingRequests": "Sem pedidos recebidos",
+    "noOutgoingRequests": "Sem pedidos enviados",
+    "noBlockedUsers": "Nenhum Usuário Bloqueado",
+    "sendFriendRequest": "Enviar Pedido de Amizade",
+    "sentFriendRequest": "Solicitação de amizade enviada com sucesso",
+    "copyId": "Copiar ID",
+    "acceptRequest": "Aceitar pedido",
+    "removeFriend": "Remover Amigo",
+    "cancelRequest": "Cancelar Pedido",
+    "denyRequest": "Negar Pedido",
+    "blockUser": "Bloquear",
+    "unblockUser": "Desbloquear",
+    "changeNickname": "Alterar Nickname"
+  },
+  "library": {
+    "page": {
+      "title": "Biblioteca"
+    },
+    "loggingIn": "A iniciar sessão...",
+    "loggedIn": "Sessão iniciada com sucesso",
+    "failedToLogin": "Falha ao iniciar sessão",
+    "searchPlaceholder": "Pesquisar jogos...",
+    "filters": {
+      "select": "Selecionar Filtros",
+      "showHidden": "Mostrar ocultos",
+      "installedOnly": "Somente Instalados",
+      "updatesAvailable": "Atualizações Disponíveis"
+    },
+    "app": {
+      "unfavorite": "Remover dos Favoritos",
+      "favorite": "Favoritar",
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "stop": "Parar",
+      "play": "Jogar",
+      "update": "Atualizar",
+      "repair": "Reparar",
+      "install": "Instalar",
+      "removeFromQueue": {
+        "short": "Remover",
+        "long": "Remover da Fila"
+      },
+      "dropdown": {
+        "autoUpdate": {
+          "enable": "Ativar Atualização Automática",
+          "disable": "Desativar Atualização Automática"
+        },
+        "verifyAndRepair": "Verificar e Reparar",
+        "uninstall": "Desinstalar",
+        "size": "Tamanho"
+      },
+      "failedToLaunch": "Falha ao executar {name}",
+      "stopped": "{name} interrompido com sucesso",
+      "failedToStop": "Falha ao executar {name}",
+      "verified": "Arquivos de {name} verificados com sucesso",
+      "requiresRepair": "{name} requer reparo, adicionado à fila",
+      "failedToVerify": "Falha ao verificar arquivos de {name}",
+      "installed": "{name} instalado com sucesso",
+      "failedToInstall": "Falha ao instalar {name}",
+      "updated": "{name} atualizado com sucesso",
+      "failedToUpdate": "Falha ao atualizar {name}",
+      "repaired": "{name} reparado com sucesso",
+      "failedToRepair": "Falha ao reparar {name}",
+      "startedDownload": "Download começou. {el}Clicar aqui {elEnd} para ver progresso",
+      "startedUpdate": "Atualização de {name} iniciada"
+    },
+    "installConfirmation": {
+      "downloadSize": "Tamanho do Download",
+      "compressed": "Comprimido",
+      "installSize": "Tamanho de Instalação",
+      "afterExtraction": "Após extração",
+      "storage": {
+        "title": "Armazenamento",
+        "current": "Atual",
+        "after": "Após"
+      },
+      "notEnoughSpace": "Espaço insuficiente",
+      "download": "Download"
+    },
+    "uninstallConfirmation": {
+      "title": "Confirmar Desinstalação",
+      "description": "Desinstalar {name}?",
+      "uninstalled": "{name} desinstalado com sucesso",
+      "failedToUninstall": "Falha ao desinstalar {name}"
+    }
+  },
+  "downloads": {
+    "page": {
+      "title": "Downloads"
+    },
+    "noDownloads": "Nenhum download em progresso",
+    "paused": "Em pausa",
+    "queued": "Na Fila",
+    "completed": "Concluído",
+    "clearAll": "Limpar tudo",
+    "cancelDownloadConfirmation": {
+      "title": "Cancelar Confirmação de Download",
+      "description": "Cancelar o download? Os arquivos baixados serão mantidos."
+    }
+  },
+  "docs": {
+    "howToUse": "Como Utilizar",
+    "importantNotes": "Notas importantes",
+    "faq": "Perguntas Frequentes (FAQ)",
+    "autoKick": {
+      "description": "Auto-Expusar é um sistema que expulsa automaticamente os jogadores de uma missão assim que o completarem. Também pode reivindicar quaisquer recompensas e transferir materiais do armazenamento para a mochila.",
+      "importantNotes": {
+        "0": "Várias contas jogando a mesma missão, não serão precisas de adicionar todas ao sistema de Auto-Expulsar. O sistema expulsará automaticamente.",
+        "1": "Se reivindicar recompensas não funcionar ou houver um bug, ajustar o \"Tempo de Reivindicar Recompensas\" nas configurações (encontrado no canto superior direito)."
+      }
+    },
+    "taxiService": {
+      "howToUse": {
+        "0": "Faz login numa conta que se deseja transformar em táxi. Esta conta não deve ser a principal!",
+        "1": "Inicia o serviço de taxi clicando no botão.",
+        "2": "Convida o táxi para o grupo.",
+        "3": "Finalmente, definir o preenchimento do grupo para \"Não Preencher\" e iniciar a missão."
+      },
+      "importantNotes": {
+        "0": "A opção de preenchimento de grupo deve ser definida para \"Não Preencher\".",
+        "1": "O taxi bot permite que você acesse missões de nível de poder alto, no entanto você não pode levar a mundos como Twine Peaks até que você complete sua defesa do Escudo da Tempestade.",
+        "2": "O táxi funciona tanto para missões normais quanto para aventuras. Não é necessária uma configuração adicional."
+      }
+    },
+    "customStatus": {
+      "description": "Isso permite que definir um status personalizado no jogo, como o nome sugere.",
+      "status": "Status personalizado aqui"
+    }
+  }
+}

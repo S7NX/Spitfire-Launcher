@@ -99,6 +99,7 @@
       "en": "Blasted Badlands",
       "fr": "Friches Éclatées",
       "es": "Erial Estallado",
+      "pt-br": "Ermos Execráveis",
       "tr": "Çorak Çöl"
     }
   },
@@ -108,6 +109,7 @@
       "en": "Flannel Falls",
       "fr": "Flots de Flanelle",
       "es": "Cataratas Cachemir",
+      "pt-br": "Cachoeira do Cobertor",
       "tr": "Şekilli Şelale"
     }
   },
@@ -117,6 +119,7 @@
       "en": "Frozen Fjords",
       "fr": "Fjords Frisquets",
       "es": "Fiordos Fresquitos",
+      "pt-br": "Fiordes Friorentos",
       "tr": "Kışlık Körfez"
     }
   },
@@ -126,6 +129,7 @@
       "en": "Hexsylvania",
       "fr": "Malsylvanie",
       "es": "Malsilvania",
+      "pt-br": "Hexsilvânia",
       "tr": "Uğursuzistan"
     }
   },
@@ -135,6 +139,7 @@
       "en": "Scurvy Shoals",
       "fr": "Côte Corrompue",
       "es": "Estiaje Escorbuto",
+      "pt-br": "Escolho do Escorbuto",
       "tr": "Kefal Kumsalı"
     }
   }
