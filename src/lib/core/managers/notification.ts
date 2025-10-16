@@ -1,4 +1,3 @@
-import config from '$lib/config';
 import { isPermissionGranted, requestPermission, sendNotification } from '@tauri-apps/plugin-notification';
 import { toast } from 'svelte-sonner';
 
@@ -16,7 +15,7 @@ export default class NotificationManager {
     const permissionGranted = await this.requestPermission();
     if (!permissionGranted) return false;
 
-    sendNotification({ title: title || config.name, body: message });
+    sendNotification({ title: title || 'Spitfire Launcher', body: message });
 
     return true;
   }

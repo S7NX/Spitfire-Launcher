@@ -14,7 +14,6 @@
   import { Toaster } from 'svelte-sonner';
   import { onMount } from 'svelte';
   import ky from 'ky';
-  import config from '$lib/config';
   import type { GitHubRelease } from '$types/github';
   import Button from '$components/ui/Button.svelte';
   import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
@@ -42,10 +41,8 @@
   async function checkForUpdates() {
     if (!$settingsStorage.app?.checkForUpdates) return;
 
-    const { owner, name } = config.repository;
-
     const currentVersion = await getVersion();
-    const latestVersion = await ky.get<GitHubRelease>(`https://api.github.com/repos/${owner}/${name}/releases/latest`).json();
+    const latestVersion = await ky.get<GitHubRelease>(`https://api.github.com/repos/BurakYs/Spitfire-Launcher/releases/latest`).json();
 
     if (latestVersion.tag_name.replace('v', '') !== currentVersion) {
       hasNewVersion = true;
