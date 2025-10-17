@@ -3,8 +3,9 @@
     "names": {
       "de": "Tropen",
       "en": "Tropical",
-      "fr": "Tropiques",
       "es": "Tropical",
+      "fr": "Tropiques",
+      "pt-br": "Tropical",
       "tr": "Tropik"
     }
   },
@@ -12,8 +13,9 @@
     "names": {
       "de": "Seeufer",
       "en": "Lakeside",
-      "fr": "Lac",
       "es": "Ribera del lago",
+      "fr": "Lac",
+      "pt-br": "Lago",
       "tr": "Göl Kenarı"
     }
   },
@@ -21,8 +23,9 @@
     "names": {
       "de": "Tropen",
       "en": "Tropical",
-      "fr": "Tropiques",
       "es": "Tropical",
+      "fr": "Tropiques",
+      "pt-br": "Tropical",
       "tr": "Tropik"
     }
   },
@@ -30,8 +33,9 @@
     "names": {
       "de": "Wasser",
       "en": "Water",
-      "fr": "Eau",
       "es": "Agua",
+      "fr": "Eau",
+      "pt-br": "Água",
       "tr": "Su"
     }
   },
@@ -39,8 +43,9 @@
     "names": {
       "de": "Der Wald",
       "en": "The Forest",
-      "fr": "Forêt",
       "es": "El bosque",
+      "fr": "Forêt",
+      "pt-br": "A Floresta",
       "tr": "Orman"
     }
   },
@@ -48,8 +53,9 @@
     "names": {
       "de": "Vororte",
       "en": "Suburbs",
-      "fr": "Banlieue",
       "es": "Suburbios",
+      "fr": "Banlieue",
+      "pt-br": "Subúrbio",
       "tr": "Banliyö"
     }
   },
@@ -57,8 +63,9 @@
     "names": {
       "de": "Vororte",
       "en": "Suburbs",
-      "fr": "Banlieue",
       "es": "Suburbios",
+      "fr": "Banlieue",
+      "pt-br": "Subúrbio",
       "tr": "Banliyö"
     }
   },
@@ -66,8 +73,9 @@
     "names": {
       "de": "Wald",
       "en": "Forest",
-      "fr": "Forêt",
       "es": "Bosque",
+      "fr": "Forêt",
+      "pt-br": "Floresta",
       "tr": "Orman"
     }
   },
@@ -75,8 +83,9 @@
     "names": {
       "de": "Das Anwesen",
       "en": "The Mansion",
-      "fr": "Manoir",
       "es": "La mansión",
+      "fr": "Manoir",
+      "pt-br": "A Mansão",
       "tr": "Malikâne"
     }
   },
@@ -84,8 +93,9 @@
     "names": {
       "de": "Grasland",
       "en": "Grasslands",
-      "fr": "Prairie",
       "es": "Praderas",
+      "fr": "Prairie",
+      "pt-br": "Pradarias",
       "tr": "Çayır"
     }
   },
@@ -93,8 +103,9 @@
     "names": {
       "de": "Industriegebiet",
       "en": "Industrial Park",
-      "fr": "Parc industriel",
       "es": "Parque industrial",
+      "fr": "Parc industriel",
+      "pt-br": "Parque Industrial",
       "tr": "Sanayi Parkı"
     }
   },
@@ -102,8 +113,9 @@
     "names": {
       "de": "Industriegebiet",
       "en": "Industrial Park",
-      "fr": "Parc industriel",
       "es": "Parque industrial",
+      "fr": "Parc industriel",
+      "pt-br": "Parque Industrial",
       "tr": "Sanayi Parkı"
     }
   },
@@ -111,8 +123,9 @@
     "names": {
       "de": "Wüste",
       "en": "Desert",
-      "fr": "Désert",
       "es": "Desierto",
+      "fr": "Désert",
+      "pt-br": "Deserto",
       "tr": "Çöl"
     }
   },
@@ -120,8 +133,9 @@
     "names": {
       "de": "Stadt",
       "en": "City",
-      "fr": "Ville",
       "es": "Ciudad",
+      "fr": "Ville",
+      "pt-br": "Cidade",
       "tr": "Şehir"
     }
   },
@@ -129,8 +143,9 @@
     "names": {
       "de": "Stadt",
       "en": "City",
-      "fr": "Ville",
       "es": "Ciudad",
+      "fr": "Ville",
+      "pt-br": "Cidade",
       "tr": "Şehir"
     }
   },
@@ -138,8 +153,9 @@
     "names": {
       "de": "Thunder Route 99",
       "en": "Thunder Route 99",
-      "fr": "Fulguroute 99",
       "es": "Ruta Trueno 99",
+      "fr": "Fulguroute 99",
+      "pt-br": "Rota do Trovão 99",
       "tr": "99 No.’lu Yıldırımyolu"
     }
   },
@@ -147,8 +163,9 @@
     "names": {
       "de": "Thunder Route 99",
       "en": "Thunder Route 99",
-      "fr": "Fulguroute 99",
       "es": "Ruta Trueno 99",
+      "fr": "Fulguroute 99",
+      "pt-br": "Rota do Trovão 99",
       "tr": "99 No.’lu Yıldırımyolu"
     }
   },
@@ -156,8 +173,9 @@
     "names": {
       "de": "Thunder Route 99",
       "en": "Thunder Route 99",
-      "fr": "Fulguroute 99",
       "es": "Ruta Trueno 99",
+      "fr": "Fulguroute 99",
+      "pt-br": "Rota do Trovão 99",
       "tr": "99 No.’lu Yıldırımyolu"
     }
   },
@@ -165,8 +183,9 @@
     "names": {
       "de": "Thunder Route 99",
       "en": "Thunder Route 99",
-      "fr": "Fulguroute 99",
       "es": "Ruta Trueno 99",
+      "fr": "Fulguroute 99",
+      "pt-br": "Rota do Trovão 99",
       "tr": "99 No.’lu Yıldırımyolu"
     }
   },
@@ -174,8 +193,9 @@
     "names": {
       "de": "Thunder Route 99",
       "en": "Thunder Route 99",
-      "fr": "Fulguroute 99",
       "es": "Ruta Trueno 99",
+      "fr": "Fulguroute 99",
+      "pt-br": "Rota do Trovão 99",
       "tr": "99 No.’lu Yıldırımyolu"
     }
   },
@@ -183,8 +203,9 @@
     "names": {
       "de": "Thunder Route 99",
       "en": "Thunder Route 99",
-      "fr": "Fulguroute 99",
       "es": "Ruta Trueno 99",
+      "fr": "Fulguroute 99",
+      "pt-br": "Rota do Trovão 99",
       "tr": "99 No.’lu Yıldırımyolu"
     }
   },
@@ -192,8 +213,9 @@
     "names": {
       "de": "Das Grasland",
       "en": "The Grasslands",
-      "fr": "Prairie",
       "es": "Las praderas",
+      "fr": "Prairie",
+      "pt-br": "As Pradarias",
       "tr": "Çayır"
     }
   },
@@ -201,8 +223,9 @@
     "names": {
       "de": "Geisterstadt",
       "en": "Ghost Town",
-      "fr": "Ville fantôme",
       "es": "Pueblo fantasma",
+      "fr": "Ville fantôme",
+      "pt-br": "Cidade Fantasma",
       "tr": "Hayalet Kasaba"
     }
   },
@@ -210,8 +233,9 @@
     "names": {
       "de": "Geisterstadt",
       "en": "Ghost Town",
-      "fr": "Ville fantôme",
       "es": "Pueblo fantasma",
+      "fr": "Ville fantôme",
+      "pt-br": "Cidade Fantasma",
       "tr": "Hayalet Kasaba"
     }
   },
@@ -219,8 +243,9 @@
     "names": {
       "de": "Geisterstadt",
       "en": "Ghost Town",
-      "fr": "Ville fantôme",
       "es": "Pueblo fantasma",
+      "fr": "Ville fantôme",
+      "pt-br": "Cidade Fantasma",
       "tr": "Hayalet Kasaba"
     }
   },
@@ -228,8 +253,9 @@
     "names": {
       "de": "Sturmkönig",
       "en": "Storm King",
-      "fr": "Roi de la tempête",
       "es": "Rey de la Tormenta",
+      "fr": "Roi de la tempête",
+      "pt-br": "Rei da Tempestade",
       "tr": "Fırtına Kralı"
     }
   },
@@ -237,8 +263,9 @@
     "names": {
       "de": "Sturmkönig",
       "en": "Storm King",
-      "fr": "Roi de la tempête",
       "es": "Rey de la Tormenta",
+      "fr": "Roi de la tempête",
+      "pt-br": "Rei da Tempestade",
       "tr": "Fırtına Kralı"
     }
   },
@@ -246,8 +273,9 @@
     "names": {
       "de": "Sturmkönig",
       "en": "Storm King",
-      "fr": "Roi de la tempête",
       "es": "Rey de la Tormenta",
+      "fr": "Roi de la tempête",
+      "pt-br": "Rei da Tempestade",
       "tr": "Fırtına Kralı"
     }
   },
@@ -255,8 +283,9 @@
     "names": {
       "de": "Sturmkönig",
       "en": "Storm King",
-      "fr": "Roi de la tempête",
       "es": "Rey de la Tormenta",
+      "fr": "Roi de la tempête",
+      "pt-br": "Rei da Tempestade",
       "tr": "Fırtına Kralı"
     }
   },
@@ -264,8 +293,9 @@
     "names": {
       "de": "Das Portal",
       "en": "The Portal",
-      "fr": "Le portail",
       "es": "El portal",
+      "fr": "Le portail",
+      "pt-br": "O Portal",
       "tr": "Portal"
     }
   },
@@ -273,8 +303,9 @@
     "names": {
       "de": "Das Portal",
       "en": "The Portal",
-      "fr": "Le portail",
       "es": "El portal",
+      "fr": "Le portail",
+      "pt-br": "O Portal",
       "tr": "Portal"
     }
   },
@@ -282,8 +313,9 @@
     "names": {
       "de": "PerfMem City",
       "en": "PerfMem City",
-      "fr": "PerfMem City",
       "es": "PerfMem Ciudad",
+      "fr": "PerfMem City",
+      "pt-br": "PerfMem City",
       "tr": "Perfor-Bel Şehri"
     }
   },
@@ -291,8 +323,9 @@
     "names": {
       "de": "Tyrannobaurus Rex",
       "en": "Buildasaurus Rex",
-      "fr": "Constructosaure rex",
       "es": "Construyesaurus Rex",
+      "fr": "Constructosaure rex",
+      "pt-br": "Construssauro Rex",
       "tr": "Dino-Zor, İnşa Kolay"
     }
   },
@@ -300,8 +333,9 @@
     "names": {
       "de": "Wüste",
       "en": "Desert",
-      "fr": "Désert",
       "es": "Desierto",
+      "fr": "Désert",
+      "pt-br": "Deserto",
       "tr": "Çöl"
     }
   },
@@ -309,8 +343,9 @@
     "names": {
       "de": "Wüste",
       "en": "Desert",
-      "fr": "Désert",
       "es": "Desierto",
+      "fr": "Désert",
+      "pt-br": "Deserto",
       "tr": "Çöl"
     }
   },
@@ -318,8 +353,9 @@
     "names": {
       "de": "Wüste",
       "en": "Desert",
-      "fr": "Désert",
       "es": "Desierto",
+      "fr": "Désert",
+      "pt-br": "Deserto",
       "tr": "Çöl"
     }
   },
@@ -327,8 +363,9 @@
     "names": {
       "de": "Wüste",
       "en": "Desert",
-      "fr": "Désert",
       "es": "Desierto",
+      "fr": "Désert",
+      "pt-br": "Deserto",
       "tr": "Çöl"
     }
   },
@@ -336,8 +373,9 @@
     "names": {
       "de": "Spukwald",
       "en": "Haunted Forest",
-      "fr": "Forêt hantée",
       "es": "Bosque encantado",
+      "fr": "Forêt hantée",
+      "pt-br": "Floresta Assombrada",
       "tr": "Perili Orman"
     }
   },
@@ -345,8 +383,9 @@
     "names": {
       "de": "Twine Peaks-Sturmschild",
       "en": "Twine Peaks Storm Shield",
-      "fr": "Bouclier antitempête de Pics Hardis",
       "es": "Escudo antitormentas de Cumbres Leñosas",
+      "fr": "Bouclier antitempête de Pics Hardis",
+      "pt-br": "Escudo Antitempestade de Twine Peaks",
       "tr": "Dikiz Tepeler Fırtına Kalkanı"
     }
   },
@@ -354,8 +393,9 @@
     "names": {
       "de": "Bru-Tal-Sturmschild",
       "en": "Canny Valley Storm Shield",
-      "fr": "Bouclier antitempête de Morne-la-Vallée",
       "es": "Escudo antitormentas de Valle Latoso",
+      "fr": "Bouclier antitempête de Morne-la-Vallée",
+      "pt-br": "Escudo Antitempestade de Canny Valley",
       "tr": "Tekinli Vadi Fırtına Kalkanı"
     }
   },
@@ -363,8 +403,9 @@
     "names": {
       "de": "Plankerton-Sturmschild",
       "en": "Plankerton Storm Shield",
-      "fr": "Bouclier antitempête de Villeplanche",
       "es": "Escudo antitormentas de Villatablón",
+      "fr": "Bouclier antitempête de Villeplanche",
+      "pt-br": "Escudo Antitempestade de Plankerton",
       "tr": "Kalaslıevler Fırtına Kalkanı"
     }
   },
@@ -372,8 +413,9 @@
     "names": {
       "de": "Heimatbasis-Sturmschild",
       "en": "Homebase Storm Shield",
-      "fr": "Bouclier antitempête de la base",
       "es": "Escudo antitormentas de la base",
+      "fr": "Bouclier antitempête de la base",
+      "pt-br": "Escudo Antitempestade da Base Inicial",
       "tr": "Ana Üs Fırtına Kalkanı"
     }
   },
@@ -381,8 +423,9 @@
     "names": {
       "de": "Deine Heimatbasis",
       "en": "Your Homebase",
-      "fr": "Votre base",
       "es": "Tu base",
+      "fr": "Votre base",
+      "pt-br": "Sua Base Inicial",
       "tr": "Ana Üs'sün"
     }
   },
@@ -390,8 +433,9 @@
     "names": {
       "de": "Deine Heimatbasis",
       "en": "Your Homebase",
-      "fr": "Votre base",
       "es": "Tu base",
+      "fr": "Votre base",
+      "pt-br": "Sua Base Inicial",
       "tr": "Ana Üs'sün"
     }
   },
@@ -399,8 +443,9 @@
     "names": {
       "de": "Deine Heimatbasis",
       "en": "Your Homebase",
-      "fr": "Votre base",
       "es": "Tu base",
+      "fr": "Votre base",
+      "pt-br": "Sua Base Inicial",
       "tr": "Ana Üs'sün"
     }
   },
@@ -408,8 +453,9 @@
     "names": {
       "de": "Deine Heimatbasis",
       "en": "Your Homebase",
-      "fr": "Votre base",
       "es": "Tu base",
+      "fr": "Votre base",
+      "pt-br": "Sua Base Inicial",
       "tr": "Ana Üs'sün"
     }
   },
@@ -417,8 +463,9 @@
     "names": {
       "de": "Deine Heimatbasis",
       "en": "Your Homebase",
-      "fr": "Votre base",
       "es": "Tu base",
+      "fr": "Votre base",
+      "pt-br": "Sua Base Inicial",
       "tr": "Ana Üs'sün"
     }
   },
@@ -426,8 +473,9 @@
     "names": {
       "de": "Die Vororte",
       "en": "The Suburbs",
-      "fr": "Banlieue",
       "es": "Los suburbios",
+      "fr": "Banlieue",
+      "pt-br": "O Subúrbio",
       "tr": "Banliyö"
     }
   },
@@ -435,8 +483,9 @@
     "names": {
       "de": "Der Durr Burger-Bauwettbewerb",
       "en": "The Durr Burger Build-Off",
-      "fr": "Défi de construction de Durrr Burger",
       "es": "El duelo del Durr Burger",
+      "fr": "Défi de construction de Durrr Burger",
+      "pt-br": "O Duelo de Construtores Durrr Burger",
       "tr": "Durrr Burger İnşa Yarışması"
     }
   },
@@ -444,8 +493,9 @@
     "names": {
       "de": "Twine Peaks-Stufe 2",
       "en": "Twine Peaks Tier 2",
-      "fr": "Palier Pics Hardis 2",
       "es": "Cumbres Leñosas - Nivel 2",
+      "fr": "Palier Pics Hardis 2",
+      "pt-br": "Categoria Twine Peaks 2",
       "tr": "Dikiz Tepeler 2. Aşama"
     }
   },
@@ -453,8 +503,9 @@
     "names": {
       "de": "Twine Peaks-Stufe 1",
       "en": "Twine Peaks Tier 1",
-      "fr": "Palier Pics Hardis 1",
       "es": "Cumbres Leñosas - Nivel 1",
+      "fr": "Palier Pics Hardis 1",
+      "pt-br": "Categoria Twine Peaks 1",
       "tr": "Dikiz Tepeler 1. Aşama"
     }
   },
@@ -462,8 +513,9 @@
     "names": {
       "de": "Plankerton-Stufe 2",
       "en": "Plankerton Tier 2",
-      "fr": "Palier Villeplanche 2",
       "es": "Villatablón - Nivel 2",
+      "fr": "Palier Villeplanche 2",
+      "pt-br": "Categoria Plankerton 2",
       "tr": "Kalaslıevler 2. Aşama"
     }
   },
@@ -471,8 +523,9 @@
     "names": {
       "de": "Plankerton-Stufe 1",
       "en": "Plankerton Tier 1",
-      "fr": "Palier Villeplanche 1",
       "es": "Villatablón - Nivel 1",
+      "fr": "Palier Villeplanche 1",
+      "pt-br": "Categoria Plankerton 1",
       "tr": "Kalaslıevler 1. Aşama"
     }
   },
@@ -480,8 +533,9 @@
     "names": {
       "de": "Twine Peaks-Stufe 3",
       "en": "Twine Peaks Tier 3",
-      "fr": "Palier Pics Hardis 3",
       "es": "Cumbres Leñosas - Nivel 3",
+      "fr": "Palier Pics Hardis 3",
+      "pt-br": "Categoria Twine Peaks 3",
       "tr": "Dikiz Tepeler 3. Aşama"
     }
   },
@@ -489,8 +543,9 @@
     "names": {
       "de": "Bru-Tal-Stufe 2",
       "en": "Canny Valley Tier 2",
-      "fr": "Palier Morne-la-Vallée 2",
       "es": "Valle Latoso - Nivel 2",
+      "fr": "Palier Morne-la-Vallée 2",
+      "pt-br": "Categoria Canny Valley 2",
       "tr": "Tekinli Vadi 2. Aşama"
     }
   },
@@ -498,8 +553,9 @@
     "names": {
       "de": "Bru-Tal-Stufe 1",
       "en": "Canny Valley Tier 1",
-      "fr": "Palier Morne-la-Vallée 1",
       "es": "Valle Latoso - Nivel 1",
+      "fr": "Palier Morne-la-Vallée 1",
+      "pt-br": "Categoria Canny Valley 1",
       "tr": "Tekinli Vadi 1. Aşama"
     }
   },
@@ -507,8 +563,9 @@
     "names": {
       "de": "Steinwald-Stufe",
       "en": "Stonewood Tier",
-      "fr": "Palier Fontainebois",
       "es": "Nivel de Bosque Pedregoso",
+      "fr": "Palier Fontainebois",
+      "pt-br": "Categoria Floresta Pétrea",
       "tr": "Taşlıorman Aşaması"
     }
   },
@@ -516,8 +573,9 @@
     "names": {
       "de": "Festungserrichtung",
       "en": "Fort Setup",
-      "fr": "Configuration du fort",
       "es": "Configuración del fuerte",
+      "fr": "Configuration du fort",
+      "pt-br": "Configuração do Forte",
       "tr": "Kale Kurulumu"
     }
   },
@@ -525,8 +583,9 @@
     "names": {
       "de": "Der Sumpf",
       "en": "The Swamps",
-      "fr": "Marais",
       "es": "El pantano",
+      "fr": "Marais",
+      "pt-br": "O Pântano",
       "tr": "Bataklık"
     }
   },
@@ -534,8 +593,9 @@
     "names": {
       "de": "Dämmerwiese",
       "en": "Shady Acres",
-      "fr": "Bois ombragés",
       "es": "Acres Sombríos",
+      "fr": "Bois ombragés",
+      "pt-br": "Floresta Fúnebre",
       "tr": "Gölgeli Arazi"
     }
   },
@@ -543,8 +603,9 @@
     "names": {
       "de": "Spukwald",
       "en": "Haunted Forest",
-      "fr": "Forêt hantée",
       "es": "Bosque encantado",
+      "fr": "Forêt hantée",
+      "pt-br": "Floresta Assombrada",
       "tr": "Perili Orman"
     }
   },
@@ -552,8 +613,9 @@
     "names": {
       "de": "Spukwald",
       "en": "Haunted Forest",
-      "fr": "Forêt hantée",
       "es": "Bosque encantado",
+      "fr": "Forêt hantée",
+      "pt-br": "Floresta Assombrada",
       "tr": "Perili Orman"
     }
   },
@@ -561,8 +623,9 @@
     "names": {
       "de": "Spukwald",
       "en": "Haunted Forest",
-      "fr": "Forêt hantée",
       "es": "Bosque encantado",
+      "fr": "Forêt hantée",
+      "pt-br": "Floresta Assombrada",
       "tr": "Perili Orman"
     }
   },
@@ -570,8 +633,9 @@
     "names": {
       "de": "Spukwald",
       "en": "Haunted Forest",
-      "fr": "Forêt hantée",
       "es": "Bosque encantado",
+      "fr": "Forêt hantée",
+      "pt-br": "Floresta Assombrada",
       "tr": "Perili Orman"
     }
   },
@@ -579,8 +643,9 @@
     "names": {
       "de": "Spukhotel",
       "en": "Haunted Hotel",
-      "fr": "Hôtel hanté",
       "es": "Hotel embrujado",
+      "fr": "Hôtel hanté",
+      "pt-br": "Hotel Assombrado",
       "tr": "Perili Otel"
     }
   },
@@ -588,8 +653,9 @@
     "names": {
       "de": "Spukwald",
       "en": "Haunted Forest",
-      "fr": "Forêt hantée",
       "es": "Bosque encantado",
+      "fr": "Forêt hantée",
+      "pt-br": "Floresta Assombrada",
       "tr": "Perili Orman"
     }
   },
@@ -597,8 +663,9 @@
     "names": {
       "de": "Spukhotel",
       "en": "Haunted Hotel",
-      "fr": "Hôtel hanté",
       "es": "Hotel embrujado",
+      "fr": "Hôtel hanté",
+      "pt-br": "Hotel Assombrado",
       "tr": "Perili Otel"
     }
   },
@@ -606,8 +673,9 @@
     "names": {
       "de": "Frostnite",
       "en": "Frostnite",
-      "fr": "Nuit de glace",
       "es": "Frostnite",
+      "fr": "Nuit de glace",
+      "pt-br": "Frionite",
       "tr": "Fortnite Soğukları"
     }
   },
@@ -615,8 +683,9 @@
     "names": {
       "de": "Prototyp Fortnite-Überlebensmodus",
       "en": "Fortnite Survival Prototype",
-      "fr": "Quinzaine de la survie (prototype)",
       "es": "Prototipo de supervivencia Fortnite",
+      "fr": "Quinzaine de la survie (prototype)",
+      "pt-br": "Protótipo de sobrevivência do Fortnite",
       "tr": "Fortnite Hayatta Kalma Prototipi"
     }
   },
@@ -624,8 +693,9 @@
     "names": {
       "de": "Mit anderen zusammen",
       "en": "Play with Others",
-      "fr": "Jouer à plusieurs",
       "es": "Juega con otros",
+      "fr": "Jouer à plusieurs",
+      "pt-br": "Jogue com Outros Jogadores",
       "tr": "Başkalarıyla Oyna"
     }
   },
@@ -633,8 +703,9 @@
     "names": {
       "de": "Herbstlicher Vorort",
       "en": "Autumn Suburbs",
-      "fr": "Banlieue automnale",
       "es": "Suburbios otoñales",
+      "fr": "Banlieue automnale",
+      "pt-br": "Subúrbios Outonais",
       "tr": "Sonbahar Banliyöleri"
     }
   },
@@ -642,8 +713,9 @@
     "names": {
       "de": "Herbstliches Industriegebiet",
       "en": "Autumn Industrial Park",
-      "fr": "Parc industriel automnal",
       "es": "Parque industrial otoñal",
+      "fr": "Parc industriel automnal",
+      "pt-br": "Parque Industrial Outonal",
       "tr": "Sonbahar Sanayi Parkı"
     }
   },
@@ -651,8 +723,9 @@
     "names": {
       "de": "Herbstliche Stadt",
       "en": "Autumn City",
-      "fr": "Ville automnale",
       "es": "Ciudad otoñal",
+      "fr": "Ville automnale",
+      "pt-br": "Cidade Outonal",
       "tr": "Sonbahar Şehri"
     }
   },
@@ -660,8 +733,9 @@
     "names": {
       "de": "Seeufer",
       "en": "Lakeside",
-      "fr": "Lac",
       "es": "Ribera del lago",
+      "fr": "Lac",
+      "pt-br": "Lago",
       "tr": "Göl Kenarı"
     }
   },
@@ -669,8 +743,9 @@
     "names": {
       "de": "Herbstliche Gebirgsausläufer",
       "en": "Autumn Foothills",
-      "fr": "Contreforts automnaux",
       "es": "Colinas otoñales",
+      "fr": "Contreforts automnaux",
+      "pt-br": "Colinas Outonais",
       "tr": "Güz Etekleri"
     }
   },
@@ -678,8 +753,9 @@
     "names": {
       "de": "Bibberbucht",
       "en": "Chilly Cove",
-      "fr": "Crique congelée",
       "es": "Cueva congelada",
+      "fr": "Crique congelée",
+      "pt-br": "Calheta Calafrio",
       "tr": "Kırağı Koy"
     }
   },
@@ -687,8 +763,9 @@
     "names": {
       "de": "Boreale Basis",
       "en": "Boreal Base",
-      "fr": "Base boréale",
       "es": "Base boreal",
+      "fr": "Base boréale",
+      "pt-br": "Base Boreal",
       "tr": "Kutup Karargâhı"
     }
   },
@@ -696,8 +773,9 @@
     "names": {
       "de": "Bibberbucht",
       "en": "Chilly Cove",
-      "fr": "Crique congelée",
       "es": "Cueva congelada",
+      "fr": "Crique congelée",
+      "pt-br": "Calheta Calafrio",
       "tr": "Kırağı Koy"
     }
   },
@@ -705,8 +783,9 @@
     "names": {
       "de": "Boreale Basis",
       "en": "Boreal Base",
-      "fr": "Base boréale",
       "es": "Base boreal",
+      "fr": "Base boréale",
+      "pt-br": "Base Boreal",
       "tr": "Kutup Karargâhı"
     }
   },
@@ -714,8 +793,9 @@
     "names": {
       "de": "Bibberbucht",
       "en": "Chilly Cove",
-      "fr": "Crique congelée",
       "es": "Cueva congelada",
+      "fr": "Crique congelée",
+      "pt-br": "Calheta Calafrio",
       "tr": "Kırağı Koy"
     }
   },
@@ -723,8 +803,9 @@
     "names": {
       "de": "Boreale Basis",
       "en": "Boreal Base",
-      "fr": "Base boréale",
       "es": "Base boreal",
+      "fr": "Base boréale",
+      "pt-br": "Base Boreal",
       "tr": "Kutup Karargâhı"
     }
   },
@@ -732,8 +813,9 @@
     "names": {
       "de": "Bibberbucht",
       "en": "Chilly Cove",
-      "fr": "Crique congelée",
       "es": "Cueva congelada",
+      "fr": "Crique congelée",
+      "pt-br": "Calheta Calafrio",
       "tr": "Kırağı Koy"
     }
   },
@@ -741,8 +823,9 @@
     "names": {
       "de": "Boreale Basis",
       "en": "Boreal Base",
-      "fr": "Base boréale",
       "es": "Base boreal",
+      "fr": "Base boréale",
+      "pt-br": "Base Boreal",
       "tr": "Kutup Karargâhı"
     }
   },
@@ -750,8 +833,9 @@
     "names": {
       "de": "Bibberbucht",
       "en": "Chilly Cove",
-      "fr": "Crique congelée",
       "es": "Cueva congelada",
+      "fr": "Crique congelée",
+      "pt-br": "Calheta Calafrio",
       "tr": "Kırağı Koy"
     }
   },
@@ -759,8 +843,9 @@
     "names": {
       "de": "Boreale Basis",
       "en": "Boreal Base",
-      "fr": "Base boréale",
       "es": "Base boreal",
+      "fr": "Base boréale",
+      "pt-br": "Base Boreal",
       "tr": "Kutup Karargâhı"
     }
   },
@@ -768,8 +853,9 @@
     "names": {
       "de": "Bibberbucht",
       "en": "Chilly Cove",
-      "fr": "Crique congelée",
       "es": "Cueva congelada",
+      "fr": "Crique congelée",
+      "pt-br": "Calheta Calafrio",
       "tr": "Kırağı Koy"
     }
   },
@@ -777,8 +863,9 @@
     "names": {
       "de": "Boreale Basis",
       "en": "Boreal Base",
-      "fr": "Base boréale",
       "es": "Base boreal",
+      "fr": "Base boréale",
+      "pt-br": "Base Boreal",
       "tr": "Kutup Karargâhı"
     }
   },
@@ -786,8 +873,9 @@
     "names": {
       "de": "Bibberbucht",
       "en": "Chilly Cove",
-      "fr": "Crique congelée",
       "es": "Cueva congelada",
+      "fr": "Crique congelée",
+      "pt-br": "Calheta Calafrio",
       "tr": "Kırağı Koy"
     }
   },
@@ -795,8 +883,9 @@
     "names": {
       "de": "Boreale Basis",
       "en": "Boreal Base",
-      "fr": "Base boréale",
       "es": "Base boreal",
+      "fr": "Base boréale",
+      "pt-br": "Base Boreal",
       "tr": "Kutup Karargâhı"
     }
   },
@@ -804,8 +893,9 @@
     "names": {
       "de": "Bibberbucht",
       "en": "Chilly Cove",
-      "fr": "Crique congelée",
       "es": "Cueva congelada",
+      "fr": "Crique congelée",
+      "pt-br": "Calheta Calafrio",
       "tr": "Kırağı Koy"
     }
   },
@@ -813,8 +903,9 @@
     "names": {
       "de": "Boreale Basis",
       "en": "Boreal Base",
-      "fr": "Base boréale",
       "es": "Base boreal",
+      "fr": "Base boréale",
+      "pt-br": "Base Boreal",
       "tr": "Kutup Karargâhı"
     }
   },
@@ -822,8 +913,9 @@
     "names": {
       "de": "Bibberbucht",
       "en": "Chilly Cove",
-      "fr": "Crique congelée",
       "es": "Cueva congelada",
+      "fr": "Crique congelée",
+      "pt-br": "Calheta Calafrio",
       "tr": "Kırağı Koy"
     }
   },
@@ -831,8 +923,9 @@
     "names": {
       "de": "Boreale Basis",
       "en": "Boreal Base",
-      "fr": "Base boréale",
       "es": "Base boreal",
+      "fr": "Base boréale",
+      "pt-br": "Base Boreal",
       "tr": "Kutup Karargâhı"
     }
   },
@@ -840,8 +933,9 @@
     "names": {
       "de": "Festung eingliedern",
       "en": "Onboarding Fort",
-      "fr": "Embarquement immédiat",
       "es": "Adentrándose en el fuerte",
+      "fr": "Embarquement immédiat",
+      "pt-br": "Forte de Integração",
       "tr": "Eğitim Kalesi"
     }
   },
@@ -849,8 +943,9 @@
     "names": {
       "de": "Die Stadt",
       "en": "The City",
-      "fr": "Ville",
       "es": "La ciudad",
+      "fr": "Ville",
+      "pt-br": "A Cidade",
       "tr": "Şehir"
     }
   },
@@ -858,8 +953,9 @@
     "names": {
       "de": "Die Wüste",
       "en": "The Desert",
-      "fr": "Désert",
       "es": "El desierto",
+      "fr": "Désert",
+      "pt-br": "O Deserto",
       "tr": "Çöl"
     }
   },
@@ -867,8 +963,9 @@
     "names": {
       "de": "Spukwald",
       "en": "Haunted Forest",
-      "fr": "Forêt hantée",
       "es": "Bosque encantado",
+      "fr": "Forêt hantée",
+      "pt-br": "Floresta Assombrada",
       "tr": "Perili Orman"
     }
   },
@@ -876,8 +973,9 @@
     "names": {
       "de": "Verdächtige Fabrik",
       "en": "Suspicious Factory",
-      "fr": "Usine suspecte",
       "es": "Fábrica sospechosa",
+      "fr": "Usine suspecte",
+      "pt-br": "Fábrica Suspeita",
       "tr": "Şüpheli Fabrika"
     }
   },
@@ -885,8 +983,9 @@
     "names": {
       "de": "Plank Harbor",
       "en": "Plank Harbor",
-      "fr": "Port-de-Planche",
       "es": "Puerto Tablón",
+      "fr": "Port-de-Planche",
+      "pt-br": "Porto de Plank",
       "tr": "Kalas Limanı"
     }
   },
@@ -894,8 +993,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -903,8 +1003,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -912,8 +1013,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -921,8 +1023,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -930,8 +1033,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -939,8 +1043,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -948,8 +1053,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -957,8 +1063,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -966,8 +1073,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -975,8 +1083,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -984,8 +1093,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -993,8 +1103,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -1002,8 +1113,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -1011,8 +1123,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -1020,8 +1133,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -1029,8 +1143,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -1038,8 +1153,9 @@
     "names": {
       "de": "Oberknackers Nachbarschaft",
       "en": "Crackshot's Neighborhood",
-      "fr": "Quartier de Casse-noisette",
       "es": "Barrio de Cascanueces",
+      "fr": "Quartier de Casse-noisette",
+      "pt-br": "Vizinhança do Atira-nozes",
       "tr": "Tahta Asker'in Mahallesi"
     }
   },
@@ -1047,8 +1163,9 @@
     "names": {
       "de": "Die Wüste",
       "en": "The Desert",
-      "fr": "Désert",
       "es": "El desierto",
+      "fr": "Désert",
+      "pt-br": "O Deserto",
       "tr": "Çöl"
     }
   },
@@ -1056,8 +1173,9 @@
     "names": {
       "de": "Stufe 4",
       "en": "Tier 4",
-      "fr": "Palier 4",
       "es": "Nivel 4",
+      "fr": "Palier 4",
+      "pt-br": "Categoria 4",
       "tr": "4. Aşama"
     }
   },
@@ -1065,8 +1183,9 @@
     "names": {
       "de": "Stufe 1",
       "en": "Tier 1",
-      "fr": "Palier 1",
       "es": "Nivel 1",
+      "fr": "Palier 1",
+      "pt-br": "Categoria 1",
       "tr": "1. Aşama"
     }
   },
@@ -1074,8 +1193,9 @@
     "names": {
       "de": "Stufe 1",
       "en": "Tier 1",
-      "fr": "Palier 1",
       "es": "Nivel 1",
+      "fr": "Palier 1",
+      "pt-br": "Categoria 1",
       "tr": "1. Aşama"
     }
   },
@@ -1083,8 +1203,9 @@
     "names": {
       "de": "Stufe 2",
       "en": "Tier 2",
-      "fr": "Palier 2",
       "es": "Nivel 2",
+      "fr": "Palier 2",
+      "pt-br": "Categoria 2",
       "tr": "2. Aşama"
     }
   },
@@ -1092,8 +1213,9 @@
     "names": {
       "de": "Stufe 2",
       "en": "Tier 2",
-      "fr": "Palier 2",
       "es": "Nivel 2",
+      "fr": "Palier 2",
+      "pt-br": "Categoria 2",
       "tr": "2. Aşama"
     }
   },
@@ -1101,8 +1223,9 @@
     "names": {
       "de": "Stufe 2",
       "en": "Tier 2",
-      "fr": "Palier 2",
       "es": "Nivel 2",
+      "fr": "Palier 2",
+      "pt-br": "Categoria 2",
       "tr": "2. Aşama"
     }
   },
@@ -1110,8 +1233,9 @@
     "names": {
       "de": "Stufe 3",
       "en": "Tier 3",
-      "fr": "Palier 3",
       "es": "Nivel 3",
+      "fr": "Palier 3",
+      "pt-br": "Categoria 3",
       "tr": "3. Aşama"
     }
   },
@@ -1119,8 +1243,9 @@
     "names": {
       "de": "Stufe 3",
       "en": "Tier 3",
-      "fr": "Palier 3",
       "es": "Nivel 3",
+      "fr": "Palier 3",
+      "pt-br": "Categoria 3",
       "tr": "3. Aşama"
     }
   },
@@ -1128,8 +1253,9 @@
     "names": {
       "de": "Stufe 3",
       "en": "Tier 3",
-      "fr": "Palier 3",
       "es": "Nivel 3",
+      "fr": "Palier 3",
+      "pt-br": "Categoria 3",
       "tr": "3. Aşama"
     }
   },
@@ -1137,8 +1263,9 @@
     "names": {
       "de": "Stufe 4",
       "en": "Tier 4",
-      "fr": "Palier 4",
       "es": "Nivel 4",
+      "fr": "Palier 4",
+      "pt-br": "Categoria 4",
       "tr": "4. Aşama"
     }
   },
@@ -1146,8 +1273,9 @@
     "names": {
       "de": "Stufe 1",
       "en": "Tier 1",
-      "fr": "Palier 1",
       "es": "Nivel 1",
+      "fr": "Palier 1",
+      "pt-br": "Categoria 1",
       "tr": "1. Aşama"
     }
   },
@@ -1155,8 +1283,9 @@
     "names": {
       "de": "Stufe 2",
       "en": "Tier 2",
-      "fr": "Palier 2",
       "es": "Nivel 2",
+      "fr": "Palier 2",
+      "pt-br": "Categoria 2",
       "tr": "2. Aşama"
     }
   },
@@ -1164,8 +1293,9 @@
     "names": {
       "de": "Stufe 3",
       "en": "Tier 3",
-      "fr": "Palier 3",
       "es": "Nivel 3",
+      "fr": "Palier 3",
+      "pt-br": "Categoria 3",
       "tr": "3. Aşama"
     }
   }

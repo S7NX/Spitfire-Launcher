@@ -15,7 +15,6 @@
   import { cubicInOut } from 'svelte/easing';
   import { platform } from '@tauri-apps/plugin-os';
   import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
-  import config from '$lib/config';
   import { cn, t } from '$lib/utils/util';
   import { page } from '$app/state';
   import { SidebarCategories } from '$lib/constants/sidebar';
@@ -29,12 +28,12 @@
   const externalLinks = $derived([
     {
       name: $t('sidebar.externalLinks.discord'),
-      href: config.links.discord,
+      href: 'https://discord.gg/rAUbXf5xUZ',
       icon: '/assets/icons/discord.svg'
     },
     {
       name: $t('sidebar.externalLinks.repository'),
-      href: config.links.github,
+      href: 'https://github.com/BurakYs/Spitfire-Launcher',
       icon: '/assets/icons/github.svg'
     }
   ]);
@@ -80,7 +79,7 @@
     class="flex items-center justify-center p-4 border-b border-r {isMobile ? 'pt-6 h-22' : 'h-16'}"
     data-tauri-drag-region
   >
-    <a class="max-xs:text-xl text-2xl font-bold" href="/">{config.name}</a>
+    <a class="max-xs:text-xl text-2xl font-bold" href="/">Spitfire Launcher</a>
   </div>
 
   <nav class="flex-1 overflow-y-auto py-4 border-r">
@@ -164,7 +163,7 @@
           {$t('sidebar.version')}
           <ExternalLink
             class="underline underline-offset-2"
-            href="{config.links.github}/releases/tag/v{version}"
+            href="https://github.com/BurakYs/Spitfire-Launcher/releases/tag/v{version}"
           >
             v{version}
           </ExternalLink>

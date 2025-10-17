@@ -37,7 +37,7 @@ Settings are stored in:
 
 ### Customizable
 
-- Choose launcher language from 5 different languages: German, English, French, Spanish and Turkish
+- Choose launcher language from 6 different languages: German, English, French, Spanish, Portuguese and Turkish
 - Customize the sidebar with your most used features.
 
 ### Bulk Actions

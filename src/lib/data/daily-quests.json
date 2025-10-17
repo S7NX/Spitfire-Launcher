@@ -3,8 +3,9 @@
     "names": {
       "de": "Tägliche Zerstörung (Spielautomaten)",
       "en": "Daily Destroy (Arcade Machines)",
-      "fr": "Destruction quotidienne (bornes d'arcade)",
       "es": "Destrucción diaria (máquinas recreativas)",
+      "fr": "Destruction quotidienne (bornes d'arcade)",
+      "pt-br": "Destruição Diária (Máquinas de Fliperama)",
       "tr": "Günlük Yok Etme (Oyun Makineleri)"
     },
     "limit": 3,
@@ -18,8 +19,9 @@
     "names": {
       "de": "Tägliche Zerstörung (Teddybären)",
       "en": "Daily Destroy (Teddy Bears)",
-      "fr": "Destruction quotidienne (nounours)",
       "es": "Destrucción diaria (ositos de peluche)",
+      "fr": "Destruction quotidienne (nounours)",
+      "pt-br": "Destruição Diária (Ursos de Pelúcia)",
       "tr": "Günlük Yok Etme (Oyuncak Ayı)"
     },
     "limit": 8,
@@ -33,8 +35,9 @@
     "names": {
       "de": "Tägliche Zerstörung (Feuerwehrautos)",
       "en": "Daily Destroy (Fire Trucks)",
-      "fr": "Destruction quotidienne (camions de pompier)",
       "es": "Destrucción diaria (camiones de bomberos)",
+      "fr": "Destruction quotidienne (camions de pompier)",
+      "pt-br": "Destruição Diária (Carros de Bombeiro)",
       "tr": "Günlük Yok Etme (İtfaiye Kamyonu)"
     },
     "limit": 3,
@@ -48,8 +51,9 @@
     "names": {
       "de": "Tägliche Zerstörung (Gartenzwerge)",
       "en": "Daily Destroy (Garden Gnomes)",
-      "fr": "Destruction quotidienne (nains de jardin)",
       "es": "Destrucción diaria (gnomos de jardín)",
+      "fr": "Destruction quotidienne (nains de jardin)",
+      "pt-br": "Destruição Diária (Gnomos de Jardim)",
       "tr": "Günlük Yok Etme (Bahçe Cüceleri)"
     },
     "limit": 3,
@@ -63,8 +67,9 @@
     "names": {
       "de": "Tägliche Zerstörung (Propantanks)",
       "en": "Daily Destroy (Propane Tanks)",
-      "fr": "Destruction quotidienne (bonbonnes de gaz)",
       "es": "Destrucción diaria (tanques de propano)",
+      "fr": "Destruction quotidienne (bonbonnes de gaz)",
+      "pt-br": "Destruição Diária (Tanques de Propano)",
       "tr": "Günlük Yok Etme (Gaz Tankları)"
     },
     "limit": 10,
@@ -78,8 +83,9 @@
     "names": {
       "de": "Tägliche Zerstörung (Wippen)",
       "en": "Daily Destroy (Park Seesaws)",
-      "fr": "Destruction quotidienne (balançoires)",
       "es": "Destrucción diaria (balancines)",
+      "fr": "Destruction quotidienne (balançoires)",
+      "pt-br": "Destruição Diária (Gangorras de Parque)",
       "tr": "Günlük Yok Etme (Tahterevalli)"
     },
     "limit": 6,
@@ -93,8 +99,9 @@
     "names": {
       "de": "Tägliche Zerstörung (Serverschränke)",
       "en": "Daily Destroy (Server Racks)",
-      "fr": "Destruction quotidienne (baies à serveur)",
       "es": "Destrucción diaria (grupos de servidores)",
+      "fr": "Destruction quotidienne (baies à serveur)",
+      "pt-br": "Destruição Diária (Armários de Servidor)",
       "tr": "Günlük Yok Etme (Sunucu Kabinleri)"
     },
     "limit": 4,
@@ -108,8 +115,9 @@
     "names": {
       "de": "Tägliche Zerstörung (Transformatoren)",
       "en": "Daily Destroy (Transformers)",
-      "fr": "Destruction quotidienne (transformateurs)",
       "es": "Destrucción diaria (transformadores)",
+      "fr": "Destruction quotidienne (transformateurs)",
+      "pt-br": "Destruição Diária (Transformadores)",
       "tr": "Günlük Yok Etme (Trafolar)"
     },
     "limit": 2,
@@ -123,8 +131,9 @@
     "names": {
       "de": "Tägliche Zerstörung (Fernseher)",
       "en": "Daily Destroy (TVs)",
-      "fr": "Destruction quotidienne (télévisions)",
       "es": "Destrucción diaria (televisores)",
+      "fr": "Destruction quotidienne (télévisions)",
+      "pt-br": "Destruição Diária (TVs)",
       "tr": "Günlük Yok Etme (Televizyonlar)"
     },
     "limit": 20,
@@ -138,8 +147,9 @@
     "names": {
       "de": "Tägliche Industriebaustellenaufklärung",
       "en": "Daily Scouting Industrial Construction",
-      "fr": "Exploration quotidienne (industrie)",
       "es": "Exploración diaria de construcción industrial",
+      "fr": "Exploration quotidienne (industrie)",
+      "pt-br": "Vigilância Diária de Construção Industrial",
       "tr": "Günlük Keşif Endüstriyel İnşa"
     },
     "limit": 3,
@@ -153,8 +163,9 @@
     "names": {
       "de": "Tägliche Landaufklärung ",
       "en": "Daily Scouting Rural ",
-      "fr": "Exploration quotidienne (campagne) ",
       "es": "Exploración diaria rural ",
+      "fr": "Exploration quotidienne (campagne) ",
+      "pt-br": "Vigilância Diária Rural ",
       "tr": "Günlük Kırsal Keşifleri "
     },
     "limit": 3,
@@ -168,8 +179,9 @@
     "names": {
       "de": "Tägliche Schutzbunkeraufklärung",
       "en": "Daily Scouting Shelters",
-      "fr": "Exploration quotidienne (refuges)",
       "es": "Exploración diaria de refugios",
+      "fr": "Exploration quotidienne (refuges)",
+      "pt-br": "Vigilância Diária de Abrigos",
       "tr": "Günlük Keşif Sığınakları"
     },
     "limit": 4,
@@ -183,8 +195,9 @@
     "names": {
       "de": "Tägliche Vorstadtaufklärung",
       "en": "Daily Scouting Suburbia",
-      "fr": "Exploration quotidienne (banlieue)",
       "es": "Exploración diaria en suburbios",
+      "fr": "Exploration quotidienne (banlieue)",
+      "pt-br": "Vigilância Diária de Subúrbio",
       "tr": "Günlük Keşif Banliyöleri"
     },
     "limit": 10,
@@ -198,8 +211,9 @@
     "names": {
       "de": "Tägliche Stadtaufklärung",
       "en": "Daily Scouting Cities",
-      "fr": "Exploration quotidienne (villes)",
       "es": "Exploración diaria de ciudades",
+      "fr": "Exploration quotidienne (villes)",
+      "pt-br": "Vigilância Diária de Cidades",
       "tr": "Günlük Şehir Keşifleri"
     },
     "limit": 8,
@@ -213,8 +227,9 @@
     "names": {
       "de": "Erkundungstruppe",
       "en": "Exploration Party",
-      "fr": "Groupe d'exploration",
       "es": "Grupo de exploración",
+      "fr": "Groupe d'exploration",
+      "pt-br": "Grupo de Exploração",
       "tr": "Keşif Ekibi"
     },
     "limit": 3,
@@ -228,8 +243,9 @@
     "names": {
       "de": "Alle zusammen",
       "en": "All Together Now",
-      "fr": "Attentifs ensemble",
       "es": "Ahora todos juntos",
+      "fr": "Attentifs ensemble",
+      "pt-br": "Todos Juntos Agora",
       "tr": "Şimdi Hep Beraber"
     },
     "limit": 50,
@@ -243,8 +259,9 @@
     "names": {
       "de": "Hüllenausrottung (Beliebiger Held)",
       "en": "Husk Extermination (Any Hero)",
-      "fr": "Extermination de Carcasses (tout héros)",
       "es": "Exterminación de cáscaras (con cualquier héroe)",
+      "fr": "Extermination de Carcasses (tout héros)",
+      "pt-br": "Extermínio de Carcaças (Qualquer Herói)",
       "tr": "Suratsız Katliamı (Herhangi bir kahramanla)"
     },
     "limit": 500,
@@ -258,8 +275,9 @@
     "names": {
       "de": "Hüllenausrottung (Konstrukteur)",
       "en": "Husk Extermination (Constructor)",
-      "fr": "Extermination de Carcasses (Constructeur)",
       "es": "Exterminación de cáscaras (constructor)",
+      "fr": "Extermination de Carcasses (Constructeur)",
+      "pt-br": "Extermínio de Carcaças (Construtor)",
       "tr": "Suratsız Katliamı (İnşaatçı)"
     },
     "limit": 300,
@@ -273,8 +291,9 @@
     "names": {
       "de": "Hüllenausrottung (Nahkampf)",
       "en": "Husk Extermination (Melee)",
-      "fr": "Extermination de Carcasses (mêlée)",
       "es": "Exterminación de cáscaras (cuerpo a cuerpo)",
+      "fr": "Extermination de Carcasses (mêlée)",
+      "pt-br": "Extermínio de Carcaças (Corpo a Corpo)",
       "tr": "Suratsız Katliamı (Yakın Dövüş)"
     },
     "limit": 300,
@@ -288,8 +307,9 @@
     "names": {
       "de": "Hüllenausrottung (Ninja)",
       "en": "Husk Extermination (Ninja)",
-      "fr": "Extermination de Carcasses (Ninja)",
       "es": "Exterminación de cáscaras (ninja)",
+      "fr": "Extermination de Carcasses (Ninja)",
+      "pt-br": "Extermínio de Carcaças (Ninja)",
       "tr": "Suratsız Katliamı (Ninja)"
     },
     "limit": 300,
@@ -303,8 +323,9 @@
     "names": {
       "de": "Hüllenausrottung (Entdecker)",
       "en": "Husk Extermination (Outlander)",
-      "fr": "Extermination de Carcasses (Aventurier)",
       "es": "Exterminación de cáscaras (trotamundos)",
+      "fr": "Extermination de Carcasses (Aventurier)",
+      "pt-br": "Extermínio de Carcaças (Forasteiro)",
       "tr": "Suratsız Katliamı (İzci)"
     },
     "limit": 300,
@@ -318,8 +339,9 @@
     "names": {
       "de": "Hüllenausrottung (Sturmgewehr)",
       "en": "Husk Extermination (Assault Rifle)",
-      "fr": "Extermination de Carcasses (fusil d'assaut)",
       "es": "Exterminación de cáscaras (fusil de asalto)",
+      "fr": "Extermination de Carcasses (fusil d'assaut)",
+      "pt-br": "Extermínio de Carcaças (Rifle de Assalto)",
       "tr": "Suratsız Katliamı (Taarruz Tüfeği)"
     },
     "limit": 300,
@@ -333,8 +355,9 @@
     "names": {
       "de": "Hüllenausrottung (Pistole)",
       "en": "Husk Extermination (Pistol)",
-      "fr": "Extermination de Carcasses (pistolet)",
       "es": "Exterminación de cáscaras (pistola)",
+      "fr": "Extermination de Carcasses (pistolet)",
+      "pt-br": "Extermínio de Carcaças (Pistola)",
       "tr": "Suratsız Katliamı (Tabanca)"
     },
     "limit": 300,
@@ -348,8 +371,9 @@
     "names": {
       "de": "Hüllenausrottung (Schrotflinte)",
       "en": "Husk Extermination (Shotgun)",
-      "fr": "Extermination de Carcasses (fusil à pompe)",
       "es": "Exterminación de cáscaras (escopeta)",
+      "fr": "Extermination de Carcasses (fusil à pompe)",
+      "pt-br": "Extermínio de Carcaças (Espingarda)",
       "tr": "Suratsız Katliamı (Pompalı Tüfek)"
     },
     "limit": 300,
@@ -363,8 +387,9 @@
     "names": {
       "de": "Hüllenausrottung (Maschinenpistole)",
       "en": "Husk Extermination (SMG)",
-      "fr": "Extermination de Carcasses (pistolet-mitrailleur)",
       "es": "Exterminación de cáscaras (subfusil)",
+      "fr": "Extermination de Carcasses (pistolet-mitrailleur)",
+      "pt-br": "Extermínio de Carcaças (SMG)",
       "tr": "Suratsız Katliamı (Hafif Makineli Tüfek)"
     },
     "limit": 300,
@@ -378,8 +403,9 @@
     "names": {
       "de": "Hüllenausrottung (Scharfschützengewehr)",
       "en": "Husk Extermination (Sniper Rifle)",
-      "fr": "Extermination de Carcasses (fusil de sniper)",
       "es": "Exterminación de cáscaras (fusil de tirador)",
+      "fr": "Extermination de Carcasses (fusil de sniper)",
+      "pt-br": "Extermínio de Carcaças (Rifle de Precisão)",
       "tr": "Suratsız Katliamı (Keskin Nişancı Tüfeği)"
     },
     "limit": 300,
@@ -393,8 +419,9 @@
     "names": {
       "de": "Hüllenausrottung (Soldat)",
       "en": "Husk Extermination (Soldier)",
-      "fr": "Extermination de Carcasses (Soldat)",
       "es": "Exterminación de cáscaras (soldado)",
+      "fr": "Extermination de Carcasses (Soldat)",
+      "pt-br": "Extermínio de Carcaças (Soldado)",
       "tr": "Suratsız Katliamı (Asker)"
     },
     "limit": 300,
@@ -408,8 +435,9 @@
     "names": {
       "de": "Hüllenausrottung (Falle)",
       "en": "Husk Extermination (Trap)",
-      "fr": "Extermination de Carcasses (piège)",
       "es": "Exterminación de cáscaras (trampa)",
+      "fr": "Extermination de Carcasses (piège)",
+      "pt-br": "Extermínio de Carcaças (Armadilha)",
       "tr": "Suratsız Katliamı (Tuzak)"
     },
     "limit": 150,
@@ -423,8 +451,9 @@
     "names": {
       "de": "Bau den Radarturm",
       "en": "Build the Radar Tower",
-      "fr": "Construire la tour radar",
       "es": "Construye la torre del radar",
+      "fr": "Construire la tour radar",
+      "pt-br": "Construa a Torre de Radar",
       "tr": "Radar Kulesini inşa et"
     },
     "limit": 4,
@@ -438,8 +467,9 @@
     "names": {
       "de": "Missionsspezialist (beliebiger Held)",
       "en": "Mission Specialist (Any Hero)",
-      "fr": "Spécialiste de mission (tout héros)",
       "es": "Enviado espacial (cualquier héroe)",
+      "fr": "Spécialiste de mission (tout héros)",
+      "pt-br": "Especialista em Missões (Qualquer Herói)",
       "tr": "Görev Uzmanı (Herhangi Bir Kahraman)"
     },
     "limit": 3,
@@ -453,8 +483,9 @@
     "names": {
       "de": "Missionsveteran (beliebiger Held)",
       "en": "Mission Veteran (Any Hero)",
-      "fr": "Vétéran de mission (tout héros)",
       "es": "Veterano de misión (cualquier héroe)",
+      "fr": "Vétéran de mission (tout héros)",
+      "pt-br": "Veterano em Missões (Qualquer Herói)",
       "tr": "Görev Ustası (Herhangi Bir Kahraman)"
     },
     "limit": 5,
@@ -468,8 +499,9 @@
     "names": {
       "de": "Missionsspezialist (Konstrukteur)",
       "en": "Mission Specialist (Constructor)",
-      "fr": "Spécialiste de mission (Constructeur)",
       "es": "Especialista en misiones (constructor)",
+      "fr": "Spécialiste de mission (Constructeur)",
+      "pt-br": "Especialista de Missão (Construtor)",
       "tr": "Görev Uzmanı (İnşaatçı)"
     },
     "limit": 3,
@@ -483,8 +515,9 @@
     "names": {
       "de": "Missionsspezialist (Ninja)",
       "en": "Mission Specialist (Ninja)",
-      "fr": "Spécialiste de mission (Ninja)",
       "es": "Especialista en misiones (ninja)",
+      "fr": "Spécialiste de mission (Ninja)",
+      "pt-br": "Especialista de Missão (Ninja)",
       "tr": "Görev Uzmanı (Ninja)"
     },
     "limit": 3,
@@ -498,8 +531,9 @@
     "names": {
       "de": "Missionsspezialist (Entdecker)",
       "en": "Mission Specialist (Outlander)",
-      "fr": "Spécialiste de mission (Aventurier)",
       "es": "Especialista en misiones (trotamundos)",
+      "fr": "Spécialiste de mission (Aventurier)",
+      "pt-br": "Especialista em Missão (Forasteiro)",
       "tr": "Görev Uzmanı (İzci)"
     },
     "limit": 3,
@@ -513,8 +547,9 @@
     "names": {
       "de": "Missionsspezialist (Soldat)",
       "en": "Mission Specialist (Soldier)",
-      "fr": "Spécialiste de mission (Soldat)",
       "es": "Especialista en misiones (soldado)",
+      "fr": "Spécialiste de mission (Soldat)",
+      "pt-br": "Especialista de Missão (Soldado)",
       "tr": "Görev Uzmanı (Asker)"
     },
     "limit": 3,
@@ -528,8 +563,9 @@
     "names": {
       "de": "25er Gruppe",
       "en": "Party of 25",
-      "fr": "Entre vingt et trente",
       "es": "Grupo de 25",
+      "fr": "Entre vingt et trente",
+      "pt-br": "Grupo de 25",
       "tr": "25 Kişilik Grup"
     },
     "limit": 25,
@@ -543,8 +579,9 @@
     "names": {
       "de": "Safe ist anders",
       "en": "Playing It Safe",
-      "fr": "Coffrez-moi ça",
       "es": "Sin riesgos",
+      "fr": "Coffrez-moi ça",
+      "pt-br": "Fanático por Cofres",
       "tr": "Kasa Kasa Bir Hal Oldun"
     },
     "limit": 1,
@@ -558,8 +595,9 @@
     "names": {
       "de": "Vergessene Schätze",
       "en": "Lost Treasures",
-      "fr": "Trésors perdus",
       "es": "Tesoros perdidos",
+      "fr": "Trésors perdus",
+      "pt-br": "Tesouros Perdidos",
       "tr": "Kayıp Hazineler"
     },
     "limit": 5,

@@ -11,6 +11,7 @@
     { locale: 'en', country: 'usa' },
     { locale: 'es', country: 'spain' },
     { locale: 'fr', country: 'france' },
+    { locale: 'pt-br', country: 'portugal' },
     { locale: 'tr', country: 'turkey' }
   ];
 </script>

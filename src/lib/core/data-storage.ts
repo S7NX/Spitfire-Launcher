@@ -1,6 +1,5 @@
 import { derived, writable, type Writable } from 'svelte/store';
 import { dev } from '$app/environment';
-import config from '$lib/config';
 import { accountDataFileSchema } from '$lib/validations/accounts';
 import { allSettingsSchema, automationSettingsSchema, deviceAuthsSettingsSchema, downloaderSettingsSchema, taxiSettingsSchema } from '$lib/validations/settings';
 import type { AccountDataFile } from '$types/accounts';
@@ -112,7 +111,7 @@ export default class DataStorage<T> implements Writable<T> {
   public static async getDataDirectory() {
     if (DataStorage.dataDirectory) return DataStorage.dataDirectory;
 
-    const dataDirectory = platform() === 'android' ? await dataDir() : await path.join(await dataDir(), config.identifier);
+    const dataDirectory = platform() === 'android' ? await dataDir() : await path.join(await dataDir(), 'spitfire-launcher');
 
     if (!(await exists(dataDirectory))) {
       await mkdir(dataDirectory, { recursive: true });
