@@ -37,14 +37,14 @@ export default async function claimRewards(account: AccountData, skipDelay = fal
 
 async function openCardPackBatch(account: AccountData, queryProfileItems: CampaignProfile['items']) {
   const cardPackItemIds = Object.entries(queryProfileItems)
-    .filter(([, x]) => 
+    .filter(([, x]) =>
       x.templateId.startsWith('CardPack:') &&
-      (
-        x.templateId.startsWith('CardPack:zcp_') ||
-        x.attributes.pack_source !== 'Store' ||
-        x.attributes.match_statistics ||
-        x.attributes.pack_source === 'ItemCache'
-      )
+			(
+			  x.templateId.startsWith('CardPack:zcp_') ||
+				x.attributes.pack_source !== 'Store' ||
+				x.attributes.match_statistics ||
+				x.attributes.pack_source === 'ItemCache'
+			)
     )
     .map(([key]) => key);
 
@@ -57,10 +57,10 @@ async function claimQuestRewards(account: AccountData, queryProfileItems: Campai
   const questItems = Object.entries(queryProfileItems)
     .filter(([, x]) =>
       x.templateId.startsWith('Quest:') &&
-      (
-        x.attributes.quest_state === 'Completed' ||
-        (x.attributes.quest_state === 'Claimed' && x.templateId.includes('questpool'))
-      )
+			(
+			  x.attributes.quest_state === 'Completed' ||
+				(x.attributes.quest_state === 'Claimed' && x.templateId.includes('questpool'))
+			)
     )
     .map(([, x]) => x);
 
