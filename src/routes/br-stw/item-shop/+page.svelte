@@ -130,9 +130,9 @@
       const accountsData = await LookupManager.fetchByIds(account, friendsList.map((friend) => friend.accountId));
 
       accountData.friends = accountsData
-        .sort((a, b) => a.displayName.localeCompare(b.displayName))
+        .sort((a, b) => (a.displayName || a.id).localeCompare(b.displayName || b.id))
         .map((account) => ({
-          displayName: account.displayName,
+          displayName: account.displayName || account.id,
           accountId: account.id
         }));
     }
