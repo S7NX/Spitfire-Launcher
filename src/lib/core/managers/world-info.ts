@@ -16,10 +16,17 @@ import { ingredients, RarityNames, RarityTypes, resources, survivors, survivorsM
 import { baseGameService } from '$lib/core/services';
 import Authentication from '$lib/core/authentication';
 import { get } from 'svelte/store';
+import { worldInfoCache } from '$lib/stores';
 
 type World = keyof typeof Theaters;
 
 export default class WorldInfoManager {
+  static async setCache() {
+    const worldInfoData = await WorldInfoManager.getWorldInfoData();
+    const parsedWorldInfo = WorldInfoManager.parseWorldInfo(worldInfoData);
+    worldInfoCache.set(parsedWorldInfo);
+  }
+
   static async getWorldInfoData(accessToken?: string) {
     const token = accessToken || (await Authentication.getAccessTokenUsingClientCredentials()).access_token;
 
@@ -163,11 +170,11 @@ export default class WorldInfoManager {
 
             if (
               WorldInfoManager.isEvolutionMaterial(parsedResource.itemType) &&
-              WorldPowerLevels[Theaters.TwinePeaks].Endgame_Zone6 === powerLevel
+							WorldPowerLevels[Theaters.TwinePeaks].Endgame_Zone6 === powerLevel
             ) {
               isHard = !(
                 parsedResource.itemType.endsWith('_veryhigh') ||
-                parsedResource.itemType.endsWith('_extreme')
+								parsedResource.itemType.endsWith('_extreme')
               );
             }
 
@@ -215,8 +222,8 @@ export default class WorldInfoManager {
         const missionBAlert = b.alert ? 1 : 0;
 
         return b.powerLevel - a.powerLevel
-          || missionBGroup - missionAGroup
-          || missionBAlert - missionAAlert;
+					|| missionBGroup - missionAGroup
+					|| missionBAlert - missionAAlert;
       }));
 
       worldInfo.set(theaterId as World, parsedMissions);
@@ -249,11 +256,11 @@ export default class WorldInfoManager {
 
     return {
       imageUrl:
-        key ?
-          isGroup && GroupZones.includes(key as keyof typeof ZoneCategories)
-            ? `/assets/world/${key}-group.png`
-            : `/assets/world/${key}.png`
-          : '/assets/world/quest.png',
+				key ?
+				  isGroup && GroupZones.includes(key as keyof typeof ZoneCategories)
+				    ? `/assets/world/${key}-group.png`
+				    : `/assets/world/${key}.png`
+				  : '/assets/world/quest.png',
       type: key as keyof typeof ZoneCategories | null
     };
   }
@@ -261,9 +268,9 @@ export default class WorldInfoManager {
   private static isEvolutionMaterial(key: string) {
     return (
       key.includes('reagent_c_t01') ||
-      key.includes('reagent_c_t02') ||
-      key.includes('reagent_c_t03') ||
-      key.includes('reagent_c_t04')
+			key.includes('reagent_c_t02') ||
+			key.includes('reagent_c_t03') ||
+			key.includes('reagent_c_t04')
     );
   }
 
@@ -294,9 +301,9 @@ export default class WorldInfoManager {
       const [resourceId, resourceData] = resource;
       const isEventCurrency =
         (newKey !== 'eventcurrency_scaling' &&
-          newKey !== 'eventcurrency_founders' &&
-          newKey.startsWith('eventcurrency_')) ||
-        newKey === 'campaign_event_currency';
+					newKey !== 'eventcurrency_founders' &&
+					newKey.startsWith('eventcurrency_')) ||
+				newKey === 'campaign_event_currency';
 
       const unknownTickets = [
         'campaign_event_currency',
