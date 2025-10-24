@@ -20,6 +20,7 @@ type MatchmakingState = {
 export default class AutokickManager {
   private scheduleTimeout?: number;
   private checkerInterval?: number;
+  private _lastRemoteStartedState: boolean | null = null;
 
   public matchmakingState: MatchmakingState = {
     partyState: null,
@@ -50,61 +51,63 @@ export default class AutokickManager {
     this.checkerInterval = window.setInterval(async () => {
       const automationSettings = AutoKickBase.getAccountById(this.account.accountId)?.settings;
       const isAnySettingEnabled = Object.values(automationSettings || {}).some(x => x);
-      if (!automationSettings || !isAnySettingEnabled) return;
+      if (!automationSettings || !isAnySettingEnabled) {
+        this.dispose();
+        return;
+      }
 
       const matchmakingResponse = await MatchmakingManager.findPlayer(this.account, this.account.accountId);
-      const matchmakingData = matchmakingResponse[0];
-      const matchmakingState = this.matchmakingState;
+      const matchmakingData = matchmakingResponse?.[0];
 
-      if (!matchmakingData) {
-        const wasInMatch = matchmakingState.partyState === 'Matchmaking' || matchmakingState.partyState === 'PostMatchmaking';
-        if (!wasInMatch) {
-          this.dispose();
+      if (matchmakingData?.started == null && matchmakingResponse.length > 0) return;
+
+      const remoteStarted: boolean = matchmakingData?.started ?? false;
+      const lastStateWasInMission = this._lastRemoteStartedState === true;
+      const currentStateIsInLobby = remoteStarted === false;
+
+      if (lastStateWasInMission && currentStateIsInLobby) {
+        this.dispose();
+
+        const tasks: Promise<any>[] = [];
+
+        if (automationSettings.autoKick) {
+          tasks.push(this.kick(
+            await PartyManager.get(this.account).then(d => d.current[0])
+          ).catch(console.error));
         }
 
+        if (automationSettings.autoClaim) {
+          tasks.push(claimRewards(this.account).catch(console.error));
+        }
+
+        await Promise.allSettled(tasks);
+
+        if (automationSettings.autoKick && automationSettings.autoInvite) {
+          const newPartyData = await PartyManager.get(this.account);
+          const newParty = newPartyData.current[0];
+
+          if (newParty?.members.find(x => x.account_id === this.account.accountId)?.role === 'CAPTAIN') {
+            this.invite(newParty.members).catch(console.error);
+          }
+        }
+
+        if (automationSettings.autoTransferMaterials) {
+          transferBuildingMaterials(this.account).catch(console.error);
+        }
+
+        this._lastRemoteStartedState = false;
+        this.matchmakingState.started = false;
+        this.matchmakingState.partyState = 'Matchmaking';
+        this.scheduleMissionChecker(1000);
+
         return;
       }
 
-      if (matchmakingData.started == null) return;
+      this._lastRemoteStartedState = remoteStarted;
 
-      if (matchmakingData.started && matchmakingState.partyState !== 'PostMatchmaking') {
-        this.matchmakingState.partyState = 'PostMatchmaking';
-        return;
-      }
-
-      if (
-        matchmakingState.partyState !== 'PostMatchmaking'
-        || !matchmakingState.started
-        || matchmakingData.started
-      ) {
-        this.matchmakingState.started = matchmakingData.started;
-        return;
-      }
-
-      this.dispose();
-
-      const partyData = await PartyManager.get(this.account);
-      const party = partyData.current[0];
-
-      if (automationSettings.autoKick) {
-        await this.kick(party).catch(console.error);
-      }
-
-      if (automationSettings.autoTransferMaterials) {
-        transferBuildingMaterials(this.account).catch(console.error);
-      }
-
-      if (
-        automationSettings.autoKick
-        && automationSettings.autoInvite
-        && party.members.find(x => x.account_id === this.account.accountId)?.role === 'CAPTAIN'
-        && party.members.filter(x => x.account_id !== this.account.accountId).length
-      ) {
-        this.invite(party.members).catch(console.error);
-      }
-
-      if (automationSettings.autoClaim) {
-        await claimRewards(this.account).catch(console.error);
+      if (remoteStarted !== this.matchmakingState.started) {
+        this.matchmakingState.started = remoteStarted;
+        this.matchmakingState.partyState = remoteStarted ? 'PostMatchmaking' : 'Matchmaking';
       }
     }, (settings.app?.missionCheckInterval || 5) * 1000);
   }
@@ -115,12 +118,15 @@ export default class AutokickManager {
     if (!settings || !isAnySettingEnabled) return;
 
     const matchmakingResponse = await MatchmakingManager.findPlayer(this.account, this.account.accountId);
-    const matchmakingData = matchmakingResponse[0];
+    const matchmakingData = matchmakingResponse?.[0];
 
-    if (matchmakingData?.started == null) return;
+    if (matchmakingData?.started == null && matchmakingResponse.length > 0) return;
 
-    this.matchmakingState.started = matchmakingData.started;
-    this.matchmakingState.partyState = matchmakingData.started ? 'PostMatchmaking' : 'Matchmaking';
+    const remoteStarted: boolean = matchmakingData?.started ?? false;
+
+    this.matchmakingState.started = remoteStarted;
+    this.matchmakingState.partyState = remoteStarted ? 'PostMatchmaking' : 'Matchmaking';
+    this._lastRemoteStartedState = remoteStarted;
 
     this.startMissionChecker();
   }
@@ -140,11 +146,12 @@ export default class AutokickManager {
       partyState: null,
       started: false
     };
+
+    this._lastRemoteStartedState = null;
   }
 
   private async kick(party: PartyData) {
     const { accounts } = get(accountsStorage);
-
     const partyMemberIds = party.members.map(x => x.account_id);
     const partyLeaderId = party.members.find(x => x.role === 'CAPTAIN')!.account_id;
     const partyLeaderAccount = accounts.find(x => x.accountId === partyLeaderId);
