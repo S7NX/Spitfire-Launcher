@@ -52,10 +52,7 @@ export default class AutokickManager {
     this.checkerInterval = window.setInterval(async () => {
       const automationSettings = AutoKickBase.getAccountById(this.account.accountId)?.settings;
       const isAnySettingEnabled = Object.values(automationSettings || {}).some(x => x);
-      if (!automationSettings || !isAnySettingEnabled) {
-        this.dispose();
-        return;
-      }
+      if (!automationSettings || !isAnySettingEnabled) return;
 
       const matchmakingResponse = await MatchmakingManager.findPlayer(this.account, this.account.accountId);
       const matchmakingData = matchmakingResponse?.[0];
